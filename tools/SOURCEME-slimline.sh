@@ -1,8 +1,8 @@
 export MACHINE=imx6dl-slimline
 export EULA=1
 source fsl-setup-release.sh -e fb -b build
-grep -s meta-vivint $BUILD_DIR/conf/bblayers.conf ||
+grep -q meta-vivint $BUILD_DIR/conf/bblayers.conf ||
 	echo "BBLAYERS += \" \${BSPDIR}/sources/meta-vivint \"" >> $BUILD_DIR/conf/bblayers.conf
 ln -s ../sstate-cache . || true
-grep -s package_rpm $BUILD_DIR/conf/local.conf &&
+grep -q package_rpm $BUILD_DIR/conf/local.conf &&
 	sed -i -e s/package_rpm/package_ipk/ $BUILD_DIR/conf/local.conf
