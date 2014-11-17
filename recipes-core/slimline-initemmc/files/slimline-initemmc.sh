@@ -1,10 +1,10 @@
 #!/bin/bash
 set -x
-# 
+#
 # Description: This script is intended to be used when doing ethboot to load
-# code on a board with a blank eMMC chip.  It runs on the target device 
-# partitioning, formatting, and copying files to the eMMC chip, destroying all 
-# previous data on the eMMC chip.  The below table shows the resulting eMMC 
+# code on a board with a blank eMMC chip.  It runs on the target device
+# partitioning, formatting, and copying files to the eMMC chip, destroying all
+# previous data on the eMMC chip.  The below table shows the resulting eMMC
 # chip.
 #
 # 1 BOOT 	- ext4 - contains u-boot
@@ -180,7 +180,12 @@ debuginfo "eMMC uboot..."
 # set up the eMMC device boot parameters
 
 # this is confusing partially because you echo decimal values to the files
-SYSFSDIR="/sys/devices/soc0/soc.1/2100000.aips-bus/219c000.usdhc/mmc_host/mmc2/mmc2:0001"
+SYSFSDIR=$(find /sys/devices -type d | grep 'mmc.:0001$')
+
+# make boot partition 1 aka 0 writeable
+# partition 1 is mmcblk0boot0
+# partition 2 is mmcblk0boot1
+echo 0 > /sys/block/mmcblk0boot0/force_ro
 
 # set boot_bus to 10 decimal/ 0xa hex
 # which is:
@@ -189,10 +194,11 @@ SYSFSDIR="/sys/devices/soc0/soc.1/2100000.aips-bus/219c000.usdhc/mmc_host/mmc2/m
 #   RESET_BOOT_BUS_WIDTH:0 - Reset bus width to x1, single data rate and backwardcompatible timings after boot operation
 #   BOOT_BUS_WIDTH:2 - x8 (sdr/ddr) bus width in boot operation mode
 #
-echo -n 10 > ${SYSFSDIR}/boot_bus_config
+sleep 1
+echo 10 > ${SYSFSDIR}/boot_bus_config
 
 # choose the boot partition, we use boot partition 1 of 2
-# this is confusing again because of hex/decimal 
+# this is confusing again because of hex/decimal
 # from the source we have this comment:
 #
 # 0x00 - disable boot enable.
@@ -204,12 +210,12 @@ echo -n 10 > ${SYSFSDIR}/boot_bus_config
 #   wrong boot config parameter 00 (disable boot), 08 (enable boot1), 16 (enable boot2), 56 (User area)
 #
 # we want boot partition 1 so we use 8 which is the same for hex and decimal
-echo -n 8 > ${SYSFSDIR}/boot_config
+sleep 1
+echo 8 > ${SYSFSDIR}/boot_config
 
-# now make boot partition 1 aka 0 writeable
-# partition 1 is mmcblk0boot0
-# partition 2 is mmcblk0boot1
-echo 0 > /sys/block/mmcblk0boot0/force_ro
+# display the resulting info as a sanity check
+sleep 1
+cat ${SYSFSDIR}/boot_info
 
 cd /tmp
 tftp -g -r u-boot-imx6dl-slimline.imx -l u-boot.imx $SERVERIP > /dev/null 2>&1
@@ -232,6 +238,29 @@ sync
 umount /mnt > /dev/null 2>&1
 cd /
 
-debuginfo "MKSD COMPLETE!"
+# blow the boot fuses necessary to boot from eMMC
+#
+# BOOT_CONFIG1[7:6] = 01  - Boot from USDHC Interfaces
+# BOOT_CONFIG1[5]   = 1   - MMC/eMMC
+# BOOT_CONFIG1[4]   = 1   - Fast Boot
+#
+# BOOT_CONFIG1[7 6 5 4 3 2 1 0]
+#              0 1 1 1 0 0 0 0 = 0x70
+#
+# BOOT_CONFIG2[7:5] = 010 - 8-bit
+# BOOT_CONFIG2[4:3] = 11  - USDHC-4
+#
+# BOOT_CONFIG2[7 6 5 4 3 2 1 0]
+#              0 1 0 1 1 0 0 0 = 0x58
+
+# HW_OCOTP_CFG4 contains [boot_config4:boot_config3:boot_config2:boot_config1]
+echo 0x5870 > /sys/fsl_otp/HW_OCOTP_CFG4
+cat /sys/fsl_otp/HW_OCOTP_CFG4
+
+# BT_FUSE_SEL is bit 4 (1 << 4 == 0x10) in HW_OCOTP_CFG5
+echo 0x10 > /sys/fsl_otp/HW_OCOTP_CFG5
+cat /sys/fsl_otp/HW_OCOTP_CFG5
+
+debuginfo "Initial eMMC setup complete!"
 
 exit 0
