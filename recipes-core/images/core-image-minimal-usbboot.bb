@@ -5,6 +5,7 @@ eMMC and populating the rootfs."
 
 IMAGE_INSTALL += " \
 	packagegroup-slimline-mfg \
+	util-linux-agetty \
 	"
 
 # modify inittab to autologin as root on console with no password

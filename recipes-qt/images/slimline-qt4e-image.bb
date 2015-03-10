@@ -10,6 +10,7 @@ IMAGE_INSTALL += "\
 	kernel-devicetree \
 	u-boot-fw-utils \
 	u-boot-slimline \
+	alsa-utils-aplay \
 "
 
 inherit core-image
