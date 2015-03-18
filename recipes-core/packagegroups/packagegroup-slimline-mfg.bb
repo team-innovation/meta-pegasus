@@ -11,4 +11,8 @@ RDEPENDS_${PN} = " \
 	util-linux-mkfs e2fsprogs-mke2fs \
 	slimline-initemmc \
 	u-boot-fw-utils \
-	u-boot-slimline"
+	u-boot-slimline \
+	packagegroup-core-ssh-openssh \
+	kernel-image \
+	kernel-devicetree \
+"
