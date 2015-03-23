@@ -11,6 +11,7 @@ IMAGE_INSTALL += "\
 	u-boot-fw-utils \
 	u-boot-slimline \
 	alsa-utils-aplay \
+	python3-core \
 "
 
 inherit core-image
