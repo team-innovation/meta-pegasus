@@ -13,6 +13,7 @@ IMAGE_INSTALL += "\
 	alsa-utils-aplay \
 	python3-distribute \
 	python3-misc \
+	python3-subprocess \
 	python3-pyqt \
 	strace \
 "
