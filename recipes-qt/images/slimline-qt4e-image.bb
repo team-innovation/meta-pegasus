@@ -11,7 +11,10 @@ IMAGE_INSTALL += "\
 	u-boot-fw-utils \
 	u-boot-slimline \
 	alsa-utils-aplay \
-	python3-core \
+	python3-distribute \
+	python3-misc \
+	python3-pyqt \
+	strace \
 "
 
 inherit core-image
