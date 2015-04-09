@@ -7,3 +7,8 @@ grep -q meta-vivint $BUILD_DIR/conf/bblayers.conf ||
 ln -s ../sstate-cache . || true
 grep -q package_rpm $BUILD_DIR/conf/local.conf &&
 	sed -i -e s/package_rpm/package_ipk/ $BUILD_DIR/conf/local.conf
+grep -q HG_SERVER $BUILD_DIR/conf/local.conf ||
+cat << '_END_' >> $BUILD_DIR/conf/local.conf
+HG_SERVER = "scm.vivint.com/hg"
+HG_APPS_TAG ?= "apps-hg"
+_END_
