@@ -11,8 +11,7 @@ LIC_FILES_CHKSUM = "\
     file://LICENSE.GPL3;md5=eda942b9c6ba7eb0f40fee79e94950d5 \
 "
 
-DEPENDS = "sip-native python3-sip"
-RDEPENDS_${PN} = "python3-core"
+DEPENDS = "sip-native python3-sip-native python3-native"
 
 PYQT_OE_VERSION = "Qt_4_8_3"
 PR = "r1"
@@ -35,20 +34,21 @@ SRC_URI_append_mipsel = "\
     file://qreal_float_support.diff \
 "
 
-inherit qt4e p3sip distutils3-base
+inherit qt4e p3sip distutils3-native-base
+inherit native
 
 PARALLEL_MAKE = ""
 
 QMAKE_PROFILES = "pyqt.pro"
 # NOTE: has to match with MIN(qt version we have in OE, last known Qt version by SIP/PyQt)
-EXTRA_SIPTAGS = "-tWS_QWS -t${PYQT_OE_VERSION} -xVendorID -xPyQt_SessionManager -xPyQt_Accessibility -xPyQt_RawFont"
+EXTRA_SIPTAGS = "-tWS_QWS -t${PYQT_OE_VERSION} -xVendorID -xPyQt_SessionManager -xPyQt_Accessibility -xPyQt_RawFont -xPyQt_OpenSSL"
 EXTRA_OEMAKE = " MAKEFLAGS= "
 
 # arm and mips need extra params for the qreal issue
 EXTRA_SIPTAGS_append_arm = " -x PyQt_qreal_double"
 EXTRA_SIPTAGS_append_mipsel = " -x PyQt_qreal_double" 
 
-SIP_MODULES = "QtCore QtDeclarative QtGui QtNetwork QtSql QtSvg QtXml QtWebKit"
+SIP_MODULES = "QtCore QtDeclarative QtGui QtNetwork QtSql QtSvg QtXml "
 MAKE_MODULES = "qpy ${SIP_MODULES}"
 
 EXTRA_QMAKEVARS_POST += "\
@@ -60,7 +60,6 @@ EXTRA_QMAKEVARS_POST += "\
     INCLUDEPATH+=${OE_QMAKE_INCDIR_QT}/QtCore \
     INCLUDEPATH+=${OE_QMAKE_INCDIR_QT}/QtGui \
     INCLUDEPATH+=${OE_QMAKE_INCDIR_QT}/QtDeclarative \
-    INCLUDEPATH+=${OE_QMAKE_INCDIR_QT}/QtWebKit \
     INCLUDEPATH+=${OE_QMAKE_INCDIR_QT}/QtNetwork \
 "
 FIX_QREAL = "\
@@ -84,11 +83,6 @@ do_configure_prepend() {
     echo "LIBS+=-L../qpy/QtGui/ -lqpygui" >>QtGui/QtGui.pro
     echo "LIBS+=-L../qpy/QtCore/ -lqpycore" >>QtCore/QtCore.pro
     echo "LIBS+=-L../qpy/QtDeclarative/ -lqpydeclarative" >>QtDeclarative/QtDeclarative.pro
-    echo "LIBS+=-lQtDeclarativeE" >>QtDeclarative/QtDeclarative.pro
-    echo "LIBS+=-lQtSqlE" >>QtSql/QtSql.pro
-    echo "LIBS+=-lQtSvgE" >>QtSvg/QtSvg.pro
-    echo "LIBS+=-lQtXmlE" >>QtXml/QtXml.pro
-    echo "LIBS+=-lQtWebKitE" >>QtWebKit/QtWebKit.pro
     # hack for broken generated code (duplicated sipCpp declaration).
     patch -p1 < ${WORKDIR}/pyqt-generated.patch || echo "pyqt-generated.patch failed to apply, probably reexecuting do_configure, ignoring that"
 }
@@ -99,7 +93,7 @@ do_install() {
     for module in ${SIP_MODULES}
     do
         install -m 0644 ${S}/sip/${module}/*.sip ${D}${datadir}/sip/qt/
-        echo -e "from PyQt4.${module} import *\n" >> ${D}${libdir}/${PYTHON_DIR}/site-packages/PyQt4/Qt.py
+        echo "from PyQt4.${module} import *\n" >> ${D}${libdir}/${PYTHON_DIR}/site-packages/PyQt4/Qt.py
         install -m 0755 ${module}/lib${module}.so ${D}${libdir}/${PYTHON_DIR}/site-packages/PyQt4/${module}.so
     done
     cp -pPR elementtree ${D}${libdir}/${PYTHON_DIR}/site-packages/PyQt4/
