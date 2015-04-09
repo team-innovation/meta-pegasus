@@ -6,6 +6,8 @@ IMAGE_INSTALL += "\
 	${CORE_IMAGE_BASE_INSTALL} \
 	packagegroup-core-qt4e \
 	packagegroup-slimline-mfg \
+	packagegroup-touchlink-apps \
+	touchlink-apps \
 	kernel-image \
 	kernel-devicetree \
 	u-boot-fw-utils \

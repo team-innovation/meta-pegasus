@@ -13,6 +13,7 @@ RDEPENDS_${PN} = " \
 	u-boot-fw-utils \
 	u-boot-slimline \
 	packagegroup-core-ssh-openssh \
+	openssh-sftp-server \
 	kernel-image \
 	kernel-devicetree \
 "
