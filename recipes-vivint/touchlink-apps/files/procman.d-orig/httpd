@@ -1,0 +1,8 @@
+{
+    "httpd":
+    {
+	"name" : "Web Services",
+	"scheduler": "os.SCHED_IDLE",
+    	"start": "/etc/init.d/httpd start"
+    }
+}

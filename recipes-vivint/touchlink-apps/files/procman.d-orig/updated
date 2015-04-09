@@ -1,0 +1,8 @@
+{
+    "updated":
+    {
+    	"priority" : -2,
+    	"name" : "Update Services",
+    	"start": "/etc/init.d/updated start"
+    }
+}

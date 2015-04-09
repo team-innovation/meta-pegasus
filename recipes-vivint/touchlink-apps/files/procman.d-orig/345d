@@ -1,0 +1,7 @@
+{
+    "345d":
+    {
+	"name" : "Sensor Services",
+    	"start": "/etc/init.d/_345d start"
+    }
+}

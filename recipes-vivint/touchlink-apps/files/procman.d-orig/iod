@@ -1,0 +1,11 @@
+{
+    "iod":
+    {
+	"priority" : -2,
+	"name" : "Hardware Services",
+	"scheduler": "os.SCHED_RR",
+	"scheduler_pri": 1,
+    	"start": "/etc/init.d/iod start",
+    	"stop": "/etc/init.d/iod stop"
+    }
+}

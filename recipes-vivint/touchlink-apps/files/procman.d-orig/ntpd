@@ -1,0 +1,9 @@
+{
+    "ntpd":
+    {
+    	"match" : "ntpd",
+    	"name" : "Time Services",
+    	"start": "/etc/init.d/busybox-ntpd start",
+    	"stop": "/etc/init.d/busybox-ntpd stop"
+    }
+}
