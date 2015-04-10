@@ -4,7 +4,6 @@ PR = "r1"
 IMAGE_FEATURES += "package-management" 
 IMAGE_INSTALL += "\
 	${CORE_IMAGE_BASE_INSTALL} \
-	packagegroup-core-qt4e \
 	packagegroup-slimline-mfg \
 	packagegroup-touchlink-apps \
 	touchlink-apps \

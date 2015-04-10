@@ -6,6 +6,8 @@ LICENSE = "MIT"
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
+	qt4-embedded \
+	tslib tslib-calibrate tslib-tests \
 	touchlink-apps \
 	touchlink-apps-345d \
 	touchlink-apps-audmgrd \
@@ -68,15 +70,16 @@ RDEPENDS_${PN} = " \
 	touchlink-apps-utils \
 	touchlink-apps-webd \
 	touchlink-apps-zwaved \
-	python3-sqlite3 \
-	python3-math \
-	python3-json \
-	python3-re \
-	python3-shell \
+	python3-ctypes \
 	python3-importlib \
-	python3-msgpack \
-	python3-textutils \
-	python3-setproctitle \
-	python3-netserver \
 	python3-jinja2 \
+	python3-json \
+	python3-math \
+	python3-msgpack \
+	python3-netserver \
+	python3-re \
+	python3-setproctitle \
+	python3-shell \
+	python3-sqlite3 \
+	python3-textutils \
 "
