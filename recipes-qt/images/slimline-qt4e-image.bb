@@ -1,7 +1,7 @@
 DESCRIPTION = "Slimeline qt4e image."
 LICENSE = "MIT"
 PR = "r1"
-
+IMAGE_FEATURES += "package-management" 
 IMAGE_INSTALL += "\
 	${CORE_IMAGE_BASE_INSTALL} \
 	packagegroup-core-qt4e \
