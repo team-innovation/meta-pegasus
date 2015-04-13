@@ -4,5 +4,5 @@ do_configure_append() {
 }
 
 do_install_append() {
-	ln -s -f -r ${D}${includedir}/python3.3m ${D}${includedir}/python3.3
+	ln -s -f python3.3m ${D}${includedir}/python3.3
 }
