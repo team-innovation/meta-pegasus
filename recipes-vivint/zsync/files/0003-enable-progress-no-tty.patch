@@ -1,0 +1,39 @@
+--- zsync-0.6.2/client.c.org	2014-03-20 18:05:25.793258699 -0600
++++ zsync-0.6.2/client.c	2014-03-20 18:06:30.497258981 -0600
+@@ -43,6 +43,8 @@
+ /* For curl_global_init, curl_global_cleanup */
+ #include <curl/curl.h>
+ 
++int no_tty = 0;
++
+ /* FILE* f = open_zcat_pipe(file_str)
+  * Returns a (popen) filehandle which when read returns the un-gzipped content
+  * of the given file. Or NULL on error; or the filehandle may fail to read. It
+@@ -435,7 +437,7 @@
+     srand(getpid());
+     {   /* Option parsing */
+         int opt;
+-        while ((opt = getopt(argc, argv, "A:U:k:o:i:Vsqvu:C:KT:I:R:S:")) != -1) {
++        while ((opt = getopt(argc, argv, "A:U:k:o:i:Vjsqvu:C:KT:I:R:S:")) != -1) {
+             switch (opt) {
+             case 'A':           /* Authentication options for remote server */
+                 {               /* Scan string as hostname=username:password */
+@@ -492,6 +494,9 @@
+                        ")\n" "By Colin Phipps <cph@moria.org.uk>\n"
+                        "Published under the Artistic License v2, see the COPYING file for details.\n");
+                 exit(0);
++	    case 'j':
++		no_tty = 1;
++		break;
+             case 's':
+             case 'q':
+                 no_progress = 1;
+@@ -552,7 +557,7 @@
+     }
+ 
+     /* No progress display except on terminal */
+-    if (!isatty(0))
++    if (!isatty(0) && !no_tty)
+         no_progress = 1;
+ 
+     /* Respect ZSYNC_CA_BUNDLE environment variable */

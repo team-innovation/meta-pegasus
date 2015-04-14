@@ -1,0 +1,22 @@
+--- pytz-2013b/setup.py.org	2013-06-14 11:38:24.412238281 -0600
++++ pytz-2013b/setup.py	2013-06-14 11:39:16.544235909 -0600
+@@ -14,14 +14,14 @@
+ memail = 'stuart@stuartbishop.net'
+ packages = ['pytz']
+ resources = ['zone.tab', 'locales/pytz.pot']
+-for dirpath, dirnames, filenames in os.walk(os.path.join('pytz', 'zoneinfo')):
++#for dirpath, dirnames, filenames in os.walk(os.path.join('pytz', 'zoneinfo')):
+     # remove the 'pytz' part of the path
+-    basepath = dirpath.split(os.path.sep, 1)[1]
+-    resources.extend([os.path.join(basepath, filename)
+-                     for filename in filenames])
++ #   basepath = dirpath.split(os.path.sep, 1)[1]
++  #  resources.extend([os.path.join(basepath, filename)
++   #                  for filename in filenames])
+ package_data = {'pytz': resources}
+ 
+-assert len(resources) > 10, 'zoneinfo files not found!'
++#assert len(resources) > 10, 'zoneinfo files not found!'
+ 
+ setup (
+     name='pytz',

@@ -1,0 +1,11 @@
+--- pexpect-u-2.5.1/setup.py.org	2013-03-12 10:49:30.225508206 -0600
++++ pexpect-u-2.5.1/setup.py	2013-03-12 10:49:46.569508424 -0600
+@@ -3,7 +3,7 @@
+ 
+ kwargs = {}
+ if sys.version_info[0] >= 3:
+-    from setuptools import setup
++    from distutils.core import setup
+     kwargs['use_2to3'] = True
+ 
+ classifiers = [

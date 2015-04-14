@@ -1,0 +1,11 @@
+--- a/setup.py	2012-09-20 10:25:09.031880479 -0600
++++ b/setup.py	2012-09-20 10:25:21.711880804 -0600
+@@ -4,7 +4,7 @@
+ import os
+ import re
+ 
+-from setuptools import setup
++from distutils.core import setup
+ 
+ 
+ if isfile("MANIFEST"):

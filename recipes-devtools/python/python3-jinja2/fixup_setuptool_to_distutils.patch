@@ -1,0 +1,43 @@
+# Fix jinja2 to build wwith plain old distutils.  Setuptools is not supported and is a pain to get working
+--- a/setup.py	2011-10-19 18:15:20.234439087 -0600
++++ b/setup.py	2011-10-19 18:22:24.827633271 -0600
+@@ -36,17 +36,26 @@
+ .. _documentation: http://jinja.pocoo.org/2/documentation/
+ """
+ import sys
+-
+-from setuptools import setup, Extension, Feature
+-
+-debugsupport = Feature(
++try:
++     from setuptools import setup, Extension, Feature
++     debugsupport = Feature(
+     'optional C debug support',
+     standard=False,
+     ext_modules = [
+         Extension('jinja2._debugsupport', ['jinja2/_debugsupport.c']),
+     ],
+ )
+-
++except ImportError:
++     from distutils.core import setup, Extension
++     debugsupport = None
++
++# Hack for Python 3 to tell distutils to run 2to3 against the files
++# copied in the build directory before installing.
++# Reference: http://osdir.com/ml/python.python-3000.cvs/2008-03/msg00127.html
++try:
++    from distutils.command.build_py import build_py_2to3 as build_py
++except ImportError:
++    from distutils.command.build_py import build_py
+ 
+ # tell distribute to use 2to3 with our own fixers.
+ extra = {}
+@@ -98,6 +107,7 @@
+     ],
+     packages=['jinja2', 'jinja2.testsuite', 'jinja2.testsuite.res',
+               'jinja2._markupsafe'],
++    cmdclass={'build_py':build_py},  # Python 3.X
+     extras_require={'i18n': ['Babel>=0.8']},
+     test_suite='jinja2.testsuite.suite',
+     include_package_data=True,
