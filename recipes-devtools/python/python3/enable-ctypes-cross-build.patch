@@ -1,0 +1,13 @@
+diff --git a/Python-3.3.3/setup.py b/Python-3.3.3/setup.py
+index e8339cd..a7d3d2c 100644
+--- Python-3.3.3/setup.py
++++ Python-3.3.3/setup.py
+@@ -1781,6 +1781,8 @@ class PyBuildExt(build_ext):
+                 if not self.verbose:
+                     config_args.append("-q")
+ 
++                config_args += ['--host=%s' % os.environ["HOST_SYS"], ]
++
+                 # Pass empty CFLAGS because we'll just append the resulting
+                 # CFLAGS to Python's; -g or -O2 is to be avoided.
+                 cmd = "cd %s && env CFLAGS='' '%s/configure' %s" \

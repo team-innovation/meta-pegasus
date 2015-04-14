@@ -1,0 +1,19 @@
+--- Python-3.3.3/setup.py
++++ Python-3.3.3/setup.py
+@@ -495,14 +495,8 @@ class PyBuildExt(build_ext):
+         # lib_dirs and inc_dirs are used to search for files;
+         # if a file is found in one of those directories, it can
+         # be assumed that no additional -I,-L directives are needed.
+-        if not cross_compiling:
+-            lib_dirs = self.compiler.library_dirs + [
+-                '/' + sys.lib, '/usr/' + sys.lib,
+-                ]
+-            inc_dirs = self.compiler.include_dirs + ['/usr/include']
+-        else:
+-            lib_dirs = self.compiler.library_dirs[:]
+-            inc_dirs = self.compiler.include_dirs[:]
++        lib_dirs = [ os.getenv( "STAGING_LIBDIR" ) ]
++        inc_dirs = [ os.getenv( "STAGING_INCDIR" ) ]
+         exts = []
+         missing = []
+ 
