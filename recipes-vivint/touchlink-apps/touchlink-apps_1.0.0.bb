@@ -141,6 +141,7 @@ DEPENDS = " \
 	python3-pytz-native \
 	python3-requests-native \
 	python3-pexpect-u-native \
+	python3-setproctitle-native \
 "
 
 RDEPENDS_${PN} = "\
@@ -148,6 +149,7 @@ RDEPENDS_${PN} = "\
 	python3-pyalsaaudio \
 	python3-pyserial \
 	python3-threading \
+	python3-setproctitle \
 "
 
 do_compile() {
