@@ -91,8 +91,8 @@ S = "${WORKDIR}"
 PR = "ml94"
 
 #SRCREV = "0914ecee01d8"
-#SRCREV = "${HG_APPS_ID}"
-SRCREV = "default"
+SRCREV = "${HG_APPS_ID}"
+#SRCREV = "default"
 
 SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};protocol=http \
 	   file://procman.d \
