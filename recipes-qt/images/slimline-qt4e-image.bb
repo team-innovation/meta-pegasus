@@ -17,6 +17,7 @@ IMAGE_INSTALL += "\
 	python3-subprocess \
 	python3-pyqt \
 	strace \
+	psoc-fw \
 "
 
 inherit core-image
