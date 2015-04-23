@@ -18,6 +18,7 @@ IMAGE_INSTALL += "\
 	python3-pyqt \
 	strace \
 	psoc-fw \
+	slimline-modules \
 "
 
 inherit core-image
