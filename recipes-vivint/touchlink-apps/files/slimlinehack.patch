@@ -50,15 +50,6 @@ diff --git a/code/roubaix/roubaix_conf.json b/code/roubaix/roubaix_conf.json
 index 8e7373c..3087218 100644
 --- a/code/roubaix/roubaix_conf.json
 +++ b/code/roubaix/roubaix_conf.json
-@@ -11,7 +11,7 @@
- 
-     "Sundance":
-     {
--        "host": "localhost",
-+        "host": "sundancehost",
-         "port": 7080
-     },
- 
 @@ -19,7 +19,7 @@
      {
          "host": "localhost",

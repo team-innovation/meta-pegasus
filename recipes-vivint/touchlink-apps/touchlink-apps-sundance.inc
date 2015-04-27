@@ -11,6 +11,9 @@ PKGR_${PN}-sundance = "${PR}${SUNDANCE_PREPEND}${SUNDANCE_REVISION}"
 
 RDEPENDS_${PN}-sundance = "\
 	python3-pyinotify \
+	python3-requests \
+	python3-multiprocessing \
+	python3-mmap \
 	"
 
 do_install_append () {
