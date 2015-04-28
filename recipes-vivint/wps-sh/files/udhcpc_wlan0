@@ -1,0 +1,47 @@
+#!/bin/sh
+# /etc/init.d/udhcpc: start or stop udhcpc wlan0 client
+# Not for eth0 or any other interface
+
+set -e
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=/sbin/udhcpc
+
+test -x $DAEMON || exit 0
+
+case "$1" in
+  start)
+    echo -n "Starting DHCP client: udhcpc"
+    start-stop-daemon --start --quiet --exec $DAEMON \
+      -- -R -n -p /var/run/udhcpc.wlan0.pid -i wlan0 \
+      || echo -n " already running"
+  ;;
+
+  restart)
+    /etc/init.d/udhcpc_wlan0 stop
+    sleep 2
+    /etc/init.d/udhcpc_wlan0 start
+  ;;
+
+  stop)
+    echo -n "Stopping DHCP client: $DAEMON"
+    start-stop-daemon --stop --quiet --exec $DAEMON || echo -n " not running"
+    echo "."
+  ;;
+
+  renew)
+    start-stop-daemon --signal USR1 --stop --quiet --exec $DAEMON || echo -n " not running"
+  ;;
+
+  release)
+    start-stop-daemon --signal USR2 --stop --quiet --exec $DAEMON || echo -n " not running"
+  ;;
+
+  *)
+    echo "Usage: /etc/init.d/udhcpc_wlan0 {start|stop|restarti|renew|release}"
+    exit 1
+    ;;
+esac
+
+exit 0
+

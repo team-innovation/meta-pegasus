@@ -1,0 +1,348 @@
+#!/bin/sh
+#
+#       Description     : WPS initiation script
+#       Original Author : Jerry Kuo
+#	Modified 	: Matt Waddel (Vivint)
+#
+
+# Source generic network functions
+NETWORK_FUNC="/etc/network/network_func"
+if [ -f ${NETWORK_FUNC} ];then
+	. ${NETWORK_FUNC}
+else
+	echo "${NETWORK_FUNC} doesn't exist!"
+	exit 1
+fi
+
+# Parameters and Functions
+IFACE_WIRELESS=${1:-${IFACE_WIRELESS}}
+
+TEMP_WPASUPP_CONF="/tmp/wpa_supplicant.config"
+BACKUP_WPASUPP_CONF="/tmp/wpa_supplicant_backup.config"
+AP_FOUND=1
+WIRED_CONNECTED=0
+LED_AVAILABLE=0
+LED_SYS="/sys/bus/i2c/devices/3-0034/leds"
+
+STORE_ORIGINAL_CONF()
+{
+	cp -rf ${WPA_SUPPLICANT_WIRELESS_CONF} ${BACKUP_WPASUPP_CONF}
+	echo "Store the original wpa_supplicant config file(${BACKUP_WPASUPP_CONF})!"
+}
+
+RESTORE_ORIGINAL_CONF()
+{
+	# Restore original wpa_supplicant.conf after WPS timeout
+	cp -rf ${BACKUP_WPASUPP_CONF} ${WPA_SUPPLICANT_WIRELESS_CONF}
+	echo "Restore the original wpa_supplicant config file!"
+}
+
+LED_SAVE()
+{
+echo 'Save the previous values for the LED blinker'
+if [ -f ${LED_SYS}/l_primary_led ] ; then
+	LED_AVAILABLE=1
+	cd ${LED_SYS}
+	cat l_primary_levels > /tmp/temp_led_levels
+	cat l_primary_led > /tmp/temp_led
+	cat l_led_control > /tmp/temp_led_control
+	cat l_led_mode > /tmp/temp_led_mode
+	cat l_primary_blink_off_time > /tmp/temp_blink_off
+	cat l_primary_blink_on_time > /tmp/temp_blink_on
+fi
+}
+
+LED_SLOW()
+{
+echo 'Slow LED blinker'
+if [ $LED_AVAILABLE -eq 1 ] ; then
+	cd ${LED_SYS}
+	echo 50 100 0 > l_primary_levels
+	echo 5 > l_primary_blink_off_time
+	echo 10 > l_primary_blink_on_time
+	echo 2 > l_primary_led
+fi
+}
+
+LED_MEDIUM()
+{
+if [ $LED_AVAILABLE -eq 1 ] ; then
+	cd ${LED_SYS}
+	echo 3 > l_primary_blink_off_time
+	echo 6 > l_primary_blink_on_time
+fi
+
+}
+
+LED_FAST()
+{
+if [ $LED_AVAILABLE -eq 1 ] ; then
+	cd ${LED_SYS}
+	echo 1 > l_primary_blink_off_time
+	echo 3 > l_primary_blink_on_time
+fi
+}
+
+LED_RESTORE()
+{
+if [ $LED_AVAILABLE -eq 1 ] ; then
+	cd ${LED_SYS}
+	cat /tmp/temp_blink_off > l_primary_blink_off_time
+	cat /tmp/temp_blink_on > l_primary_blink_on_time
+	cat /tmp/temp_led_levels > l_primary_levels
+	cat /tmp/temp_led > l_primary_led
+	cat  /tmp/temp_led_control > l_led_control
+	cat  /tmp/temp_led_mode > l_led_mode
+fi
+}
+
+FIND_CHANNEL()
+{
+	temp=`${IWLIST} ${IFACE_WIRELESS} channel | ${GREP} 'Current' |  ${GREP} -v ${GREP}`
+	channel=`echo $temp | awk '{ print $5 }' | cut -d\) -f1`
+}
+
+UPDATE_WIRELESS_CONF()
+{
+	FIND_CHANNEL
+        # Store wireless parameters 
+        SSID=${ssid:-${SSID}}
+        NetworkType=${network_type:-${NetworkType}}
+        Channel=${channel:-${Channel}}
+        EncrypType=${encrypt_type:-${EncrypType}}
+        AuthMode=${auth_alg:-${AuthMode}}
+        KeyLength=${key_length:-${KeyLength}}                             
+        KeyFormat=${key_format:-${KeyFormat}}                             
+        KeySelect=${key_select:-${KeySelect}}
+        Algorithm=${algorithm:-${Algorithm}}
+        Presharedkey=${psk:-${Presharedkey}}
+
+	rm -rf ${WIRELESS_CONF}                                               
+        {                                                                 
+                echo "SSID=\"${SSID}\""                               
+                echo "WirelessMode=${NetworkType}"                    
+                echo "Channel=${Channel}"                      
+                echo "EncrypType=${EncrypType}"                   
+                echo "AuthMode=${AuthMode}"           
+                echo "KeyLength=${KeyLength}"                
+                echo "KeyFormat=${KeyFormat}"                
+                echo "KeySelect=${KeySelect}"
+                echo "Algorithm=${Algorithm}"        
+                echo "Presharedkey=\"${Presharedkey}\""
+        } >> ${WIRELESS_CONF}
+        sed -i "s/^WirelessMode=\(.*\)/WirelessMode=$WirelessMode/" ${WIRELESS_CONF}
+}
+
+UPDATE_PARAMETER_REALTEK()
+{
+        _create_name_value_list < ${WPA_SUPPLICANT_WIRELESS_CONF}
+
+        rm -rf ${TEMP_WPASUPP_CONF}
+        for i in ${TOTAL_ITEMS}
+        do
+                item0=`_array_get LNAME $i`
+                item1=`_array_get_dq LVALUE $i`
+                echo "${item0}=\"${item1}\"" >> ${TEMP_WPASUPP_CONF}
+        done
+        
+        # Source temp wireless config file to get the stored info
+        if [ -f ${TEMP_WPASUPP_CONF} ];then
+                . ${TEMP_WPASUPP_CONF}
+        else
+		LED_RESTORE
+                echo "Generate ${TEMP_WPASUPP_CONF} failed!"; exit 1
+        fi
+        rm -rf ${TEMP_WPASUPP_CONF}
+}
+
+ENCRYPTYPE()
+{
+        export EncryptMethod=WPA2PSK
+        export EncryptAlgorithm=${Algorithm}
+        export EncrypType="WPA-PSK"
+}
+
+CREATE_WPS_CONF()
+{
+	ENCRYPTYPE
+
+        rm -rf ${WPA_SUPPLICANT_WIRELESS_CONF}
+        : > ${WPA_SUPPLICANT_WIRELESS_CONF}
+        {
+                echo "# Wireless config file for WPA supplicant"
+                echo "# Generated by wps.sh at `date +'%Y.%m.%d %H:%M:%S %Z'`"
+                echo ""
+                echo "ctrl_interface=DIR=${WPA_SUPPLICANT_VAR}"
+                echo "ctrl_interface_group=0"
+                echo "update_config=1"
+                echo "ap_scan=1"
+                echo ""
+                echo "network={"
+                echo "       ssid=\"$SSID\""
+                echo "       scan_ssid=1"
+                echo "       key_mgmt=WPA-PSK"
+                echo ""
+                echo "       proto=WPA RSN"
+                echo "       pairwise=CCMP TKIP"
+                echo "       group=CCMP TKIP"
+                echo "       psk=\"$Presharedkey\""
+        	echo "}"
+	        echo ""
+        } >> ${WPA_SUPPLICANT_WIRELESS_CONF}
+        _start_wpa_supplicant
+}
+
+RUN_WPS_PBC_REALTEK()
+{
+        ${WPA_SUPPLICANT} -B -Dwext -i ${IFACE_WIRELESS} -c ${WPA_SUPPLICANT_WIRELESS_CONF} && sleep 5
+
+        echo "Searching for WPS-PBC AP."
+        wps_pbc_ap_ssid=""
+        start_time=$(date +%s)
+
+        while [ -z ${wps_pbc_ap_ssid} ] ; do
+                # Abort WPS if there isn't a wps_pbc AP within the timeout (120 seconds)
+                search_time=$(( $(date +%s) - $start_time ))
+                if [ ${search_time} -gt ${WPS_TIMEOUT} ] ; then
+                        echo "WPS timeout! (No WPS AP found)"
+                        AP_FOUND=0
+                        break
+                fi
+
+                ${WPA_CLIENT} scan
+                sleep 2
+                wps_pbc_ap_ssid=`${WPA_CLIENT} scan_result|grep WPS-PBC|awk '{print $1}'|sed 1q`
+        done
+
+        if [ $AP_FOUND -eq 1 ] ; then
+                echo "WPS-PBC AP found."
+                # Before starting WPS, we need to refresh the data cache of wpa_supplicant.
+                # This is a workaround from Realtek
+                echo -n "Starting WPS workaround: "
+                ${WPA_CLIENT} disconnect
+                ${WPA_CLIENT} scan
+                sleep 2
+
+                # Now start WPS
+                ${WPA_CLIENT} wps_pbc $wps_pbc_ap_ssid
+
+                # Wait for WPS connection
+                sleep 6
+        fi
+}
+
+WAIT_WPS_COMPLETE_REALTEK()
+{
+	if [ $AP_FOUND -eq 0 ] ; then
+		return
+	fi
+	# This step should not take the full WPS timeout, only wait 1/2 the usual timeout
+        wait_time=0
+	while [ $wait_time -lt ${WPS_HALF_TIMEOUT} ] ; do
+		${WPA_CLIENT} -i ${IFACE_WIRELESS} status | ${GREP} 'COMPLETED' |  ${GREP} -v ${GREP}
+		if [ $? -eq 0 ] ; then
+			echo "WPS complete"
+			break
+		fi
+                wait_time=$((wait_time+1))
+                sleep 1
+                echo "Wait for WPS to complete - (${wait_time}) seconds"
+        done
+
+        if [ $wait_time -eq ${WPS_HALF_TIMEOUT} ] ; then
+                echo "WPS ip negotiations failed"
+		AP_FOUND=0
+        else
+                echo "WPS ip negotiations passed"
+        fi
+}
+
+UDPCPD_COMPLETE()
+{
+	if [ $AP_FOUND -eq 0 ] ; then
+		return
+	fi
+	wait_time=0
+	rm -f ${WPA_SUPPLICANT_VAR}/${IFACE_WIRELESS}
+	${IFCONFIG} ${IFACE_WIRELESS} up
+	sleep 2
+	while [ $wait_time -lt ${WPS_HALF_TIMEOUT} ] ; do
+		${IFUP} -f ${IFACE_WIRELESS}
+		sleep 10
+		${IFCONFIG} ${IFACE_WIRELESS} | ${GREP} 'inet addr' | ${GREP} -v ${GREP}
+		if [ $? -eq 0 ] ; then
+			echo "IP address assigned"
+			break
+		fi
+		wait_time=$((wait_time+10))
+                echo "Wait for DHCPC - (${wait_time}) seconds"
+	done
+
+        if [ $wait_time -eq ${WPS_HALF_TIMEOUT} ] ; then
+                echo "WPS udhcpc negotiations failed"
+		AP_FOUND=0
+        else
+                echo "WPS udhcpc negotiations passed"
+        fi
+}
+
+CHECK_WIRED()
+{
+	# We normally won't have the wired interface connected, so
+	# this should usually return false
+	${IFCONFIG} ${IFACE_WIRED} | ${GREP} 'inet addr' | ${GREP} -v ${GREP}
+	if [ $? -eq 0 ] ; then
+		echo "A wired connection was found, kill and restart later"
+		WIRED_CONNECTED=1
+		${IFCONFIG} ${IFACE_WIRED} down
+	else
+		echo "A wired connection was not found, this is the normal case. Do nothing."
+	fi
+
+
+}
+
+# Flash LED to notify users we are in WPS mode
+LED_SAVE
+LED_SLOW
+
+# Stop networking
+rm -f ${LINK_STATUS}
+CHECK_WIRED
+rm -f ${WPA_SUPPLICANT_VAR}/${IFACE_WIRELESS}
+${IFCONFIG} ${IFACE_WIRELESS} down
+${KILLALL} -9 wpa_supplicant && sleep 2
+${KILLALL} -q udhcpc
+${KILLALL} -q hostap_diag
+${WPA_CLIENT} disconnect &> /dev/null
+
+# Store original config
+STORE_ORIGINAL_CONF
+
+${IFCONFIG} ${IFACE_WIRELESS} up && sleep 2
+
+# Simulate WPS button push
+RUN_WPS_PBC_REALTEK
+
+LED_MEDIUM
+
+if [ $AP_FOUND -eq 1 ] ; then
+        echo "WPS succeed!"
+        WAIT_WPS_COMPLETE_REALTEK
+	LED_FAST
+	UDPCPD_COMPLETE
+        UPDATE_PARAMETER_REALTEK
+        UPDATE_WIRELESS_CONF
+        CREATE_WPS_CONF
+	_linkstatus "wps"
+else
+        echo "WPS failed, please check AP and try again"
+        RESTORE_ORIGINAL_CONF
+fi
+
+if [ $WIRED_CONNECTED -eq 1 ] ; then
+	${IFUP} -f ${IFACE_WIRED}
+	_linkstatus "wired"
+fi
+
+LED_RESTORE
