@@ -20,6 +20,7 @@ IMAGE_INSTALL += "\
 	psoc-fw \
 	slimline-modules \
 	wps-sh \
+	fcc-gunk \
 "
 
 inherit core-image

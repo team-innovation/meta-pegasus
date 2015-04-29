@@ -1,0 +1,436 @@
+FCC settings hack
+
+diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/framework/Controller.qml
+--- a/code/roubaix/framework/Controller.qml	Fri Apr 10 11:09:47 2015 -0600
++++ b/code/roubaix/framework/Controller.qml	Tue Apr 28 09:08:19 2015 -0600
+@@ -730,4 +730,9 @@
+             audio_manager.play_queue([{"aud_data": soundFiles, "time_to_play": 0, "volume": volume}], priority, interrupt)
+         }
+     }
++
++    function system(cmd) {
++        run_file(cmd)
++    }
++
+ }
+diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/roubaix.py
+--- a/code/roubaix/roubaix.py	Fri Apr 10 11:09:47 2015 -0600
++++ b/code/roubaix/roubaix.py	Tue Apr 28 09:08:19 2015 -0600
+@@ -530,6 +530,13 @@
+         self.logger.debug("Roubaix.py - Sending UI SOUND file: {} vol: {} pri: {}".format(file, volume, priority))
+         self.PlayUISoundHelper(file, volume, priority)
+ 
++    @pyqtSlot(str)
++    def run_file(self, cmd):
++        self.logger.debug("Roubaix.py - Run this file {}".format(cmd))
++        import subprocess
++        ret = subprocess.check_output(cmd, shell=True)
++        self.logger.info('Return results: {}'.format(ret))
++
+     @pyqtSlot()
+     def calibrate_screen(self):
+         calibrate_file = "/media/extra/conf/pointercal"
+diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/views/settings/SettingsFCCView.qml
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/code/roubaix/views/settings/SettingsFCCView.qml	Tue Apr 28 09:08:19 2015 -0600
+@@ -0,0 +1,388 @@
++/****************************************************************************
++**
++** Copyright 2011 2gig Technologies
++** All rights reserved.
++**
++****************************************************************************/
++
++import QtQuick 1.0
++import ".." as Views
++import "../../../framework/qml_framework/controls/text_elements" as TextElements
++import "../../../framework/qml_framework/scripts/IconLookups.js" as IconLookup
++import "../../controls/buttons" as RoubaixButtons
++import "../../controls/text_elements" as RoubaixTextElements
++import "../../../sundance/proxies/pyqt/sundance_proxies/definitions/user_attributes.js" as UserAttributes
++import "../../../sundance/proxies/pyqt/sundance_proxies/definitions/panel_debug_mode.js" as PanelDebugMode
++
++Views.SettingsBaseView {
++    id: wrapper
++
++    property int labelHeight: 70
++    title: qsTr("FCC Testing")
++    flickingEnabled: false
++
++    QtObject {
++        id: __private
++        property string headingTextSize: "xSmall"
++        property int headingSpacing: 15
++    }
++
++    Item{
++        id:leftItem
++        width:wrapper.width/2
++        height:baseContainerHeight
++        anchors.left: parent.left
++
++        TextElements.TextIcon {
++            id: deviceIcon
++            anchors.centerIn: parent
++            icon: IconLookup.vivintApp.Constants.Icons.vivIconPanel
++            size: 200
++            colorScheme: "dark"
++        }
++
++        Row{
++            spacing:5
++            anchors{
++                top:deviceIcon.bottom
++                horizontalCenter: parent.horizontalCenter
++            }
++            TextElements.Label {
++                id:statusLabel
++                text: qsTr("Panel ID: ")
++                style: "heavy"
++                font.pixelSize: 20
++                colorScheme: "dark"
++            }
++            TextElements.Label {
++                text: primary_touch_link_device.panel_id
++                style: "light"
++                font.pixelSize: 25
++                colorScheme: "grey"
++                anchors.baseline: statusLabel.baseline
++            }
++        }
++    }
++
++    Flickable{
++        id:rightFlickable
++        width:wrapper.width/2
++        height:baseContainerHeight
++        contentWidth: width
++        contentHeight: settingsColumn.height
++        boundsBehavior: Flickable.DragOverBounds
++        anchors{
++            left:leftItem.right
++        }
++        clip:true
++        interactive: true
++
++        Rectangle{
++            color:"white"
++            width:parent.width
++            height:rightFlickable.contentHeight
++            opacity: .4
++        }
++
++        Column {
++            id: settingsColumn
++            width: parent.width
++            height: childrenRect.height
++            spacing:1
++
++            Rectangle{
++                width:parent.width
++                height:labelHeight
++                color:"transparent"
++                TextElements.Label{
++                    anchors{
++                        top:parent.top
++                        left:parent.left
++                        leftMargin:gStyler.tls_FieldHorizontalMargin
++                        topMargin:40
++                    }
++                    size:"small"
++                    color:"grey"
++                    text:qsTr("WIFI")
++                    colorScheme:"dark"
++                }
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("WPS Start)")
++                onClicked: gController.system('wps.sh')
++            }
++
++            Rectangle{
++                width:parent.width
++                height:labelHeight
++                color:"transparent"
++                TextElements.Label{
++                    anchors{
++                        top:parent.top
++                        left:parent.left
++                        leftMargin:gStyler.tls_FieldHorizontalMargin
++                        topMargin:40
++                    }
++                    size:"small"
++                    color:"grey"
++                    text:qsTr("BACKLIGHT")
++                    colorScheme:"dark"
++                }
++            }
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("High - 255")
++                onClicked: gController.system('echo 255 255 255 255 255 255 > /sys/devices/soc0/soc.1/2100000.aips-bus/21f8000.i2c/i2c-3/3-0034/backlights/bl_all_bright')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("Mid - 127")
++                onClicked: gController.system('echo 127 127 127 127 127 127 > /sys/devices/soc0/soc.1/2100000.aips-bus/21f8000.i2c/i2c-3/3-0034/backlights/bl_all_bright')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("Low - 63")
++                onClicked: gController.system('echo 63 63 63 63 63 63 > /sys/devices/soc0/soc.1/2100000.aips-bus/21f8000.i2c/i2c-3/3-0034/backlights/bl_all_bright')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("Off - 0")
++                onClicked: gController.system('echo 0 0 0 0 0 0 > /sys/devices/soc0/soc.1/2100000.aips-bus/21f8000.i2c/i2c-3/3-0034/backlights/bl_all_bright')
++            }
++
++            Rectangle{
++                width:parent.width
++                height:labelHeight
++                color:"transparent"
++                TextElements.Label{
++                    anchors{
++                        top:parent.top
++                        left:parent.left
++                        leftMargin:gStyler.tls_FieldHorizontalMargin
++                        topMargin:40
++                    }
++                    size:"small"
++                    color:"grey"
++                    text:qsTr("AUDIO")
++                    colorScheme:"dark"
++                }
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("start play")
++                onClicked: gController.system('audio-helper startplay')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("stop play")
++                onClicked: gController.system('audio-helper stop')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("SD_BOOST 1")
++                onClicked: gController.system('audio-helper sd_boost 1')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("SD_BOOST 0")
++                onClicked: gController.system('audio-helper sd_boost 0')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("FB_SEL 1")
++                onClicked: gController.system('audio-helper fb_sel 1')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("FB_SEL 0")
++                onClicked: gController.system('audio-helper fb_sel 0')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("SD_AMP 1")
++                onClicked: gController.system('audio-helper sd_amp 1')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("SD_AMP 0")
++                onClicked: gController.system('audio-helper sd_amp 0')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("SS_FF 1")
++                onClicked: gController.system('audio-helper ss_ff 1')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("SS_FF 0")
++                onClicked: gController.system('audio-helper ss_ff 0')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("random")
++                onClicked: gController.system('audio-helper random')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("silence")
++                onClicked: gController.system('audio-helper silence')
++            }
++
++            Rectangle{
++                width:parent.width
++                height:labelHeight
++                color:"transparent"
++                TextElements.Label{
++                    anchors{
++                        top:parent.top
++                        left:parent.left
++                        leftMargin:gStyler.tls_FieldHorizontalMargin
++                        topMargin:40
++                    }
++                    size:"small"
++                    color:"grey"
++                    text:qsTr("PSOC Misc")
++                    colorScheme:"dark"
++                }
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("bl_backlight_activate 1")
++                onClicked: gController.system('echo 1 > /sys/class/i2c-dev/i2c-3/device/3-0034/backlights/bl_backlight_activate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("bl_backlight_activate 0")
++                onClicked: gController.system('echo 0 > /sys/class/i2c-dev/i2c-3/device/3-0034/backlights/bl_backlight_activate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("l_leds_activate 1")
++                onClicked: gController.system('echo 1 > /sys/class/i2c-dev/i2c-3/device/3-0034/leds/l_leds_activate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("l_leds_activate 0")
++                onClicked: gController.system('echo 0 > /sys/class/i2c-dev/i2c-3/device/3-0034/leds/l_leds_activate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("am_ambientactivate 1")
++                onClicked: gController.system('echo 1 > /sys/class/i2c-dev/i2c-3/device/3-0034/ambient/am_ambientactivate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("am_ambientactivate 0")
++                onClicked: gController.system('echo 0 > /sys/class/i2c-dev/i2c-3/device/3-0034/ambient/am_ambientactivate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("ir_activate 1")
++                onClicked: gController.system('echo 1 > /sys/class/i2c-dev/i2c-3/device/3-0034/infrared/ir_activate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("ir_activate 0")
++                onClicked: gController.system('echo 0 > /sys/class/i2c-dev/i2c-3/device/3-0034/infrared/ir_activate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("v_voltage_activate 1")
++                onClicked: gController.system('echo 1 > /sys/class/i2c-dev/i2c-3/device/3-0034/voltages/v_voltage_activate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("v_voltage_activate 0")
++                onClicked: gController.system('echo 0 > /sys/class/i2c-dev/i2c-3/device/3-0034/voltages/v_voltage_activate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("c_touch_activate 1")
++                onClicked: gController.system('echo 1 > /sys/class/i2c-dev/i2c-3/device/3-0034/cap/c_touch_activate')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("c_touch_activate 0")
++                onClicked: gController.system('echo 0 > /sys/class/i2c-dev/i2c-3/device/3-0034/cap/c_touch_activate')
++            }
++
++            Rectangle{
++                width:parent.width
++                height:labelHeight
++                color:"transparent"
++                TextElements.Label{
++                    anchors{
++                        top:parent.top
++                        left:parent.left
++                        leftMargin:gStyler.tls_FieldHorizontalMargin
++                        topMargin:40
++                    }
++                    size:"small"
++                    color:"grey"
++                    text:qsTr("MIPI Camera")
++                    colorScheme:"dark"
++                }
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("0 -> Clock enable")
++		onClicked: gController.system('echo 0 > /sys/devices/soc0/soc.1/2100000.aips-bus/21a0000.i2c/i2c-0/0-003c/clk_enable')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("1 -> Clock enable")
++		onClicked: gController.system('echo 1 > /sys/devices/soc0/soc.1/2100000.aips-bus/21a0000.i2c/i2c-0/0-003c/clk_enable')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("3 -> Clock enable")
++		onClicked: gController.system('echo 3 > /sys/devices/soc0/soc.1/2100000.aips-bus/21a0000.i2c/i2c-0/0-003c/clk_enable')
++            }
++
++            Rectangle{
++                width:parent.width
++                height:labelHeight
++                color:"transparent"
++
++            }
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("Reboot Panel")
++                onClicked: gController.loadPopup('../popups/RebootPanelPopup');
++            }
++
++        }
++    }
++}
+diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/views/settings/SettingsView.qml
+--- a/code/roubaix/views/settings/SettingsView.qml	Fri Apr 10 11:09:47 2015 -0600
++++ b/code/roubaix/views/settings/SettingsView.qml	Tue Apr 28 09:08:19 2015 -0600
+@@ -22,6 +22,8 @@
+     title: qsTr("Settings")
+ 
+     Component.onCompleted: {
++        itemsModel.append({ 'label': QT_TR_NOOP("FCC"),
++                              'view': 'settings/SettingsFCCView'})
+         itemsModel.append({ 'label': QT_TR_NOOP("Panel"),
+                               'view': 'settings/SettingsPanelView'})
+         itemsModel.append({ 'label': QT_TR_NOOP("Devices"),
