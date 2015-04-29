@@ -19,6 +19,7 @@ IMAGE_INSTALL += "\
 	strace \
 	psoc-fw \
 	slimline-modules \
+	wps-sh \
 "
 
 inherit core-image
