@@ -1,8 +1,8 @@
 FCC settings hack
 
-diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/framework/Controller.qml
+diff -r 427ef3b9fb88 -r d98f9f5ceb74 code/roubaix/framework/Controller.qml
 --- a/code/roubaix/framework/Controller.qml	Fri Apr 10 11:09:47 2015 -0600
-+++ b/code/roubaix/framework/Controller.qml	Tue Apr 28 09:08:19 2015 -0600
++++ b/code/roubaix/framework/Controller.qml	Wed Apr 29 17:26:53 2015 -0600
 @@ -730,4 +730,9 @@
              audio_manager.play_queue([{"aud_data": soundFiles, "time_to_play": 0, "volume": volume}], priority, interrupt)
          }
@@ -13,9 +13,9 @@ diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/framework/Controller.qml
 +    }
 +
  }
-diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/roubaix.py
+diff -r 427ef3b9fb88 -r d98f9f5ceb74 code/roubaix/roubaix.py
 --- a/code/roubaix/roubaix.py	Fri Apr 10 11:09:47 2015 -0600
-+++ b/code/roubaix/roubaix.py	Tue Apr 28 09:08:19 2015 -0600
++++ b/code/roubaix/roubaix.py	Wed Apr 29 17:26:53 2015 -0600
 @@ -530,6 +530,13 @@
          self.logger.debug("Roubaix.py - Sending UI SOUND file: {} vol: {} pri: {}".format(file, volume, priority))
          self.PlayUISoundHelper(file, volume, priority)
@@ -30,10 +30,10 @@ diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/roubaix.py
      @pyqtSlot()
      def calibrate_screen(self):
          calibrate_file = "/media/extra/conf/pointercal"
-diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/views/settings/SettingsFCCView.qml
+diff -r 427ef3b9fb88 -r d98f9f5ceb74 code/roubaix/views/settings/SettingsFCCView.qml
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/code/roubaix/views/settings/SettingsFCCView.qml	Tue Apr 28 09:08:19 2015 -0600
-@@ -0,0 +1,388 @@
++++ b/code/roubaix/views/settings/SettingsFCCView.qml	Wed Apr 29 17:26:53 2015 -0600
+@@ -0,0 +1,457 @@
 +/****************************************************************************
 +**
 +** Copyright 2011 2gig Technologies
@@ -204,6 +204,75 @@ diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/views/settings/SettingsFCCView
 +                    }
 +                    size:"small"
 +                    color:"grey"
++                    text:qsTr("RGB LED")
++                    colorScheme:"dark"
++                }
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("slow")
++                onClicked: gController.system('fcc-helper led-slow')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("medium")
++                onClicked: gController.system('fcc-helper led-medium')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("fast")
++                onClicked: gController.system('fcc-helper led-fast')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("green++")
++                onClicked: gController.system('fcc-helper led-green-up')
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("green--")
++                onClicked: gController.system('fcc-helper led-green-down')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("red++")
++                onClicked: gController.system('fcc-helper led-red-up')
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("red--")
++                onClicked: gController.system('fcc-helper led-red-down')
++            }
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("blue++")
++                onClicked: gController.system('fcc-helper led-blue-up')
++
++            RoubaixButtons.PropertyButton {
++                colorScheme: "orange"
++                label: qsTr("blue--")
++                onClicked: gController.system('fcc-helper led-blue-down')
++            }
++
++            Rectangle{
++                width:parent.width
++                height:labelHeight
++                color:"transparent"
++                TextElements.Label{
++                    anchors{
++                        top:parent.top
++                        left:parent.left
++                        leftMargin:gStyler.tls_FieldHorizontalMargin
++                        topMargin:40
++                    }
++                    size:"small"
++                    color:"grey"
 +                    text:qsTr("AUDIO")
 +                    colorScheme:"dark"
 +                }
@@ -212,73 +281,73 @@ diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/views/settings/SettingsFCCView
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("start play")
-+                onClicked: gController.system('audio-helper startplay')
++                onClicked: gController.system('fcc-helper startplay')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("stop play")
-+                onClicked: gController.system('audio-helper stop')
++                onClicked: gController.system('fcc-helper stop')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("SD_BOOST 1")
-+                onClicked: gController.system('audio-helper sd_boost 1')
++                onClicked: gController.system('fcc-helper sd_boost 1')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("SD_BOOST 0")
-+                onClicked: gController.system('audio-helper sd_boost 0')
++                onClicked: gController.system('fcc-helper sd_boost 0')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("FB_SEL 1")
-+                onClicked: gController.system('audio-helper fb_sel 1')
++                onClicked: gController.system('fcc-helper fb_sel 1')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("FB_SEL 0")
-+                onClicked: gController.system('audio-helper fb_sel 0')
++                onClicked: gController.system('fcc-helper fb_sel 0')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("SD_AMP 1")
-+                onClicked: gController.system('audio-helper sd_amp 1')
++                onClicked: gController.system('fcc-helper sd_amp 1')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("SD_AMP 0")
-+                onClicked: gController.system('audio-helper sd_amp 0')
++                onClicked: gController.system('fcc-helper sd_amp 0')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("SS_FF 1")
-+                onClicked: gController.system('audio-helper ss_ff 1')
++                onClicked: gController.system('fcc-helper ss_ff 1')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("SS_FF 0")
-+                onClicked: gController.system('audio-helper ss_ff 0')
++                onClicked: gController.system('fcc-helper ss_ff 0')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("random")
-+                onClicked: gController.system('audio-helper random')
++                onClicked: gController.system('fcc-helper random')
 +            }
 +
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("silence")
-+                onClicked: gController.system('audio-helper silence')
++                onClicked: gController.system('fcc-helper silence')
 +            }
 +
 +            Rectangle{
@@ -416,15 +485,15 @@ diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/views/settings/SettingsFCCView
 +            RoubaixButtons.PropertyButton {
 +                colorScheme: "orange"
 +                label: qsTr("Reboot Panel")
-+                onClicked: gController.loadPopup('../popups/RebootPanelPopup');
++		onClicked: gController.system('reboot')
 +            }
 +
 +        }
 +    }
 +}
-diff -r 427ef3b9fb88 -r c3bb0a2fae4d code/roubaix/views/settings/SettingsView.qml
+diff -r 427ef3b9fb88 -r d98f9f5ceb74 code/roubaix/views/settings/SettingsView.qml
 --- a/code/roubaix/views/settings/SettingsView.qml	Fri Apr 10 11:09:47 2015 -0600
-+++ b/code/roubaix/views/settings/SettingsView.qml	Tue Apr 28 09:08:19 2015 -0600
++++ b/code/roubaix/views/settings/SettingsView.qml	Wed Apr 29 17:26:53 2015 -0600
 @@ -22,6 +22,8 @@
      title: qsTr("Settings")
  
