@@ -99,6 +99,7 @@ SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};protocol=http \
 	   file://favicon.ico \
 	   file://slimlinehack.patch \
 	   file://fcchack.patch \
+	   file://fcchack2.patch \
 	   "
 
 S = "${WORKDIR}/apps-hg"
