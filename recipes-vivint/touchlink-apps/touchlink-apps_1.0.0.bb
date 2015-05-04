@@ -88,7 +88,7 @@ require touchlink-apps-pyftpd.inc
 
 S = "${WORKDIR}"
 
-PR = "ml95"
+PR = "ml96"
 
 #SRCREV = "0914ecee01d8"
 SRCREV = "${HG_APPS_ID}"
@@ -101,6 +101,7 @@ SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};protocol=http \
 	   file://fcchack.patch \
 	   file://fcchack2.patch \
 	   file://fcchack3.patch \
+	   file://fcchack4.patch \
 	   "
 
 S = "${WORKDIR}/apps-hg"

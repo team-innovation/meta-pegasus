@@ -1,0 +1,12 @@
+diff -ruN orig/roubaix/views/settings/SettingsFCCView.qml new/roubaix/views/settings/SettingsFCCView.qml
+--- orig/roubaix/views/settings/SettingsFCCView.qml	2015-05-04 08:45:05.747757925 -0600
++++ new/roubaix/views/settings/SettingsFCCView.qml	2015-05-04 08:47:46.627755168 -0600
+@@ -111,7 +111,7 @@
+             RoubaixButtons.PropertyButton {
+                 colorScheme: "orange"
+                 label: qsTr("WPS Start \(Only works with a SkyControl\)")
+-                onClicked: gController.system('wps.sh')
++                onClicked: gController.system('/usr/local/bin/wps.sh')
+             }
+ 
+             RoubaixButtons.PropertyButton {
