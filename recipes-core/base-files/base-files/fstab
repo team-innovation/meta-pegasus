@@ -1,0 +1,18 @@
+# stock fstab - you probably want to override this with a machine specific one
+
+rootfs               /                    auto       defaults,noatime,nodiratime,barrier=0    	1  1
+proc                 /proc                proc       defaults              			0  0
+devpts               /dev/pts             devpts     mode=0620,gid=5       			0  0
+usbfs                /proc/bus/usb        usbfs      defaults              			0  0
+tmpfs                /var/volatile        tmpfs      defaults,size=16M     			0  0
+tmpfs                /dev/shm             tmpfs      mode=0777             			0  0
+tmpfs                /media/ram           tmpfs      defaults,size=16M     			0  0
+
+# uncomment this if your device has a SD/MMC/Transflash slot
+/dev/mmcblk0p1       /media/card          auto       ro,noatime,nodiratime,sync,noauto  	0  0
+/dev/mmcblk0p3       /media/bootscript    auto       ro,noatime,nodiratime,sync,noauto  	0  0
+/dev/mmcblk0p7       /media/extra         auto       rw,noatime,nodiratime,async,auto,barrier=0 0  0
+
+# Loop mount local clips directory to limit size of clips directory
+/media/extra/clips.img /media/clips       auto       loop,noatime,nodiratime,sync,auto         0  0
+
