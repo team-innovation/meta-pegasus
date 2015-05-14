@@ -1,7 +1,7 @@
 TOBUILD_append = "\
-  src/declarative \
   src/script \
   src/svg \
+  src/declarative \
 "
 
 do_install_append() {
