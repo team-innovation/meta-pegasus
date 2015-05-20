@@ -229,14 +229,16 @@ echo 0 > /sys/block/mmcblk0boot1/force_ro
 dd if=/dev/zero of=/dev/mmcblk0boot1 bs=2M count=1
 
 # get root fs
-cd /tmp
+# avoid needing space for the entire image by saving to one end of a pipe
+# and extracting from the other end
+rm -f /tmp/tarpipe
+mknod /tmp/tarpipe p
 debuginfo "root file system..."
 mount "$DRIVE"p5 /mnt > /dev/null 2>&1
-tftp -g -r rfs.tar.bz2 -l rfs.tar.bz2 $SERVERIP
-tar xjf rfs.tar.bz2 -C /mnt > /dev/null 2>&1
+tftp -g -r rfs.tar.bz2 -l /tmp/tarpipe $SERVERIP &
+tar xjf /tmp/tarpipe -C /mnt > /dev/null 2>&1
 sync
 umount /mnt > /dev/null 2>&1
-cd /
 
 # blow the boot fuses necessary to boot from eMMC
 #
