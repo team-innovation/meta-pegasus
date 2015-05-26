@@ -1,0 +1,15 @@
+diff -r 7ea1a6c2bd0d code/roubaix/views/settings/SettingsView.qml
+--- a/code/roubaix/views/settings/SettingsView.qml	Thu May 21 14:41:42 2015 -0600
++++ b/code/roubaix/views/settings/SettingsView.qml	Tue May 26 12:19:06 2015 -0600
+@@ -80,6 +80,11 @@
+         }
+         RoubaixButtons.PropertyJumpToButton {
+             visible: gModel.settingsUser != null && (gModel.settingsUser.attributes & UserAttributes.ADMIN || gModel.settingsUser.attributes & UserAttributes.INSTALLER)
++            label: qsTr("FCC")
++            onClicked: gController.loadView('settings/SettingsFCCView')
++        }
++        RoubaixButtons.PropertyJumpToButton {
++            visible: gModel.settingsUser != null && (gModel.settingsUser.attributes & UserAttributes.ADMIN || gModel.settingsUser.attributes & UserAttributes.INSTALLER)
+             label: qsTr("Installer toolbox")
+             onClicked: gController.loadView('toolbox/SettingsToolboxView')
+         }

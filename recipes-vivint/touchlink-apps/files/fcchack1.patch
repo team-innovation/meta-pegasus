@@ -491,15 +491,3 @@ diff -r 427ef3b9fb88 -r d98f9f5ceb74 code/roubaix/views/settings/SettingsFCCView
 +        }
 +    }
 +}
-diff -r 427ef3b9fb88 -r d98f9f5ceb74 code/roubaix/views/settings/SettingsView.qml
---- a/code/roubaix/views/settings/SettingsView.qml	Fri Apr 10 11:09:47 2015 -0600
-+++ b/code/roubaix/views/settings/SettingsView.qml	Wed Apr 29 17:26:53 2015 -0600
-@@ -22,6 +22,8 @@
-     title: qsTr("Settings")
- 
-     Component.onCompleted: {
-+        itemsModel.append({ 'label': QT_TR_NOOP("FCC"),
-+                              'view': 'settings/SettingsFCCView'})
-         itemsModel.append({ 'label': QT_TR_NOOP("Panel"),
-                               'view': 'settings/SettingsPanelView'})
-         itemsModel.append({ 'label': QT_TR_NOOP("Devices"),
