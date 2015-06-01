@@ -30,6 +30,7 @@ WLAN_DRIVER_DIR=${RE_WLAN_DRIVER_DIR:-"/drivers"}
 WLAN_MODULES="/etc/network/wlan_modules"
 WIRELESS_CONF="/etc/network/wireless.conf"
 WPA_SUPPLICANT_WIRELESS_CONF="/etc/network/wpa_supplicant_wireless.conf"
+ETC_WPA_SUPPLICANT_CONF="/etc/wpa_supplicant.conf"
 
 # Network services
 SRV_DHCP6="/etc/init.d/dhcp6c"
