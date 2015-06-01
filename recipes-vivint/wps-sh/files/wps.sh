@@ -26,6 +26,10 @@ LED_SYS="/sys/bus/i2c/devices/3-0034/leds"
 
 STORE_ORIGINAL_CONF()
 {
+    if [ ! -e ${WPA_SUPPLICANT_WIRELESS_CONF} ]; then
+        cp -rf ${ETC_WIRELESS_CONF} ${WPA_SUPPLICANT_WIRELESS_CONF}
+    fi
+
 	cp -rf ${WPA_SUPPLICANT_WIRELESS_CONF} ${BACKUP_WPASUPP_CONF}
 	echo "Store the original wpa_supplicant config file(${BACKUP_WPASUPP_CONF})!"
 }
@@ -247,6 +251,7 @@ WAIT_WPS_COMPLETE_REALTEK()
                 wait_time=$((wait_time+1))
                 sleep 1
                 echo "Wait for WPS to complete - (${wait_time}) seconds"
+            ifup -f wlan0
         done
 
         if [ $wait_time -eq ${WPS_HALF_TIMEOUT} ] ; then
