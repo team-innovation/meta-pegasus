@@ -31,6 +31,7 @@ l root root 1777 /var/lock /var/volatile/lock
 d root root 0755 /media/extra/log none
 d root root 0755 /media/extra/log/error none
 d root root 0755 /media/extra/db none
+d root root 0755 /media/extra/conf none
 l root root 0755 /var/log /media/extra/log
 l root root 0755 /var/run /var/volatile/run
 l root root 1777 /var/tmp /var/volatile/tmp
