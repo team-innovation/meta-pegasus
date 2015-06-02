@@ -97,11 +97,6 @@ SRCREV = "${HG_APPS_ID}"
 SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};protocol=http \
 	   file://procman.d \
 	   file://favicon.ico \
-       file://fcchack0.patch \
-	   file://fcchack1.patch \
-	   file://fcchack2.patch \
-	   file://fcchack3.patch \
-	   file://fcchack4.patch \
 	   "
 
 S = "${WORKDIR}/apps-hg"
