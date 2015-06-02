@@ -6,7 +6,6 @@ LICENSE = "MIT"
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
-	qt4-embedded \
 	tslib tslib-calibrate tslib-tests \
 	libqt-embedded3support4 \
 	libqt-embeddedclucene4 \
