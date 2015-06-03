@@ -97,7 +97,6 @@ SRCREV = "${HG_APPS_ID}"
 SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};protocol=http \
 	   file://procman.d \
 	   file://favicon.ico \
-       file://roubaix_conf.patch \
 	   "
 
 S = "${WORKDIR}/apps-hg"
