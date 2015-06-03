@@ -1,7 +1,7 @@
 ###
 ### Change ZWAVED_PREPEND everything you touch this script
 ###
-ZWAVED_PREPEND = "-1"
+ZWAVED_PREPEND = "-2"
 
 ZWAVED_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-zwaved = "${PR}${ZWAVED_PREPEND}${ZWAVED_REVISION}"
@@ -26,6 +26,9 @@ pkg_postinst_${PN}-zwaved () {
 # Post install to setup the home id directories
 #
 set -e
+if [ -f /proc/device-tree/compatible ]; then
+	exit 0
+fi
 
  logging()
  {
