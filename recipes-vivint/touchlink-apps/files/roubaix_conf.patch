@@ -1,0 +1,46 @@
+diff -r 1952c2aab8f0 code/roubaix/roubaix_conf.json
+--- a/code/roubaix/roubaix_conf.json	Thu Jun 04 11:33:52 2015 -0600
++++ b/code/roubaix/roubaix_conf.json	Thu Jun 04 11:35:25 2015 -0600
+@@ -27,7 +27,7 @@
+     {
+         "host": "localhost",
+         "port": 7140,
+-        "connect": true
++        "connect": false
+     },
+ 
+     "Video":
+@@ -41,14 +41,14 @@
+     {
+         "host": "localhost",
+         "port": 7130,
+-        "connect": true
++        "connect": false
+     },
+ 
+     "IOD":
+     {
+         "host": "localhost",
+         "port": 7150,
+-        "connect": true
++        "connect": false
+     },
+ 
+     "Network":
+@@ -62,14 +62,14 @@
+     {
+         "host": "localhost",
+         "port": 7016,
+-        "connect": true
++        "connect": false
+     },
+ 
+     "Modem":
+     {
+         "host": "localhost",
+         "port": 7190,
+-        "connect": true
++        "connect": false
+     },
+ 
+     "Singletons":
