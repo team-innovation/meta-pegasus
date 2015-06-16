@@ -26,7 +26,7 @@ LED_SYS="/sys/bus/i2c/devices/3-0034/leds"
 
 STORE_ORIGINAL_CONF()
 {
-    if [ ! -e ${WPA_SUPPLICANT_WIRELESS_CONF} ]; then
+    if [ ! -f ${WPA_SUPPLICANT_WIRELESS_CONF} ]; then
         cp -rf ${ETC_WPA_SUPPLICANT_CONF} ${WPA_SUPPLICANT_WIRELESS_CONF}
     fi
 
@@ -248,8 +248,8 @@ WAIT_WPS_COMPLETE_REALTEK()
 			echo "WPS complete"
 			break
 		fi
-                wait_time=$((wait_time+1))
-                sleep 1
+                wait_time=$((wait_time+5))
+                sleep 5
                 echo "Wait for WPS to complete - (${wait_time}) seconds"
         done
 
