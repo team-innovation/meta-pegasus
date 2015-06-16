@@ -1,0 +1,8 @@
+{
+    "ssdpd":
+    {
+        "match" : "ssdpd_slimline",
+        "name" : "SSDPD services",
+    	"start": "/etc/init.d/ssdpd start"
+    }
+}

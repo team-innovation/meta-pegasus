@@ -251,7 +251,6 @@ WAIT_WPS_COMPLETE_REALTEK()
                 wait_time=$((wait_time+1))
                 sleep 1
                 echo "Wait for WPS to complete - (${wait_time}) seconds"
-            ifup -f wlan0
         done
 
         if [ $wait_time -eq ${WPS_HALF_TIMEOUT} ] ; then
