@@ -6,6 +6,7 @@ IMAGE_INSTALL += "\
 	${CORE_IMAGE_BASE_INSTALL} \
 	packagegroup-slimline-mfg \
 	packagegroup-touchlink-apps \
+	packagegroup-slimline-video \
 	touchlink-apps \
 	kernel-image \
 	kernel-devicetree \
