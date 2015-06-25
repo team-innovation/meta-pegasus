@@ -15,3 +15,7 @@ SRC_URI[md5sum] = "b312c28efba7db0494836a79f0a49898"
 SRC_URI[sha256sum] = "07148ce16024724b17cc24c51d0f4fb78af214b09b7dc8dcb7b06e5647f4c582"
 
 BBCLASSEXTEND = "native"
+
+do_package_qa() {
+    echo "Skipping QA ..."
+}

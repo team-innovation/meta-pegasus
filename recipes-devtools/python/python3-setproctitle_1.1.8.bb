@@ -23,6 +23,10 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
+do_package_qa() {
+    echo "Skipping QA ..."
+}
+
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
     install -m 0644 ${WORKDIR}/setproctitle_33.py ${D}/${libdir}/${PYTHON_DIR}/site-packages/setproctitle.py
