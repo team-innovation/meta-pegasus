@@ -4,8 +4,8 @@ HOMEPAGE = "http://www.riverbankcomputing.co.uk/sip"
 AUTHOR = "Phil Thompson"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://siplib.sbf.in;endline=15;md5=3d462bd8cb43db3e4be998fe155ae9cf"
-DEPENDS = "python"
-RDEPENDS_${PN} = "python-core"
+DEPENDS = "python3"
+RDEPENDS_${PN} = "python3-core"
 
 # riverbankcomputing is upstream, but keeps only latest version, sf usually have few older
 #SRC_URI = "http://www.riverbankcomputing.com/static/Downloads/sip4/sip-${PV}.tar.gz"

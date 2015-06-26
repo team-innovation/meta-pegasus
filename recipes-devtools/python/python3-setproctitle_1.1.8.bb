@@ -13,10 +13,10 @@ S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 inherit distutils3
 
-DEPENDS += "python"
-DEPENDS_virtclass-native += "python-native"
+DEPENDS += "python3"
+DEPENDS_virtclass-native += "python3-native"
 
-RDEPENDS_${PN} = "python-core"
+RDEPENDS_${PN} = "python3-core"
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"

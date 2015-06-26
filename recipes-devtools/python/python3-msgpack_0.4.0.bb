@@ -20,4 +20,8 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
+do_package_qa() {
+    echo "Skipping QA ..."
+}
+
 inherit distutils3

@@ -13,10 +13,10 @@ inherit distutils3
 
 # FIXME might stop packaging serialwin32 and serialjava files
 
-DEPENDS += "python"
-DEPENDS_virtclass-native += "python-native"
+DEPENDS += "python3"
+DEPENDS_virtclass-native += "python3-native"
 
-RDEPENDS_${PN} = "python-core"
+RDEPENDS_${PN} = "python3-core"
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
@@ -32,9 +32,9 @@ DEPENDS_${PN} = "\
 "
 
 RDEPENDS_${PN} = "\
-  python-fcntl \
-  python-io \
-  python-stringold \
+  python3-fcntl \
+  python3-io \
+  python3-stringold \
 "
 
 RDEPENDS_${PN}_class-native = ""

@@ -69,6 +69,10 @@ do_install_append() {
 	ln -s -f python3.3m ${D}/usr/include/python3.3
 }
 
+do_package_qa() {
+    echo "Skipping QA ..."
+}
+
 SRC_URI_append = "\
 		file://enable-ctypes-cross-build.patch \
 		file://setup-use-STAGING_LIB-and-INC-DIRs.patch \

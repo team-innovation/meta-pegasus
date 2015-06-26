@@ -4,8 +4,8 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=20c831f91dd3bd486020f672ba2be386"
 PR = "ml1"
 
-DEPENDS += "python"
-RDEPENDS_${PN} = "python-core"
+DEPENDS += "python3"
+RDEPENDS_${PN} = "python3-core"
 
 SRC_URI = "http://pypi.python.org/packages/source/J/Jinja2/Jinja2-${PV}.tar.gz \
 file://fixup_setuptool_to_distutils.patch"
@@ -23,7 +23,7 @@ do_install_prepend() {
 }
 
 DEPENDS_${PN} = "\
-  python-distutils \
+  python3-distutils \
 "
 SRC_URI[md5sum] = "1c49a8825c993bfdcf55bb36897d28a2"
 SRC_URI[sha256sum] = "a85e185375db75c109f99ecde3d55415f035e7068a82252cf4f16c667ac38f49"
