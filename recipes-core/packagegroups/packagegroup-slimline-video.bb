@@ -39,6 +39,7 @@ RDEPENDS_${PN} = " \
     gst-plugins-good-alaw \
     gst-plugins-good-mulaw \
     gst-plugins-good-isomp4 \
+    gst-plugins-good-udp \
     gst-plugins-good-video4linux2 \
     gst-plugins-base-audioconvert \
 	gst-plugins-base-audioresample \
