@@ -58,6 +58,7 @@ FILES_${PN}-roubaix = "\
     ${INSTALL_DIR}/roubaix/proxies/*	\
 	${INSTALL_DIR}/roubaix/FileMixin.pyo \
 	${INSTALL_DIR}/roubaix/ConnectionsMixin.pyo \
+	${INSTALL_DIR}/roubaix/migrations/* \
 	${sysconfdir}/init.d/roubaix		\
 	${sysconfdir}/procman.d/roubaix	\
     "
