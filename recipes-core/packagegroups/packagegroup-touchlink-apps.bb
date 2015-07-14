@@ -109,4 +109,7 @@ RDEPENDS_${PN} = " \
 	python3-shell \
 	python3-sqlite3 \
 	python3-textutils \
+	python3-terminal \
+	python3-resource \
+	python3-pexpect-u \
 "
