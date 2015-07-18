@@ -1,0 +1,12 @@
+diff -ruN PyQt-commercial-5.2/sip/_QOpenGLFunctions_ES2/qopenglfunctions_es2.sip PyQt-commercial-5.2.b/sip/_QOpenGLFunctions_ES2/qopenglfunctions_es2.sip
+--- PyQt-commercial-5.2/sip/_QOpenGLFunctions_ES2/qopenglfunctions_es2.sip	2014-01-07 09:17:46.000000000 -0700
++++ PyQt-commercial-5.2.b/sip/_QOpenGLFunctions_ES2/qopenglfunctions_es2.sip	2014-01-12 13:15:28.627753853 -0700
+@@ -14,7 +14,7 @@
+ // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ 
+ 
+-%If (Qt_5_1_0 -)
++%If (Qt_5_2_0 -)
+ 
+ class QOpenGLFunctions_ES2 : QAbstractOpenGLFunctions
+ {
