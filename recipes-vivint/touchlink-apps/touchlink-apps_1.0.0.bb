@@ -88,6 +88,8 @@ require touchlink-apps-pyftpd.inc
 
 S = "${WORKDIR}"
 
+DISTRO_PR = ".1"
+
 PR = "ml96"
 
 #SRCREV = "0914ecee01d8"

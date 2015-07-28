@@ -71,6 +71,7 @@ VIVINT_APPS = "touchlink-apps \
 QT5_DEPENDS = "libegl-mx6 \
 	libgles2-mx6 \
 	imx-gpu-viv \
+	touchlink-qt5-profile \
 	"
 
 
