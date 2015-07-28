@@ -11,12 +11,11 @@ INC_PR = "r36"
 
 SRCREV = "37b2d3593a44"
 MODULE = "live555"
-SRC_URI = "hg://${HG_SERVER};module=${MODULE};proto=http \
+SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
 	       file://config.linux-cross-shared-libraries"
 
 #SRC_URI = "file:///media/WD_MPassport/live555 \
 #	       file://config.linux-cross-shared-libraries"
-
 
 S = "${WORKDIR}/${MODULE}"
 TARGET_CC_ARCH += "${LDFLAGS}"

@@ -5,37 +5,7 @@ LICENSE = "MIT"
 
 inherit packagegroup
 
-RDEPENDS_${PN} = " \
-	tslib tslib-calibrate tslib-tests \
-	libqt-embedded3support4 \
-	libqt-embeddedclucene4 \
-	libqt-embeddedcore4 \
-	libqt-embeddeddbus4 \
-	libqt-embeddedgui4 \
-	libqt-embeddedhelp4 \
-	libqt-embeddedmultimedia4 \
-	libqt-embeddednetwork4 \
-	libqt-embeddedscript4 \
-	libqt-embeddedscripttools4 \
-	libqt-embeddedsql4 \
-	libqt-embeddedsvg4 \
-	libqt-embeddedtest4 \
-	libqt-embeddedwebkit4 \
-	libqt-embeddedxml4 \
-	qt4-embedded-fonts-ttf-dejavu \
-	qt4-embedded-fonts-ttf-vera \
-	qt4-embedded-plugin-iconengine-svgicon \
-	qt4-embedded-plugin-imageformat-gif \
-	qt4-embedded-plugin-imageformat-ico \
-	qt4-embedded-plugin-imageformat-jpeg \
-	qt4-embedded-plugin-imageformat-mng \
-	qt4-embedded-plugin-imageformat-svg \
-	qt4-embedded-plugin-imageformat-tiff \
-	qt4-embedded-plugin-mousedriver-tslib \
-	qt4-embedded-plugin-phonon-backend-gstreamer \
-	qt4-embedded-plugin-script-dbus \
-	qt4-embedded-plugin-sqldriver-sqlite \
-	touchlink-apps \
+VIVINT_APPS = "touchlink-apps \
 	touchlink-apps-345d \
 	touchlink-apps-audmgrd \
 	touchlink-apps-cloudd \
@@ -76,7 +46,6 @@ RDEPENDS_${PN} = " \
 	touchlink-apps-roubaix-themes-aqua \
 	touchlink-apps-roubaix-themes-forest \
 	touchlink-apps-roubaix-views \
-	touchlink-apps-rtspd \
 	touchlink-apps-sound-roubaix-back \
 	touchlink-apps-sound-roubaix-chimes \
 	touchlink-apps-sound-roubaix-click \
@@ -97,6 +66,37 @@ RDEPENDS_${PN} = " \
 	touchlink-apps-utils \
 	touchlink-apps-webd \
 	touchlink-apps-zwaved \
+	"
+
+QT5_DEPENDS = "libegl-mx6 \
+	libgles2-mx6 \
+	imx-gpu-viv \
+	"
+
+
+QT5_PKGS = "tslib tslib-calibrate tslib-tests \
+	libqt5declarative5 \
+	libqt5xmlpatterns5 \
+	qtbase	\
+	qtbase-plugins	\
+	qtscript 	\
+	qtdeclarative 	\
+	qtdeclarative-qmlplugins \
+	qtgraphicaleffects-qmlplugins \
+        qtmultimedia-plugins \
+        qtmultimedia-qmlplugins \
+	qtbase-fonts-pfa  \
+	qtbase-fonts-pfb  \
+	qtbase-fonts-qpf  \
+	qtbase-fonts-ttf-dejavu   \
+	qtbase-fonts-ttf-vera     \
+	"
+
+
+RDEPENDS_${PN} = " \
+	${VIVINT_APPS} \
+	${QT5_DEPENDS} \
+	${QT5_PKGS} \
 	python3-ctypes \
 	python3-importlib \
 	python3-jinja2 \

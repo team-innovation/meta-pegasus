@@ -13,7 +13,7 @@ require touchlink-apps-sundance.inc
 # videod has touchlink specific code
 #require touchlink-apps-videod.inc
 
-require touchlink-apps-rtspd.inc
+#require touchlink-apps-rtspd.inc
 
 # dvrd does not build
 #require touchlink-apps-dvrd.inc
@@ -97,7 +97,6 @@ SRCREV = "${HG_APPS_ID}"
 SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};protocol=http \
 	   file://procman.d \
 	   file://favicon.ico \
-       file://roubaix_conf.patch \
 	   "
 
 S = "${WORKDIR}/apps-hg"
@@ -122,7 +121,6 @@ DEPENDS = " \
 	gst-plugins-good \
 	gst-plugins-ugly \
 	gstreamer \
-	live555 \
 	python3-bcrypt-native \
 	python3-cherrypy-native \
 	python3-dateutil-native \
@@ -136,7 +134,7 @@ DEPENDS = " \
 	python3-pycrypto-native \
 	python3-pyftpdlib-native \
 	python3-pyinotify-native \
-	python3-pyqt-native \
+	python3-pyqt5-native \
 	python3-pyserial-native \
 	python3-pytz-native \
 	python3-requests-native \
@@ -144,10 +142,11 @@ DEPENDS = " \
 	python3-setproctitle-native \
 "
 
+
 RDEPENDS_${PN} = "\
 	python3-subprocess \
-	python3-pyalsaaudio \
 	python3-pyserial \
+	python3-pyalsaaudio \
 	python3-threading \
 	python3-setproctitle \
 "
@@ -316,7 +315,6 @@ PACKAGES = "${PN}-roubaix       \
         ${PN}-adtd          \
         ${PN}-audmgrd       \
         ${PN}-videod        \
-        ${PN}-rtspd        \
         ${PN}-dvrd        \
         ${PN}-dbapd        \
         ${PN}-pcamd        \

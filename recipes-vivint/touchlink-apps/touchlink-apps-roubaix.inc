@@ -56,10 +56,12 @@ FILES_${PN}-roubaix = "\
     ${INSTALL_DIR}/roubaix/roubaix.qml	\
     ${INSTALL_DIR}/roubaix/roubaix.pyo	\
     ${INSTALL_DIR}/roubaix/proxies/*	\
-	${INSTALL_DIR}/roubaix/FileMixin.pyo \
-	${INSTALL_DIR}/roubaix/ConnectionsMixin.pyo \
-	${INSTALL_DIR}/roubaix/migrations/* \
-	${sysconfdir}/init.d/roubaix		\
-	${sysconfdir}/procman.d/roubaix	\
+    ${INSTALL_DIR}/roubaix/FileMixin.pyo \
+    ${INSTALL_DIR}/roubaix/ConnectionsMixin.pyo \
+    ${INSTALL_DIR}/roubaix/AudioMixin.pyo \
+    ${INSTALL_DIR}/roubaix/PlayAudioThread.pyo \
+    ${INSTALL_DIR}/roubaix/migrations/* \
+    ${sysconfdir}/init.d/roubaix		\
+    ${sysconfdir}/procman.d/roubaix	\
     "
 

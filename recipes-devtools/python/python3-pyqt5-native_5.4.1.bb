@@ -20,13 +20,13 @@ CONF_FILE = "touchlink_pyqt5_native.cfg"
 
 #SRC_URI = "http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-${PV}/PyQt-gpl-${PV}.tar.gz 
 
-SRC_URI = "file:///home/johny/slimline_next_planb/local_sources/PyQt-gpl-5.4.tar.gz \
+SRC_URI = "http://updateseng.vivint.com/innovation/downloads/PyQt-gpl-5.4.tar.gz \
 	   file://pyqt-commercial.sip \
 	   file://${CONF_FILE} \
 	  "
 
-SRC_URI[md5sum] = "33936458544b69251a8f4a2308d469d3"
-SRC_URI[sha256sum] = "4cd90580558722ef24d499700faafbdc242d930cb36f55cc1a27b5cf67b10290"
+SRC_URI[md5sum] = "7f2eb79eaf3d7e5e7df5a4e9c8c9340e"
+SRC_URI[sha256sum] = "760264f5faa68ae22900d27ac114f3a7fffbb9b3ec12e7a62a0a45c887517731"
 
 S = "${WORKDIR}/PyQt-gpl-5.4"
 

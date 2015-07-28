@@ -9,7 +9,7 @@ RDEPENDS_${PN} = "python-core"
 
 #SRC_URI = "http://sourceforge.net/projects/pyqt/files/sip/sip-${PV}/sip-${PV}.tar.gz"
 
-SRC_URI = "file:///home/johny/slimline_next_planb/local_sources/sip-${PV}.tar.gz"
+SRC_URI = "http://updateseng.vivint.com/innovation/downloads/sip-${PV}.tar.gz"
 
 S = "${WORKDIR}/sip-${PV}"
 

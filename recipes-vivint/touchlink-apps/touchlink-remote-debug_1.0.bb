@@ -14,8 +14,8 @@ RSYNC_CMD = "rsync -azv --exclude=.svn --exclude=test --exclude=.coverage --excl
 
 inherit autotools python-dir
 
-DEPENDS += "python python-native"
-DEPENDS_virtclass-native += "python-native"
+DEPENDS += "python3 python3-native"
+DEPENDS_virtclass-native += "python3-native"
 
 RDEPENDS_${PN} = "python-core"
 

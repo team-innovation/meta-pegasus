@@ -1,0 +1,21 @@
+--- Python-3.3.2/setup.py	2013-11-23 23:38:12.490376103 -0700
++++ Python-3.3.2.b/setup.py	2013-11-24 00:12:53.258429383 -0700
+@@ -498,15 +498,9 @@
+         # lib_dirs and inc_dirs are used to search for files;
+         # if a file is found in one of those directories, it can
+         # be assumed that no additional -I,-L directives are needed.
+-        if not cross_compiling:
+-            lib_dirs = self.compiler.library_dirs + [
+-                '/lib64', '/usr/lib64',
+-                '/lib', '/usr/lib',
+-                ]
+-            inc_dirs = self.compiler.include_dirs + ['/usr/include']
+-        else:
+-            lib_dirs = self.compiler.library_dirs[:]
+-            inc_dirs = self.compiler.include_dirs[:]
++        lib_dirs = [ os.getenv( "STAGING_LIBDIR" ) ]
++        inc_dirs = [ os.getenv( "STAGING_INCDIR" ) ]
++
+         exts = []
+         missing = []
+ 
