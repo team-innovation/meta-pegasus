@@ -34,6 +34,23 @@ STORE_ORIGINAL_CONF()
 	echo "Store the original wpa_supplicant config file(${BACKUP_WPASUPP_CONF})!"
 }
 
+INIT_CONF()
+{
+    if [ -f ${WIRELESS_CONF} ]; then
+        rm -f ${WIRELESS_CONF}
+    fi
+
+    if [ -f ${WPA_SUPPLICANT_WIRELESS_CONF} ]; then
+        rm -f ${WPA_SUPPLICANT_WIRELESS_CONF}
+    fi
+
+    if [ -f ${ETC_WPA_SUPPLICANT_CONF} ]; then
+        cp -f ${ETC_WPA_SUPPLICANT_CONF} ${WPA_SUPPLICANT_WIRELESS_CONF}
+    fi
+
+	echo "Initialize wpa_supplicant config file"
+}
+
 RESTORE_ORIGINAL_CONF()
 {
 	# Restore original wpa_supplicant.conf after WPS timeout
@@ -322,6 +339,7 @@ ${WPA_CLIENT} disconnect &> /dev/null
 
 # Store original config
 STORE_ORIGINAL_CONF
+INIT_CONF
 
 ${IFCONFIG} ${IFACE_WIRELESS} up && sleep 2
 

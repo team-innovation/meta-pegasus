@@ -1,7 +1,6 @@
 {
     "netd":
     {
-        "match": "netd_slimline", 
         "priority" : -2,
         "name" : "Networking Services",
         "start": "/etc/init.d/netd start"
