@@ -2,8 +2,15 @@ export BUILD_DIR=$1
 # use "build" as the default build dir
 : ${BUILD_DIR:=build}
 
+_APPS_TAG="apps-hg"
+_APPS_ID="slimline_qt5"
+
 # if already set up then we just run the setup-environment script
 test -d ${BUILD_DIR} &&
+	sed -i '/HG_APPS_TAG/d' ${BUILD_DIR}/conf/local.conf &&
+	sed -i '/HG_APPS_ID/d' ${BUILD_DIR}/conf/local.conf && 
+	echo "HG_APPS_TAG ?= "$_APPS_TAG"" >> ${BUILD_DIR}/conf/local.conf && 
+	echo "HG_APPS_ID ?= "$_APPS_ID"" >> ${BUILD_DIR}/conf/local.conf && 
 	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
 	return
@@ -32,6 +39,8 @@ grep -q DIST_FEATURES_remove ./conf/local.conf ||
 grep -q HG_SERVER ./conf/local.conf ||
 	cat <<-'_END_' >> ./conf/local.conf
 		HG_SERVER = "scm.vivint.com/hg"
-		HG_APPS_TAG ?= "apps-hg"
-		HG_APPS_ID ?= "slimline_qt5"
+		HG_APPS_TAG ?= "$_APPS_TAG"
+		HG_APPS_ID ?= "$_APPS_ID"
 	_END_
+
+
