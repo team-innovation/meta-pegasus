@@ -33,5 +33,5 @@ grep -q HG_SERVER ./conf/local.conf ||
 	cat <<-'_END_' >> ./conf/local.conf
 		HG_SERVER = "scm.vivint.com/hg"
 		HG_APPS_TAG ?= "apps-hg"
-		HG_APPS_ID ?= "slimline"
+		HG_APPS_ID ?= "slimline_qt5"
 	_END_
