@@ -16,4 +16,5 @@ RDEPENDS_${PN} = " \
 	openssh-sftp-server \
 	kernel-image \
 	kernel-devicetree \
+	psoc5-verify \
 "

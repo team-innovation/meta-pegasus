@@ -1,0 +1,42 @@
+#! /bin/sh
+# Copyright (c) 2015, Vivint.
+#
+# Check the PSOC5 firmware and update if necessary
+
+psoc5_verify()
+{
+echo Check that PSOC 5 firmware is up to date
+
+if [ ! -d /sys/class/swd/psoc50 ]; then
+	echo PSOC5 kernel device driver not installed
+	return 1
+fi
+
+if [ ! -e /lib/firmware/vivint/slimline-psoc5.fw ]; then
+	echo PSOC5 firmware not found
+	return 1
+fi
+
+echo 1 > /sys/class/swd/psoc50/doall
+}
+
+stop() {
+	return 0
+}
+
+case "$1" in
+    start)
+	psoc5_verify
+	;;
+    stop)
+	stop
+	;;
+    restart|reload)
+	psoc5_verify
+	;;
+    *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
