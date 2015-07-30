@@ -9,8 +9,8 @@ _APPS_ID="slimline_qt5"
 test -d ${BUILD_DIR} &&
 	sed -i '/HG_APPS_TAG/d' ${BUILD_DIR}/conf/local.conf &&
 	sed -i '/HG_APPS_ID/d' ${BUILD_DIR}/conf/local.conf && 
-	echo "HG_APPS_TAG ?= \"$_APPS_TAG\"" >> ${BUILD_DIR}/conf/local.conf && 
-	echo "HG_APPS_ID ?= \"$_APPS_ID\"" >> ${BUILD_DIR}/conf/local.conf && 
+	echo "HG_APPS_TAG ?= \"${_APPS_TAG}\"" >> ${BUILD_DIR}/conf/local.conf &&
+	echo "HG_APPS_ID ?= \"${_APPS_ID}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
 	return
