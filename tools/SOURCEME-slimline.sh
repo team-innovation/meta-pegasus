@@ -39,8 +39,8 @@ grep -q DIST_FEATURES_remove ./conf/local.conf ||
 grep -q HG_SERVER ./conf/local.conf ||
 	cat <<-'_END_' >> ./conf/local.conf
 		HG_SERVER = "scm.vivint.com/hg"
-		HG_APPS_TAG ?= "$_APPS_TAG"
-		HG_APPS_ID ?= "$_APPS_ID"
+		HG_APPS_TAG ?= "${_APPS_TAG}"
+		HG_APPS_ID ?= "${_APPS_ID}"
 	_END_
 
 
