@@ -4,8 +4,8 @@ HOMEPAGE = "http://www.riverbankcomputing.co.uk/sip"
 AUTHOR = "Phil Thompson"
 LICENSE = "GPL"
 LIC_FILES_CHKSUM = "file://siplib/siplib.sbf.in;endline=15;md5=170cae4ecd1f7d4ba0934f7ed849306e"
-DEPENDS = "python-native"
-RDEPENDS_${PN} = "python-core"
+DEPENDS = "python3-native"
+RDEPENDS_${PN} = "python3-core"
 
 #SRC_URI = "http://sourceforge.net/projects/pyqt/files/sip/sip-${PV}/sip-${PV}.tar.gz"
 
