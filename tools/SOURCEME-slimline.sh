@@ -36,11 +36,8 @@ grep -q DIST_FEATURES_remove ./conf/local.conf ||
 	echo "DISTRO_FEATURES_remove=\"x11 wayland directfb \"" \
 		>> ./conf/local.conf
 
-grep -q HG_SERVER ./conf/local.conf ||
-	cat <<-'_END_' >> ./conf/local.conf
-		HG_SERVER = "scm.vivint.com/hg"
-		HG_APPS_TAG ?= "${_APPS_TAG}"
-		HG_APPS_ID ?= "${_APPS_ID}"
-	_END_
+grep -q HG_SERVER ./conf/local.conf || 
+	echo -e "HG_SERVER = \"scm.vivint.com/hg\"\nHG_APPS_TAG ?= \"${_APPS_TAG}\"\nHG_APPS_ID ?= \"${_APPS_ID}\"" >> ./conf/local.conf
+
 
 
