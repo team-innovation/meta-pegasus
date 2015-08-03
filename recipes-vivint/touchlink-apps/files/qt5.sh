@@ -7,4 +7,4 @@ export QT_QPA_EGLFS_HEIGHT=600
 export QT_QPA_EGLFS_DEPTH=32
 export QT_QPA_GENERIC_PLUGINS=tslib:/dev/input/event0
 export QT_QPA_EGLFS_HIDECURSOR=1
-
+export QT_QPA_PLATFORM=eglfs

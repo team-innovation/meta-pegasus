@@ -1,0 +1,56 @@
+--- qtbase-opensource-src-5.4.1/src/gui/kernel/qguiapplication.cpp	2015-02-16 21:56:48.000000000 -0700
++++ qtbase-opensource-src-5.4.1.b/src/gui/kernel/qguiapplication.cpp	2015-08-02 23:34:47.000000000 -0600
+@@ -3088,6 +3088,26 @@
+     return d->is_saving_session;
+ }
+ 
++void QGuiApplicationPrivate::commitData()
++{
++    Q_Q(QGuiApplication);
++    is_saving_session = true;
++    emit q->commitDataRequest(*session_manager);
++    if (session_manager->allowsInteraction() && !tryCloseAllWindows())
++        session_manager->cancel();
++    is_saving_session = false;
++}
++
++
++void QGuiApplicationPrivate::saveState()
++{
++    Q_Q(QGuiApplication);
++    is_saving_session = true;
++    emit q->saveStateRequest(*session_manager);
++    is_saving_session = false;
++}
++#endif //QT_NO_SESSIONMANAGER
++
+ /*!
+     \since 5.2
+ 
+@@ -3110,26 +3130,6 @@
+     }
+ }
+ 
+-void QGuiApplicationPrivate::commitData()
+-{
+-    Q_Q(QGuiApplication);
+-    is_saving_session = true;
+-    emit q->commitDataRequest(*session_manager);
+-    if (session_manager->allowsInteraction() && !tryCloseAllWindows())
+-        session_manager->cancel();
+-    is_saving_session = false;
+-}
+-
+-
+-void QGuiApplicationPrivate::saveState()
+-{
+-    Q_Q(QGuiApplication);
+-    is_saving_session = true;
+-    emit q->saveStateRequest(*session_manager);
+-    is_saving_session = false;
+-}
+-#endif //QT_NO_SESSIONMANAGER
+-
+ /*!
+     \property QGuiApplication::layoutDirection
+     \brief the default layout direction for this application

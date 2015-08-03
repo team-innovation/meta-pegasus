@@ -70,10 +70,8 @@ VIVINT_APPS = "touchlink-apps \
 
 QT5_DEPENDS = "libegl-mx6 \
 	libgles2-mx6 \
-	imx-gpu-viv \
 	touchlink-qt5-profile \
 	"
-
 
 QT5_PKGS = "tslib tslib-calibrate tslib-tests \
 	libqt5declarative5 \
@@ -93,11 +91,14 @@ QT5_PKGS = "tslib tslib-calibrate tslib-tests \
 	qtbase-fonts-ttf-vera     \
 	"
 
+PULSE_DEPENDS = "python3-pulseaudio \
+		"
 
 RDEPENDS_${PN} = " \
 	${VIVINT_APPS} \
 	${QT5_DEPENDS} \
 	${QT5_PKGS} \
+	${PULSE_DEPENDS} \
 	python3-ctypes \
 	python3-importlib \
 	python3-jinja2 \
@@ -108,6 +109,7 @@ RDEPENDS_${PN} = " \
 	python3-re \
 	python3-setproctitle \
 	python3-shell \
+	python3-sip \
 	python3-sqlite3 \
 	python3-textutils \
 	python3-terminal \
