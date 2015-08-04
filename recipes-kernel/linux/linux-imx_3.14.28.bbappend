@@ -1,5 +1,5 @@
-SRCBRANCH = "imx_3.14.28_1.0.0_ga_slimline"
-LOCALVERSION = "-1.0.0_ga_slimline"
+SRCBRANCH = "slimline-dizzy"
+LOCALVERSION = "-1.0.0_slimline"
 SRCREV = "${AUTOREV}"
 KERNEL_SRC = "git://git.vivint.com/linux-imx.git;protocol=git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
