@@ -70,7 +70,7 @@ VIVINT_APPS = "touchlink-apps \
 
 QT5_DEPENDS = "libegl-mx6 \
 	libgles2-mx6 \
-	python3-opengl \
+	python3-pyopengl \
 	touchlink-qt5-profile \
 	"
 

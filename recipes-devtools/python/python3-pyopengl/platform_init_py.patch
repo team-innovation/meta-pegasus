@@ -1,0 +1,11 @@
+--- PyOpenGL-3.1.1a1/OpenGL/platform/__init__.py	2014-08-12 14:39:30.000000000 +0000
++++ PyOpenGL-3.1.1a1_b/OpenGL/platform/__init__.py	2015-06-02 04:55:36.179225811 +0000
+@@ -21,7 +21,7 @@
+ 
+ def _load( ):
+     """Load the os.name plugin for the platform functionality"""
+-    key = (os.environ.get( 'PYOPENGL_PLATFORM'), sys.platform,os.name)
++    key = (os.environ.get( 'PYOPENGL_PLATFORM'), sys.platform, 'egl')
+     plugin  = PlatformPlugin.match( key )
+     plugin_class = plugin.load()
+     plugin.loaded = True
