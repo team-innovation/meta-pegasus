@@ -1,0 +1,66 @@
+diff -r 6a2041e98e9c code/netd/netd_conf.json
+--- a/code/netd/netd_conf.json	Tue Aug 04 10:51:19 2015 -0600
++++ b/code/netd/netd_conf.json	Tue Aug 04 12:01:35 2015 -0600
+@@ -23,7 +23,7 @@
+ 
+     "Sysfs":
+     {
+-    	"network": "/sys/class/network/network0"
++    	"network": "/sys/class/net"
+     },
+ 
+     "Udhcp_lease":
+diff -r 6a2041e98e9c code/roubaix/roubaix_conf.json
+--- a/code/roubaix/roubaix_conf.json	Tue Aug 04 10:51:19 2015 -0600
++++ b/code/roubaix/roubaix_conf.json	Tue Aug 04 12:01:35 2015 -0600
+@@ -27,14 +27,14 @@
+     {
+         "host": "localhost",
+         "port": 7080,
+-        "connect": true
++        "connect": false
+     },
+ 
+     "Audio":
+     {
+         "host": "localhost",
+         "port": 7140,
+-        "connect": true,
++        "connect": false,
+         "click_volume": 0.6
+     },
+ 
+@@ -49,14 +49,14 @@
+     {
+         "host": "localhost",
+         "port": 7130,
+-        "connect": true
++        "connect": false
+     },
+ 
+     "IOD":
+     {
+         "host": "localhost",
+         "port": 7150,
+-        "connect": true
++        "connect": false
+     },
+ 
+     "Network":
+@@ -70,14 +70,14 @@
+     {
+         "host": "localhost",
+         "port": 7016,
+-        "connect": true
++        "connect": false
+     },
+ 
+     "Modem":
+     {
+         "host": "localhost",
+         "port": 7190,
+-        "connect": true
++        "connect": false
+     },
+ 
+     "Paths":
