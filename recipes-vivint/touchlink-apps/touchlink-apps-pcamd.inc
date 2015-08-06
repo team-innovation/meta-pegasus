@@ -5,7 +5,7 @@ PCAMD_PREPEND = "-1"
 
 PCAMD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-pcamd = "${PR}${PCAMD_PREPEND}${PCAMD_REVISION}"
- 
+
 OLD_TL_RDEPENDS_${PN}-pcamd =   "\
 	gst-openmax             \
 	ti-omx                  \
@@ -58,13 +58,8 @@ RDEPENDS_${PN}-pcamd = "\
 do_compile_prepend() {
 
         # compile pcamd C code
-        make -C ${S}/code/pcamd/libpcam       \                     
-              GST_INCLUDE_DIR=${STAGING_DIR}/${HOST_ARCH}v7a${HOST_VENDOR}-${HOST_OS}/usr/include/gstreamer-0.10 \
-              GLIB2_INC_DIR=${STAGING_DIR}/${HOST_ARCH}v7a${HOST_VENDOR}-${HOST_OS}/usr/include/glib-2.0 \
-              GLIB2_LIB_DIR=${STAGING_DIR}/${HOST_ARCH}v7a${HOST_VENDOR}-${HOST_OS}/usr/lib/glib-2.0/include \
-              LIBXML_INCLUDE_FOR_OE=-I${STAGING_DIR}/${HOST_ARCH}v7a${HOST_VENDOR}-${HOST_OS}/usr/include/libxml2 \
-              LINUX_PATH=${STAGING_KERNEL_DIR}  \
-              LIBS=-L${STAGING_DIR}/${HOST_ARCH}v7a${HOST_VENDOR}-${HOST_OS}/usr/lib 
+        make -C ${S}/code/pcamd/libpcam SYSTEM="SLIMLINE" \
+              GST_DIR=${STAGING_DIR}/${MACHINE}/usr
 }
 
 do_install_append () {
@@ -87,5 +82,5 @@ FILES_${PN}-pcamd = "\
 	${sysconfdir}/init.d/pcamd \
 	${sysconfdir}/procman.d/pcamd \
        "
-             
-INSANE_SKIP_${PN}-pcamd = "True"
+
+INSANE_SKIP_${PN}-pcamd = "installed-vs-shipped"
