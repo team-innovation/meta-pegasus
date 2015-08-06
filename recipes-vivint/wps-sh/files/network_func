@@ -292,14 +292,14 @@ _start_wpa_supplicant() {
         _stop_wpa_supplicant
         ${IFCONFIG} | ${GREP} -q ${IFACE_WIRELESS}
         [ $? -ne 0 ] && ${IFCONFIG} ${IFACE_WIRELESS} up
-        ${WPA_SUPPLICANT} -Dwext -i ${IFACE_WIRELESS} -c ${WPA_SUPPLICANT_WIRELESS_CONF} -B
+        ${WPA_SUPPLICANT} -Dnl80211 -i ${IFACE_WIRELESS} -c ${WPA_SUPPLICANT_WIRELESS_CONF} -B
 }
 
 _start_wireless_test() {
         _stop_wpa_supplicant
         ${IFCONFIG} | ${GREP} -q ${IFACE_WIRELESS}
         [ $? -ne 0 ] && ${IFCONFIG} ${IFACE_WIRELESS} up
-        ${WPA_SUPPLICANT} -Dwext -i ${IFACE_WIRELESS} -c ${WPA_SUPPLICANT_WIRELESS_TEST_CONF} -B
+        ${WPA_SUPPLICANT} -Dnl80211 -i ${IFACE_WIRELESS} -c ${WPA_SUPPLICANT_WIRELESS_TEST_CONF} -B
 }
 
 _shell_escape_byfile()

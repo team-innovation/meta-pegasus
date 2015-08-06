@@ -215,7 +215,7 @@ CREATE_WPS_CONF()
 
 RUN_WPS_PBC_REALTEK()
 {
-        ${WPA_SUPPLICANT} -B -Dwext -i ${IFACE_WIRELESS} -c ${WPA_SUPPLICANT_WIRELESS_CONF} && sleep 5
+        ${WPA_SUPPLICANT} -B -Dnl80211 -i ${IFACE_WIRELESS} -c ${WPA_SUPPLICANT_WIRELESS_CONF} && sleep 5
 
         echo "Searching for WPS-PBC AP."
         wps_pbc_ap_ssid=""
