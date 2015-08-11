@@ -61,7 +61,6 @@ require ${PN}-roubaix-gunk.inc
 # framework
 require touchlink-apps-framework.inc
 require touchlink-apps-qml-framework-controls.inc  
-require touchlink-apps-qml-framework-scripts.inc  
 require touchlink-apps-qml-framework.inc
 require touchlink-apps-qml-framework-images.inc    
 require touchlink-apps-qml-framework-popups.inc
@@ -90,7 +89,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml96"
+PR = "ml97"
 
 #SRCREV = "0914ecee01d8"
 SRCREV = "${HG_APPS_ID}"
@@ -303,7 +302,6 @@ PACKAGES = "${PN}-roubaix       \
 	${PN}-framework     \
 	${PN}-qml-framework     \
 	${PN}-qml-framework-controls \
-	${PN}-qml-framework-scripts \
 	${PN}-qml-framework-images-controls 	\
 	${PN}-qml-framework-images-controls-keyboards 	\
 	${PN}-qml-framework-images-controls-shared \
