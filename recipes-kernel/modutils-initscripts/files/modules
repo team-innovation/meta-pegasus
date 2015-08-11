@@ -1,2 +1,4 @@
-# module that need to load
+# modules we force to load
 atmel_mxt_ts
+psoc_swd
+viv_iod

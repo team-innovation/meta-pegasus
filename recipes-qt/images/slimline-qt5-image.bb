@@ -1,6 +1,6 @@
 DESCRIPTION = "Slimline qt5 image."
 LICENSE = "MIT"
-PR = "r1"
+PR = "r2"
 IMAGE_FEATURES += "package-management" 
 
 IMAGE_INSTALL += "\
@@ -22,6 +22,8 @@ IMAGE_INSTALL += "\
 	slimline-modules \
 	wps-sh \
 	fcc-gunk \
+	sqlite3 \
+	ctailcat \
 "
 
 inherit core-image
