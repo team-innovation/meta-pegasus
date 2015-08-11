@@ -1,10 +1,11 @@
-#!/bin/sh
+#!/bin/sh -x
 #
 #       Description     : WPS initiation script
 #       Original Author : Jerry Kuo
 #	Modified 	: Matt Waddel (Vivint)
 #
 
+{
 # Source generic network functions
 NETWORK_FUNC="/etc/network/network_func"
 if [ -f ${NETWORK_FUNC} ];then
@@ -368,3 +369,5 @@ if [ $WIRED_CONNECTED -eq 1 ] ; then
 fi
 
 LED_RESTORE
+
+} 2>&1 | tee -a /media/extra/log/wps-sh-process.log
