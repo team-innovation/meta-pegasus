@@ -299,11 +299,9 @@ PACKAGES = "${PN}-roubaix       \
         ${PN}-roubaix-gunk  \
 	${PN}-framework     \
 	${PN}-qml-framework     \
-	${PN}-qml-framework-controls \
 	${PN}-qml-framework-images-controls 	\
 	${PN}-qml-framework-images-controls-keyboards 	\
 	${PN}-qml-framework-images-controls-shared \
-	${PN}-qml-framework-popups \
         ${PN}-sundance      \
         ${PN}-ssdpd      \
         ${PN}-zwaved        \
