@@ -101,6 +101,7 @@ RDEPENDS_${PN} = " \
 	${QT5_DEPENDS} \
 	${QT5_PKGS} \
 	${PULSE_DEPENDS} \
+	libinput \
 	python3-ctypes \
 	python3-importlib \
 	python3-jinja2 \
