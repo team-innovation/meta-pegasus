@@ -93,13 +93,16 @@ QT5_PKGS = "tslib tslib-calibrate tslib-tests \
 
 PULSE_DEPENDS = "python3-pulseaudio \
 		"
+TOUCHSCREEN_DEPENDS = "libinput \
+	evtest \
+	"
 
 RDEPENDS_${PN} = " \
 	${VIVINT_APPS} \
 	${QT5_DEPENDS} \
 	${QT5_PKGS} \
 	${PULSE_DEPENDS} \
-	libinput \
+	${TOUCHSCREEN_DEPENDS} \
 	python3-ctypes \
 	python3-importlib \
 	python3-jinja2 \

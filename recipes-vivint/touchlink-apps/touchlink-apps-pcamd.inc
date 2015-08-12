@@ -56,8 +56,8 @@ RDEPENDS_${PN}-pcamd = "\
 "
 
 do_compile_prepend() {
-
         # compile pcamd C code
+        ln -sf ${STAGING_DIR}/${MACHINE}/usr/include/gnu/stubs-hard.h ${STAGING_DIR}/${MACHINE}/usr/include/gnu/stubs-soft.h
         make -C ${S}/code/pcamd/libpcam SYSTEM="SLIMLINE" \
               GST_DIR=${STAGING_DIR}/${MACHINE}/usr
 }
@@ -76,7 +76,7 @@ do_install_append () {
 }
 
 
-FILES_${PN}-pcamd = "\
+FILES_${PN}-pcamd = " \
        ${INSTALL_DIR}/pcamd/*   \
        ${INSTALL_DIR}/lib/libpcam.so	\
 	${sysconfdir}/init.d/pcamd \
