@@ -3,7 +3,7 @@
 DESCRIPTION = "touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r2"
+PR = "r3"
 
 inherit packagegroup
 
@@ -22,10 +22,8 @@ VIVINT_APPS = "touchlink-apps \
 	touchlink-apps-procmand \
 	touchlink-apps-pyftpd \
 	touchlink-apps-qml-framework \
-	touchlink-apps-qml-framework-controls \
 	touchlink-apps-qml-framework-images-controls \
 	touchlink-apps-qml-framework-images-controls-shared \
-	touchlink-apps-qml-framework-popups \
 	touchlink-apps-roubaix \
 	touchlink-apps-roubaix-controls \
 	touchlink-apps-roubaix-fonts \

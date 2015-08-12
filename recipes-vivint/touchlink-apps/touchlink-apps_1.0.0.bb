@@ -60,10 +60,8 @@ require ${PN}-roubaix-gunk.inc
 
 # framework
 require touchlink-apps-framework.inc
-require touchlink-apps-qml-framework-controls.inc  
 require touchlink-apps-qml-framework.inc
 require touchlink-apps-qml-framework-images.inc    
-require touchlink-apps-qml-framework-popups.inc
 
 # Sound stuffs
 require touchlink-apps-sounds-roubaix-back.inc    
@@ -89,7 +87,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml97"
+PR = "ml98"
 
 #SRCREV = "0914ecee01d8"
 SRCREV = "${HG_APPS_ID}"
