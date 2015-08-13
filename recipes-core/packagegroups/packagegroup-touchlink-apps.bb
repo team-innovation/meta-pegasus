@@ -97,12 +97,16 @@ TOUCHSCREEN_DEPENDS = "libinput \
 	evtest \
 	"
 
+DISPLAY_DEPENDS = "imagemagick \
+	"
+
 RDEPENDS_${PN} = " \
 	${VIVINT_APPS} \
 	${QT5_DEPENDS} \
 	${QT5_PKGS} \
 	${PULSE_DEPENDS} \
 	${TOUCHSCREEN_DEPENDS} \
+	${DISPLAY_DEPENDS} \
 	python3-ctypes \
 	python3-importlib \
 	python3-jinja2 \
