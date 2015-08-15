@@ -1,0 +1,69 @@
+#!/bin/sh
+SERVERS="/media/extra/conf/ntp.addresses"
+PARAMS=""
+
+# this script does not parse arguments
+# it is called by IOD system service with
+# $1 as timezone and $2 as address
+# $1 may be empty and this set address to $1
+# Use the check below to assign the correct
+# arg to time_zone and address
+
+if [ -z $2 ]
+then
+	time_zone=''
+	address=$1
+else
+	# there is a $2 so assume time_zone=$1 and address=$2
+	time_zone=$1
+	address=$2
+fi
+
+ntp_servers() {
+	if [ -e $SERVERS ]
+	then
+		for line in `cat $SERVERS`
+		do
+			ip=`echo $line | head -n1 | cut -d'=' -f2`
+			echo $ip
+			PARAMS=`echo $PARAMS '-p ' $ip`
+		done
+	else
+		PARAMS="-p us.pool.ntp.org"
+	fi
+}
+
+if [ ! -z $time_zone ]
+then
+	if [ -e /usr/share/zoneinfo/$time_zone ]
+	then
+		_current_zone=$(cat /etc/timezone)
+		if [ $time_zone != $_current_zone ]
+		then
+			echo "$time_zone" > /etc/timezone
+		fi
+
+		rm -f /etc/localtime
+		cd /etc && ln -s /usr/share/zoneinfo/$time_zone  localtime
+	else
+		exit 1
+	fi
+fi
+
+if [ -z $address ]
+then
+	ntp_servers
+else
+	PARAMS='-p '$address
+fi
+
+ntpd -n -q $PARAMS
+ret=$?
+
+if [ $ret -eq 0 ]
+then
+	# set the hwclock
+	hwclock -w
+	exit 0
+fi
+exit 1
