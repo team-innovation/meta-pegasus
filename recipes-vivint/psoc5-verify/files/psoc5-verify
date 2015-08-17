@@ -17,7 +17,9 @@ if [ ! -e /lib/firmware/vivint/slimline-psoc5.fw ]; then
 	return 1
 fi
 
+rmmod monpwr || echo "ignoring error from rmmod"
 echo 1 > /sys/class/swd/psoc50/doall
+modprobe monpwr || echo "egnoring error from modprobe"
 }
 
 stop() {
