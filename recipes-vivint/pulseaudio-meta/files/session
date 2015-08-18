@@ -18,8 +18,8 @@ load-module module-cli-protocol-tcp
 # alsa-source needs to have a deferred_volume=0 or we get an assert in rtpoll.c (pa_assert(usec <= PA_USEC_PER_SEC*60ULL*60ULL); line 387 in pa_rtpoll_set_timer_relative() )
 
 # Load the Codec source and sink given the names below
-load-module module-alsa-source device=hw:0,0 name=aic control='Mic Gain' rate=8000 channels=2 tsched=1 fixed_latency_range=0 deferred_volume=0
-load-module module-alsa-sink device=hw:0,0 name=aic control='Playback Gain' rate=8000 channels=2 tsched=1 fixed_latency_range=0 deferred_volume=0
+load-module module-alsa-source device=hw:0,0 name=aic control='Mic Gain' rate=8000 channels=2 tsched=0 fixed_latency_range=0 deferred_volume=0
+load-module module-alsa-sink device=hw:0,0 name=aic control='Playback Gain' rate=8000 channels=2 tsched=0 fixed_latency_range=0 deferred_volume=0
 
 # Added echo cancel module
 #load-module module-echo-cancel rate=8000 adjust_time=2 sink_name=aec_output source_name=aec_input aec_method=webrtc aec_args="high_pass_filter=true noise_suppression=true routing_mode=speakerphone mobile=true analog_gain_control=false"
