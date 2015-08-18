@@ -9,6 +9,16 @@ PARAMS=""
 # Use the check below to assign the correct
 # arg to time_zone and address
 
+NTP_BUSYBOX=
+NTP_PARAMS='-n -q'
+version=$(ntpd -v 2>&1 | head -n 2 | grep BusyBox)
+if [ -n "$version" ]
+then
+	  NTP_BUSYBOX='-p'
+else
+	  NTP_PARAMS='-g -q'
+fi
+
 if [ -z $2 ]
 then
 	time_zone=''
@@ -29,7 +39,7 @@ ntp_servers() {
 			PARAMS=`echo $PARAMS '-p ' $ip`
 		done
 	else
-		PARAMS="-p us.pool.ntp.org"
+		PARAMS="$NTP_BUSYBOX us.pool.ntp.org"
 	fi
 }
 
@@ -54,10 +64,10 @@ if [ -z $address ]
 then
 	ntp_servers
 else
-	PARAMS='-p '$address
+	PARAMS='$NTP_BUSYBOX '$address
 fi
 
-ntpd -n -q $PARAMS
+ntpd $NTP_PARAMS $PARAMS
 ret=$?
 
 if [ $ret -eq 0 ]
