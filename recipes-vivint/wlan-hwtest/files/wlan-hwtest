@@ -1,0 +1,63 @@
+#!/bin/bash
+scriptname=$0
+usage()
+{
+	echo -e "usage $scriptname [-r] [-i iface] -a apname\n\
+		-r -- show raw output of iw commands\n\
+		-i iface -- interface to use, default wlan0\n\
+		-a apname -- accesspoint name"
+	exit 1
+}
+
+while [[ $# > 0 ]]; do
+	case "$1" in
+		-r)
+			rawout=true
+			shift
+			;;
+		-i)
+			iface=$1
+			shift
+			;;
+		-a)
+			shift
+			ap=$1
+			shift
+			;;
+		-*)
+			usage
+			shift
+			;;
+		*)
+			usage
+			shift
+			;;
+	esac
+done
+
+test -n "$iface" || iface=wlan0
+test -n "$ap" || usage
+test -n "rawout" || rawout=false
+
+iw $iface disconnect && echo "ended previous connection" > /tmp/rawout
+test "$rawout" = "true" && cat /tmp/rawout
+
+ifconfig $iface > /tmp/rawout
+test "$rawout" = "true" && cat /tmp/rawout
+macaddr=$(cat /tmp/rawout | sed 's/ \+/\t/g' | head -n 1 | cut -f 5)
+
+iw $iface connect -w $ap > /tmp/rawout
+test "$rawout" = "true" && cat /tmp/rawout
+
+iw dev $iface link > /tmp/rawout
+test "$rawout" = "true" && cat /tmp/rawout
+signal=$(cat /tmp/rawout | grep signal | sed s/signal://)
+
+echo "HWADDR:$macaddr"
+echo "SIGNAL:$signal"
+exit 0
+
+
+
+
+

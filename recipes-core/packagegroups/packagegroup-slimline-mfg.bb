@@ -3,6 +3,8 @@
 DESCRIPTION = "packages necessary for initial board setup"
 LICENSE = "MIT"
 
+PR = "1"
+
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
@@ -17,4 +19,6 @@ RDEPENDS_${PN} = " \
 	kernel-image \
 	kernel-devicetree \
 	psoc5-verify \
+	wlan-hwtest \
+	iw \
 "

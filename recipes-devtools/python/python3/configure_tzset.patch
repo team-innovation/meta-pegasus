@@ -1,0 +1,20 @@
+--- Python-3.3.3/configure	2014-02-17 23:14:16.773918847 -0700
++++ Python-3.3.3/configure.b	2014-03-14 11:34:54.877404340 -0600
+@@ -14336,7 +14336,7 @@
+ else
+ 
+ if test "$cross_compiling" = yes; then :
+-  ac_cv_working_tzset=no
++  ac_cv_working_tzset=yes
+ else
+   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+@@ -14408,7 +14408,7 @@
+ if ac_fn_c_try_run "$LINENO"; then :
+   ac_cv_working_tzset=yes
+ else
+-  ac_cv_working_tzset=no
++  ac_cv_working_tzset=yes
+ fi
+ rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+   conftest.$ac_objext conftest.beam conftest.$ac_ext

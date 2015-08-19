@@ -28,6 +28,7 @@ IMAGE_INSTALL += "\
 	touchlink-ntpsync \
 	audio-sh \
 	pulseaudio-meta \
+	tzdata \
 "
 
 inherit core-image
