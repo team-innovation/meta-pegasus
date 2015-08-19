@@ -21,7 +21,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 TARGET_BOARD ?= "Slimline"
 
-PR = "r8"
+PR = "r9"
 
 FILES_${PN} = "/boot"
 
@@ -86,6 +86,17 @@ pkg_postinst_${PN} () {
  	# TODO - Should I check the u-boot version to match?
  	# would return the following ie: 2010.06-svn9379
  	# uboot_ver=$(fw_printenv version | cut -d'=' -f 2 | awk '{ print $2 }')
+
+ 	if mount | grep -q ${scr_dev}
+ 	then
+ 		logging "Remounting partition for bootscript"
+ 		mount ${scr_dev} ${SCR_MNT} -o remount,rw,sync
+ 		remount=1
+ 	else
+ 		logging "Mounting partition for bootscript"
+ 		mount ${scr_dev} ${SCR_MNT} -o rw,sync
+ 		force_mount=1
+ 	fi
  	
  	logging "Check install of u-boot bootscript"
  	
@@ -102,24 +113,18 @@ pkg_postinst_${PN} () {
  	fi 
 
  	board=$(fw_printenv board | cut -d'=' -f 2)
+	if [ -z "${board}" ]
+	then
+		logging "getting board type from device tree"
+		strings /proc/device-tree/compatible | grep -q vivint.slimline &&
+			board=Slimline
+	fi
+
  	if [ "${board}" != "${TARGET_BOARD}" ]
  	then
  		logging "u-boot board type does not match, found ${board} expecting ${TARGET_BOARD}, can not install boot script."
  		exit 0
  	fi 
- 	
- 	logging "Installing u-boot bootscript"
- 
- 	if mount | grep -q ${scr_dev}
- 	then
- 		logging "Remounting partition for bootscript"
- 		mount ${scr_dev} ${SCR_MNT} -o remount,rw,sync
- 		remount=1
- 	else
- 		logging "Mounting partition for bootscript"
- 		mount ${scr_dev} ${SCR_MNT} -o rw,sync
- 		force_mount=1
- 	fi
  	
  	logging "Copying to script partition"
  	cp /boot/${UBOOT_SCRIPT} ${SCR_MNT}/${UBOOT_SCRIPT}.tmp
