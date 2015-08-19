@@ -19,7 +19,7 @@ require touchlink-apps-sundance.inc
 #require touchlink-apps-dvrd.inc
 
 # pcamd does not build
-#require touchlink-apps-pcamd.inc
+require touchlink-apps-pcamd.inc
 
 require touchlink-apps-iod.inc
 require touchlink-apps-345d.inc
@@ -87,7 +87,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml98"
+PR = "ml99"
 
 #SRCREV = "0914ecee01d8"
 SRCREV = "${HG_APPS_ID}"
