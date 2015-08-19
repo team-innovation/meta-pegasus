@@ -10,13 +10,13 @@ PARAMS=""
 # arg to time_zone and address
 
 NTP_BUSYBOX=
-NTP_PARAMS='-n -q'
 version=$(ntpd -v 2>&1 | head -n 2 | grep BusyBox)
 if [ -n "$version" ]
 then
-	  NTP_BUSYBOX='-p'
+	NTP_BUSYBOX='-p'
+	NTP_PARAMS='-n -q'
 else
-	  NTP_PARAMS='-g -q'
+	NTP_PARAMS='-g -q'
 fi
 
 if [ -z $2 ]
