@@ -16,11 +16,15 @@ do_install_append (){
 	install -d ${D}/${INSTALL_DIR}/roubaix/
 	# TL-3036 removed enphase and energy
 	# TL-3143 added enphase back
-    ${RSYNC_CMD} --exclude=font --exclude=energy --exclude=rules ${S}/code/roubaix/ ${D}/${INSTALL_DIR}/roubaix/
+    	${RSYNC_CMD} --exclude=font --exclude=energy --exclude=rules ${S}/code/roubaix/ ${D}/${INSTALL_DIR}/roubaix/
 
-    chmod +x ${D}/${INSTALL_DIR}/roubaix/roubaix.pyo
+    	chmod +x ${D}/${INSTALL_DIR}/roubaix/roubaix.pyo
 
-    rm -rf ${D}/${INSTALL_DIR}/roubaix/roubaix.py
+    	rm -rf ${D}/${INSTALL_DIR}/roubaix/roubaix.py
+
+	# move roubaix_slimline_conf.json to roubaix_slimline.json 
+	rm -f ${D}/${INSTALL_DIR}/roubaix/roubaix_conf.json
+	mv ${D}/${INSTALL_DIR}/roubaix/roubaix_slimline_conf.json ${D}/${INSTALL_DIR}/roubaix/roubaix_conf.json
 }
 
 pkg_postinst_${PN}-roubaix () {
