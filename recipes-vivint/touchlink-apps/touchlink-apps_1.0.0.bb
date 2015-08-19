@@ -343,4 +343,3 @@ PACKAGES = "${PN}-roubaix       \
 	${PN}-sound-wav-vocab	\
 	${PN}-global-conf \
         ${PN}"
-

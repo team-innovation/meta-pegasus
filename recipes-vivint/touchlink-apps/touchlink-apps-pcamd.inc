@@ -1,28 +1,14 @@
 ###
 ### Change PCAMD_PREPEND everything you touch this script
 ###
+INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
+INHIBIT_PACKAGE_STRIP = "1"
 PCAMD_PREPEND = "-1"
 
 PCAMD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-pcamd = "${PR}${PCAMD_PREPEND}${PCAMD_REVISION}"
 
 SRC_URI += "file://pcamdtest"
-
-OLD_TL_RDEPENDS_${PN}-pcamd =   "\
-	gst-openmax             \
-	ti-omx                  \
-	gst-rtsp-server         \
-	ffmpeg                  \
-"
-
-RDEPENDS_${PN}-pcamd = "   \
-	gstreamer          \
-	gst-plugins-base   \
-	gst-plugins-good   \
-	gst-plugins-bad    \
-	gst-plugins-ugly   \
-	gst-ffmpeg         \
-"
 
 do_compile_prepend() {
 	# compile pcamd C code
@@ -42,15 +28,13 @@ do_install_append () {
 	cp -a ${S}/code/pcamd/libpcam/libpcam.so ${D}/${INSTALL_DIR}/lib
 
 	# remove pcam libpcam dir
-	#rm -rf ${D}/${INSTALL_DIR}/pcamd/libpcam
-	rm -rf ${D}/${INSTALL_DIR}/lib/.debug
+	rm -rf ${D}/${INSTALL_DIR}/pcamd/libpcam
 
 	# install test script
 	install -d ${D}/usr/local/bin
 	cp -a ${S}/code/pcamd/scripts/pcamtest ${D}/usr/local/bin
 	chmod 0755 ${D}/usr/local/bin/pcamtest
 }
-
 
 FILES_${PN}-pcamd = " \
 	${INSTALL_DIR}/pcamd/*   \
