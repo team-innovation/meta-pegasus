@@ -4,7 +4,7 @@ HOMEPAGE = "http://git.vivint.com"
 SECTION = "base"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r3"
+PR = "r4"
 
 SRC_URI = "file://network_func \
            file://udhcpc_wlan0 \
@@ -22,3 +22,30 @@ do_install () {
 }
 
 FILES_${PN} += "/usr/local/bin/*"
+
+pkg_postinst_${PN} () {
+#!/bin/sh
+
+#make sure we have network wireless.conf and wpa_supplicant_wireless.conf
+# symlink
+media_extra_conf_network_dir="/media/extra/conf/network"
+etc_wireless_conf="/etc/network/wireless.conf"
+media_extra_wpa_supplicant_conf="$media_extra_conf_network_dir/wpa_supplicant_wireless.conf"
+etc_wpa_supplicant_conf="/etc/network/wpa_supplicant_wireless.conf"
+
+mkdir -p $media_extra_conf_network_dir
+
+if [ ! -h $etc_wireless_conf ]
+then
+   rm -f $etc_wireless_conf
+   ln -sf $media_extra_conf_network_dir $etc_wireless_conf
+fi
+
+if [ ! -h $etc_wpa_supplicant_conf ]
+then
+   rm -f $etc_wpa_supplicant_conf
+   ln -sf $media_extra_wpa_supplicant_conf $etc_wpa_supplicant_conf
+fi
+
+exit 0
+}

@@ -6,6 +6,7 @@
 #
 
 {
+
 # Source generic network functions
 NETWORK_FUNC="/etc/network/network_func"
 if [ -f ${NETWORK_FUNC} ];then
@@ -14,6 +15,8 @@ else
 	echo "${NETWORK_FUNC} doesn't exist!"
 	exit 1
 fi
+
+mkdir -p ${MEDIA_EXTRA_CONF_NETWORK}
 
 # Parameters and Functions
 IFACE_WIRELESS=${1:-${IFACE_WIRELESS}}
@@ -323,6 +326,22 @@ CHECK_WIRED()
 
 
 }
+
+# make a symlink for /etc/network/wireless.conf and /etc/network/wpa_supplicant_wireless.conf
+etc_wireless_conf="/etc/network/wireless.conf"
+etc_wpa_supplicant_conf="/etc/network/wpa_supplicant_wireless.conf"
+
+if [ ! -h $etc_wireless_conf ]
+then
+   rm -f $etc_wireless_conf
+   ln -sf $WIRELESS_CONF $etc_wireless_conf
+fi
+
+if [ ! -h $etc_wpa_supplicant_conf ]
+then
+   rm -f $etc_wpa_supplicant_conf
+   ln -sf $WPA_SUPPLICANT_WIRELESS_CONF $etc_wpa_supplicant_conf
+fi
 
 # Flash LED to notify users we are in WPS mode
 LED_SAVE

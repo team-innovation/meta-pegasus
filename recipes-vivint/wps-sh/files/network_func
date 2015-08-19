@@ -28,8 +28,16 @@ INTERFACES_FILE="/etc/network/interfaces"
 URL_ENCODE_SED="/etc/network/url_escape.sed"
 WLAN_DRIVER_DIR=${RE_WLAN_DRIVER_DIR:-"/drivers"}
 WLAN_MODULES="/etc/network/wlan_modules"
-WIRELESS_CONF="/etc/network/wireless.conf"
-WPA_SUPPLICANT_WIRELESS_CONF="/etc/network/wpa_supplicant_wireless.conf"
+
+# the wireless.conf and wpa_supplicant_wireless.conf
+# usually in /etc/network but because these two file get 
+# lost on update, we put this in /media/extra/conf and 
+# create symlink to them
+# 
+MEDIA_EXTRA_CONF_NETWORK="/media/extra/conf/network"
+WIRELESS_CONF="${MEDIA_EXTRA_CONF_NETWORK}/wireless.conf"
+WPA_SUPPLICANT_WIRELESS_CONF="${MEDIA_EXTRA_CONF_NETWORK}/wpa_supplicant_wireless.conf"
+
 ETC_WPA_SUPPLICANT_CONF="/etc/wpa_supplicant.conf"
 
 # Network services

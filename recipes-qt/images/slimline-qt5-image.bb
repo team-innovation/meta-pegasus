@@ -1,6 +1,6 @@
 DESCRIPTION = "Slimline qt5 image."
 LICENSE = "MIT"
-PR = "r3"
+PR = "r4"
 IMAGE_FEATURES += "package-management" 
 
 IMAGE_INSTALL += "\
@@ -28,7 +28,7 @@ IMAGE_INSTALL += "\
 	touchlink-ntpsync \
 	audio-sh \
 	pulseaudio-meta \
-	tzdata \
+	tzdata-americas \
 "
 
 inherit core-image
