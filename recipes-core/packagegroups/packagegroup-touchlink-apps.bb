@@ -81,6 +81,7 @@ QT5_PKGS = "tslib tslib-calibrate tslib-tests \
 	qtbase-plugins	\
 	qtscript 	\
 	qtdeclarative 	\
+	qtdeclarative-tools \
 	qtdeclarative-qmlplugins \
 	qtgraphicaleffects-qmlplugins \
         qtmultimedia-plugins \
