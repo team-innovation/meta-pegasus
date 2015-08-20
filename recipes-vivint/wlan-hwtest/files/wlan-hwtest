@@ -52,9 +52,11 @@ test "$rawout" = "true" && cat /tmp/rawout
 iw dev $iface link > /tmp/rawout
 test "$rawout" = "true" && cat /tmp/rawout
 signal=$(cat /tmp/rawout | grep signal | sed s/signal://)
+ssid=$(cat /tmp/rawout | grep SSID | sed s/SSID://)
 
 echo "HWADDR:$macaddr"
 echo "SIGNAL:$signal"
+echo "SSID:$ssid"
 exit 0
 
 

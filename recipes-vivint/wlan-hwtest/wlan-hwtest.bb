@@ -4,6 +4,7 @@ SECTION = "base"
 LICENSE = "CLOSED"
 
 RDEPENDS_${PN} += "iw"
+PR = "v2"
 
 SRC_URI = "file://wlan-hwtest \
 "
