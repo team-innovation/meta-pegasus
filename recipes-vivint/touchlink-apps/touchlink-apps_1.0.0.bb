@@ -18,9 +18,7 @@ require touchlink-apps-sundance.inc
 # dvrd does not build
 #require touchlink-apps-dvrd.inc
 
-# pcamd does not build
 require touchlink-apps-pcamd.inc
-
 require touchlink-apps-iod.inc
 require touchlink-apps-345d.inc
 require touchlink-apps-cloudd.inc

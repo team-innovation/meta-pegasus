@@ -23,5 +23,3 @@ FILES_${PN}-netd = "\
 	${sysconfdir}/procman.d/netd		\
        /usr/local/bin/speedtest	\
        "
-
-             
