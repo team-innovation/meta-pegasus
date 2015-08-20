@@ -19,6 +19,7 @@ VIVINT_APPS = "touchlink-apps \
 	touchlink-apps-iod \
 	touchlink-apps-modemd \
 	touchlink-apps-netd \
+	touchlink-apps-pcamd \
 	touchlink-apps-procmand \
 	touchlink-apps-pyftpd \
 	touchlink-apps-qml-framework \
