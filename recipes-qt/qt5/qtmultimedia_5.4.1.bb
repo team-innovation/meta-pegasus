@@ -1,6 +1,8 @@
 require qt5-${PV}.inc
 require ${PN}.inc
 
+PR = "r1"
+
 SRC_URI[md5sum] = "7412a5c62da71b44b9f29e29fdc6af4d"
 SRC_URI[sha256sum] = "3830dd4a11727cc4a3ab32dc10e4cd016739d0b1b0c59685512853e10f1e534e"
 
