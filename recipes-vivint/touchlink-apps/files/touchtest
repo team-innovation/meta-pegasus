@@ -1,0 +1,115 @@
+#!/bin/bash
+
+roubaix_active=0
+qmlfile=/tmp/touchtest.qml
+
+pidof roubaix
+if [ $? == 0 ];
+then
+	procman stop roubaix
+	roubaix_active=1
+	sleep 5
+fi
+
+S=$(cat <<EOF
+import QtQuick 2.4
+import QtQuick.Window 2.2
+import "/opt/2gig/roubaix/views" as Views
+import "/opt/2gig/roubaix/controls" as Buttons
+import "/opt/2gig/roubaix/grids_lists" as Grids
+
+Window {
+    id: window
+    visible: true
+    width: 1024  
+    height: 600  
+                
+    property bool top_left_touched: false
+    property bool bottom_right_touched: false
+
+    Timer {
+        id: timerDelay
+        interval: 1
+        onTriggered: {
+            sleep(2000)
+            if (top_left_touched && bottom_right_touched) {
+               console.info("PASSED")	
+            }
+        }
+    }
+
+    function sleep(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+                break;
+            }
+        }
+    }
+
+
+   Rectangle {
+       id: topleft
+       width: 100; height: 100
+       color: "red"
+
+       anchors{                               
+           top: parent.top              
+           left: parent.left                
+       }                                      
+
+       MouseArea {
+           anchors.fill: parent
+           onClicked: {
+               parent.color = 'green'
+               top_left_touched = true
+               if (bottom_right_touched) {                                                                             
+                   console.info("!!!!!!!!!! PASSED !!!!!!!!!")
+                   Qt.quit()
+               }
+           }
+       }
+   }
+
+   Rectangle {
+       id: bottomright
+       width: 100; height: 100
+       color: "red"         
+                              
+       anchors{
+           bottom: parent.bottom
+           right: parent.right
+       }
+
+       MouseArea {
+           anchors.fill: parent
+           onClicked: {
+               parent.color = 'green'
+               bottom_right_touched = true
+               if (top_left_touched) {
+                   console.info("!!!!!!!!!! PASSED !!!!!!!!!")
+                   Qt.quit()
+               }
+           }
+       }
+   }
+
+   Text {
+       font.family: "Int Circular Pro Light"
+       font.pixelSize: 20
+       anchors.centerIn: parent
+       text: "Vivint Touchscreen Production Test"
+   }
+}
+EOF
+)
+
+echo -e "$S" > $qmlfile
+/usr/bin/qt5/qmlscene $qmlfile
+rm $qmlfile 
+
+if [ $roubaix_active == 1 ];
+then
+	procman start roubaix
+fi
+exit 0

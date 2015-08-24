@@ -72,6 +72,7 @@ QT5_DEPENDS = "libegl-mx6 \
 	libgles2-mx6 \
 	python3-pyopengl \
 	touchlink-qt5-profile \
+	touchlink-touchtest \
 	"
 
 QT5_PKGS = "tslib tslib-calibrate tslib-tests \
