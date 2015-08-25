@@ -72,7 +72,6 @@ QT5_DEPENDS = "libegl-mx6 \
 	libgles2-mx6 \
 	python3-pyopengl \
 	touchlink-qt5-profile \
-	touchlink-touchtest \
 	"
 
 QT5_PKGS = "tslib tslib-calibrate tslib-tests \
@@ -85,19 +84,21 @@ QT5_PKGS = "tslib tslib-calibrate tslib-tests \
 	qtdeclarative-tools \
 	qtdeclarative-qmlplugins \
 	qtgraphicaleffects-qmlplugins \
-        qtmultimedia-plugins \
-        qtmultimedia-qmlplugins \
+	qtmultimedia-plugins \
+	qtmultimedia-qmlplugins \
 	qtbase-fonts-pfa  \
 	qtbase-fonts-pfb  \
 	qtbase-fonts-qpf  \
 	qtbase-fonts-ttf-dejavu   \
 	qtbase-fonts-ttf-vera     \
+	qtgstreamer \
 	"
 
 PULSE_DEPENDS = "python3-pulseaudio \
 		"
 TOUCHSCREEN_DEPENDS = "libinput \
 	evtest \
+	touchlink-touchtest \
 	"
 
 DISPLAY_DEPENDS = "imagemagick \
