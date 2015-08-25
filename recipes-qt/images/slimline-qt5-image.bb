@@ -1,6 +1,6 @@
 DESCRIPTION = "Slimline qt5 image."
 LICENSE = "MIT"
-PR = "r4"
+PR = "r5"
 IMAGE_FEATURES += "package-management" 
 
 IMAGE_INSTALL += "\
