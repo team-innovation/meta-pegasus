@@ -30,6 +30,7 @@ initall() {
 
 rmmods
 initall
+sleep 1
 modprobe snd_soc_cx20704
 modprobe snd_soc_imx_cx20704
 amixer sset 'I2S TX Source' 'Stream2: mic ADC'
