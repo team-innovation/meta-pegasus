@@ -34,8 +34,8 @@ STORE_ORIGINAL_CONF()
         cp -rf ${ETC_WPA_SUPPLICANT_CONF} ${WPA_SUPPLICANT_WIRELESS_CONF}
     fi
 
-	cp -rf ${WPA_SUPPLICANT_WIRELESS_CONF} ${BACKUP_WPASUPP_CONF}
-	echo "Store the original wpa_supplicant config file(${BACKUP_WPASUPP_CONF})!"
+    cp -rf ${WPA_SUPPLICANT_WIRELESS_CONF} ${BACKUP_WPASUPP_CONF}
+    echo "Store the original wpa_supplicant config file(${BACKUP_WPASUPP_CONF})!"
 }
 
 INIT_CONF()
@@ -359,7 +359,6 @@ ${WPA_CLIENT} disconnect &> /dev/null
 
 # Store original config
 STORE_ORIGINAL_CONF
-INIT_CONF
 
 ${IFCONFIG} ${IFACE_WIRELESS} up && sleep 2
 
