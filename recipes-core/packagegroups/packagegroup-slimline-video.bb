@@ -4,7 +4,7 @@ DESCRIPTION = "touchlink video packages, imx firmware, gst plugins, etc"
 LICENSE = "MIT"
 LICENSE_FLAGS_WHITELIST = "commercial license"
 
-PR = "r1"
+PR = "r2"
 
 inherit packagegroup
 
@@ -23,14 +23,10 @@ RPROVIDES_${PN} = " \
 	libgstaudio-1.0 \
 	libgudev-1.0-0 \
 	libg2d0.8 \
-	libgstimxcommon0 \
-	libgstimxcompositor0 \
-	libgstimxblitter0 \
-	libgstriff-1.0-0 \
 "
 
 RDEPENDS_${PN} = " \
-	gstreamer1.0-imx \
+	gstreamer-imx \
 	firmware-imx \
 	gst-fsl-plugin \
 	gst-plugins-good-id3demux \
@@ -85,8 +81,23 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-good-rtsp \
 	gstreamer1.0-plugins-good-udp \
 	gstreamer1.0-plugins-good-video4linux2 \
+	gstreamer1.0-plugins-bad-videoparsersbad \
+	gstreamer-imx-imxipu \
+	gstreamer-imx-imxaudio \
+	gstreamer-imx-meta \
+	gstreamer-imx-imxpxp \
+	gstreamer-imx-imxeglvivsink \
+	gstreamer-imx \
+	gstreamer-imx-imxg2d \
+	gstreamer-imx-imxv4l2videosrc \
+	gstreamer-imx-imxvpu \
 	libgstrtp-1.0-0 \
 	libgstrtsp-1.0-0 \
 	libgstsdp-1.0-0 \
 	libgsturidownloader-1.0-0 \
+	libgstimxcommon0 \
+	libgstimxcompositor0 \
+	libgstimxblitter0 \
+	libgstriff-1.0-0 \
+	libgstcodecparsers-1.0-0 \
 "
