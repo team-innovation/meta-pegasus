@@ -111,20 +111,4 @@ RDEPENDS_${PN} = " \
 	${PULSE_DEPENDS} \
 	${TOUCHSCREEN_DEPENDS} \
 	${DISPLAY_DEPENDS} \
-	python3-ctypes \
-	python3-importlib \
-	python3-jinja2 \
-	python3-json \
-	python3-math \
-	python3-msgpack \
-	python3-netserver \
-	python3-re \
-	python3-setproctitle \
-	python3-shell \
-	python3-sip \
-	python3-sqlite3 \
-	python3-textutils \
-	python3-terminal \
-	python3-resource \
-	python3-pexpect-u \
 "
