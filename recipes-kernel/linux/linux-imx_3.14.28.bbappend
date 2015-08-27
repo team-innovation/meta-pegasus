@@ -4,7 +4,7 @@ SRCREV = "${AUTOREV}"
 KERNEL_SRC = "git://git.vivint.com/linux-imx.git;protocol=git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 
-PR = "r5"
+PR = "r6"
 
 DEFAULT_PREFERENCE = "1"
 
