@@ -3,7 +3,7 @@ require recipes-core/images/core-image-minimal.bb
 DESCRIPTION = "Small image to be used with usbboot capable partitioning \
 eMMC and populating the rootfs."
 
-IMAGE_INSTALL += " \
+IMAGE_INSTALL_append = " \
 	packagegroup-sprouter-mfg \
 	util-linux-agetty \
 	"
