@@ -3,12 +3,12 @@
 DESCRIPTION = "packages necessary for initial board setup"
 LICENSE = "MIT"
 
-PR = "1"
+PR = "2"
 
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
-	ctailcat \
+	vivutils \
 	e2fsprogs-mke2fs \
 	iw \
 	kernel-devicetree \
