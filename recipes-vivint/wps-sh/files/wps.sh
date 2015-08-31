@@ -358,7 +358,7 @@ ${KILLALL} -q hostap_diag
 ${WPA_CLIENT} disconnect &> /dev/null
 
 # Store original config
-STORE_ORIGINAL_CONF
+INIT_CONF
 
 ${IFCONFIG} ${IFACE_WIRELESS} up && sleep 2
 
@@ -378,7 +378,7 @@ if [ $AP_FOUND -eq 1 ] ; then
 	_linkstatus "wps"
 else
         echo "WPS failed, please check AP and try again"
-        RESTORE_ORIGINAL_CONF
+        # RESTORE_ORIGINAL_CONF
 fi
 
 if [ $WIRED_CONNECTED -eq 1 ] ; then
