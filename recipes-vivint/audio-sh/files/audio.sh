@@ -28,7 +28,7 @@ initall() {
 	gpiodiroutset ${AUD_RESET} 1
 }
 
-rmmods
+#rmmods
 initall
 sleep 1
 modprobe snd_soc_cx20704

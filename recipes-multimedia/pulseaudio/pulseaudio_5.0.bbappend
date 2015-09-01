@@ -18,5 +18,8 @@ pkg_postinst_${PN}-server_prepend() {
 }
 
 RDEPENDS_pulseaudio-server += " \
-	pulseaudio-module-rtp-send \
-	pulseaudio-module-rtp-recv "
+        pulseaudio-module-rtp-send \
+        pulseaudio-module-rtp-recv \
+	pulseaudio-module-native-protocol-tcp \
+	pulseaudio-module-tunnel-source \
+	pulseaudio-module-tunnel-sink"
