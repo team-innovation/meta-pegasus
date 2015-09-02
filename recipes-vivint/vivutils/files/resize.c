@@ -21,15 +21,19 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include <sys/fcntl.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 static struct termios saved_tio;
+static int ttyfd;
 
 static void ttyraw(void)
 {
 	struct termios tio;
 
-	if (tcgetattr(STDIN_FILENO, &saved_tio) != 0) {
+	if (tcgetattr(ttyfd, &saved_tio) != 0) {
 		fprintf(stderr, "tcgetattr failed: %s\n",
 				strerror(errno));
 		exit(1);
@@ -42,7 +46,7 @@ static void ttyraw(void)
 	tio.c_cc[VTIME] = 0;
 	cfsetispeed(&tio, cfgetispeed(&saved_tio));
 	cfsetospeed(&tio, cfgetospeed(&saved_tio));
-	tcsetattr(STDIN_FILENO, TCSANOW, &tio);
+	tcsetattr(ttyfd, TCSANOW, &tio);
 }
 
 enum parsestate {
@@ -53,6 +57,7 @@ enum parsestate {
 	PARSE_DONE
 };
 
+
 static int getsize(int *pcols, int *plines)
 {
 	char *outstr = "\0337\033[r\033[999;999H\033[6n\0338";
@@ -61,13 +66,13 @@ static int getsize(int *pcols, int *plines)
 	enum parsestate state;
 	int cols, lines;
 
-	write(STDOUT_FILENO, outstr, len);
+	write(ttyfd, outstr, len);
 
 	state = PARSE_PRECSI;
 	cols = 0;
 	lines = 0;
 	do {
-		read(STDIN_FILENO, &c, 1);
+		read(ttyfd, &c, 1);
 		switch (state) {
 		case PARSE_PRECSI:
 			if (c == '\033')
@@ -104,12 +109,12 @@ static void setsize(int cols, int lines)
 {
 	struct winsize ws;
 
-	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) != -1) {
+	if (ioctl(ttyfd, TIOCGWINSZ, &ws) != -1) {
 		if (ws.ws_col != cols || ws.ws_row != lines) {
 			memset(&ws, 0, sizeof ws);
 			ws.ws_col = cols;
 			ws.ws_row = lines;
-			if (ioctl(STDIN_FILENO, TIOCSWINSZ, &ws) == -1) {
+			if (ioctl(ttyfd, TIOCSWINSZ, &ws) == -1) {
 				fprintf(stderr, "TIOCSWINSZ failed %s\n",
 						strerror(errno));
 			}
@@ -119,13 +124,14 @@ static void setsize(int cols, int lines)
 
 static ttyrestore(void)
 {
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &saved_tio);
+	tcsetattr(ttyfd, TCSAFLUSH, &saved_tio);
 }
 
 main(int argc, char **argv)
 {
 	int cols, lines;
 
+	ttyfd = open("/dev/tty", O_RDWR);
 	ttyraw();
 	getsize(&cols, &lines);
 	ttyrestore();
