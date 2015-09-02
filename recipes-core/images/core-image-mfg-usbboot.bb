@@ -16,6 +16,7 @@ IMAGE_INSTALL_append = " \
 	util-linux-mkfs \
 	util-linux-sfdisk \
 	util-linux-agetty \
+	vivutils \
 "
 
 IMAGE_INSTALL_remove = " packagegroup-fsl-bluez5-tools"

@@ -1,0 +1,39 @@
+#!/bin/sh
+# init usb gadget for ethernet (rndis) and serial (acm)
+#
+
+mount -t configfs none /sys/kernel/config/
+cd /sys/kernel/config/
+modprobe libcomposite
+cd usb_gadget/
+
+# create multifunction gadget with two functions rndis(ethernet), acm(serial)
+mkdir g1
+cd g1
+echo "0x1d6b" > idVendor	# linux foundation
+echo "0x0104" > idProduct	# multifunction composite gadget
+mkdir strings/0x409		# 409 is US english
+echo "013456789" > strings/0x409/serialnumber
+echo "Vivint." > strings/0x409/manufacturer
+echo "Mfg Helper Gadget" > strings/0x409/product
+mkdir functions/rndis.usb0
+mkdir functions/acm.GS0
+
+# Give rndis fixed dev(local) and remote(host) addresses:
+#   Freescale OUI is 00-04-9f
+#   Local address bit is 02-xx-xx... 
+#   Rest could be random but use a fixed address so tools like network-manager
+#   recognize the device as the same each time.
+echo '02:04:9f:1f:00:42' > functions/rndis.usb0/host_addr
+echo '02:04:9f:2f:00:42' > functions/rndis.usb0/dev_addr
+
+# create config with the two functions defined above
+mkdir configs/c.1
+mkdir configs/c.1/strings/0x409
+echo "RNDIS + CDC ACM" > configs/c.1/strings/0x409/configuration
+ln -s functions/rndis.usb0/ configs/c.1/
+ln -s functions/acm.GS0 configs/c.1
+
+# make it so -- this only works because there is only one udc
+udcname=$(ls /sys/class/udc)
+echo "$udcname" > UDC
