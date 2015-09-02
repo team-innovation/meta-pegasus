@@ -2,7 +2,7 @@ DESCRIPTION = "Various Vivint authored utilities"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r2"
+PR = "r3"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
