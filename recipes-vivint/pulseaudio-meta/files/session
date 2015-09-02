@@ -31,7 +31,7 @@ load-module module-alsa-sink device=hw:0,0 name=aic control='Playback Gain' rate
 # Suspend on idle
 load-module module-suspend-on-idle
 
-load-module module-rtp-recv
+#load-module module-rtp-recv
 
 # Set default sink and source
 set-default-sink alsa_output.aic
