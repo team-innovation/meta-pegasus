@@ -17,6 +17,7 @@ RDEPENDS_${PN} = " \
 	packagegroup-core-ssh-openssh \
 	psoc5-verify \
 	psoc-fw \
+	slimline-initemmc \
 	strace \
 	u-boot-fw-utils \
 	u-boot-slimline \
