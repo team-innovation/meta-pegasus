@@ -3,21 +3,15 @@
 DESCRIPTION = "packages necessary for initial board setup"
 LICENSE = "MIT"
 
-PR = "2"
+PR = "3"
 
 inherit packagegroup
 
+# Note if a package is also needed for mfg flash station
+# then add it to packagegroup-slimline-mfg not here
+
 RDEPENDS_${PN} = " \
-	vivutils \
-	e2fsprogs-mke2fs \
-	iw \
-	kernel-devicetree \
-	kernel-image \
-	ntp \
-	openssh-sftp-server \
-	packagegroup-core-ssh-openssh \
-	psoc5-verify \
-	psoc-fw \
+	packagegroup-slimline-mfg \
 	python3-ctypes \
 	python3-distribute \
 	python3-importlib \
@@ -39,12 +33,7 @@ RDEPENDS_${PN} = " \
 	python3-textutils \
 	slimline-modules \
 	sqlite3 \
-	strace \
 	touchlink-ntpsync \
 	tzdata-americas \
-	u-boot-fw-utils \
-	u-boot-slimline \
-	util-linux-mkfs \
-	util-linux-sfdisk \
 	wps-sh \
 "
