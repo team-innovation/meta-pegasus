@@ -4,19 +4,8 @@ DESCRIPTION = "Small image to be used with usbboot capable partitioning \
 eMMC and populating the rootfs."
 
 IMAGE_INSTALL_append = " \
-	e2fsprogs-mke2fs \
-	kernel-devicetree \
-	kernel-image \
-	openssh-sftp-server \
-	psoc5-verify \
-	psoc-fw \
-	slimline-modules \
-	u-boot-fw-utils \
-	u-boot-slimline \
-	util-linux-mkfs \
-	util-linux-sfdisk \
+	packagegroup-slimline-min \
 	util-linux-agetty \
-	vivutils \
 "
 
 IMAGE_INSTALL_remove = " packagegroup-fsl-bluez5-tools"

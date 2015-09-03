@@ -1,9 +1,11 @@
 # Copyright (C) 2014 Vivint, Inc.
 
-DESCRIPTION = "packages necessary for initial board setup"
+DESCRIPTION = "Minimal list of packages for a usable image \
+	used for flashstation reflasing and also included in full image"
+
 LICENSE = "MIT"
 
-PR = "1"
+PR = "2"
 
 inherit packagegroup
 

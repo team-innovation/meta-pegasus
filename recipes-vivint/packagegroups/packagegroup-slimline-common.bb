@@ -1,17 +1,17 @@
 # Copyright (C) 2014 Vivint, Inc.
 
-DESCRIPTION = "packages necessary for initial board setup"
+DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "3"
+PR = "5"
 
 inherit packagegroup
 
-# Note if a package is also needed for mfg flash station
-# then add it to packagegroup-slimline-mfg not here
-
+# Note:
+#   If a package is also needed for minimum image
+#   then add it to packagegroup-slimline-min not here.
 RDEPENDS_${PN} = " \
-	packagegroup-slimline-mfg \
+	packagegroup-slimline-min \
 	python3-ctypes \
 	python3-distribute \
 	python3-importlib \
