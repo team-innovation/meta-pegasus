@@ -1,8 +1,9 @@
-DESCRIPTION = "Various Vivint authored utilities"
+SUMMARY = "Vivint authored utilities"
+DESCRIPTION = "Various Vivint authored utilities for development and testing"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r3"
+PR = "r4"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -11,10 +12,10 @@ SRC_URI = "\
 	   file://ctail \
 	   file://gadgetsetup \
 	   file://resize.c \
+	   file://wlan-hwtest \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-
 S = "${WORKDIR}"
 
 do_compile() {
@@ -27,6 +28,7 @@ do_install() {
 	install -m 0755 ccat ${D}/usr/local/bin
 	install -m 0755 gadgetsetup ${D}/usr/local/bin
 	install -m 0755 resize ${D}/usr/local/bin
+	install -m 0755 wlan-hwtest ${D}/usr/local/bin
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"
