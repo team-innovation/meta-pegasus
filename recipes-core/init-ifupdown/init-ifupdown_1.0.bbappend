@@ -1,6 +1,6 @@
 # Look for file in this layer first
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
-
+PR_append = "+viv1"
 SRC_URI += "file://interfaces.slimline"
 
 do_install_append() {
