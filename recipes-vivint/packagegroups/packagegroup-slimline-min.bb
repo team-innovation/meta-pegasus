@@ -27,4 +27,5 @@ RDEPENDS_${PN} = " \
 	util-linux-mkfs \
 	util-linux-sfdisk \
 	vivutils \
+	memtester \
 "
