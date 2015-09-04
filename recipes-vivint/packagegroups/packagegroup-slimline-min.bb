@@ -1,11 +1,13 @@
 # Copyright (C) 2014 Vivint, Inc.
-
-DESCRIPTION = "Minimal list of packages for a usable image \
-	used for flashstation reflasing and also included in full image"
+SUMMARY = "Minimal list of packages for a usable image"
+DESCRIPTION = "Minimal package list used for \
+	1) minimal image for flashstation initramfs/initrd and \
+	2) included in full image so this list does not need to be \
+	maintained in two places"
 
 LICENSE = "MIT"
 
-PR = "2"
+PR = "3"
 
 inherit packagegroup
 
@@ -19,7 +21,6 @@ RDEPENDS_${PN} = " \
 	packagegroup-core-ssh-openssh \
 	psoc5-verify \
 	psoc-fw \
-	slimline-initemmc \
 	strace \
 	u-boot-fw-utils \
 	u-boot-slimline \
