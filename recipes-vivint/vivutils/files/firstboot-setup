@@ -338,8 +338,8 @@ succeed_or()
 }
 
 fusecheck || {
-	info "This is a new board"
-	firstboot=true
+	info "This is a new board, will halt after fuse and emmc setup"
+	export FACTORYFIRSTBOOT="true"
 }
 
 must_succeed boardcheck
@@ -349,6 +349,11 @@ succeed_or ubootcheck ubootupdate
 succeed_or mmcbootbitscheck mmcbootbitsset
 succeed_or fusecheck fuseset
 
-debuginfo "Initial board setup complete!"
+test "${FACTORYFIRSTBOOT}" = "true" && {
+	info "Initial factory board setup complete -- halting!"
+	halt
+}
+
+info "board re-setup complete, not first time, continuing normal boot..."
 
 exit 0
