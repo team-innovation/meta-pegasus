@@ -243,10 +243,10 @@ addmediaextrafs() {
     local volname=$2
     local start=$3
     local size=$4
-    local extrad="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.d/zsync"
+    local extrad="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.d/factory_image"
     local gzname="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.tar.gz"
-    mkdir -p $extrad/zsync
-    cp $gzname $extrad/zsync
+    mkdir -p $extrad/factory_image
+    cp $gzname $extrad/factory_image
     dd if=/dev/zero \
 	of=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
 	bs=1 \
