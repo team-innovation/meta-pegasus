@@ -167,6 +167,7 @@ setupsizes() {
     # p7 takes the rest
     export P7STRT_CYL=$NXTCYL
     export P7STRT=$(ctob $P7STRT_CYL)
+    export P7SZ=$(expr $IMAGESZ - $P7STRT)
     :
 }
 
@@ -191,10 +192,10 @@ EOF
 ## Add an empty ext4 filesystem
 #
 addfs() {
-    local fsname=$1	# used for name of file in deploy directory
-    local volname=$2	# volume name passed to mkfs
-    local start=$3	# where to put it in whole image
-    local size=$4	# size in whole image
+    local fsname=$1
+    local volname=$2
+    local start=$3
+    local size=$4
 
     dd if=/dev/zero \
 	of=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
@@ -202,7 +203,8 @@ addfs() {
 	count=0 \
 	seek=$size
 
-    mkfs.ext4 -F ${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4
+    mkfs.ext4 -F ${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
+	-L $volname
 
     dd if=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
 	of=$EMMC conv=notrunc \
@@ -215,10 +217,10 @@ addfs() {
 ## Add rootfs to image using previous generated root as starting point
 #
 addrootfs() {
-    local fsname=$1	# used for name of file in deploy directory
-    local volname=$2	# volume name passed to mkfs
-    local start=$3	# where to put it in whole image
-    local size=$4	# size in whole image
+    local fsname=$1
+    # no volname since fs is already made
+    local start=$3
+    local size=$4
 
     cp "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.ext4" \
 	${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4
@@ -236,15 +238,29 @@ addrootfs() {
     :
 }
 
-addextrafs() {
-    : TBD
-    progress "populating media/extra/factory_image "
-	fimg_dir="factory_image"
-    version=${IMG_NAME##*_}
-	gz_name="touchlink-qte-image-glibc-ipk-$version-touchlink.rootfs.tar.gz"
-    zsync_file_loc=$(dirname $ROOTFS_IMAGE)/zsync/$gz_name
-    sudo mkdir -p $fimg_dir
-    wgetorcp $zsync_file_loc $fimg_dir/$gz_name
+addmediaextrafs() {
+    local fsname=$1
+    local volname=$2
+    local start=$3
+    local size=$4
+    local extrad="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.d/zsync"
+    local gzname="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.tar.gz"
+    mkdir -p $extrad/zsync
+    cp $gzname $extrad/zsync
+    dd if=/dev/zero \
+	of=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
+	bs=1 \
+	count=0 \
+	seek=$size
+    mkfs.ext4 -F ${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
+	-L $volname \
+	-d $extrad
+    dd if=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
+	of=$EMMC conv=notrunc \
+	bs=$(ctob 1) \
+	seek=$(btoc $start) \
+	count=$(btoc $size)
+
     :
 }
 
@@ -283,7 +299,8 @@ generate_slimline_emmc () {
 
     # p6, other rootfs, will be created/populated on first update
 
-    # p7, media extra which needs a rootfs image tarball so do that
+    # p7, media extra which needs a factory rootfs image tarball
+    addmediaextrafs media-extra MEDIAEXTRA $P7STRT $P7SZ
     :
 }
 
