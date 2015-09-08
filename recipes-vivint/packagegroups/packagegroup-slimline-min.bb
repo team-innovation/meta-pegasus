@@ -7,7 +7,7 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "3"
+PR = "4"
 
 inherit packagegroup
 
@@ -16,6 +16,8 @@ RDEPENDS_${PN} = " \
 	iw \
 	kernel-devicetree \
 	kernel-image \
+	kernel-modules \
+	slimline-modules \
 	ntp \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
