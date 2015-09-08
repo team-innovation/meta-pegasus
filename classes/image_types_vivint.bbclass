@@ -191,21 +191,24 @@ EOF
 
 ## Add an empty ext4 filesystem
 #
-addfs() {
+addbootscrfs() {
     local fsname=$1
     local volname=$2
     local start=$3
     local size=$4
+    local bootscrd="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.d"
+    local bootscrname="${IMAGE_ROOTFS}/boot/boot.scr"
 
+    mkdir -p $bootscrd
+    cp $bootscrname $bootscrd
     dd if=/dev/zero \
 	of=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
 	bs=1 \
 	count=0 \
 	seek=$size
-
     mkfs.ext4 -F ${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
-	-L $volname
-
+	-L $volname \
+	-d $bootscrd
     dd if=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
 	of=$EMMC conv=notrunc \
 	bs=$(ctob 1) \
@@ -214,7 +217,7 @@ addfs() {
     :
 }
 
-## Add rootfs to image using previous generated root as starting point
+## Add rootfs to image using previously generated root as starting point
 #
 addrootfs() {
     local fsname=$1
@@ -238,6 +241,8 @@ addrootfs() {
     :
 }
 
+## extra partition needs a factory_image in it
+#
 addmediaextrafs() {
     local fsname=$1
     local volname=$2
@@ -288,7 +293,7 @@ generate_slimline_emmc () {
     # p2, legacy nothing to do here
 
     # p3, bootscript, create ext4 fs of correct size, copy into image with dd
-    addfs bootscr BOOTSCR $P3STRT $P3SZ
+    addbootscrfs bootscr BOOTSCR $P3STRT $P3SZ
 
     # p4, extended nothing to do here
 
