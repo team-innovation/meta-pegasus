@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "6"
+PR = "5"
 
 inherit packagegroup
 
@@ -11,7 +11,6 @@ inherit packagegroup
 #   If a package is also needed for minimum image
 #   then add it to packagegroup-slimline-min not here.
 RDEPENDS_${PN} = " \
-	libsodium13 \
 	packagegroup-slimline-min \
 	python3-ctypes \
 	python3-distribute \
