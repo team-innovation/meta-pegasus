@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "6"
+PR = "7"
 
 inherit packagegroup
 
@@ -22,6 +22,7 @@ RDEPENDS_${PN} = " \
 	python3-misc \
 	python3-msgpack \
 	python3-netserver \
+	python3-numpy \
 	python3-pexpect-u \
 	python3-re \
 	python3-resource \
