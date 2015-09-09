@@ -152,10 +152,7 @@ ubootupdate() {
 	sync
 	emmcro 0
 
-	# TODO: decide if env should be cleared on every u-boot update
-	emmcrw 1
-	dd if=/dev/zero of=/dev/mmcblk0boot1 bs=1024 count=2048
-	emmcro 1
+	# clearing u-boot env loses bootnum so leave it alone
 	true
 }
 
