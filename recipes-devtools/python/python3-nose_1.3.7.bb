@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "\
    file://lgpl.txt;md5=a6f89e2100d9b6cdffcea4f398e37343 \
 "
 
-PR = "ml1"
+PR = "ml2"
 
 DEPENDS += "python3"
 DEPENDS_virtclass-native += "python3-native"
@@ -29,6 +29,7 @@ do_install_append() {
    rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/__pycache__/site.cpython-33.pyc
    rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/site.py
    rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/setuptools.pth
+   rm -f ${D}/${bindir}/easy_install-3.3
 }
 
 DEPENDS_${PN} = "\
