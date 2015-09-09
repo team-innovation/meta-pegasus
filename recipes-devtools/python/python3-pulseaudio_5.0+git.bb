@@ -17,7 +17,7 @@ BBCLASSEXTEND = "native"
 NATIVE_INSTALL_WORKS = "1"
 
 SRCNAME = "python-pulseaudio"
-PR = "ml4"
+PR = "ml5"
 PR_append = "+gitr${SRCREV}"
 
 SRCREV = "4eebfc9f693ec6a56b19f629543a1eb30e973c2d"
