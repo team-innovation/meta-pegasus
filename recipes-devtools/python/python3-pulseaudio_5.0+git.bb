@@ -17,10 +17,10 @@ BBCLASSEXTEND = "native"
 NATIVE_INSTALL_WORKS = "1"
 
 SRCNAME = "python-pulseaudio"
-PR = "ml5"
+PR = "ml6"
 PR_append = "+gitr${SRCREV}"
 
-SRCREV = "4eebfc9f693ec6a56b19f629543a1eb30e973c2d"
+SRCREV = "75c6e794e4517fa254dece1ae129eb9db999b267"
 SRC_URI = "git://github.com/thelinuxdude/python-pulseaudio.git;protocol=git;branch=pa-5.0 \
 "
 S = "${WORKDIR}/git"
