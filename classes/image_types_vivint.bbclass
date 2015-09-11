@@ -76,7 +76,6 @@ export P2SZ = "8MiB"
 export P3SZ = "8MiB"
 export ROOTFSSZ = "1586MiB"
 
-
 ## nnnK, nnnM, nnnG to bytes
 #
 kmgtobytes() {
@@ -278,10 +277,13 @@ IMAGE_DEPENDS_emmc = "util-linux-native:do_populate_sysroot \
 export EMMC = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.image.emmc"
 
 EMMC_GENERATION_COMMAND_slimline = "generate_slimline_emmc"
+FSZIP_GENERATION_COMMAND_slimline = "generate_slimline_fszip"
 #EMMC_GENERATION_COMMAND_monkeyv2 = "generate_monkeyv2_emmc"
 
 EMMC_ROOTFS ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.ext4"
 
+## generate an emmc card image file
+#
 generate_slimline_emmc () {
     partitionimage
     # boot0/u-boot bin not in image and initialized on first boot
@@ -309,10 +311,31 @@ generate_slimline_emmc () {
     :
 }
 
+FSZIP_ROOTFS ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.ext4.gz.u-boot"
+
+## generate a zip archive with files necessary for flashstation (re)flash 
+#
+generate_slimline_fszip () {
+    rm -rf /tmp/fszipdir /tmp/tempboot
+    mkdir -p /tmp/fszipdir /tmp/tempboot
+
+    # there is a dependency issue here, this only works if qt5 image 
+    # has already been made in same build dir
+    cp "${DEPLOY_DIR_IMAGE}/slimline-qt5-image-imx6dl-slimline.tar.bz2" /tmp/fszipdir
+
+    cp "${DEPLOY_DIR_IMAGE}/core-image-mfg-usbboot-imx6dl-slimline.ext4.gz.u-boot" /tmp/fszipdir
+    tar xvf "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.tar.gz" -C /tmp/tempboot/ ./boot/
+    cp /tmp/tempboot/boot/uImage-* /tmp/fszipdir/uImage
+    cp /tmp/tempboot/boot/u-boot.imx /tmp/fszipdir/
+    cp /tmp/tempboot/boot/*.scr /tmp/fszipdir/
+    cp /tmp/tempboot/boot/imx6dl-slimline-ldo-nofec.dtb /tmp/fszipdir
+    cp /tmp/reflash.bat /tmp/fszipdir
+    cp /tmp/fuseonly.bat /tmp/fszipdir
+    :
+}
+
 IMAGE_CMD_emmc () {
-    env | sort > /tmp/env1
     setupsizes
-    env | sort > /tmp/env2
     # Initialize a sparse file
     dd if=/dev/zero \
         of=$EMMC \
@@ -322,6 +345,11 @@ IMAGE_CMD_emmc () {
     ${EMMC_GENERATION_COMMAND}
 }
 
+IMAGE_CMD_fszip () {
+    ${FSZIP_GENERATION_COMMAND}
+}
+
 # The emmc requires the rootfs filesystem to be built before using
 # it so we must make this dependency explicit.
 IMAGE_TYPEDEP_emmc = "${@d.getVar('EMMC_ROOTFS', 1).split('.')[-1]}"
+IMAGE_TYPEDEP_fszip = "ext4.gz.u-boot"
