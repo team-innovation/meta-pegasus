@@ -1,7 +1,7 @@
 ###
 ### Change PROCMAND_PREPEND everything you touch this script
 ###
-PROCMAND_PREPEND = "-1"
+PROCMAND_PREPEND = "-2"
 
 PROCMAND_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-procmand = "${PR}${PROCMAND_PREPEND}${PROCMAND_REVISION}"

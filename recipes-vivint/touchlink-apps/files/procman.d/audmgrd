@@ -1,0 +1,7 @@
+{
+    "audmgrd":
+    {
+	"name" : "Audio Services",
+    	"start": "/etc/init.d/audmgrd start"
+    }
+}
