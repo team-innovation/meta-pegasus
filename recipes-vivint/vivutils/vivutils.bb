@@ -18,10 +18,12 @@ SRC_URI = "\
 	   file://slimline-initemmc \
 	   file://wlan-hwtest \
 	   file://mfr_audio_test.py \
+	   file://mfr_audio_heat_test.py \
 	   file://wave_450_hz.wav \
 	   file://wave_900_hz.wav \
 	   file://wave_1800_hz.wav \
 	   file://wave_3600_hz.wav \		
+	   file://wave_1000_hz_half_mag.wav \		
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -41,10 +43,12 @@ do_install() {
 	install -m 0755 ${S}/resize ${D}/usr/local/bin
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
+	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_450_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_900_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_1800_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_3600_hz.wav ${D}/usr/local/bin
+	install -m 0755 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
