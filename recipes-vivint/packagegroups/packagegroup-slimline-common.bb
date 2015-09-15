@@ -38,4 +38,5 @@ RDEPENDS_${PN} = " \
 	touchlink-ntpsync \
 	tzdata-americas \
 	wps-sh \
+	alsa-utils \
 "
