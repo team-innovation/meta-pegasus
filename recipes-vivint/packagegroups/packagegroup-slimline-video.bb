@@ -41,6 +41,7 @@ RDEPENDS_${PN} = " \
 	gst-plugins-good-autodetect \
 	gst-plugins-good-audiofx \
 	gst-plugins-good-avi \
+	gst-plugins-good-jpeg \
 	gst-plugins-good-id3demux \
 	gst-plugins-good-pulse \
 	gst-plugins-good-rtpmanager \
@@ -75,6 +76,7 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-base-playback \
 	gstreamer1.0-plugins-base-typefindfunctions \
 	gstreamer1.0-plugins-base-videotestsrc \
+	gstreamer1.0-plugins-good-jpeg \
 	gstreamer1.0-plugins-good-isomp4 \
 	gstreamer1.0-plugins-good-rtp \
 	gstreamer1.0-plugins-good-rtpmanager \
