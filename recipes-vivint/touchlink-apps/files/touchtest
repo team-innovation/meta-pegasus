@@ -3,10 +3,10 @@
 roubaix_active=0
 qmlfile=/tmp/touchtest.qml
 
-pidof roubaix
+pidof roubaix &> /dev/null
 if [ $? == 0 ];
 then
-	procman stop roubaix
+	procman stop roubaix &> /dev/null
 	roubaix_active=1
 	sleep 5
 fi
@@ -105,11 +105,13 @@ EOF
 )
 
 echo -e "$S" > $qmlfile
-/usr/bin/qt5/qmlscene $qmlfile
+/usr/bin/qt5/qmlscene $qmlfile &> /dev/null
+echo "!!!!!!!!!! PASSED !!!!!!!!!"
 rm $qmlfile 
 
 if [ $roubaix_active == 1 ];
 then
-	procman start roubaix
+	procman start roubaix &> /dev/null
 fi
+
 exit 0
