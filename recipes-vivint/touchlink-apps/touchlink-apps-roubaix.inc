@@ -1,7 +1,7 @@
 ###
 ### Change ROUBAIX_PREPEND everytime you touch this script
 ###
-ROUBAIX_PREPEND = "-9"
+ROUBAIX_PREPEND = "-10"
 
 ROUBAIX_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix = "${PR}${ROUBAIX_PREPEND}${ROUBAIX_REVISION}"
@@ -56,6 +56,7 @@ fi
 
 FILES_${PN}-roubaix = "\
     ${INSTALL_DIR}/roubaix/roubaix_conf.json   \
+    ${INSTALL_DIR}/roubaix/roubaix_demo_conf.json   \
     ${INSTALL_DIR}/roubaix/roubaix_log.json		\
     ${INSTALL_DIR}/roubaix/roubaix.qml	\
     ${INSTALL_DIR}/roubaix/roubaix.pyo	\
