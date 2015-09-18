@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export FB_MULTI_BUFFER=2
 roubaix_active=0
 qmlfile=/tmp/touchtest.qml
 
@@ -27,13 +28,13 @@ Window {
     property bool top_left_touched: false
     property bool bottom_right_touched: false
 
-    Timer {
-        id: timerDelay
-        interval: 1
-        onTriggered: {
-            sleep(2000)
-            if (top_left_touched && bottom_right_touched) {
-               console.info("PASSED")	
+    Item {
+        Timer {
+            id: timerDelay
+            interval: 10000; running: true; repeat: false
+            onTriggered: {
+                console.log("TIMEOUT!")
+                Qt.quit() 
             }
         }
     }
@@ -64,7 +65,7 @@ Window {
                parent.color = 'green'
                top_left_touched = true
                if (bottom_right_touched) {                                                                             
-                   console.info("!!!!!!!!!! PASSED !!!!!!!!!")
+                   console.log("PASSED!")
                    Qt.quit()
                }
            }
@@ -87,7 +88,7 @@ Window {
                parent.color = 'green'
                bottom_right_touched = true
                if (top_left_touched) {
-                   console.info("!!!!!!!!!! PASSED !!!!!!!!!")
+                   console.log("PASSED!")
                    Qt.quit()
                }
            }
@@ -105,13 +106,12 @@ EOF
 )
 
 echo -e "$S" > $qmlfile
-/usr/bin/qt5/qmlscene $qmlfile &> /dev/null
-echo "!!!!!!!!!! PASSED !!!!!!!!!"
+/usr/bin/qt5/qmlscene $qmlfile
 rm $qmlfile 
 
 if [ $roubaix_active == 1 ];
 then
 	procman start roubaix &> /dev/null
 fi
-
+unset FB_MULTI_BUFFER
 exit 0
