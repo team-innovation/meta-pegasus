@@ -15,6 +15,7 @@ SRC_URI = "\
 	   file://firstboot-setup \
 	   file://gadgetsetup \
 	   file://resize.c \
+	   file://nfctest.c \
 	   file://slimline-initemmc \
 	   file://wlan-hwtest \
 	   file://mfr_audio_test.py \
@@ -31,6 +32,7 @@ S = "${WORKDIR}"
 
 do_compile() {
 	${CC} resize.c -o resize
+	${CC} nfctest.c -o nfctest
 }
 
 do_install() {
@@ -41,6 +43,7 @@ do_install() {
 	install -m 0755 ${S}/gadgetsetup ${D}/usr/local/bin
 	install -m 0755 ${S}/slimline-initemmc ${D}/usr/local/bin
 	install -m 0755 ${S}/resize ${D}/usr/local/bin
+	install -m 0755 ${S}/nfctest ${D}/usr/local/bin
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
