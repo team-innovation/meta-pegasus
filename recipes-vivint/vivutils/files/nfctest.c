@@ -62,14 +62,41 @@ static void ttyraw(void)
 main(int argc, char **argv)
 {
 	int cols, lines;
-	char c = 0x55;
+	char c = 0;
+	char str0[] = "\x55";
+	char str1[] = "\2\2\2\0";
+	char str2[] = "\4\2&\7";
+	char str3[] = "\4\3\x30\0(";
 
 	ttyfd = open("/dev/ttymxc1", O_RDWR | O_NOCTTY);
 	ttyraw();
 	
-	printf("NFC write 0x%x\n", c);
-	write(ttyfd, &c, 1);
+	printf("NFC write 0x%x\n", str0[0]);
+	write(ttyfd, str0, 1);
 
 	read(ttyfd, &c, 1);
 	printf("NFC read 0x%x\n", c);
+
+	printf("NFC write 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", 
+		str1[0], str1[1], str1[2], str1[3]);
+	write(ttyfd, str1, 4);
+
+	read(ttyfd, &c, 1);
+	printf("NFC read 0x%x\n", c);
+
+	printf("NFC write 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", 
+		str2[0], str2[1], str2[2], str2[3]);
+	write(ttyfd, str2, 4);
+
+	read(ttyfd, &c, 1);
+	printf("NFC read 0x%x\n", c);
+
+	printf("NFC write 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", 
+		str3[0], str3[1], str3[2], str3[3], str3[4]);
+	write(ttyfd, str3, 4);
+
+	read(ttyfd, &c, 1);
+	printf("NFC read 0x%x\n", c);
+
+	close(ttyfd);
 }
