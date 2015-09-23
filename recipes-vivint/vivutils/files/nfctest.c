@@ -29,26 +29,6 @@
 static struct termios saved_tio;
 static int ttyfd;
 
-static void ttyraw_orig(void)
-{
-	struct termios tio;
-
-	if (tcgetattr(ttyfd, &saved_tio) != 0) {
-		fprintf(stderr, "tcgetattr failed: %s\n",
-				strerror(errno));
-		exit(1);
-	}
-	cfmakeraw(&tio);
-	tio.c_iflag = ICRNL|IXANY;
-	tio.c_oflag = OPOST|ONLCR;
-	tio.c_cflag = CREAD|CS8|HUPCL;
-	tio.c_cc[VMIN] = 1;
-	tio.c_cc[VTIME] = 0;
-	cfsetispeed(&tio, cfgetispeed(&saved_tio));
-	cfsetospeed(&tio, cfgetospeed(&saved_tio));
-	tcsetattr(ttyfd, TCSANOW, &tio);
-}
-
 static void ttyraw(void)
 {
 	struct termios tio;

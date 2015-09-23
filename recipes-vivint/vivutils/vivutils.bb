@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r10"
+PR = "r11"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
