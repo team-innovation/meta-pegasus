@@ -29,7 +29,7 @@
 static struct termios saved_tio;
 static int ttyfd;
 
-static void ttyraw(void)
+static void ttyraw_orig(void)
 {
 	struct termios tio;
 
@@ -49,82 +49,34 @@ static void ttyraw(void)
 	tcsetattr(ttyfd, TCSANOW, &tio);
 }
 
-enum parsestate {
-	PARSE_PRECSI = 0,
-	PARSE_CSI,
-	PARSE_LINES,
-	PARSE_COLS,
-	PARSE_DONE
-};
-
-
-static int getsize(int *pcols, int *plines)
+static void ttyraw(void)
 {
-	char *outstr = "\0337\033[r\033[999;999H\033[6n\0338";
-	int len = strlen(outstr);
-	unsigned char c;
-	enum parsestate state;
-	int cols, lines;
+	struct termios tio;
 
-	write(ttyfd, outstr, len);
-
-	state = PARSE_PRECSI;
-	cols = 0;
-	lines = 0;
-	do {
-		read(ttyfd, &c, 1);
-		switch (state) {
-		case PARSE_PRECSI:
-			if (c == '\033')
-				state = PARSE_CSI;
-			break;
-		case PARSE_CSI:
-			if (c == '[')
-				state = PARSE_LINES;
-			break;
-		case PARSE_LINES:
-			if (c == ';')
-				state = PARSE_COLS;
-			else if (isdigit(c))
-				lines = lines * 10 + c - '0';
-
-			break;
-		case PARSE_COLS:
-			if (c == 'R')
-				state = PARSE_DONE;
-			else if (isdigit(c))
-				cols = cols * 10 + c - '0';
-			break;
-		case PARSE_DONE:
-			fprintf(stdout, "should never be here\n");
-			break;
-		}
-	} while (c != 'R');
-	*pcols = cols;
-	*plines = lines;
-	return 0;
-}
-
-static void setsize(int cols, int lines)
-{
-	struct winsize ws;
-
-	if (ioctl(ttyfd, TIOCGWINSZ, &ws) != -1) {
-		if (ws.ws_col != cols || ws.ws_row != lines) {
-			memset(&ws, 0, sizeof ws);
-			ws.ws_col = cols;
-			ws.ws_row = lines;
-			if (ioctl(ttyfd, TIOCSWINSZ, &ws) == -1) {
-				fprintf(stderr, "TIOCSWINSZ failed %s\n",
-						strerror(errno));
-			}
-		}
+	if (tcgetattr(ttyfd, &saved_tio) != 0) {
+		fprintf(stderr, "tcgetattr failed: %s\n",
+				strerror(errno));
+		exit(1);
 	}
-}
 
-static ttyrestore(void)
-{
-	tcsetattr(ttyfd, TCSAFLUSH, &saved_tio);
+	/* Set Baud Rate */
+	cfsetospeed (&tio, (speed_t)B57600);
+	cfsetispeed (&tio, (speed_t)B57600);
+
+	/* Setting other Port Stuff */
+	tio.c_cflag     &=  ~PARENB;            // Make 8n1
+	tio.c_cflag     &=  ~CSTOPB;
+	tio.c_cflag     &=  ~CSIZE;
+	tio.c_cflag     |=  CS8;
+
+	tio.c_cflag     &=  ~CRTSCTS;           // no flow control
+	tio.c_cc[VMIN]   =  1;                  // read doesn't block
+	tio.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
+	tio.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
+
+	/* Make raw */
+	cfmakeraw(&tio);
+	tcsetattr(ttyfd, TCSANOW, &tio);
 }
 
 main(int argc, char **argv)
@@ -132,7 +84,7 @@ main(int argc, char **argv)
 	int cols, lines;
 	char c = 0x55;
 
-	ttyfd = open("/dev/ttymxc1", O_RDWR);
+	ttyfd = open("/dev/ttymxc1", O_RDWR | O_NOCTTY);
 	ttyraw();
 	
 	printf("NFC write 0x%x\n", c);
