@@ -1,7 +1,7 @@
 LICENSE = "CLOSED"
 
 PV = "1.0.0"
-PR = "r3"
+PR = "r4"
 
 SRC_URI = "file://touchtest"
 

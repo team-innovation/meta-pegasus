@@ -8,7 +8,7 @@ PCAMD_PREPEND = "-1"
 PCAMD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-pcamd = "${PR}${PCAMD_PREPEND}${PCAMD_REVISION}"
 
-PR = "r4"
+PR = "r5"
 
 do_compile_prepend() {
 	# compile pcamd C code
