@@ -9,7 +9,6 @@ IMAGE_INSTALL_append = " \
 "
 
 IMAGE_FSTYPES_append = " fszip"
-IMAGE_FSTYPES_remove = "emmv"
 
 IMAGE_INSTALL_remove = " packagegroup-fsl-bluez5-tools"
 

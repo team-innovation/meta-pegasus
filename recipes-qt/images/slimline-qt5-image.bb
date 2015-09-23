@@ -15,3 +15,5 @@ IMAGE_INSTALL_append = "\
 "
 
 inherit core-image
+
+IMAGE_FSTYPES_append = " emmc"
