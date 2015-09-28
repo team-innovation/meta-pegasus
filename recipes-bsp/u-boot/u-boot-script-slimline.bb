@@ -22,7 +22,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 TARGET_BOARD ?= "Slimline"
 
-PR = "r10"
+PR = "r11"
 
 FILES_${PN} = "/boot"
 
