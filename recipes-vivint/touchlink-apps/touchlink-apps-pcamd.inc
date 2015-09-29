@@ -8,7 +8,7 @@ PCAMD_PREPEND = "-1"
 PCAMD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-pcamd = "${PR}${PCAMD_PREPEND}${PCAMD_REVISION}"
 
-PR = "r6"
+PR = "r7"
 
 do_compile_prepend() {
 	# compile pcamd C code
@@ -29,11 +29,6 @@ do_install_append () {
 
 	# remove pcam libpcam dir
 	rm -rf ${D}/${INSTALL_DIR}/pcamd/libpcam
-
-	# install test script
-	install -d ${D}/usr/local/bin
-	cp -a ${S}/code/pcamd/scripts/pcamtest ${D}/usr/local/bin
-	chmod 0755 ${D}/usr/local/bin/pcamtest
 }
 
 FILES_${PN}-pcamd = " \
@@ -41,7 +36,6 @@ FILES_${PN}-pcamd = " \
 	${INSTALL_DIR}/lib/libpcam.so	\
 	${sysconfdir}/init.d/pcamd \
 	${sysconfdir}/procman.d/pcamd \
-	/usr/local/bin/pcamtest	\
 	"
 
 INSANE_SKIP_${PN}-pcamd = "installed-vs-shipped"
