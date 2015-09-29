@@ -3,7 +3,7 @@
 DESCRIPTION = "touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r4"
+PR = "r5"
 
 inherit packagegroup
 
