@@ -98,7 +98,6 @@ PULSE_DEPENDS = "python3-pulseaudio \
 		"
 TOUCHSCREEN_DEPENDS = "libinput \
 	evtest \
-	touchlink-touchtest \
 	"
 
 DISPLAY_DEPENDS = "imagemagick \

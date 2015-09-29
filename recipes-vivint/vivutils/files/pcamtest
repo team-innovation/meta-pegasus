@@ -1,0 +1,97 @@
+#!/bin/bash
+#
+# Description: This script is the production test for the Slimline panel camera
+# A golden image is stored in /var/local/images/goldenimage.jpg
+# For convenience a golden image can be generated but should not in the case 
+# of an actual production run
+# On test, a new image will be generated and compared to the golden image
+# We perform a mean error squared between the two images
+# The comparison will pass if the error is less than a given threshold
+#
+
+retval=1
+threshold=40
+log_file=/tmp/test.log
+diff_file=/tmp/diff.png
+test_image=/tmp/test_image.jpg
+golden_image_dir=/var/local/images
+golden_image=/var/local/images/goldenimage.jpg
+SCRIPTNAME=$(basename $BASH_SOURCE)
+echo 1 > /sys/class/i2c-dev/i2c-3/device/3-0034/backlights/bl_backlight_blank
+
+set +x
+usage()
+{
+	echo "Usage: $SCRIPTNAME <-g> <-h>"
+	echo "      : No options will run the test" 
+	echo "    -g: Generate new golden image"
+	echo "    -h: Show help options" 
+}
+
+capture ()
+{
+	procman stop roubaix 2>&1 >/dev/null & 
+	gst-launch-0.10 imxv4l2src num-buffers=1 ! \
+	video/x-raw-yuv, framerate=30/1, width=640, height=480 ! \
+	jpegenc ! filesink location=$test_image > /dev/null 2>&1
+	gst-launch-1.0 filesrc location=$test_image blocksize=41700 ! \
+	'image/jpeg' ! imxvpudec ! imagefreeze ! imxipuvideosink > /dev/null 2>&1 &
+	display_pid=$!
+	disown
+}
+
+compare ()
+{
+	echo "Comparing new panel cam image with golden image"
+	command compare.im6 -verbose -metric mse $golden_image $test_image $diff_file &> $log_file
+	mse=`awk -F": " 'BEGIN { ORS="" } /all/ {print $2 }' < $log_file | cut -d' ' -f1 | cut -d'.' -f1`
+	rm $log_file
+	rm $diff_file
+
+	# Test golden image with current against the fixed threshold
+	if [ `printf '%d' "$mse"` -gt $threshold ];
+	then
+		retval=1
+	else
+		retval=0
+	fi
+}
+
+if ! [ -e /usr/bin/compare.im6 ];
+then
+	echo "ImageMagick compare not installed"
+	exit 1
+fi
+
+if [ "$1" == "-h" ];
+then
+	usage
+elif [ "$1" == "-g" ];
+then
+	echo "Generating new golden image"
+	capture
+	echo "Setting new image to golden status"
+	mkdir -p /var/local/images
+	cp $test_image $golden_image
+	echo "Success"
+elif [ -e $golden_image ];
+then
+	echo "Generating image"
+	capture
+	compare
+	if [ $retval == 1 ];
+	then
+		echo "FAIL"
+	else
+		echo "PASS"
+	fi
+else
+	echo "No such file:" $golden_image
+	usage
+fi
+
+read -p "Enter to Quit " yn
+
+# Kill all gstreamer processes
+(kill $display_pid 2>&1) > /dev/null &
+set +x

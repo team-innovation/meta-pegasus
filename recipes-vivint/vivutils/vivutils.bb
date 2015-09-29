@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r12"
+PR = "r13"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -16,7 +16,9 @@ SRC_URI = "\
 	   file://gadgetsetup \
 	   file://resize.c \
 	   file://nfctest.c \
+	   file://pcamtest \
 	   file://slimline-initemmc \
+	   file://touchtest \
 	   file://wlan-hwtest \
 	   file://mfr_audio_test.py \
 	   file://mfr_audio_heat_test.py \
@@ -41,9 +43,11 @@ do_install() {
 	install -m 0755 ${S}/ccat ${D}/usr/local/bin
 	install -m 0755 ${S}/firstboot-setup ${D}/usr/local/bin
 	install -m 0755 ${S}/gadgetsetup ${D}/usr/local/bin
-	install -m 0755 ${S}/slimline-initemmc ${D}/usr/local/bin
 	install -m 0755 ${S}/resize ${D}/usr/local/bin
 	install -m 0755 ${S}/nfctest ${D}/usr/local/bin
+	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
+	install -m 0755 ${S}/slimline-initemmc ${D}/usr/local/bin
+	install -m 0755 ${S}/touchtest ${D}/usr/local/bin
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin

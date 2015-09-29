@@ -38,65 +38,101 @@ static void ttyraw(void)
 				strerror(errno));
 		exit(1);
 	}
-
+	cfmakeraw(&tio);
+	tio.c_iflag = ICRNL|IXANY;
+	tio.c_oflag = OPOST|ONLCR;
+	tio.c_cflag = CREAD|CS8|HUPCL;
+	tio.c_cc[VMIN] = 1;
+	tio.c_cc[VTIME] = 0;
 	/* Set Baud Rate */
 	cfsetospeed (&tio, (speed_t)B57600);
 	cfsetispeed (&tio, (speed_t)B57600);
 
-	/* Setting other Port Stuff */
-	tio.c_cflag     &=  ~PARENB;            // Make 8n1
-	tio.c_cflag     &=  ~CSTOPB;
-	tio.c_cflag     &=  ~CSIZE;
-	tio.c_cflag     |=  CS8;
-
-	tio.c_cflag     &=  ~CRTSCTS;           // no flow control
-	tio.c_cc[VMIN]   =  1;                  // read doesn't block
-	tio.c_cc[VTIME]  =  5;                  // 0.5 seconds read timeout
-	tio.c_cflag     |=  CREAD | CLOCAL;     // turn on READ & ignore ctrl lines
-
-	/* Make raw */
-	cfmakeraw(&tio);
 	tcsetattr(ttyfd, TCSANOW, &tio);
 }
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	int cols, lines;
-	char c = 0;
-	char str0[] = "\x55";
-	char str1[] = "\2\2\2\0";
-	char str2[] = "\4\2&\7";
-	char str3[] = "\4\3\x30\0(";
+	int i, cols, lines, timeout;
+	char reset = 0x01;
+	char echo[] = "\x55";
+	char prot_select[] = "\2\2\2\0";
+	char send_recv[] = "\4\2&\7";
+	char read_tag[] = "\4\3\x30\0(";
+	const int RET_VALID = 0x80;
+	const int BUFFER_LEN = 30;
+	char recv_data[BUFFER_LEN];
 
 	ttyfd = open("/dev/ttymxc1", O_RDWR | O_NOCTTY);
+	if(ttyfd < 0) {
+		printf("Error! Cannot open /dev/ttymxc1\n");
+		return 1;
+	}
 	ttyraw();
 	
-	printf("NFC write 0x%x\n", str0[0]);
-	write(ttyfd, str0, 1);
+	/* Echo */
+	printf("NFC Echo: 0x%x\n", echo[0]);
+	write(ttyfd, echo, 1);
+	memset(recv_data, 0, BUFFER_LEN);
+	read(ttyfd, recv_data, 2);
+	printf("NFC Read: ");
+	for(i=0; i<2; i++)
+		printf("0x%x ", recv_data[i]);
+	printf("\n");
 
-	read(ttyfd, &c, 1);
-	printf("NFC read 0x%x\n", c);
+	/* Set protocol */
+	printf("NFC Set Protocol: 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", 
+		prot_select[0], prot_select[1], prot_select[2], prot_select[3]);
+	write(ttyfd, prot_select, 4);
+	memset(recv_data, 0, BUFFER_LEN);
+	read(ttyfd, recv_data, 2);
+	printf("NFC Read: ");
+	for(i=0; i<2; i++)
+		printf("0x%x ", recv_data[i]);
+	printf("\n");
 
-	printf("NFC write 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", 
-		str1[0], str1[1], str1[2], str1[3]);
-	write(ttyfd, str1, 4);
+	/* Send/Receive command */
+	printf("NFC Send/Recv: 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", 
+		send_recv[0], send_recv[1], send_recv[2], send_recv[3]);
+	write(ttyfd, send_recv, 4);
+	memset(recv_data, 0, BUFFER_LEN);
+	read(ttyfd, recv_data, 7);
+	timeout = 0;
+	while(recv_data[0] != RET_VALID && timeout++ < 5) {
+		write(ttyfd, send_recv, 4);
+		read(ttyfd, recv_data, 7);
+	}
+	printf("NFC Read: ");
+	for(i=0; i<7; i++)
+		printf("0x%x ", recv_data[i]);
+	printf("\n");
 
-	read(ttyfd, &c, 1);
-	printf("NFC read 0x%x\n", c);
+	if(recv_data[0] != RET_VALID) {
+		printf("Error! Cannot send/recv tag!\n");
+		return 1;
+	}
 
-	printf("NFC write 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", 
-		str2[0], str2[1], str2[2], str2[3]);
-	write(ttyfd, str2, 4);
-
-	read(ttyfd, &c, 1);
-	printf("NFC read 0x%x\n", c);
-
-	printf("NFC write 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", 
-		str3[0], str3[1], str3[2], str3[3], str3[4]);
-	write(ttyfd, str3, 4);
-
-	read(ttyfd, &c, 1);
-	printf("NFC read 0x%x\n", c);
-
-	close(ttyfd);
+	/* Read Tag */
+	printf("NFC Read Tag: 0x%02x, 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", 
+		read_tag[0], read_tag[1], read_tag[2], read_tag[3], read_tag[4]);
+	write(ttyfd, read_tag, 5);
+	memset(recv_data, 0, BUFFER_LEN);
+	read(ttyfd, recv_data, 23);
+	timeout = 0;
+	while(recv_data[0] != RET_VALID && timeout++ < 5) {
+		write(ttyfd, read_tag, 5);
+		read(ttyfd, recv_data, 23);
+	}
+	printf("NFC Read: ");
+	for(i=0; i<23; i++)
+		printf("0x%x ", recv_data[i]);
+	printf("\n");
+	if(recv_data[0] != RET_VALID) {
+		printf("Error! Cannot read tag!\n");
+		return 1;
+	}
+	else {
+		printf("PASS!\n");
+		return 0;
+	}
 }
