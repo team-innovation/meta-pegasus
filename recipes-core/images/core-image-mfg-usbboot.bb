@@ -8,8 +8,6 @@ IMAGE_INSTALL_append = " \
 	util-linux-agetty \
 "
 
-IMAGE_FSTYPES_append = " fszip"
-
 IMAGE_INSTALL_remove = " packagegroup-fsl-bluez5-tools"
 
 # modify inittab to autologin as root on console with no password
