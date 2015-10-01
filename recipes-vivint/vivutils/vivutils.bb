@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r13"
+PR = "r14"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -22,8 +22,8 @@ SRC_URI = "\
 	   file://wlan-hwtest \
 	   file://mfr_audio_test.py \
 	   file://mfr_audio_heat_test.py \
-	   file://wave_450_hz.wav \
-	   file://wave_900_hz.wav \
+	   file://wave_750_hz.wav \
+	   file://wave_1000_hz.wav \
 	   file://wave_1800_hz.wav \
 	   file://wave_3600_hz.wav \		
 	   file://wave_1000_hz_half_mag.wav \		
@@ -51,8 +51,8 @@ do_install() {
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
-	install -m 0755 ${S}/wave_450_hz.wav ${D}/usr/local/bin
-	install -m 0755 ${S}/wave_900_hz.wav ${D}/usr/local/bin
+	install -m 0755 ${S}/wave_750_hz.wav ${D}/usr/local/bin
+	install -m 0755 ${S}/wave_1000_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_1800_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_3600_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
