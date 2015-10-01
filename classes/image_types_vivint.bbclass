@@ -322,7 +322,7 @@ IMAGE_CMD_emmc () {
     f=$(basename ${EMMC})
     z=${f}.zip
     d=$(dirname ${EMMC})
-    (cd ${d}; zip ${z} ${f}; rm ${f}; sha256 ${z} > ${z}.sha256); 
+    (cd ${d}; zip ${z} ${f}; rm ${f}; sha256sum ${z} > ${z}.sha256)
 }
 
 # The emmc requires the rootfs filesystem to be built before using
