@@ -31,10 +31,10 @@ except ImportError:
 
 __author__ = 'mark'
 
-# frequency bins for 450, 900, 1800 and 3600 Hz given a 4096 pt FFT @ 8 kHz
-freq_bin = [230, 461, 922, 1843]
-frequencies = [450, 900, 1800, 3600]
-wave_files = ['wave_450_hz.wav', 'wave_900_hz.wav', 'wave_1800_hz.wav', 'wave_3600_hz.wav']
+frequencies = [750, 1000, 1800, 3600]
+wave_files = ['wave_750_hz.wav', 'wave_1000_hz.wav', 'wave_1800_hz.wav', 'wave_3600_hz.wav']
+FFT_SIZE = 4096
+FS = 8000
 
 class AudioTest:
     def __init__(self, audioFile, idx):
@@ -46,8 +46,8 @@ class AudioTest:
         self.recording = False
         self.rec_stream = None
         self.frames = 0
-        self.fftfreq = np.fft.fftfreq(4096) * 8000
-        self.fftfreq = self.fftfreq[0:2048]
+        self.fftfreq = np.fft.fftfreq(FFT_SIZE) * FS
+        self.fftfreq = self.fftfreq[0:FFT_SIZE/2]
         #pprint(self.fftfreq)
         #pprint(np.amax(self.fftfreq))
         #pprint(np.searchsorted(self.fftfreq, 2, side='left'))
@@ -62,23 +62,24 @@ class AudioTest:
         ss = pa_sample_spec()
         ss.format = PA_SAMPLE_S16LE
         ss.channels = 1
-        ss.rate = 8000
+        ss.rate = FS
         self.play_stream = pa_simple_new(None, b'AudioTest', PA_STREAM_PLAYBACK, None, b'playback', ss, None, None, None)
 
     def _create_record_stream(self):
         ss = pa_sample_spec()
         ss.format = PA_SAMPLE_S16LE
         ss.channels = 1
-        ss.rate = 8000
-        self.rec_stream = pa_simple_new(None, b'AudioTest', PA_STREAM_RECORD, None, b'playback', ss, None, None, None)
+        ss.rate = FS
+        self.rec_stream = pa_simple_new(None, b'AudioTest', PA_STREAM_RECORD, None, b'record', ss, None, None, None)
 
     def _start_playback(self):
         self._create_playback_stream()
         file = wave.open(self.audioFile, 'rb')
-        self.frames = file.getnframes()
+        self.frames = file.getnframes()*2
         data = file.readframes(self.frames)
 
         self.playing = True
+        self._play_buffer(data)
         self._play_buffer(data)
 
     def _start_record(self):
@@ -95,7 +96,7 @@ class AudioTest:
 
         x = np.ctypeslib.as_array((ctypes.c_short * self.frames).from_address(ctypes.addressof(rec_data)))
         x = x / 32768
-        y = np.fft.rfft(x, 4096)/self.frames
+        y = np.fft.rfft(x, FFT_SIZE)/self.frames
 
         y = np.absolute(y)
 
@@ -107,7 +108,7 @@ class AudioTest:
         y = np.log10(y)
         y = 20 * y
         if self.idx == 0:
-            #print('THD at {} Hz: {}% ...{} {} {} {} {}'.format(frequencies[0], self.thd, self._find_nearest(y, freq), self._find_nearest(y, freq*2), self._find_nearest(y, freq*3), self._find_nearest(y, freq*4), self._find_nearest(y, freq*5)))
+            #print('THD at {} Hz: {}% ...{} {} {} {} {}'.format(frequencies[0], self.thd, self.base_power, self._find_nearest(y, freq*2), self._find_nearest(y, freq*3), self._find_nearest(y, freq*4), self._find_nearest(y, freq*5)))
             print('THD at {} Hz: {}%'.format(frequencies[0], self.thd))
             print('Power at {} Hz: {} dB'.format(freq, self.base_power))
         else:
@@ -138,14 +139,16 @@ class AudioTest:
         else:
             return idx
 
-    def _compute_thd(self, x, freq, n_harmonics=7):
+    def _compute_thd(self, x, freq, n_harmonics=5):
         sum_of_squares = 0
         for i in range(2, n_harmonics+1):
-            sum_of_squares += self._find_nearest(x, freq * i) ** 2
+            tmp = self._find_nearest(x, freq * i) ** 2
+            sum_of_squares += tmp
+            #print('i: {} mag: {} sum: {}'.format(i, tmp, sum_of_squares))
         fi = self._find_nearest_index(freq)
-        base_power = x[fi] + x[fi+1]
-        return math.sqrt(sum_of_squares) / base_power * 100
-
+        base_power = (x[fi] + x[fi+1]) ** 2
+        #print('base power: {}'.format(base_power))
+        return (sum_of_squares / base_power) * 100
 
 def setup_gains():
     call("amixer sset 'DSP Max Mic Gain' 64", shell=True)
