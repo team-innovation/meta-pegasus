@@ -98,22 +98,34 @@ serialnumcheck() {
 	test -n "${sn}"
 }
 
+read_serial() {
+	while true; do
+		local rawsn
+		local sn
+		local hexsn
+		local dsn
+
+		clear; reset
+		read -p "Enter Serialnumber: " rawsn
+
+		sn=$(( 10#$rawsn ))
+
+		echo "$rawsn" | grep -q "$sn" ||
+			continue
+
+		hexsn=$(printf "%x" $sn)
+		dsn=$(printf "%d" 0x${hexsn})
+		test "$sn" = "$dsn" &&
+			echo $hexsn &&
+			break
+	done
+}
+
 # prompt for a serial number and save it
 serialnumset() {
-	local sn=0;
-	local numck;
 	local snhex;
 	mntbootscriptrw
-	# get serial number and write it to disk
-	while true; do
-		clear; reset
-		read -p "Enter Serialnumber: " sn
-		numck=$(echo "$sn" | awk '{print ($0 != $0+0)}')
-		test "${numck}" -eq 0 && break
-	done
-
-	snhex=$(printf "%x" ${sn})
-	debuginfo "convert serialnumber to hex: ${snhex}"
+	snhex=$(read_serial)
 
 	echo "${snhex}" > /media/bootscript/serialnumber.txt
 	umntbootscript
