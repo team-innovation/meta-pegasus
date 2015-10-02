@@ -353,10 +353,12 @@ fusecheck || {
 
 must_succeed boardcheck
 succeed_or bootscrcheck bootscrupdate
-succeed_or serialnumcheck serialnumset
 succeed_or ubootcheck ubootupdate
 succeed_or mmcbootbitscheck mmcbootbitsset
 succeed_or fusecheck fuseset
+
+test "${FACTORYFIRSTBOOT}" != "true" &&
+	succeed_or serialnumcheck serialnumset
 
 test "${FACTORYFIRSTBOOT}" = "true" && {
 	info "Initial factory board setup complete -- halting!"
