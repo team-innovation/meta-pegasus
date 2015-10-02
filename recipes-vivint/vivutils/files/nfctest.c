@@ -51,9 +51,17 @@ static void ttyraw(void)
 	tcsetattr(ttyfd, TCSANOW, &tio);
 }
 
+static void
+usage (char *s)
+{
+	printf("Usage: %s <option>\n", s);
+	printf("   -e: Echo only\n");
+	printf("   -r: Read tag\n");
+}
+
 int main(int argc, char **argv)
 {
-	int i, cols, lines, timeout;
+	int i, echo_test, read_test, cols, lines, timeout;
 	char reset = 0x01;
 	char echo[] = "\x55";
 	char prot_select[] = "\2\2\2\0";
@@ -63,6 +71,20 @@ int main(int argc, char **argv)
 	const int BUFFER_LEN = 30;
 	char recv_data[BUFFER_LEN];
 
+	if(argc == 1 || argc > 2) {
+		usage(argv[0]);
+		return 0;
+	}
+
+	/* Check args */
+	echo_test = !strcmp(argv[1], "-e");
+	read_test = !strcmp(argv[1], "-r");
+	if(!echo_test && !read_test) {
+		usage(argv[0]);
+		return 0;
+	}
+
+	/* Open nfc tty device */
 	ttyfd = open("/dev/ttymxc1", O_RDWR | O_NOCTTY);
 	if(ttyfd < 0) {
 		printf("Error! Cannot open /dev/ttymxc1\n");
@@ -79,6 +101,9 @@ int main(int argc, char **argv)
 	for(i=0; i<2; i++)
 		printf("0x%x ", recv_data[i]);
 	printf("\n");
+
+	if(echo_test)
+		return 0;
 
 	/* Set protocol */
 	printf("NFC Set Protocol: 0x%02x, 0x%02x, 0x%02x, 0x%02x\n", 

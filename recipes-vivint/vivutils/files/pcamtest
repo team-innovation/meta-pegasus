@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Description: This script is the production test for the Slimline panel camera
-# A golden image is stored in /var/local/images/goldenimage.jpg
+# A golden image is stored in /var/local/images/golden_image.jpg
 # For convenience a golden image can be generated but should not in the case 
 # of an actual production run
 # On test, a new image will be generated and compared to the golden image
@@ -15,17 +15,36 @@ log_file=/tmp/test.log
 diff_file=/tmp/diff.png
 test_image=/tmp/test_image.jpg
 golden_image_dir=/var/local/images
-golden_image=/var/local/images/goldenimage.jpg
+golden_image=/var/local/images/golden_image.jpg
+golden_display_image=/var/local/images/golden_display_image.jpg
 SCRIPTNAME=$(basename $BASH_SOURCE)
 echo 1 > /sys/class/i2c-dev/i2c-3/device/3-0034/backlights/bl_backlight_blank
 
 set +x
 usage()
 {
-	echo "Usage: $SCRIPTNAME <-g> <-h>"
-	echo "      : No options will run the test" 
-	echo "    -g: Generate new golden image"
-	echo "    -h: Show help options" 
+	echo "Usage: $SCRIPTNAME <option>"
+	echo "   -c: Run video capture test" 
+	echo "   -g: Generate new golden image"
+	echo "   -d: Run display test"
+	echo "  -gd: Generate new golden display image"
+	echo "   -h: Show help options" 
+}
+
+display ()
+{
+	# Show pattern
+	procman stop roubaix 2>&1 >/dev/null & 
+	gst-launch-1.0 videotestsrc pattern=19 ! \
+	"video/x-raw,width=1024,height=600" ! \
+	imxipuvideosink > /dev/null 2>&1 &
+	display_pid=$!
+	disown
+
+	# Capture view
+	gst-launch-0.10 imxv4l2src num-buffers=1 ! \
+	video/x-raw-yuv, framerate=30/1, width=640, height=480 ! \
+	jpegenc ! filesink location=$test_image > /dev/null 2>&1
 }
 
 capture ()
@@ -36,14 +55,14 @@ capture ()
 	jpegenc ! filesink location=$test_image > /dev/null 2>&1
 	gst-launch-1.0 filesrc location=$test_image blocksize=41700 ! \
 	'image/jpeg' ! imxvpudec ! imagefreeze ! imxipuvideosink > /dev/null 2>&1 &
-	display_pid=$!
+	capture_pid=$!
 	disown
 }
 
 compare ()
 {
 	echo "Comparing new panel cam image with golden image"
-	command compare.im6 -verbose -metric mse $golden_image $test_image $diff_file &> $log_file
+	command compare.im6 -verbose -metric mse $1 $test_image $diff_file &> $log_file
 	mse=`awk -F": " 'BEGIN { ORS="" } /all/ {print $2 }' < $log_file | cut -d' ' -f1 | cut -d'.' -f1`
 	rm $log_file
 	rm $diff_file
@@ -74,11 +93,30 @@ then
 	mkdir -p /var/local/images
 	cp $test_image $golden_image
 	echo "Success"
-elif [ -e $golden_image ];
+elif [ "$1" == "-gd" ];
+then
+	echo "Generating new golden display image"
+	display
+	echo "Setting new display image to golden status"
+	mkdir -p /var/local/images
+	cp $test_image $golden_display_image
+	echo "Success"
+elif [[ "$1" == "-c" && -e $golden_image ]];
 then
 	echo "Generating image"
 	capture
-	compare
+	compare $golden_image
+	if [ $retval == 1 ];
+	then
+		echo "FAIL"
+	else
+		echo "PASS"
+	fi
+elif [[ "$1" == "-d" && -e $golden_display_image ]];
+then
+	echo "Generating display image"
+	display	
+	compare $golden_display_image
 	if [ $retval == 1 ];
 	then
 		echo "FAIL"
@@ -86,12 +124,19 @@ then
 		echo "PASS"
 	fi
 else
-	echo "No such file:" $golden_image
+	if [ ! -e $golden_image ]
+	then
+		echo "There is no file" $golden_image
+	fi
+	if [ ! -e $golden_display_image ]
+	then
+		echo "There is no file" $golden_display_image
+	fi
 	usage
 fi
 
 read -p "Enter to Quit " yn
-
-# Kill all gstreamer processes
+(kill $capture_pid 2>&1) > /dev/null &
 (kill $display_pid 2>&1) > /dev/null &
+
 set +x
