@@ -59,7 +59,7 @@ umntbootscript()
 
 mntbootscriptrw()
 {
-	umntbootscript
+	umntbootscript || true
 	mount ${BSPART} -o rw ||
 		crap "unable to mount ${BSPART} read/write"
 }
@@ -71,8 +71,10 @@ read_serial() {
 		local hexsn
 		local dsn
 
-		clear; reset
-		read -p "Enter Serialnumber: " rawsn
+		read -e -p "Enter Serialnumber: " rawsn
+
+		(eval "echo $(( 10#$rawsn ))") ||
+			continue
 
 		sn=$(( 10#$rawsn ))
 
@@ -82,18 +84,20 @@ read_serial() {
 		hexsn=$(printf "%x" $sn)
 		dsn=$(printf "%d" 0x${hexsn})
 		test "$sn" = "$dsn" &&
-			echo $hexsn &&
+			HEXSN=$hexsn &&
 			break
 	done
 }
 
 # prompt for a serial number and save it
 serialnumset() {
-	local snhex;
 	mntbootscriptrw
-	snhex=$(read_serial)
 
-	echo "${snhex}" > /media/bootscript/serialnumber.txt
+	clear; reset
+	read_serial
+
+	echo "${HEXSN}" > /media/bootscript/serialnumber.txt
+
 	umntbootscript
 	true
 }

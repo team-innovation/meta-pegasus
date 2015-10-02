@@ -157,8 +157,10 @@ read_serial() {
 		local hexsn
 		local dsn
 
-		clear; reset
-		read -p "Enter Serialnumber: " rawsn
+		read -e -p "Enter Serialnumber: " rawsn
+
+		(eval "echo $(( 10#$rawsn )) > /dev/null 2>&1") ||
+			continue
 
 		sn=$(( 10#$rawsn ))
 
@@ -173,6 +175,7 @@ read_serial() {
 	done
 }
 
+clear; reset
 read_serial
 
 SNHEX=$(printf "%x" $SERIALNUMBER)
