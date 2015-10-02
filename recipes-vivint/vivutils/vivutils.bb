@@ -3,21 +3,19 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r14"
+PR = "r15"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
 SRC_URI = "\
 	   file://ccat \
 	   file://ctail \
-	   file://dot.profile \
 	   file://firstboot \
 	   file://firstboot-setup \
 	   file://gadgetsetup \
 	   file://resize.c \
 	   file://nfctest.c \
 	   file://pcamtest \
-	   file://slimline-initemmc \
 	   file://touchtest \
 	   file://wlan-hwtest \
 	   file://mfr_audio_test.py \
@@ -46,7 +44,6 @@ do_install() {
 	install -m 0755 ${S}/resize ${D}/usr/local/bin
 	install -m 0755 ${S}/nfctest ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
-	install -m 0755 ${S}/slimline-initemmc ${D}/usr/local/bin
 	install -m 0755 ${S}/touchtest ${D}/usr/local/bin
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
@@ -62,7 +59,6 @@ do_install() {
 	update-rc.d -r ${D} firstboot start 08 S .
 
 	install -d ${D}/home/root/
-	install -m 0755 ${S}/dot.profile ${D}/home/root/.profile
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"
