@@ -20,6 +20,7 @@ SRC_URI = "\
 	   file://wlan-hwtest \
 	   file://mfr_audio_test.py \
 	   file://mfr_audio_heat_test.py \
+	   file://serialnumset \
 	   file://wave_750_hz.wav \
 	   file://wave_1000_hz.wav \
 	   file://wave_1800_hz.wav \
@@ -44,6 +45,7 @@ do_install() {
 	install -m 0755 ${S}/resize ${D}/usr/local/bin
 	install -m 0755 ${S}/nfctest ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
+	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
 	install -m 0755 ${S}/touchtest ${D}/usr/local/bin
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin

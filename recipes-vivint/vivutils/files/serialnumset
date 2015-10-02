@@ -1,0 +1,115 @@
+#!/bin/bash
+#set -x
+
+DEBUG=yes
+#DEBUG=no
+QUIET=no
+SCRIPTNAME=$(basename $BASH_SOURCE)
+set -e
+
+echo "$SCRIPTNAME"
+
+BOARDNAME=slimline
+BSPART=/dev/mmcblk0p3
+
+# Utility functions
+carp() {
+	echo "$SCRIPTNAME: fatalerror: $1"
+	exit 1
+}
+
+usage() {
+	carp "usage: $SCRIPTNAME no-clue?????"
+}
+
+info() {
+	test "$QUIET" == "yes" ||
+		echo "$SCRIPTNAME: $1"
+}
+
+debuginfo() {
+	test "$DEBUG" == "yes" &&
+		echo "$SCRIPTNAME: debug: $1"
+}
+
+## This script is only for a particular board
+boardcheck() {
+	cat /proc/device-tree/compatible | grep -q "${BOARDNAME}" ||
+		carp "not a ${BOARDNAME} build, exiting..."
+}
+
+#
+# The bootscript and serial number are in the bootscript partition
+#
+
+# Some functions for (un)mounting the boot script partition
+# read-only and read/write
+#
+mntbootscript()
+{
+	mount | grep -q ${BSPART} ||
+		mount ${BSPART}
+}
+
+umntbootscript()
+{
+	mount | grep -q ${BSPART} &&
+		umount ${BSPART}
+}
+
+mntbootscriptrw()
+{
+	umntbootscript
+	mount ${BSPART} -o rw ||
+		crap "unable to mount ${BSPART} read/write"
+}
+
+read_serial() {
+	while true; do
+		local rawsn
+		local sn
+		local hexsn
+		local dsn
+
+		clear; reset
+		read -p "Enter Serialnumber: " rawsn
+
+		sn=$(( 10#$rawsn ))
+
+		echo "$rawsn" | grep -q "$sn" ||
+			continue
+
+		hexsn=$(printf "%x" $sn)
+		dsn=$(printf "%d" 0x${hexsn})
+		test "$sn" = "$dsn" &&
+			echo $hexsn &&
+			break
+	done
+}
+
+# prompt for a serial number and save it
+serialnumset() {
+	local snhex;
+	mntbootscriptrw
+	snhex=$(read_serial)
+
+	echo "${snhex}" > /media/bootscript/serialnumber.txt
+	umntbootscript
+	true
+}
+
+must_succeed()
+{
+	cmd=$1
+	eval "${cmd}" &&
+		info "${cmd} succeeded" &&
+		return
+	carp "${cmd} failed"
+}
+
+must_succeed boardcheck
+serialnumset
+
+info "Done setting serial number"
+
+exit 0

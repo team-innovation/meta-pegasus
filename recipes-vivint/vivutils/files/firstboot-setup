@@ -98,40 +98,11 @@ serialnumcheck() {
 	test -n "${sn}"
 }
 
-read_serial() {
-	while true; do
-		local rawsn
-		local sn
-		local hexsn
-		local dsn
-
-		clear; reset
-		read -p "Enter Serialnumber: " rawsn
-
-		sn=$(( 10#$rawsn ))
-
-		echo "$rawsn" | grep -q "$sn" ||
-			continue
-
-		hexsn=$(printf "%x" $sn)
-		dsn=$(printf "%d" 0x${hexsn})
-		test "$sn" = "$dsn" &&
-			echo $hexsn &&
-			break
-	done
-}
-
-# prompt for a serial number and save it
-serialnumset() {
-	local snhex;
-	mntbootscriptrw
-	snhex=$(read_serial)
-
-	echo "${snhex}" > /media/bootscript/serialnumber.txt
-	umntbootscript
+# warn about no serialnumber
+serialnumwarn() {
+	info "board as no serial number, which is normal for first boot"
 	true
 }
-
 
 # The u-boot bootloader lives in the first eMMC boot partition, known in linux
 # as /dev/mmcblk0boot0.  The u-boot environment lives in the second eMMC boot
@@ -356,9 +327,7 @@ succeed_or bootscrcheck bootscrupdate
 succeed_or ubootcheck ubootupdate
 succeed_or mmcbootbitscheck mmcbootbitsset
 succeed_or fusecheck fuseset
-
-test "${FACTORYFIRSTBOOT}" != "true" &&
-	succeed_or serialnumcheck serialnumset
+succeed_or serialnumcheck serialnumwarn
 
 test "${FACTORYFIRSTBOOT}" = "true" && {
 	info "Initial factory board setup complete -- halting!"
