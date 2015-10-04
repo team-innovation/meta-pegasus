@@ -4,7 +4,7 @@ HOMEPAGE = "http://git.vivint.com"
 SECTION = "base"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r2"
+PR = "r3"
 
 SRC_URI = "file://COPYING \
            file://audio.sh"
@@ -14,7 +14,7 @@ do_install () {
 	install -m 0755 ${WORKDIR}/audio.sh ${D}${sysconfdir}/init.d
 
 	# Creat run level links
-	update-rc.d -r ${D} audio.sh start 98 5 . 
+	update-rc.d -r ${D} audio.sh start 97 5 . 
 }
 
 FILES_${PN} += "/usr/local/bin/*"
