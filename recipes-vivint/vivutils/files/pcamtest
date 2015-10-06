@@ -28,7 +28,21 @@ usage()
 	echo "   -g: Generate new golden image"
 	echo "   -d: Run display test"
 	echo "  -gd: Generate new golden display image"
+	echo "  -do: Display image only"
 	echo "   -h: Show help options" 
+}
+
+display_only ()
+{
+	# Show pattern
+	procman stop roubaix 2>&1 >/dev/null & 
+	gst-launch-1.0 videotestsrc pattern=19 ! \
+	"video/x-raw,width=1024,height=600" ! \
+	imxipuvideosink > /dev/null 2>&1 &
+	display_only_pid=$!
+	disown
+	sleep 3
+	(kill $display_only_pid 2>&1) > /dev/null &
 }
 
 display ()
@@ -45,16 +59,28 @@ display ()
 	gst-launch-0.10 imxv4l2src num-buffers=1 ! \
 	video/x-raw-yuv, framerate=30/1, width=640, height=480 ! \
 	jpegenc ! filesink location=$test_image > /dev/null 2>&1
+
+	# Display captured snapshot
+	sleep 1
+	(kill $display_pid 2>&1) > /dev/null &
+	sleep 1
+	gst-launch-1.0 filesrc location=$test_image blocksize=41700 ! \
+	'image/jpeg' ! imxvpudec ! imagefreeze ! imxeglvivsink > /dev/null 2>&1 &
+	capture_pid=$!
+	disown
 }
 
 capture ()
 {
+	# Capture pan cam 
 	procman stop roubaix 2>&1 >/dev/null & 
 	gst-launch-0.10 imxv4l2src num-buffers=1 ! \
 	video/x-raw-yuv, framerate=30/1, width=640, height=480 ! \
 	jpegenc ! filesink location=$test_image > /dev/null 2>&1
+
+	# Display captured snapshot
 	gst-launch-1.0 filesrc location=$test_image blocksize=41700 ! \
-	'image/jpeg' ! imxvpudec ! imagefreeze ! imxipuvideosink > /dev/null 2>&1 &
+	'image/jpeg' ! imxvpudec ! imagefreeze ! imxeglvivsink > /dev/null 2>&1 &
 	capture_pid=$!
 	disown
 }
@@ -123,6 +149,10 @@ then
 	else
 		echo "PASS"
 	fi
+elif [[ "$1" == "-do" ]];
+then
+	echo "Generating display image"
+	display_only	
 else
 	if [ ! -e $golden_image ]
 	then
@@ -135,7 +165,7 @@ else
 	usage
 fi
 
-read -p "Enter to Quit " yn
+sleep 1
 (kill $capture_pid 2>&1) > /dev/null &
 (kill $display_pid 2>&1) > /dev/null &
 
