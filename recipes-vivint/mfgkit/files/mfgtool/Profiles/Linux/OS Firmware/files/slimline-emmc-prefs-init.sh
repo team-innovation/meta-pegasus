@@ -7,7 +7,6 @@ set -x
 # device:
 #   partition emmc
 #   run mkfs on various partitions
-#   prompt for a serialnumber and save in BOOTSCR partition
 #
 # This script is run from the uuc tool from the fsl mfg tool. 
 #
@@ -148,41 +147,5 @@ mkfs.ext4 -qL ROOTFS1 "$DRIVE"p5 > /dev/null 2>&1
 mkfs.ext4 -qL ROOTFS2 "$DRIVE"p6 > /dev/null 2>&1
 mkfs.ext4 -qL DATA    "$DRIVE"p7 > /dev/null 2>&1
 sync
-
-read_serial() {
-	# get serial number and write it to disk
-	while true; do
-		local rawsn
-		local sn
-		local hexsn
-		local dsn
-
-		read -e -p "Enter Serialnumber: " rawsn
-
-		(eval "echo $(( 10#$rawsn )) > /dev/null 2>&1") ||
-			continue
-
-		sn=$(( 10#$rawsn ))
-
-		echo "$rawsn" | grep -q "$sn" ||
-			continue
-
-		hexsn=$(printf "%x" $sn)
-		dsn=$(printf "%d" 0x${hexsn})
-		test "$sn" = "$dsn" &&
-			SERIALNUMBER=$dsn &&
-			break
-	done
-}
-
-clear; reset
-read_serial
-
-SNHEX=$(printf "%x" $SERIALNUMBER)
-debuginfo "convert serialnumber to hex: $SNHEX"
-
-mount ${DRIVE}p3 /mnt > /dev/null 2>&1
-echo "$SNHEX" > /mnt/serialnumber.txt
-umount ${DRIVE}p3
 
 exit 0
