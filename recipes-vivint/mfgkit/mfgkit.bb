@@ -29,7 +29,7 @@ do_compile() {
 	cp ${f}.sha256 ${ddir}/emmcimage
 
 	# copy mfgtool tree from recipe files sub-directory
-	cp -a ${FILE_DIRNAME}/files/mfgtool/ ${ddir}
+	rsync -a --exclude '*~' ${FILE_DIRNAME}/files/mfgtool ${ddir}
 
 	# copy the mfgtool compatible initramfs
 	cp ${DEPLOY_DIR_IMAGE}/slimline-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot ${tmpdir}/staging/
