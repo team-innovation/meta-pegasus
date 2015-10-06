@@ -38,7 +38,7 @@ display_only ()
 	procman stop roubaix 2>&1 >/dev/null & 
 	gst-launch-1.0 videotestsrc pattern=19 ! \
 	"video/x-raw,width=1024,height=600" ! \
-	imxipuvideosink > /dev/null 2>&1 &
+	imxg2dvideosink > /dev/null 2>&1 &
 	display_only_pid=$!
 	disown
 	sleep 3
@@ -51,7 +51,7 @@ display ()
 	procman stop roubaix 2>&1 >/dev/null & 
 	gst-launch-1.0 videotestsrc pattern=19 ! \
 	"video/x-raw,width=1024,height=600" ! \
-	imxipuvideosink > /dev/null 2>&1 &
+	imxg2dvideosink > /dev/null 2>&1 &
 	display_pid=$!
 	disown
 
@@ -64,8 +64,8 @@ display ()
 	sleep 1
 	(kill $display_pid 2>&1) > /dev/null &
 	sleep 1
-	gst-launch-1.0 filesrc location=$test_image blocksize=41700 ! \
-	'image/jpeg' ! imxvpudec ! imagefreeze ! imxeglvivsink > /dev/null 2>&1 &
+	gst-launch-1.0 filesrc location=$test_image blocksize=512000 ! \
+	'image/jpeg' ! imxvpudec ! imagefreeze ! imxg2dvideosink > /dev/null 2>&1 &
 	capture_pid=$!
 	disown
 }
@@ -79,8 +79,8 @@ capture ()
 	jpegenc ! filesink location=$test_image > /dev/null 2>&1
 
 	# Display captured snapshot
-	gst-launch-1.0 filesrc location=$test_image blocksize=41700 ! \
-	'image/jpeg' ! imxvpudec ! imagefreeze ! imxeglvivsink > /dev/null 2>&1 &
+	gst-launch-1.0 filesrc location=$test_image blocksize=512000 ! \
+	'image/jpeg' ! imxvpudec ! imagefreeze ! imxg2dvideosink > /dev/null 2>&1 &
 	capture_pid=$!
 	disown
 }
