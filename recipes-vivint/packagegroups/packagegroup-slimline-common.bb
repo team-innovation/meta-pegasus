@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "8"
+PR = "9"
 
 inherit packagegroup
 
@@ -34,6 +34,7 @@ RDEPENDS_${PN} = " \
 	python3-terminal \
 	python3-textutils \
 	slimline-modules \
+	slimline-version \
 	sqlite3 \
 	touchlink-ntpsync \
 	tzdata-americas \
