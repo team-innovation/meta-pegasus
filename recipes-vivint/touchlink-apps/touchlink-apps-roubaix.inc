@@ -1,7 +1,7 @@
 ###
 ### Change ROUBAIX_PREPEND everytime you touch this script
 ###
-ROUBAIX_PREPEND = "-11"
+ROUBAIX_PREPEND = "-12"
 
 ROUBAIX_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix = "${PR}${ROUBAIX_PREPEND}${ROUBAIX_REVISION}"
@@ -18,9 +18,11 @@ do_install_append (){
 	# TL-3143 added enphase back
     	${RSYNC_CMD} --exclude=font --exclude=energy --exclude=rules ${S}/code/roubaix/ ${D}/${INSTALL_DIR}/roubaix/
 
+        chmod +x ${D}/${INSTALL_DIR}/roubaix/CameraStatusHelper.pyo
         chmod +x ${D}/${INSTALL_DIR}/roubaix/definitions.pyo
         chmod +x ${D}/${INSTALL_DIR}/roubaix/roubaix.pyo
 
+        rm -rf ${D}/${INSTALL_DIR}/roubaix/CameraStatusHelper.py
         rm -rf ${D}/${INSTALL_DIR}/roubaix/definitions.py
         rm -rf ${D}/${INSTALL_DIR}/roubaix/roubaix.py
 
@@ -61,6 +63,7 @@ FILES_${PN}-roubaix = "\
     ${INSTALL_DIR}/roubaix/roubaix_demo_conf.json   \
     ${INSTALL_DIR}/roubaix/roubaix_log.json		\
     ${INSTALL_DIR}/roubaix/roubaix.qml	\
+    ${INSTALL_DIR}/roubaix/CameraStatusHelper.pyo \
     ${INSTALL_DIR}/roubaix/definitions.pyo	\
     ${INSTALL_DIR}/roubaix/roubaix.pyo	\
     ${INSTALL_DIR}/roubaix/proxies/*	\
