@@ -18,7 +18,7 @@ latest() {
 do_compile() {
 	tmpdir=$(mktemp -d)
 	mkdir ${tmpdir}/staging
-	mfgimagename=slimline-mfgkit-$(date -u +%Y%m%d%H%M%S)
+	mfgimagename=slimline-mfgkit-${DISTRO_VERSION}
 	ddir=${DEPLOY_DIR_MFG}/${mfgimagename}
 	mkdir -p ${ddir}
 
