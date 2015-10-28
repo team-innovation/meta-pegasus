@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "9"
+PR = "10"
 
 inherit packagegroup
 
@@ -16,6 +16,7 @@ RDEPENDS_${PN} = " \
 	python3-ctypes \
 	python3-distribute \
 	python3-importlib \
+	python3-intelhex \
 	python3-jinja2 \
 	python3-json \
 	python3-math \

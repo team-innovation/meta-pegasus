@@ -122,6 +122,7 @@ DEPENDS = " \
 	python3-cherrypy-native \
 	python3-dateutil-native \
 	python3-gnupg-native \
+	python3-intelhex-native \
 	python3-jinja2-native \
 	python3-mock-native \
 	python3-msgpack-native \
@@ -141,6 +142,7 @@ DEPENDS = " \
 
 
 RDEPENDS_${PN} = "\
+	python3-intelhex \
 	python3-subprocess \
 	python3-pyserial \
 	python3-pyalsaaudio \
