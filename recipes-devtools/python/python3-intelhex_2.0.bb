@@ -4,7 +4,7 @@ SECTION = "devel/python"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=2574f7f6219c48304b68fe5a1063fdd2"
 
-PR = "r1"
+PR = "r2"
 SRCNAME = "intelhex"
 
 SRC_URI = "https://pypi.python.org/packages/source/I/IntelHex/${SRCNAME}-${PV}.tar.gz"
@@ -21,4 +21,4 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit distutils
+inherit distutils3
