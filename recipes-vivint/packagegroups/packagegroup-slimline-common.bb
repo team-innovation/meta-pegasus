@@ -12,6 +12,7 @@ inherit packagegroup
 #   then add it to packagegroup-slimline-min not here.
 RDEPENDS_${PN} = " \
 	libsodium13 \
+	kernel-module-mt7603 \
 	packagegroup-slimline-min \
 	python3-ctypes \
 	python3-distribute \
