@@ -35,7 +35,6 @@ VIVINT_APPS = "touchlink-apps \
 	touchlink-apps-roubaix-images-toolbox \
 	touchlink-apps-roubaix-images-video \
 	touchlink-apps-roubaix-images-wallpapers \
-	touchlink-apps-roubaix-legal \
 	touchlink-apps-roubaix-models \
 	touchlink-apps-roubaix-popups \
 	touchlink-apps-roubaix-scripts \
