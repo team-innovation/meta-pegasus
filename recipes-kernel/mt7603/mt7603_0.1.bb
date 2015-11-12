@@ -3,14 +3,13 @@ LICENSE = "CLOSED"
 
 inherit module-base
 
-PR = "r3"
+PR = "r4"
 PV = "0.1"
-
-RPROVIDES_${PN} = "kernel-module-${PN}"
 
 SRC_URI = " \
 	file://MT7603_STA-PCI-V3.0.1.1.tar.bz2 \
 	file://0001-patch-for-yocto-build.patch \
+	file://0001-do-not-install-to-tftpboot.patch \
 "
 
 S = "${WORKDIR}/rlt_wifi"
@@ -28,7 +27,7 @@ do_install() {
 	make DAT_PATH=${D}/${DATDIR} LINUX_SRC_MODULE=${D}/${KMODDIR} install
 }
 
-FILES_kernel-module-${PN} = "\
+FILES_${PN} = "\
 	${KMODDIR} \
 	${DATDIR} \
 "
@@ -36,5 +35,3 @@ FILES_kernel-module-${PN} = "\
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 PKG_${PN} = "kernel-module-${PN}"
-
-PACKAGES = "kernel-module-${PN}"

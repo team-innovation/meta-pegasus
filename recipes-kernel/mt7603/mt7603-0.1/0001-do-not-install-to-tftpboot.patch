@@ -1,0 +1,28 @@
+From 1fd0ab7010fad08b4560233d21593024ce2bb913 Mon Sep 17 00:00:00 2001
+From: John Rigby <john.rigby@vivint.com>
+Date: Thu, 12 Nov 2015 11:34:37 -0700
+Subject: [PATCH] do not install to tftpboot
+
+---
+ Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 28ee391..5377167 100644
+--- a/Makefile
++++ b/Makefile
+@@ -549,8 +549,11 @@ endif
+ else
+ ifeq ($(PLATFORM),PC_AUTO_BUILD)
+ else
++ifeq ($(PLATFORM),MX6)
++else
+ 	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_sta.ko /tftpboot
+ endif
++endif
+ ifeq ($(OSABL),YES)
+ 	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_sta_util.ko /tftpboot
+ 	cp -f $(RT28xx_DIR)/os/linux/$(MODULE)_sta_net.ko /tftpboot
+-- 
+1.8.5.1+fc2
+
