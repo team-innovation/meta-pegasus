@@ -3,7 +3,7 @@ LICENSE = "CLOSED"
 
 inherit module-base
 
-PR = "r1"
+PR = "r2"
 PV = "0.1"
 
 SRC_URI = " \
@@ -26,7 +26,7 @@ do_install() {
 	make DAT_PATH=${D}/${DATDIR} LINUX_SRC_MODULE=${D}/${KMODDIR} install
 }
 
-FILES_${PN} = "\
+FILES_${kernel-module-PN} = "\
 	${KMODDIR} \
 	${DATDIR} \
 "
