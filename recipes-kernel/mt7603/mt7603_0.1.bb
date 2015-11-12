@@ -3,8 +3,10 @@ LICENSE = "CLOSED"
 
 inherit module-base
 
-PR = "r2"
+PR = "r3"
 PV = "0.1"
+
+RPROVIDES_${PN} = "kernel-module-${PN}"
 
 SRC_URI = " \
 	file://MT7603_STA-PCI-V3.0.1.1.tar.bz2 \
@@ -26,7 +28,7 @@ do_install() {
 	make DAT_PATH=${D}/${DATDIR} LINUX_SRC_MODULE=${D}/${KMODDIR} install
 }
 
-FILES_${kernel-module-PN} = "\
+FILES_kernel-module-${PN} = "\
 	${KMODDIR} \
 	${DATDIR} \
 "
@@ -34,3 +36,5 @@ FILES_${kernel-module-PN} = "\
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 PKG_${PN} = "kernel-module-${PN}"
+
+PACKAGES = "kernel-module-${PN}"
