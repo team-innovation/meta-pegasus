@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x
-# Copyright (c) 2014 Vivint
+# Copyright (c) 2015 Vivint
 # Description: see slimline-emmc-prefs-init.sh for full details.
 #
 #
@@ -14,8 +14,6 @@ set -e
 
 echo "$SCRIPTNAME"
 
-BOARDNAME=slimline
-
 carp() {
 	echo "$SCRIPTNAME: fatalerror: $1"
 	exit 1
@@ -25,6 +23,91 @@ debuginfo() {
 	test "$DEBUG" == "yes" &&
 		echo "$SCRIPTNAME: debuginfo: $1"
 }
+
+readbid() {
+	local bid=$(cat /sys/fsl_otp/HW_OCOTP_GP1)
+	bid=$(printf 0x%08x $bid)
+	echo -n ${bid#0x??????}
+}
+
+writebid() {
+	local bid=$1
+
+	# the fuses are write once and start out as all zero
+	# bits can be set but not cleared so writing a zero to any bit has no effect
+	# this means there is no need to preserve upper bits
+	# the byte we want to write is the least significant so no
+	# shift is needed either
+
+	# just make sure the bid is of the form 0xXX
+	bid=$(printf 0x%2x $bid)
+	echo -n ${bid} > /sys/fsl_otp/HW_OCOTP_GP1
+}
+
+slimlinesetbid() {
+	local currentbid=$(readbid)
+
+	case $currentbid in
+		00 )	# new board with fuse never set
+			writebid 0x01
+			;;
+		01 )	# already set, nothing todo
+			echo "bid is already set, all good!"
+			;;
+		*)
+			carp "bogus current bid ${currentbid} for slimline"
+			;;
+	esac
+	true
+}
+
+saneslybid() {
+	local bid=$1
+	local ttydev=$(tty)
+
+	test $bid = "02" -a $ttydev = "/dev/ttymxc1" &&
+		return 0
+	test $bid = "03" -a $ttydev = "/dev/ttymxc2" &&
+		return 0
+	test $bid = "19" -a $ttydev = "/dev/ttymxc1" &&
+		return 0
+	return 1
+}
+
+slysetbid() {
+	local currentbid=$(readbid)
+
+	case $currentbid in
+		00 )	# new board with fuse never set
+			saneslybid 0x03 ||
+				carp "refusing to write bid '03' with tty mismatch '$(tty)'"
+			writebid 0x03
+			;;
+		02 | 03 | 19 )	# already set, just do a tty vs bid sanity check
+			saneslybid $currentbid ||
+				carp "current bid '$bid' mismatch with ttydev '$(tty)'"
+			echo "bid is already set, all good!"
+			;;
+		*)
+			carp "bogus current bid ${currentbid} for sly"
+			;;
+	esac
+	true
+}
+
+setbid() {
+	if grep -q vivint,slimline /proc/device-tree/compatible; then
+		slimlinesetbid
+	elif grep -q vivint,sly /proc/device-tree/compatible; then
+		slysetbid
+	else
+		carp "unknown boardname from device tree"
+	fi
+}
+
+setbid
+
+# TODO: make functions of the rest of this script
 
 # the pre-fsextract script has been run and the rootfs has been extracted
 # into /dev/mmcblock0p5 which should be mounted on /mnt/mmcblock0p5

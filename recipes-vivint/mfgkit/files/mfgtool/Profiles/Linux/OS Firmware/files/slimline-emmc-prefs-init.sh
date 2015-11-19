@@ -45,8 +45,6 @@ set -e
 
 echo "$SCRIPTNAME"
 
-BOARDNAME=slimline
-
 carp() {
 	echo "$SCRIPTNAME: fatalerror: $1"
 	exit 1
@@ -71,9 +69,14 @@ umount_all_partitions () {
 	:
 }
 
-# check board version
-uname -a | grep -q "$BOARDNAME" ||
-	carp "not a $BOARDNAME build, exiting..."
+export BOARDNAME=unknown
+grep -q vivint,slimline /proc/device-tree/compatible &&
+	export BOARDNAME=slimline
+grep -q vivint,sly /proc/device-tree/compatible &&
+	export BOARDNAME=sly
+
+test $BOARDNAME = "unknown" &&
+	carp "unknown boardname, exiting..."
 
 # get/check which drive to use and who our server is
 test "$DRIVE" ||
