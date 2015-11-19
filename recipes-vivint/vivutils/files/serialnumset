@@ -9,7 +9,6 @@ set -e
 
 echo "$SCRIPTNAME"
 
-BOARDNAME=slimline
 BSPART=/dev/mmcblk0p3
 
 # Utility functions
@@ -34,8 +33,11 @@ debuginfo() {
 
 ## This script is only for a particular board
 boardcheck() {
-	cat /proc/device-tree/compatible | grep -q "${BOARDNAME}" ||
-		carp "not a ${BOARDNAME} build, exiting..."
+	grep -q vivint,slimline /proc/device-tree/compatible &&
+		return 0
+	grep -q vivint,sly /proc/device-tree/compatible &&
+		return 0
+	carp "Unknown board type, exiting..."
 }
 
 #
