@@ -61,15 +61,23 @@ slimlinesetbid() {
 	true
 }
 
+consoledev()
+{
+	d=$(cat /proc/cmdline)
+	d=${d##console=}
+	d=${d%%,115200*}
+	echo $d
+}
+
 saneslybid() {
 	local bid=$1
-	local ttydev=$(tty)
+	local ttydev=$(consoledev)
 
-	test $bid = "02" -a $ttydev = "/dev/ttymxc1" &&
+	test $bid = "02" -a $ttydev = "ttymxc1" &&
 		return 0
-	test $bid = "03" -a $ttydev = "/dev/ttymxc2" &&
+	test $bid = "03" -a $ttydev = "ttymxc2" &&
 		return 0
-	test $bid = "19" -a $ttydev = "/dev/ttymxc1" &&
+	test $bid = "19" -a $ttydev = "ttymxc1" &&
 		return 0
 	return 1
 }
@@ -80,12 +88,12 @@ slysetbid() {
 	case $currentbid in
 		00 )	# new board with fuse never set
 			saneslybid 0x03 ||
-				carp "refusing to write bid '03' with tty mismatch '$(tty)'"
+				carp "refusing to write bid '03' with tty mismatch '$(consoledev)'"
 			writebid 0x03
 			;;
 		02 | 03 | 19 )	# already set, just do a tty vs bid sanity check
 			saneslybid $currentbid ||
-				carp "current bid '$bid' mismatch with ttydev '$(tty)'"
+				carp "current bid '$currentbid' mismatch with ttydev '$(consoledev)'"
 			echo "bid is already set, all good!"
 			;;
 		*)
