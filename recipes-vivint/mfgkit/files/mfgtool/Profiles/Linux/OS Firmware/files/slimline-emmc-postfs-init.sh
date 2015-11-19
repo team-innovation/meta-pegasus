@@ -216,10 +216,13 @@ cat /sys/fsl_otp/HW_OCOTP_CFG5
 # Done with i.mx6 boot fuse setup
 
 ## one last thing update the psoc firmware if needed
-# kernel firmware loader expects data in /lib/firmware
-cp -a /mnt/mmcblk0p5/lib/firmware /lib/firmware
-# rest is nearly automagic
-echo 1 > /sys/class/swd/psoc50/doall
+#  only for slimline for now
+grep -q vivint,slimline /proc/device-tree/compatible && {
+	# kernel firmware loader expects data in /lib/firmware
+	cp -a /mnt/mmcblk0p5/lib/firmware /lib/firmware
+	# rest is nearly automagic
+	echo 1 > /sys/class/swd/psoc50/doall
+}
 
 debuginfo "Initial slimline setup complete!"
 

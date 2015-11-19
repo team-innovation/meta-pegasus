@@ -5,28 +5,33 @@
 
 psoc5_verify()
 {
-if [ ! -d /sys/class/swd/psoc50 ]; then
-	echo "PSOC5 kernel device driver not installed"
-	return 1
-fi
+	# slimline only for now
+	if ! grep -q vivint,slimline /proc/device-tree/compatible ; then
+		echo "TODO: psoc verification on sly"
+		return 0
+	fi
+	if [ ! -d /sys/class/swd/psoc50 ]; then
+		echo "PSOC5 kernel device driver not installed"
+		return 1
+	fi
 
-if [ ! -e /lib/firmware/vivint/slimline-psoc5.fw ]; then
-	echo "PSOC5 firmware not found"
-	return 1
-fi
+	if [ ! -e /lib/firmware/vivint/slimline-psoc5.fw ]; then
+		echo "PSOC5 firmware not found"
+		return 1
+	fi
 
-echo Check that PSOC 5 firmware is up to date
-if [ -f /tmp/psoc5fwverified ]; then
-	echo "PSOC5 firmware already verified"
+	echo Check that PSOC 5 firmware is up to date
+	if [ -f /tmp/psoc5fwverified ]; then
+		echo "PSOC5 firmware already verified"
+		return 0
+	else
+		lsmod | grep -q monpwr && rmmod monpwr
+		echo 1 > /sys/class/swd/psoc50/doall
+		touch /tmp/psoc5fwverified
+		modprobe monpwr
+	fi
+
 	return 0
-else
-	lsmod | grep -q monpwr && rmmod monpwr
-	echo 1 > /sys/class/swd/psoc50/doall
-	touch /tmp/psoc5fwverified
-	modprobe monpwr
-fi
-
-return 0
 }
 
 stop() {
