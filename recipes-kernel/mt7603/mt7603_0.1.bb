@@ -3,8 +3,10 @@ LICENSE = "CLOSED"
 
 inherit module-base
 
-PR = "r4"
+PR = "r5"
 PV = "0.1"
+
+RPROVIDES_${PN} = "kernel-module-${PN}"
 
 SRC_URI = " \
 	file://MT7603_STA-PCI-V3.0.1.1.tar.bz2 \
