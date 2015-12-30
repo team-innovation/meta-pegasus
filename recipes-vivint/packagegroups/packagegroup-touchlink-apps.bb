@@ -26,6 +26,10 @@ VIVINT_APPS = "touchlink-apps \
 	touchlink-apps-qml-framework-images-controls-shared \
 	touchlink-apps-roubaix \
 	touchlink-apps-roubaix-controls \
+	touchlink-apps-roubaix-audio-platform \
+	touchlink-apps-roubaix-audmgr-definitions \
+	touchlink-apps-roubaix-defs \
+	touchlink-apps-roubaix-mixin \
 	touchlink-apps-roubaix-fonts \
 	touchlink-apps-roubaix-framework \
 	touchlink-apps-roubaix-gunk \
