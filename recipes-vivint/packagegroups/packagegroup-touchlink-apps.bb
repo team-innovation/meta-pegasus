@@ -9,7 +9,6 @@ inherit packagegroup
 
 VIVINT_APPS = "touchlink-apps \
 	touchlink-apps-345d \
-	touchlink-apps-audmgrd \
 	touchlink-apps-cloudd \
 	touchlink-apps-dbapd \
 	touchlink-apps-favicon \

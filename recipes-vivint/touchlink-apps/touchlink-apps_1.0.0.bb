@@ -27,7 +27,6 @@ require touchlink-apps-modemd.inc
 # adtd is touchlink dependent
 #require touchlink-apps-adtd.inc
 
-require touchlink-apps-audmgrd.inc
 require touchlink-apps-updated.inc
 require touchlink-apps-zwaved.inc
 require touchlink-apps-netd.inc
@@ -309,7 +308,6 @@ PACKAGES = "${PN}-roubaix       \
         ${PN}-cloudd          \
         ${PN}-modemd          \
         ${PN}-adtd          \
-        ${PN}-audmgrd       \
         ${PN}-videod        \
         ${PN}-dvrd        \
         ${PN}-dbapd        \
