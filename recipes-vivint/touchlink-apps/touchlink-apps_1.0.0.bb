@@ -43,6 +43,10 @@ require touchlink-apps-global-conf.inc
 require touchlink-apps-roubaix.inc
 require touchlink-apps-roubaix-fonts.inc
 require ${PN}-roubaix-controls.inc
+require ${PN}-roubaix-audio-platform.inc
+require ${PN}-roubaix-audmgr-definitions.inc
+require ${PN}-roubaix-defs.inc
+require ${PN}-roubaix-mixin.inc
 require ${PN}-roubaix-framework.inc
 require ${PN}-roubaix-models.inc
 require ${PN}-roubaix-views.inc
@@ -275,6 +279,10 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 PACKAGES = "${PN}-roubaix       \
         ${PN}-roubaix-controls  \
+        ${PN}-roubaix-audio-platform  \
+        ${PN}-roubaix-audmgr-definitions  \
+        ${PN}-roubaix-defs  \
+        ${PN}-roubaix-mixin  \
         ${PN}-roubaix-framework  \
         ${PN}-roubaix-models  \
         ${PN}-roubaix-views  \
