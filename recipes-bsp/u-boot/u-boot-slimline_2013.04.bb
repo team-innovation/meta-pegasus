@@ -13,7 +13,7 @@ SRC_URI = "git://git.vivint.com/uboot-imx.git;protocol=git;branch=master \
 "
 SRCREV = "${AUTOREV}"
 
-PR = "r5"
+PR = "r6"
 
 S = "${WORKDIR}/git"
 
