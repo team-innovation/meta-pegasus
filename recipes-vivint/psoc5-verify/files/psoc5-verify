@@ -26,8 +26,12 @@ psoc5_verify()
 		return 0
 	else
 		lsmod | grep -q monpwr && rmmod monpwr
-		echo 1 > /sys/class/swd/psoc50/doall
-		touch /tmp/psoc5fwverified
+		test -f /sys/class/swd/psoc50/access &&
+			echo 1 > /sys/class/swd/psoc50/access
+		echo 1 > /sys/class/swd/psoc50/doall &&
+			touch /tmp/psoc5fwverified
+		test -f /sys/class/swd/psoc50/access &&
+			echo 0 > /sys/class/swd/psoc50/access
 		modprobe monpwr
 	fi
 
