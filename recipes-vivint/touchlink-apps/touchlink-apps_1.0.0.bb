@@ -283,6 +283,7 @@ PACKAGES = "${PN}-roubaix       \
         ${PN}-roubaix-audio-platform  \
         ${PN}-roubaix-audmgr-definitions  \
         ${PN}-roubaix-defs  \
+        ${PN}-roubaix-demo-assets  \
         ${PN}-roubaix-mixin  \
         ${PN}-roubaix-framework  \
         ${PN}-roubaix-models  \
