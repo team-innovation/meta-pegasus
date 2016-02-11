@@ -46,6 +46,7 @@ require ${PN}-roubaix-controls.inc
 require ${PN}-roubaix-audio-platform.inc
 require ${PN}-roubaix-audmgr-definitions.inc
 require ${PN}-roubaix-defs.inc
+require ${PN}-roubaix-demo-assets.inc
 require ${PN}-roubaix-mixin.inc
 require ${PN}-roubaix-framework.inc
 require ${PN}-roubaix-models.inc
