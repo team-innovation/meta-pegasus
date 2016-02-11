@@ -3,7 +3,7 @@
 DESCRIPTION = "touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r7"
+PR = "r8"
 
 inherit packagegroup
 
@@ -29,6 +29,7 @@ VIVINT_APPS = "touchlink-apps \
 	touchlink-apps-roubaix-audio-platform \
 	touchlink-apps-roubaix-audmgr-definitions \
 	touchlink-apps-roubaix-defs \
+	touchlink-apps-roubaix-demo-assets \
 	touchlink-apps-roubaix-mixin \
 	touchlink-apps-roubaix-fonts \
 	touchlink-apps-roubaix-framework \
