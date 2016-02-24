@@ -3,7 +3,7 @@ export BUILD_DIR=$1
 : ${BUILD_DIR:=build}
 
 _APPS_TAG="apps-hg"
-_APPS_ID="default"
+_APPS_ID="fcc_testing"
 
 # if already set up then we just run the setup-environment script
 test -d ${BUILD_DIR} &&
