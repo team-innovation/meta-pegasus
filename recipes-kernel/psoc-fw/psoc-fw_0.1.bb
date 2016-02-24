@@ -8,11 +8,11 @@ PV = "0.1"
 
 SRC_URI = " \
 	file://ihex2fw.c \
-	git://git.vivint.com/cap-touch;branch=master \
+	git://git.vivint.com/cap-touch;branch=udb \
 "
 
 FW_DIR = "/lib/firmware/vivint"
-FW_NAME = "slimline-psoc5.fw"
+FW_NAME = "sly-psoc5.fw"
 
 SRCREV = "${AUTOREV}"
 
@@ -21,7 +21,7 @@ S = "${WORKDIR}"
 do_compile() {
 	${BUILD_CC} ihex2fw.c -o ihex2fw
 	./ihex2fw \
-		git/firmware/design/LEDs.cydsn/CortexM3/ARM_GCC_473/Debug/LEDs.hex \
+		git/firmware/design/LEDs_Copy_01.cydsn/CortexM3/ARM_GCC_473/Debug/LEDs_Copy_01.hex \
 		${FW_NAME}
 }
 
