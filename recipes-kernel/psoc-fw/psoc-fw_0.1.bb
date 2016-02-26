@@ -12,7 +12,7 @@ SRC_URI = " \
 "
 
 FW_DIR = "/lib/firmware/vivint"
-FW_NAME = "sly-psoc5.fw"
+FW_NAME = "slimline-psoc5.fw"
 
 SRCREV = "${AUTOREV}"
 

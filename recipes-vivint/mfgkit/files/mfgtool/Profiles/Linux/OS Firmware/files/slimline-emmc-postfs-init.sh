@@ -130,7 +130,9 @@ grep -q vivint,slimline /proc/device-tree/compatible && {
 	# kernel firmware loader expects data in /lib/firmware
 	cp -a /mnt/mmcblk0p5/lib/firmware /lib/firmware
 	# rest is nearly automagic
+	echo 1 > /sys/class/swd/psoc50/access
 	echo 1 > /sys/class/swd/psoc50/doall
+	echo 0 > /sys/class/swd/psoc50/access
 }
 
 debuginfo "Initial slimline setup complete!"
