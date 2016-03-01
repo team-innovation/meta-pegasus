@@ -1,0 +1,11 @@
+{
+    "test_daemon":
+    {
+	"priority" : -2,
+	"name" : "Hardware Services",
+	"scheduler": "os.SCHED_RR",
+	"scheduler_pri": 1,
+	"start": "/etc/init.d/test_daemon start",
+	"stop": "/etc/init.d/test_daemon stop"
+    }
+}

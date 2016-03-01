@@ -1,0 +1,11 @@
+{
+    "test_ui":
+    {
+	"priority" : -2,
+	"name" : "Hardware Services",
+	"scheduler": "os.SCHED_RR",
+	"scheduler_pri": 1,
+	"start": "/etc/init.d/test_ui start",
+	"stop": "/etc/init.d/test_ui stop"
+    }
+}
