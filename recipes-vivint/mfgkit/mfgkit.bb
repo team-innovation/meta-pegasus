@@ -41,7 +41,7 @@ do_compile() {
 	# get the rest of the files from the qt5 rootfs tarball /boot directory
 	#   u-boot
 	#   nofec version of slimline dtb
-	#   sly dtb
+	#   sly and sly-v2 dtb's
 	#   special reflash u-boot boot script
 	#   
 	# all the files we need are relative symlinks so cp with -L will convert
@@ -50,6 +50,7 @@ do_compile() {
 	cp -L ${tmpdir}/boot/u-boot.imx ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/imx6dl-slimline-ldo-nofec.dtb  ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/imx6dl-sly-ldo.dtb  ${tmpdir}/staging/
+	cp -L ${tmpdir}/boot/imx6dl-sly-v2-ldo.dtb  ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/usb-reflash-boot.scr ${tmpdir}/staging/
 
 	# copy from staging area to files directory in mfgtool tree
