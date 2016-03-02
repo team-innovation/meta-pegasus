@@ -214,7 +214,7 @@
     <CMD state="Updater" type="push" body="$ /mnt/mmcblk0p5/usr/local/bin/serialnumset">Prompting for serialnumber</CMD>
   </LIST>
 
-  <LIST name="Sly-v2-Reflash-Plus-Serial" desc="Reflash a Sly-v2, fixup procmand and fonts,  prompt for serialnumber">
+  <LIST name="Sly-v2-FCC-Reflash-Plus-Serial" desc="Reflash a Sly-v2, fixup procmand and fonts,  prompt for serialnumber">
     <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot.imx">Loading U-boot</CMD>
 
     <CMD state="BootStrap" type="load" file="files/usb-reflash-boot.scr" address="0x11000000"
