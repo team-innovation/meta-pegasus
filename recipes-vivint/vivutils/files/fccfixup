@@ -1,0 +1,18 @@
+#!/bin/bash
+#set -x
+
+echo "fixing up procman.d..."
+cd /etc/procman.d/
+ls
+mkdir .hidden
+mv * .hidden
+mv .hidden/test_* .
+
+echo "fixing up fonts..."
+cd /usr/lib/fonts
+ls
+mkdir .hidden
+mv * .hidden/
+mv .hidden/DejaVu* .
+sync
+exit 0
