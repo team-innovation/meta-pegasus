@@ -5,11 +5,6 @@
 
 psoc5_verify()
 {
-	# slimline only for now
-	if ! grep -q vivint,slimline /proc/device-tree/compatible ; then
-		echo "TODO: psoc verification on sly"
-		return 0
-	fi
 	if [ ! -d /sys/class/swd/psoc50 ]; then
 		echo "PSOC5 kernel device driver not installed"
 		return 1

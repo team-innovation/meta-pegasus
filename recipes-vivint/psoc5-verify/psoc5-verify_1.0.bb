@@ -4,7 +4,7 @@ HOMEPAGE = "http://git.vivint.com"
 SECTION = "base"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=a6d576eb292a14a25860bf932896ef51"
-PR = "r6"
+PR = "r7"
 
 SRC_URI = "file://psoc5-verify \
            file://COPYING"
