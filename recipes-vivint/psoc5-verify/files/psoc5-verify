@@ -3,6 +3,7 @@
 #
 # Check the PSOC5 firmware and update if necessary
 
+exit 0
 psoc5_verify()
 {
 	if [ ! -d /sys/class/swd/psoc50 ]; then
