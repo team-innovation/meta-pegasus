@@ -3,7 +3,7 @@ LICENSE = "CLOSED"
 
 inherit module
 
-PR = "r4"
+PR = "r5"
 PV = "0.1"
 
 SRC_URI = " \
