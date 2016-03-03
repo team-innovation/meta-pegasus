@@ -2,14 +2,14 @@
 #set -x
 
 echo "fixing up procman.d..."
-cd /etc/procman.d/
+cd /mnt/mmcblk0p5/etc/procman.d/
 ls
 mkdir .hidden
 mv * .hidden
 mv .hidden/test_* .
 
 echo "fixing up fonts..."
-cd /usr/lib/fonts
+cd /mnt/mmcblk0p5/usr/lib/fonts
 ls
 mkdir .hidden
 mv * .hidden/

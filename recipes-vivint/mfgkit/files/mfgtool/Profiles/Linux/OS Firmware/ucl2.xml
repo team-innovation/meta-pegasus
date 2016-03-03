@@ -242,9 +242,7 @@
     <CMD state="Updater" type="push" body="send" file="files/slimline-emmc-postfs-init.sh"/>
     <CMD state="Updater" type="push" body="$ cp $FILE slimline-emmc-postfs-init.sh"/>
     <CMD state="Updater" type="push" body="$ bash slimline-emmc-postfs-init.sh">Running post-fsextract script</CMD>
-
-    <CMD state="Updater" type="push" body="$ /mnt/mmcblk0p5/usr/local/bin/fccfixup">Fixing up image for FCC testing</CMD>
-
     <CMD state="Updater" type="push" body="$ /mnt/mmcblk0p5/usr/local/bin/serialnumset">Prompting for serialnumber</CMD>
+    <CMD state="Updater" type="push" body="$ /mnt/mmcblk0p5/usr/local/bin/fccfixup">Fixing up image for FCC testing</CMD>
   </LIST>
 </UCL>
