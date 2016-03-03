@@ -3,6 +3,7 @@
 #
 # Check the PSOC5 firmware and update if necessary
 
+lsmod | grep -q monpwr || modprobe monpwr
 exit 0
 psoc5_verify()
 {
