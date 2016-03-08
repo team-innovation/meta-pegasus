@@ -7,7 +7,8 @@ PR = "r8"
 
 inherit packagegroup
 
-VIVINT_APPS = "touchlink-apps \
+VIVINT_APPS = "\
+	touchlink-apps \
 	touchlink-apps-test-daemon \
 	touchlink-apps-test-ui \
 	touchlink-apps-345d \
@@ -72,13 +73,15 @@ VIVINT_APPS = "touchlink-apps \
 	touchlink-apps-zwaved \
 	"
 
-QT5_DEPENDS = "libegl-mx6 \
+QT5_DEPENDS = "\
+	libegl-mx6 \
 	libgles2-mx6 \
 	python3-pyopengl \
 	touchlink-qt5-profile \
 	"
 
-QT5_PKGS = "tslib tslib-calibrate tslib-tests \
+QT5_PKGS = "\
+	tslib tslib-calibrate tslib-tests \
 	libqt5declarative5 \
 	libqt5xmlpatterns5 \
 	qtbase	\
@@ -104,7 +107,13 @@ TOUCHSCREEN_DEPENDS = "libinput \
 	evtest \
 	"
 
-DISPLAY_DEPENDS = "imagemagick \
+DISPLAY_DEPENDS = "\
+	imagemagick \
+	"
+
+MISC_DEPENDS = "\
+	ppp \
+	socat \
 	"
 
 RDEPENDS_${PN} = " \
@@ -114,4 +123,5 @@ RDEPENDS_${PN} = " \
 	${PULSE_DEPENDS} \
 	${TOUCHSCREEN_DEPENDS} \
 	${DISPLAY_DEPENDS} \
+	${MISC_DEPENDS} \
 "
