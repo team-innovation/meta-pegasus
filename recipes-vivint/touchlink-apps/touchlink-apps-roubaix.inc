@@ -61,6 +61,7 @@ fi
 FILES_${PN}-roubaix = "\
     ${INSTALL_DIR}/roubaix/roubaix_conf.json   \
     ${INSTALL_DIR}/roubaix/roubaix_demo_conf.json   \
+    ${INSTALL_DIR}/roubaix/roubaix_demo_log.json   \
     ${INSTALL_DIR}/roubaix/roubaix_log.json		\
     ${INSTALL_DIR}/roubaix/roubaix.qml	\
     ${INSTALL_DIR}/roubaix/utils/* \
