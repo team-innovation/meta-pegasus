@@ -3,7 +3,7 @@
 DESCRIPTION = "touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r8"
+PR = "r9"
 
 inherit packagegroup
 
@@ -71,6 +71,7 @@ VIVINT_APPS = "\
 	touchlink-apps-utils \
 	touchlink-apps-webd \
 	touchlink-apps-zwaved \
+	touchlink-simlock \
 	"
 
 QT5_DEPENDS = "\

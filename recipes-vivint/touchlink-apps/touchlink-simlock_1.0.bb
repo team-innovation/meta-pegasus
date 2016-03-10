@@ -1,5 +1,5 @@
 DESCRIPTION = "Touchlink Sim Lock"
-LICENSE = "Closed"
+LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
 
 PR = "ml2"
@@ -13,13 +13,16 @@ S = "${WORKDIR}/${MODULE}/code/SimLock"
 
 HG_SIMLOCK_ID ?= "default"
 SRCREV = "${HG_SIMLOCK_ID}"
-SRC_URI = "hg://${HG_SERVER};module=${MODULE};proto=http"
+SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http"
 
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 FILES_${PN} = "\
 	/opt/2gig/lib/libsimLock.so \
+"
+FILES_${PN}-dbg += "\
+	/opt/2gig/lib/.debug/ \
 "
 
 do_compile() {
