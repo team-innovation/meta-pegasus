@@ -18,10 +18,6 @@ require touchlink-apps-sundance.inc
 # dvrd does not build
 #require touchlink-apps-dvrd.inc
 
-# fcc test apps
-require touchlink-apps-test-ui.inc
-require touchlink-apps-test-daemon.inc
-
 require touchlink-apps-pcamd.inc
 require touchlink-apps-iod.inc
 require touchlink-apps-345d.inc
@@ -328,8 +324,6 @@ PACKAGES = "${PN}-roubaix       \
         ${PN}-pcamd        \
         ${PN}-vocabulary    \
         ${PN}-iod   \
-        ${PN}-test-ui   \
-        ${PN}-test-daemon   \
         ${PN}-netd  \
         ${PN}-utils \
         ${PN}-httpd \

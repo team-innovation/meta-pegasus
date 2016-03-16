@@ -9,8 +9,6 @@ inherit packagegroup
 
 VIVINT_APPS = "\
 	touchlink-apps \
-	touchlink-apps-test-daemon \
-	touchlink-apps-test-ui \
 	touchlink-apps-345d \
 	touchlink-apps-cloudd \
 	touchlink-apps-dbapd \
