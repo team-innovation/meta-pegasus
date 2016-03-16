@@ -1,6 +1,7 @@
 ###
 ### Change ROUBAIX_IMG_PREPEND everytime you touch this script
 ###
+ROUBAIX_IMG_COIN_PREPEND = "-1"
 ROUBAIX_IMG_CTRL_PREPEND = "-1"
 ROUBAIX_IMG_RULES_PREPEND = "-1"
 ROUBAIX_IMG_SHARED_PREPEND = "-1"
@@ -12,6 +13,9 @@ ROUBAIX_IMG_WP_PREPEND = "-1"
 ROUBAIX_TH_ALA_PREPEND = "-1"
 ROUBAIX_TH_AQUA_PREPEND = "-1"
 ROUBAIX_TH_FOREST_PREPEND = "-1"
+
+ROUBAIX_IMG_COIN_REVISION ?= "${DISTRO_PR}"
+PKGR_${PN}-roubaix-images-coin = "${PR}${ROUBAIX_IMG_COIN_PREPEND}${ROUBAIX_IMG_COIN_REVISION}"
 
 ROUBAIX_IMG_CTRL_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix-images-controls = "${PR}${ROUBAIX_IMG_CTRL_PREPEND}${ROUBAIX_IMG_CTRL_REVISION}"
@@ -39,6 +43,10 @@ PKGR_${PN}-roubaix-themes-aqua = "${PR}${ROUBAIX_TH_AQUA_PREPEND}${ROUBAIX_TH_AQ
 
 ROUBAIX_TH_FOREST_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix-themes-forest = "${PR}${ROUBAIX_TH_FOREST_PREPEND}${ROUBAIX_TH_FOREST_REVISION}"
+
+FILES_${PN}-roubaix-images-coin = "\
+	${INSTALL_DIR}/roubaix/images/coin/* \
+	"
 
 FILES_${PN}-roubaix-images-controls = "\
 	${INSTALL_DIR}/roubaix/images/controls/* \

@@ -36,6 +36,7 @@ VIVINT_APPS = "\
 	touchlink-apps-roubaix-framework \
 	touchlink-apps-roubaix-gunk \
 	touchlink-apps-roubaix-html \
+	touchlink-apps-roubaix-images-coin \
 	touchlink-apps-roubaix-images-shared \
 	touchlink-apps-roubaix-images-toolbox \
 	touchlink-apps-roubaix-images-video \

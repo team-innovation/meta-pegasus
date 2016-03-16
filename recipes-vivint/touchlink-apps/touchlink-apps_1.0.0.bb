@@ -291,6 +291,7 @@ PACKAGES = "${PN}-roubaix       \
         ${PN}-roubaix-fonts  \
         ${PN}-roubaix-html  \
         ${PN}-roubaix-legal  \
+	${PN}-roubaix-images-coin \
 	${PN}-roubaix-images-controls \
 	${PN}-roubaix-images-rules \
 	${PN}-roubaix-images-shared \
