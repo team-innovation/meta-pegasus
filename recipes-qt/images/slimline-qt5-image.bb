@@ -1,6 +1,6 @@
 DESCRIPTION = "Slimline qt5 image."
 LICENSE = "MIT"
-PR = "r6"
+PR = "r7"
 IMAGE_FEATURES += "package-management" 
 
 IMAGE_INSTALL_append = "\
@@ -12,6 +12,7 @@ IMAGE_INSTALL_append = "\
 	pulseaudio-meta \
 	python3-pyqt5 \
 	audio-sh \
+	mtd-utils \
 "
 
 inherit core-image
