@@ -1,0 +1,7 @@
+{
+    "nfcd":
+    {
+	"name" : "Network Services",
+    	"start": "/etc/init.d/nfcd start"
+    }
+}

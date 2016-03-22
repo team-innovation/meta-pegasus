@@ -21,6 +21,7 @@ VIVINT_APPS = "\
 	touchlink-apps-multiplexerd \
 	touchlink-apps-netd \
 	touchlink-apps-networkd \
+	touchlink-apps-nfcd \
 	touchlink-apps-pcamd \
 	touchlink-apps-procmand \
 	touchlink-apps-pyftpd \
