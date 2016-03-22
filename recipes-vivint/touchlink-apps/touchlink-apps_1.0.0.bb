@@ -317,6 +317,8 @@ PACKAGES = "${PN}-roubaix       \
         ${PN}-ssdpd      \
         ${PN}-zwaved        \
         ${PN}-345d          \
+        ${PN}-multiplexerd          \
+        ${PN}-networkd          \
         ${PN}-updated       \
         ${PN}-cloudd          \
         ${PN}-modemd          \
