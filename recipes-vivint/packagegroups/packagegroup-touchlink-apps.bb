@@ -18,7 +18,9 @@ VIVINT_APPS = "\
 	touchlink-apps-httpd \
 	touchlink-apps-iod \
 	touchlink-apps-modemd \
+	touchlink-apps-multiplexerd \
 	touchlink-apps-netd \
+	touchlink-apps-networkd \
 	touchlink-apps-pcamd \
 	touchlink-apps-procmand \
 	touchlink-apps-pyftpd \
@@ -26,12 +28,11 @@ VIVINT_APPS = "\
 	touchlink-apps-qml-framework-images-controls \
 	touchlink-apps-qml-framework-images-controls-shared \
 	touchlink-apps-roubaix \
-	touchlink-apps-roubaix-controls \
 	touchlink-apps-roubaix-audio-platform \
 	touchlink-apps-roubaix-audmgr-definitions \
+	touchlink-apps-roubaix-controls \
 	touchlink-apps-roubaix-defs \
 	touchlink-apps-roubaix-demo-assets \
-	touchlink-apps-roubaix-mixin \
 	touchlink-apps-roubaix-fonts \
 	touchlink-apps-roubaix-framework \
 	touchlink-apps-roubaix-gunk \
@@ -41,6 +42,7 @@ VIVINT_APPS = "\
 	touchlink-apps-roubaix-images-toolbox \
 	touchlink-apps-roubaix-images-video \
 	touchlink-apps-roubaix-images-wallpapers \
+	touchlink-apps-roubaix-mixin \
 	touchlink-apps-roubaix-models \
 	touchlink-apps-roubaix-popups \
 	touchlink-apps-roubaix-scripts \

@@ -23,6 +23,8 @@ require touchlink-apps-iod.inc
 require touchlink-apps-345d.inc
 require touchlink-apps-cloudd.inc
 require touchlink-apps-modemd.inc
+require touchlink-apps-multiplexerd.inc
+require touchlink-apps-networkd.inc
 
 # adtd is touchlink dependent
 #require touchlink-apps-adtd.inc
