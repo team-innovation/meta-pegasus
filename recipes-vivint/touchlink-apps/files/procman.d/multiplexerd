@@ -1,0 +1,7 @@
+{
+    "multiplexerd":
+    {
+	"name" : "Serial Multiplexer",
+    	"start": "/etc/init.d/multiplexerd start"
+    }
+}

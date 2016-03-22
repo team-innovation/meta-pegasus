@@ -1,0 +1,7 @@
+{
+    "networkd":
+    {
+	"name" : "Network Services",
+    	"start": "/etc/init.d/networkd start"
+    }
+}
