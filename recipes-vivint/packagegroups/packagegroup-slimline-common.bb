@@ -26,6 +26,7 @@ RDEPENDS_${PN} = " \
 	python3-netserver \
 	python3-numpy \
 	python3-pexpect-u \
+	python3-pytz \
 	python3-re \
 	python3-resource \
 	python3-setproctitle \

@@ -153,6 +153,7 @@ RDEPENDS_${PN} = "\
 	python3-subprocess \
 	python3-pyserial \
 	python3-pyalsaaudio \
+	python3-pytz \
 	python3-threading \
 	python3-setproctitle \
 "
