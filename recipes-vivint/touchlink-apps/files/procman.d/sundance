@@ -1,0 +1,8 @@
+{
+    "sundance":
+    {
+    	"priority" : 2,
+	"name" : "Security Services",
+    	"start": "/etc/init.d/sundance start"
+    }
+}

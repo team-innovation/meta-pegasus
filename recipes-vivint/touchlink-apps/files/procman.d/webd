@@ -1,0 +1,8 @@
+{
+    "webd":
+    {
+	"name" : "Debug Services",
+	"scheduler": "os.SCHED_IDLE",
+    	"start": "/etc/init.d/webd start"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "dbapd":
+    {
+	"name" : "Doorbell services",
+    	"start": "/etc/init.d/dbapd start"
+    }
+}

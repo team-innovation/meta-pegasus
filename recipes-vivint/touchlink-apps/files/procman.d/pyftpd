@@ -1,0 +1,10 @@
+{
+    "pyftpd":
+    {
+    	"priority" : -2,
+    	"name" : "PyFTPD Server",
+		"pid_file" : "/var/run/pyftpd.pid",
+    	"start": "/etc/init.d/pyftpd start",
+    	"stop": "/etc/init.d/pyftpd stop"
+    }
+}

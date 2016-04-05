@@ -1,0 +1,7 @@
+{
+    "dvrd":
+    {
+	"name" : "DVR Services",
+    	"start": "/etc/init.d/dvrd start"
+    }
+}
