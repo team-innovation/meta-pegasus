@@ -1,30 +1,16 @@
 # Copyright (C) 2015 Vivint, Inc.
 
-DESCRIPTION = "touchlink apps packages, framework, roubaix, etc"
-LICENSE = "MIT"
-
-PR = "r9"
-
 inherit packagegroup
 
-VIVINT_APPS = "\
+VIVINT_APPS_COMMON = "\
 	touchlink-apps \
-	touchlink-apps-345d \
-	touchlink-apps-cloudd \
-	touchlink-apps-dbapd \
 	touchlink-apps-favicon \
 	touchlink-apps-framework \
 	touchlink-apps-global-conf \
-	touchlink-apps-httpd \
 	touchlink-apps-iod \
-	touchlink-apps-modemd \
-	touchlink-apps-multiplexerd \
 	touchlink-apps-netd \
-	touchlink-apps-networkd \
 	touchlink-apps-nfcd \
-	touchlink-apps-pcamd \
 	touchlink-apps-procmand \
-	touchlink-apps-pyftpd \
 	touchlink-apps-qml-framework \
 	touchlink-apps-qml-framework-images-controls \
 	touchlink-apps-qml-framework-images-controls-shared \
@@ -68,11 +54,8 @@ VIVINT_APPS = "\
 	touchlink-apps-sound-wav-pauses \
 	touchlink-apps-sound-wav-vocab \
 	touchlink-apps-ssdpd \
-	touchlink-apps-sundance \
 	touchlink-apps-updated \
 	touchlink-apps-utils \
-	touchlink-apps-webd \
-	touchlink-apps-zwaved \
 	touchlink-simlock \
 	"
 
@@ -120,7 +103,7 @@ MISC_DEPENDS = "\
 	"
 
 RDEPENDS_${PN} = " \
-	${VIVINT_APPS} \
+	${VIVINT_APPS_COMMON} \
 	${QT5_DEPENDS} \
 	${QT5_PKGS} \
 	${PULSE_DEPENDS} \

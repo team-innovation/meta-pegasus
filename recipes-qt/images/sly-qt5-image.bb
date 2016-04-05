@@ -6,7 +6,7 @@ IMAGE_FEATURES += "package-management"
 IMAGE_INSTALL_append = "\
 	${CORE_IMAGE_BASE_INSTALL} \
 	packagegroup-slimline-common \
-	packagegroup-touchlink-apps \ 
+	packagegroup-touchlink-apps-sly \
 	packagegroup-slimline-video \
 	alsa-utils-aplay \
 	pulseaudio-meta \
