@@ -40,6 +40,7 @@ RDEPENDS_${PN} = " \
 	slimline-version \
 	sqlite3 \
 	touchlink-ntpsync \
+	tzdata \
 	tzdata-americas \
 	wps-sh \
 	alsa-utils \
