@@ -129,7 +129,7 @@
     <CMD state="BootStrap" type="load" file="files/zImage" address="0x12000000"
       loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Kernel.</CMD>
 
-    <CMD state="BootStrap" type="load" file="files/slimline-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot" address="0x12C00000"
+    <CMD state="BootStrap" type="load" file="files/sly-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot" address="0x12C00000"
       loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Initramfs.</CMD>
 
     <CMD state="BootStrap" type="load" file="files/imx6dl-sly-ldo.dtb" address="0x18000000"
@@ -161,7 +161,7 @@
     <CMD state="BootStrap" type="load" file="files/zImage" address="0x12000000"
       loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Kernel.</CMD>
 
-    <CMD state="BootStrap" type="load" file="files/slimline-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot" address="0x12C00000"
+    <CMD state="BootStrap" type="load" file="files/sly-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot" address="0x12C00000"
       loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Initramfs.</CMD>
 
     <CMD state="BootStrap" type="load" file="files/imx6dl-sly-v2-ldo.dtb" address="0x18000000"
@@ -191,7 +191,7 @@
     <CMD state="BootStrap" type="load" file="files/zImage" address="0x12000000"
       loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Kernel.</CMD>
 
-    <CMD state="BootStrap" type="load" file="files/slimline-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot" address="0x12C00000"
+    <CMD state="BootStrap" type="load" file="files/sly-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot" address="0x12C00000"
       loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Initramfs.</CMD>
 
     <CMD state="BootStrap" type="load" file="files/imx6dl-sly-v2-ldo.dtb" address="0x18000000"
@@ -223,7 +223,7 @@
     <CMD state="BootStrap" type="load" file="files/zImage" address="0x12000000"
       loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Kernel.</CMD>
 
-    <CMD state="BootStrap" type="load" file="files/slimline-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot" address="0x12C00000"
+    <CMD state="BootStrap" type="load" file="files/sly-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot" address="0x12C00000"
       loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Initramfs.</CMD>
 
     <CMD state="BootStrap" type="load" file="files/imx6dl-sly-v2-ldo.dtb" address="0x18000000"
