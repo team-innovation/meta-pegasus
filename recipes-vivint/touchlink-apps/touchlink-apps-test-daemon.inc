@@ -16,6 +16,6 @@ do_install_append () {
 FILES_${PN}-test-daemon = "\
        ${TEST_DAEMON_DEST_DIR}/*   \
 	${sysconfdir}/init.d/test_daemon		\
-	${sysconfdir}/procman.d/test_daemon		\
+	${sysconfdir}/procman.d-fcc/test_daemon		\
        "
 

@@ -16,6 +16,6 @@ do_install_append () {
 FILES_${PN}-test-ui = "\
        ${TEST_UI_DEST_DIR}/*   \
 	${sysconfdir}/init.d/test_ui		\
-	${sysconfdir}/procman.d/test_ui		\
+	${sysconfdir}/procman.d-fcc/test_ui		\
        "
 
