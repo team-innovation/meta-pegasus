@@ -17,12 +17,13 @@ RDEPENDS_${PN} = " \
 	kernel-devicetree \
 	kernel-image \
 	kernel-modules \
-	slimline-modules \
+	sly-modules \
 	ntp \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
 	psoc5-verify \
-	psoc-fw \
+	psoc-fw-sly \
+	psoc-fw-slimline \
 	strace \
 	u-boot-fw-utils \
 	u-boot-slimline \

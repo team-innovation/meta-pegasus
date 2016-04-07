@@ -36,7 +36,6 @@ RDEPENDS_${PN} = " \
 	python3-subprocess \
 	python3-terminal \
 	python3-textutils \
-	slimline-modules \
 	slimline-version \
 	sqlite3 \
 	touchlink-ntpsync \
