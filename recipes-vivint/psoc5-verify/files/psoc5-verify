@@ -4,11 +4,16 @@
 # Check the PSOC5 firmware and update if necessary
 
 lsmod | grep -q monpwr || modprobe monpwr
-exit 0
+
 psoc5_verify()
 {
 	if [ ! -d /sys/class/swd/psoc50 ]; then
 		echo "PSOC5 kernel device driver not installed"
+		return 1
+	fi
+
+	if [ ! -e /lib/firmware/vivint/sly-psoc5.fw ]; then
+		echo "PSOC5 firmware not found"
 		return 1
 	fi
 
@@ -22,10 +27,13 @@ psoc5_verify()
 		echo "PSOC5 firmware already verified"
 		return 0
 	else
+		path=vivint/`cat /proc/device-tree/compatible | \
+			grep vivint | cut -d"," -f2`-psoc5.fw
 		lsmod | grep -q monpwr && rmmod monpwr
 		test -f /sys/class/swd/psoc50/access &&
 			echo 1 > /sys/class/swd/psoc50/access
-		echo 1 > /sys/class/swd/psoc50/doall &&
+		echo $path > /sys/class/swd/psoc50/fw_path &&
+			echo 1 > /sys/class/swd/psoc50/doall &&
 			touch /tmp/psoc5fwverified
 		test -f /sys/class/swd/psoc50/access &&
 			echo 0 > /sys/class/swd/psoc50/access

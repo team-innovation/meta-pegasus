@@ -21,7 +21,7 @@ S = "${WORKDIR}"
 do_compile() {
 	${BUILD_CC} ihex2fw.c -o ihex2fw
 	./ihex2fw \
-		git/firmware/design/LEDs_Copy_01.cydsn/CortexM3/ARM_GCC_473/Debug/LEDs_Copy_01.hex \
+		git/firmware/design/LEDs.cydsn/CortexM3/ARM_GCC_473/Debug/LEDs.hex \
 		${FW_NAME}
 }
 
