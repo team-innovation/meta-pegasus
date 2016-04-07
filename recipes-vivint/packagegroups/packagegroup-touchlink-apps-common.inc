@@ -102,6 +102,12 @@ MISC_DEPENDS = "\
 	socat \
 	"
 
+PYTHON_EXTRA_DEPENDS = "\
+	python3-requests \
+	python3-multiprocessing \
+	python3-mmap \
+	"
+
 RDEPENDS_${PN} = " \
 	${VIVINT_APPS_COMMON} \
 	${QT5_DEPENDS} \
@@ -110,4 +116,5 @@ RDEPENDS_${PN} = " \
 	${TOUCHSCREEN_DEPENDS} \
 	${DISPLAY_DEPENDS} \
 	${MISC_DEPENDS} \
+	${PYTHON_EXTRA_DEPENDS} \
 "
