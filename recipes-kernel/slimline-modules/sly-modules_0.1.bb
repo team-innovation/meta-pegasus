@@ -3,7 +3,7 @@ LICENSE = "CLOSED"
 
 inherit module
 
-PR = "r0"
+PR = "r1"
 PV = "0.1"
 
 SRC_URI = " \
@@ -15,5 +15,5 @@ SRCREV = "${AUTOREV}"
 S = "${WORKDIR}/git"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-KERNEL_MODULE_PROBECONF += "monpwr"
-module_conf_monpwr = "blacklist monpwr"
+KERNEL_MODULE_PROBECONF += "monpwr-sly"
+module_conf_monpwr = "blacklist monpwr-sly"

@@ -3,7 +3,16 @@
 #
 # Check the PSOC5 firmware and update if necessary
 
-lsmod | grep -q monpwr || modprobe monpwr
+platform=`cat /proc/device-tree/compatible | \
+            grep vivint | cut -d"," -f2`
+
+if [ "$platform" == "sly" ]; then
+	monpwr_driver=monpwr_$platform
+else
+	monpwr_driver=monpwr
+fi
+
+lsmod | grep -q $monpwr_driver || modprobe $monpwr_driver
 
 psoc5_verify()
 {
@@ -27,9 +36,8 @@ psoc5_verify()
 		echo "PSOC5 firmware already verified"
 		return 0
 	else
-		path=vivint/`cat /proc/device-tree/compatible | \
-			grep vivint | cut -d"," -f2`-psoc5.fw
-		lsmod | grep -q monpwr && rmmod monpwr
+		path=vivint/$platform-psoc5.fw
+		lsmod | grep -q $monpwr_driver && rmmod $monpwr_driver
 		test -f /sys/class/swd/psoc50/access &&
 			echo 1 > /sys/class/swd/psoc50/access
 		echo $path > /sys/class/swd/psoc50/fw_path &&
@@ -37,7 +45,7 @@ psoc5_verify()
 			touch /tmp/psoc5fwverified
 		test -f /sys/class/swd/psoc50/access &&
 			echo 0 > /sys/class/swd/psoc50/access
-		modprobe monpwr
+		modprobe $monpwr_driver
 	fi
 
 	return 0
