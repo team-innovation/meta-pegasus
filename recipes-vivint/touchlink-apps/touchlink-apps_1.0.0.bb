@@ -11,6 +11,7 @@ LICENSE = "CLOSED"
 require touchlink-apps-sundance.inc
 
 require touchlink-apps-rtspd.inc
+require touchlink-apps-videod.inc
 
 # fcc test apps
 require touchlink-apps-test-ui.inc
@@ -281,19 +282,25 @@ fi
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-PACKAGES = "${PN}-roubaix       \
-        ${PN}-roubaix-controls  \
-        ${PN}-roubaix-audio-platform  \
-        ${PN}-roubaix-audmgr-definitions  \
-        ${PN}-roubaix-defs  \
-        ${PN}-roubaix-demo-assets  \
-        ${PN}-roubaix-mixin  \
-        ${PN}-roubaix-framework  \
-        ${PN}-roubaix-models  \
-        ${PN}-roubaix-views  \
-        ${PN}-roubaix-fonts  \
-        ${PN}-roubaix-html  \
-        ${PN}-roubaix-legal  \
+PACKAGES = " \
+	${PN}-345d          \
+	${PN}-framework     \
+	${PN}-multiplexerd          \
+	${PN}-networkd          \
+	${PN}-nfcd          \
+	${PN}-roubaix       \
+	${PN}-roubaix-audio-platform  \
+	${PN}-roubaix-audmgr-definitions  \
+	${PN}-roubaix-controls  \
+	${PN}-roubaix-defs  \
+	${PN}-roubaix-demo-assets  \
+	${PN}-roubaix-framework  \
+	${PN}-roubaix-mixin  \
+	${PN}-roubaix-models  \
+	${PN}-roubaix-views  \
+	${PN}-roubaix-fonts  \
+	${PN}-roubaix-html  \
+	${PN}-roubaix-legal  \
 	${PN}-roubaix-images-coin \
 	${PN}-roubaix-images-controls \
 	${PN}-roubaix-images-rules \
@@ -304,41 +311,38 @@ PACKAGES = "${PN}-roubaix       \
 	${PN}-roubaix-themes-alabaster \
 	${PN}-roubaix-themes-aqua \
 	${PN}-roubaix-themes-forest \
-        ${PN}-roubaix-popups  \
-        ${PN}-roubaix-scripts  \
-        ${PN}-roubaix-style  \
-        ${PN}-roubaix-services  \
-        ${PN}-roubaix-gunk  \
-	${PN}-framework     \
+	${PN}-roubaix-popups  \
+	${PN}-roubaix-scripts  \
+	${PN}-roubaix-style  \
+	${PN}-roubaix-services  \
+	${PN}-roubaix-gunk  \
 	${PN}-qml-framework     \
 	${PN}-qml-framework-images-controls 	\
 	${PN}-qml-framework-images-controls-keyboards 	\
 	${PN}-qml-framework-images-controls-shared \
-        ${PN}-sundance      \
-        ${PN}-ssdpd      \
-        ${PN}-zwaved        \
-        ${PN}-345d          \
-        ${PN}-multiplexerd          \
-        ${PN}-networkd          \
-        ${PN}-nfcd          \
-        ${PN}-updated       \
-        ${PN}-cloudd          \
-        ${PN}-modemd          \
-        ${PN}-adtd          \
-        ${PN}-dbapd        \
-        ${PN}-pcamd        \
-        ${PN}-vocabulary    \
-        ${PN}-iod   \
-        ${PN}-rtspd   \
-        ${PN}-test-daemon  \
-        ${PN}-test-ui  \
-        ${PN}-netd  \
-        ${PN}-utils \
-        ${PN}-httpd \
-        ${PN}-webd  \
-        ${PN}-procmand \
-        ${PN}-pyftpd \
-        ${PN}-favicon \
+	${PN}-adtd          \
+	${PN}-cloudd          \
+	${PN}-dbapd        \
+	${PN}-favicon \
+	${PN}-global-conf \
+	${PN}-httpd \
+	${PN}-iod   \
+	${PN}-modemd          \
+	${PN}-netd  \
+	${PN}-pcamd        \
+	${PN}-procmand \
+	${PN}-pyftpd \
+	${PN}-rtspd   \
+	${PN}-ssdpd      \
+	${PN}-sundance      \
+	${PN}-test-daemon  \
+	${PN}-test-ui  \
+	${PN}-updated       \
+	${PN}-utils \
+	${PN}-videod    \
+	${PN}-vocabulary    \
+	${PN}-webd  \
+	${PN}-zwaved        \
 	${PN}-sound-roubaix-back \
 	${PN}-sound-roubaix-chimes \
 	${PN}-sound-roubaix-click \
@@ -356,5 +360,5 @@ PACKAGES = "${PN}-roubaix       \
 	${PN}-sound-wav-dtmf \
 	${PN}-sound-wav-pauses \
 	${PN}-sound-wav-vocab	\
-	${PN}-global-conf \
-        ${PN}"
+	${PN} \
+"
