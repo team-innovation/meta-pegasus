@@ -10,13 +10,7 @@ LICENSE = "CLOSED"
 
 require touchlink-apps-sundance.inc
 
-# videod has touchlink specific code
-#require touchlink-apps-videod.inc
-
-#require touchlink-apps-rtspd.inc
-
-# dvrd does not build
-#require touchlink-apps-dvrd.inc
+require touchlink-apps-rtspd.inc
 
 # fcc test apps
 require touchlink-apps-test-ui.inc
@@ -331,12 +325,11 @@ PACKAGES = "${PN}-roubaix       \
         ${PN}-cloudd          \
         ${PN}-modemd          \
         ${PN}-adtd          \
-        ${PN}-videod        \
-        ${PN}-dvrd        \
         ${PN}-dbapd        \
         ${PN}-pcamd        \
         ${PN}-vocabulary    \
         ${PN}-iod   \
+        ${PN}-rtspd   \
         ${PN}-test-daemon  \
         ${PN}-test-ui  \
         ${PN}-netd  \

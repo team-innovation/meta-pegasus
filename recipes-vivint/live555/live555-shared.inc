@@ -12,7 +12,9 @@ INC_PR = "r36"
 SRCREV = "37b2d3593a44"
 MODULE = "live555"
 SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
-	       file://config.linux-cross-shared-libraries"
+	       file://config.linux-cross-shared-libraries \
+	       file://do-not-build-testprogs.patch \
+"
 
 #SRC_URI = "file:///media/WD_MPassport/live555 \
 #	       file://config.linux-cross-shared-libraries"
@@ -49,9 +51,6 @@ do_install() {
 	echo ${D} > /tmp/t
 	cp ${S}/*/*.so.* ${D}${libdir}
 	install -d ${D}${bindir}
-	for i in MPEG2TransportStreamIndexer openRTSP playSIP sapWatch testMPEG1or2ProgramToTransportStream testMPEG1or2Splitter testMPEG1or2VideoReceiver testMPEG2TransportStreamTrickPlay testOnDemandRTSPServer testRelay testAMRAudioStreamer testDVVideoStreamer testMP3Receiver testMP3Streamer testMPEG1or2AudioVideoStreamer testMPEG1or2VideoStreamer testMPEG2TransportStreamer testMPEG4VideoStreamer testWAVAudioStreamer vobStreamer; do
-		install -m 0755 ${S}/testProgs/${i} ${D}${bindir}/
-	done
 	install -m 0755 ${S}/mediaServer/live555MediaServer ${D}${bindir}/
 	install -m 0755 ${S}/proxyServer/live555ProxyServer ${D}${bindir}/
 }
