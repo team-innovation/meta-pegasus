@@ -18,6 +18,7 @@ RDEPENDS_${PN} = " \
 	kernel-image \
 	kernel-modules \
 	sly-modules \
+	slimline-modules \
 	ntp \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
