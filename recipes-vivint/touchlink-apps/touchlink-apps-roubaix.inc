@@ -55,15 +55,17 @@ fi
 }
 
 FILES_${PN}-roubaix = "\
-    ${INSTALL_DIR}/roubaix/roubaix_conf.json   \
-    ${INSTALL_DIR}/roubaix/roubaix_demo_conf.json   \
-    ${INSTALL_DIR}/roubaix/roubaix_demo_log.json   \
-    ${INSTALL_DIR}/roubaix/roubaix_log.json		\
-    ${INSTALL_DIR}/roubaix/roubaix.qml	\
+    ${INSTALL_DIR}/roubaix/conf_files/slim_line/roubaix_conf.json \
+    ${INSTALL_DIR}/roubaix/conf_files/sky/roubaix_conf.json \
+    ${INSTALL_DIR}/roubaix/conf_files/sly/roubaix_conf.json \
+    ${INSTALL_DIR}/roubaix/roubaix_demo_conf.json \
+    ${INSTALL_DIR}/roubaix/roubaix_demo_log.json \
+    ${INSTALL_DIR}/roubaix/roubaix_log.json \
+    ${INSTALL_DIR}/roubaix/roubaix.qml \
     ${INSTALL_DIR}/roubaix/utils/* \
-    ${INSTALL_DIR}/roubaix/definitions.pyo	\
-    ${INSTALL_DIR}/roubaix/roubaix.pyo	\
-    ${INSTALL_DIR}/roubaix/proxies/*	\
+    ${INSTALL_DIR}/roubaix/definitions.pyo \
+    ${INSTALL_DIR}/roubaix/roubaix.pyo \
+    ${INSTALL_DIR}/roubaix/proxies/* \
     ${INSTALL_DIR}/roubaix/FileMixin.pyo \
     ${INSTALL_DIR}/roubaix/ConnectionsMixin.pyo \
     ${INSTALL_DIR}/roubaix/AudioMixin.pyo \
@@ -73,7 +75,7 @@ FILES_${PN}-roubaix = "\
     ${INSTALL_DIR}/roubaix/AudioMixin.py \
     ${INSTALL_DIR}/roubaix/PlayAudioThread.py \
     ${INSTALL_DIR}/roubaix/migrations/* \
-    ${sysconfdir}/init.d/roubaix		\
-    ${sysconfdir}/procman.d/roubaix	\
+    ${sysconfdir}/init.d/roubaix \
+    ${sysconfdir}/procman.d/roubaix \
     "
 
