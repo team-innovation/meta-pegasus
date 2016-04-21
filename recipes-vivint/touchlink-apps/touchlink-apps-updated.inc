@@ -29,10 +29,6 @@ do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/updated/
         ${RSYNC_CMD} --exclude=docs --exclude=*.cmd ${S}/code/updated/ ${D}/${INSTALL_DIR}/updated/
         chmod +x ${D}/${INSTALL_DIR}/updated/updated.pyo
-
-        # move updated_slimline_conf.json to updated_conf.json
-        rm -f ${D}/${INSTALL_DIR}/updated/updated_conf.json
-        mv ${D}/${INSTALL_DIR}/updated/updated_slimline_conf.json ${D}/${INSTALL_DIR}/updated/updated_conf.json
 }
 
 pkg_postinst_${PN}-updated () {

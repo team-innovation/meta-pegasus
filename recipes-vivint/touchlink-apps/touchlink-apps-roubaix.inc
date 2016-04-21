@@ -25,10 +25,6 @@ do_install_append (){
         rm -rf ${D}/${INSTALL_DIR}/roubaix/utils/CameraStatusHelper.py
         rm -rf ${D}/${INSTALL_DIR}/roubaix/definitions.py
         rm -rf ${D}/${INSTALL_DIR}/roubaix/roubaix.py
-
-	# move roubaix_slimline_conf.json to roubaix_slimline.json 
-	rm -f ${D}/${INSTALL_DIR}/roubaix/roubaix_conf.json
-	mv ${D}/${INSTALL_DIR}/roubaix/roubaix_slimline_conf.json ${D}/${INSTALL_DIR}/roubaix/roubaix_conf.json
 }
 
 pkg_postinst_${PN}-roubaix () {
