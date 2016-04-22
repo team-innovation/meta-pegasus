@@ -5,7 +5,7 @@ KERNEL_SRC = "git://git.vivint.com/linux-imx.git;protocol=git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 PV = "3.14.28+git${SRCPV}"
 
-PR = "r36"
+PR = "r37"
 
 DEFAULT_PREFERENCE = "1"
 
