@@ -23,3 +23,7 @@ modprobe snd_soc_cx20704
 modprobe snd_soc_imx_cx20704
 amixer sset 'I2S TX Source' 'Stream2: mic ADC'
 amixer sset 'DAC Source' 'Stream3: I2S in'
+grep -q sly /proc/device-tree/compatible && {
+	modprobe snd_soc_gsm030x
+	modprobe snd_soc_imx_gsm030x
+}
