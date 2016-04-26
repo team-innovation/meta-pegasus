@@ -13,6 +13,7 @@ IMAGE_INSTALL_append = "\
 	python3-pyqt5 \
 	audio-sh \
 	mtd-utils \
+	packagegroup-ppp-config-modem \
 "
 
 inherit core-image
