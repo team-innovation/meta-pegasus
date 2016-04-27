@@ -3,8 +3,10 @@
 #
 # Check the PSOC5 firmware and update if necessary
 
-platform=`cat /proc/device-tree/compatible | \
-            grep vivint | cut -d"," -f2`
+platform=`strings /proc/device-tree/compatible |	\
+            grep vivint |				\
+	    head -n 1 |					\
+	    cut -d"," -f2`
 
 if [ "$platform" == "sly" ]; then
 	monpwr_driver=monpwr_$platform
