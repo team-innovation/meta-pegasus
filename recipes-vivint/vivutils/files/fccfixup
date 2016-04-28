@@ -16,3 +16,8 @@ mv * .hidden/
 mv .hidden/DejaVu* .
 sync
 exit 0
+
+echo "disabling psoc update"
+cd /etc/init.d
+mv psoc5-verify psoc5-verify.orig
+ln -s /bin/true psoc5-verify
