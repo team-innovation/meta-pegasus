@@ -3,21 +3,21 @@
 
 echo "fixing up procman.d..."
 cd /mnt/mmcblk0p5/etc/
-ls
 mkdir .hidden
 mv procman.d .hidden
 mv procman.d-fcc procman.d 
 
 echo "fixing up fonts..."
 cd /mnt/mmcblk0p5/usr/lib/fonts
-ls
 mkdir .hidden
 mv * .hidden/
 mv .hidden/DejaVu* .
+
+echo "disabling psoc update"
+cd /mnt/mmcblk0p5/etc/init.d
+mv psoc5-verify psoc5-verify.orig
+ln -s /bin/true psoc5-verify
+
 sync
 exit 0
 
-echo "disabling psoc update"
-cd /etc/init.d
-mv psoc5-verify psoc5-verify.orig
-ln -s /bin/true psoc5-verify
