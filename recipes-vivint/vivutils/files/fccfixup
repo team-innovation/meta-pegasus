@@ -18,6 +18,12 @@ cd /mnt/mmcblk0p5/etc/init.d
 mv psoc5-verify psoc5-verify.orig
 ln -s /bin/true psoc5-verify
 
+echo "adding 345d and multiplexerd to procman.d"
+cd /mnt/mmcblk0p5/etc/
+cp .hidden/procman.d/multiplexerd procman.d
+cp .hidden/procman.d/345d procman.d
+ls procman.d
+
 sync
 exit 0
 
