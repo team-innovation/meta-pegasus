@@ -38,6 +38,7 @@ RDEPENDS_${PN} = " \
 	python3-textutils \
 	slimline-modules \
 	slimline-version \
+	touchlink-version \
 	sqlite3 \
 	touchlink-ntpsync \
 	tzdata \
