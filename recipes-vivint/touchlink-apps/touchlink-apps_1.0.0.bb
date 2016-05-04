@@ -170,7 +170,7 @@ do_compile() {
 			fi
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table
 	else 
-	        ${S}/scripts/generate_all_proxies.py --verbose
+	        ${S}/scripts/generate_all_proxies.py --generate_string_table --verbose
 	fi
 
 	# generate .pyc files
