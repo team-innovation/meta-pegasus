@@ -1,4 +1,4 @@
-# Copyright (C) 2015 Vivint Innovation 
+# Copyright (C) 2015 Vivint Innovation
 
 DESCRIPTION = "Fake Touchlink Version Information"
 SECTION = "touchlink"
@@ -12,5 +12,5 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 do_install() {
     install -d ${D}${sysconfdir}
-    echo "3.0.0.12345" > ${D}${sysconfdir}/touchlink-version
+    echo "3.0.0.17050" > ${D}${sysconfdir}/touchlink-version
 }
