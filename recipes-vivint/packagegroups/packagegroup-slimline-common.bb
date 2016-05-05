@@ -45,4 +45,5 @@ RDEPENDS_${PN} = " \
 	tzdata-americas \
 	wps-sh \
 	alsa-utils \
+	webrtc-audio-processing \
 "

@@ -21,8 +21,8 @@ load-module module-cli-protocol-tcp
 load-module module-alsa-source device=hw:0,0 name=aic control='Mic Gain' rate=8000 channels=2 tsched=0 fixed_latency_range=0 deferred_volume=0
 load-module module-alsa-sink device=hw:0,0 name=aic control='Playback Gain' rate=8000 channels=2 tsched=0 fixed_latency_range=0 deferred_volume=0
 
-# Added echo cancel module
-#load-module module-echo-cancel rate=8000 adjust_time=2 sink_name=aec_output source_name=aec_input aec_method=webrtc aec_args="high_pass_filter=true noise_suppression=true routing_mode=speakerphone mobile=true analog_gain_control=false"
+# Add echo cancel module
+load-module module-echo-cancel rate=8000 adjust_time=2 sink_name=aec_output source_name=aec_input aec_method=webrtc aec_args="high_pass_filter=true noise_suppression=true routing_mode=speakerphone mobile=true analog_gain_control=false"
 
 # Load the GSM source and sink given the names below
 #load-module module-alsa-source device=hw:0,1 name=gsm rate=8000 channels=1 tsched=1 deferred_volume=0
