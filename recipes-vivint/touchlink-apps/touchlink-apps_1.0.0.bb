@@ -30,6 +30,7 @@ require touchlink-apps-nfcd.inc
 #require touchlink-apps-adtd.inc
 
 require touchlink-apps-updated.inc
+require touchlink-apps-usage-analytics.inc
 require touchlink-apps-zwaved.inc
 require touchlink-apps-netd.inc
 require touchlink-apps-utils.inc
@@ -346,6 +347,7 @@ PACKAGES = " \
 	${PN}-test-daemon  \
 	${PN}-test-ui  \
 	${PN}-updated       \
+	${PN}-usage-analytics \
 	${PN}-utils \
 	${PN}-videod    \
 	${PN}-vocabulary    \

@@ -56,6 +56,7 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-sound-wav-vocab \
 	touchlink-apps-ssdpd \
 	touchlink-apps-updated \
+	touchlink-apps-usage-analytics \
 	touchlink-apps-utils \
 	touchlink-simlock \
 	"
