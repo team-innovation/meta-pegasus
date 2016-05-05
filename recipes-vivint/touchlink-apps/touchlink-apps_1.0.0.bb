@@ -131,9 +131,11 @@ DEPENDS = " \
 	python3-gnupg-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
+	python3-mixpanel-native \
 	python3-mock-native \
 	python3-msgpack-native \
 	python3-native \
+	python3-pexpect-u-native \
 	python3-psutil-native \
 	python3-pyalsaaudio-native \
 	python3-pycrypto-native \
@@ -143,7 +145,7 @@ DEPENDS = " \
 	python3-pyserial-native \
 	python3-pytz-native \
 	python3-requests-native \
-	python3-pexpect-u-native \
+	python3-six-native \
 	python3-setproctitle-native \
 "
 
@@ -170,6 +172,12 @@ do_compile() {
 			fi
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table
 	else 
+			if [ -e ${HOME}/CodeHG/strings/string_table.py ]; then
+				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
+				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
+				cp ${HOME}/CodeHG/strings/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
+				cp ${HOME}/CodeHG/strings/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
+			fi
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table --verbose
 	fi
 

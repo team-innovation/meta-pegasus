@@ -11,8 +11,10 @@ inherit packagegroup
 #   If a package is also needed for minimum image
 #   then add it to packagegroup-slimline-min not here.
 RDEPENDS_${PN} = " \
-	libsodium13 \
+	alsa-utils \
 	kernel-module-mt7603 \
+	libsodium13 \
+	openvpn \
 	packagegroup-slimline-min \
 	python3-ctypes \
 	python3-distribute \
@@ -22,6 +24,7 @@ RDEPENDS_${PN} = " \
 	python3-json \
 	python3-math \
 	python3-misc \
+	python3-mixpanel \
 	python3-msgpack \
 	python3-netserver \
 	python3-numpy \
@@ -38,12 +41,11 @@ RDEPENDS_${PN} = " \
 	python3-textutils \
 	slimline-modules \
 	slimline-version \
-	touchlink-version \
 	sqlite3 \
 	touchlink-ntpsync \
+	touchlink-version \
 	tzdata \
 	tzdata-americas \
-	wps-sh \
-	alsa-utils \
 	webrtc-audio-processing \
+	wps-sh \
 "

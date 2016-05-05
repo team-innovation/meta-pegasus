@@ -1,0 +1,19 @@
+diff -uNr mixpanel-python-master/setup.py mixpanel-python-master.b/setup.py
+--- mixpanel-python-master/setup.py	2016-01-21 13:00:16.000000000 -0700
++++ mixpanel-python-master.b/setup.py	2016-04-07 17:07:12.224411613 -0600
+@@ -1,7 +1,7 @@
+ from codecs import open
+ from os import path
+ import re
+-from setuptools import setup, find_packages
++from distutils.core import setup
+ 
+ def read(*paths):
+     filename = path.join(path.abspath(path.dirname(__file__)), *paths)
+@@ -34,5 +34,5 @@
+     ],
+ 
+     keywords='mixpanel analytics',
+-    packages=find_packages(),
++    packages=['mixpanel'],
+ )
