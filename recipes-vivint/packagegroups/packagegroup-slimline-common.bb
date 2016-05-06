@@ -24,7 +24,6 @@ RDEPENDS_${PN} = " \
 	python3-json \
 	python3-math \
 	python3-misc \
-	python3-mixpanel \
 	python3-msgpack \
 	python3-netserver \
 	python3-numpy \

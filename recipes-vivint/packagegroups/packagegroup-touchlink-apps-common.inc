@@ -105,9 +105,11 @@ MISC_DEPENDS = "\
 	"
 
 PYTHON_EXTRA_DEPENDS = "\
-	python3-requests \
+	python3-mixpanel \
 	python3-multiprocessing \
 	python3-mmap \
+	python3-requests \
+	python3-six \
 	"
 
 RDEPENDS_${PN} = " \
