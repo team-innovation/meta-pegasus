@@ -1,0 +1,45 @@
+#!/bin/sh
+# Copyright (c) 2016, Vivint
+#
+# Update the zwave file on first boot
+
+zwave_program()
+{
+    path=/lib/firmware/vivint/serialapi_controller_static_zw050x_us.hex
+    if [ ! -e $path ]; then
+        echo "Zwave firmware not found"
+        return 1
+    fi
+
+    if [ ! -e /opt/2gig/zwaved/scripts/zwave_program.py ]; then
+        echo "Zwave programer not found"
+        return 1
+    fi
+
+    echo "Check that Zwave firmware is up to date"
+    if [ -f /tmp/zwavefwverified ]; then
+        echo "Zwave firmware already installed"
+        return 0
+    else
+        python3 /opt/2gig/zwaved/scripts/zwave_program.py $path
+        touch /tmp/zwavefwverified
+    fi
+}
+
+stop() {
+    return 0
+}
+
+case "$1" in
+    start|restart|reload)
+    zwave_program
+    ;;
+    stop)
+    stop
+    ;;
+    *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+
+exit $?
