@@ -14,6 +14,7 @@ IMAGE_INSTALL_append = "\
 	audio-sh \
 	mtd-utils \
 	packagegroup-ppp-config-modem \
+    packagegroup-zwave-config \
 "
 
 inherit core-image
