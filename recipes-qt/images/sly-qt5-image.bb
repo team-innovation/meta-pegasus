@@ -7,6 +7,7 @@ IMAGE_INSTALL_append = "\
 	${CORE_IMAGE_BASE_INSTALL} \
 	packagegroup-slimline-common \
 	packagegroup-touchlink-apps-sly \
+	packagegroup-sawmill-sly \
 	packagegroup-slimline-video \
 	alsa-utils-aplay \
 	pulseaudio-meta \
