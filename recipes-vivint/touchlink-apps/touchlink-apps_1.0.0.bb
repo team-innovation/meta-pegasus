@@ -23,7 +23,6 @@ require touchlink-apps-345d.inc
 require touchlink-apps-cloudd.inc
 require touchlink-apps-modemd.inc
 require touchlink-apps-multiplexerd.inc
-require touchlink-apps-networkd.inc
 require touchlink-apps-nfcd.inc
 
 # adtd is touchlink dependent
@@ -295,7 +294,6 @@ PACKAGES = " \
 	${PN}-345d          \
 	${PN}-framework     \
 	${PN}-multiplexerd          \
-	${PN}-networkd          \
 	${PN}-nfcd          \
 	${PN}-roubaix       \
 	${PN}-roubaix-audio-platform  \
