@@ -1,5 +1,6 @@
 DESCRIPTION = "Flash zwave firmware on first boot up"
 HOMEPAGE = "http://www.vivint.com/"
+SECTION = "base"
 LICENSE = "CLOSED"
 PR = "r1"
 
@@ -9,12 +10,18 @@ RDEPENDS_${PN} = " \
     python3-pyserial \
 "
 
+SRCREV = "${AUTOREV}"
+
 SRC_URI = " \
-	file://serialapi_controller_static_zw050x_us.hex \
+	git://git@git.vivint.com/~/Z-Wave_SDK_06.51.06;protocol=ssh \
+    file://zwave-program \
 	"
 
-FW_NAME = "serialapi_controller_static_zw050x_us.hex"
+FW_NAME = "serialapi_controller_static_ZW050x_US.hex"
 FW_DIR = "/lib/firmware/vivint"
+
+S = "${WORKDIR}/git/SDK/Product/SerialAPI/build_prj/serialapi_controller_static_ZW050x_US/Rels"
+
 
 do_compile() {
 	:
@@ -26,25 +33,18 @@ do_runstrip() {
 
 do_install () {
     install -d ${D}${FW_DIR}
-    cp ${WORKDIR}/${FW_NAME} ${D}${FW_DIR}
-    chmod 644 ${D}${FW_DIR}/${FW_NAME}
+    install -m 644 ${S}/${FW_NAME} ${D}${FW_DIR}
+    install -d ${D}${sysconfdir}/zwave
+    install -d ${D}${sysconfdir}/init.d
+    install -m 0755 ${WORKDIR}/zwave-program ${D}${sysconfdir}/init.d
+
+    # Create runlevel links
+    update-rc.d -r ${D} zwave-program start 07 S .
 }
 
-pkg_postinst_${PN} () {
-   #!/bin/sh -e
-   # Program the zwave device on first boot
-   if [ x"$D" = "x" ]; then
-        if [ -e /opt/2gig/zwaved/scripts/zwave_program.pyo]
-        then
-            logging "Flashing zwave firmware..."
-            python3 /opt/2gig/zwaved/scripts/zwave_program.pyo ${FW_DIR}/${FW_NAME} 
-        else
-            logging "zwave_program.pyo does not exist, cannot flash zwave chip"
-        fi
-    else
-        exit 1
-    fi
-}
-
-FILES_${PN} = "${FW_DIR}/${FW_NAME}"
-
+FILES_${PN} = "\
+    ${FW_DIR}/${FW_NAME} \
+    ${sysconfdir}/init.d/zwave-program \
+    ${sysconfdir}/rcS.d/*zwave-program \
+    ${sysconfdir}/zwave \
+    "
