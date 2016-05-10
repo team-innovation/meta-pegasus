@@ -3,14 +3,10 @@ LICENSE = "CLOSED"
 
 inherit module
 
-PR = "r1"
-PV = "0.1"
-
-SRC_URI = " \
-	git://git.vivint.com/slimline-modules;branch=skyhub \
-"
-
+SRC_URI = "git://git.vivint.com/slimline-modules;branch=skyhub"
 SRCREV = "${AUTOREV}"
+PV = "3.14.28+git${SRCPV}"
+PR = "r1"
 
 S = "${WORKDIR}/git"
 
