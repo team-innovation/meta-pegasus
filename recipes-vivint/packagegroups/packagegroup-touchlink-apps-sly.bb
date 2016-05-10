@@ -15,7 +15,7 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-httpd \
 	touchlink-apps-modemd \
 	touchlink-apps-multiplexerd \
-	touchlink-apps-networkd \
+	touchlink-apps-netd \
 	touchlink-apps-pyftpd \
 	touchlink-apps-rtspd \
 	touchlink-apps-sundance \
