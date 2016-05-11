@@ -34,7 +34,6 @@ do_runstrip() {
 do_install () {
     install -d ${D}${FW_DIR}
     install -m 644 ${S}/${FW_NAME} ${D}${FW_DIR}
-    install -d ${D}${sysconfdir}/zwave
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwave-program ${D}${sysconfdir}/init.d
 
@@ -46,5 +45,4 @@ FILES_${PN} = "\
     ${FW_DIR}/${FW_NAME} \
     ${sysconfdir}/init.d/zwave-program \
     ${sysconfdir}/rcS.d/*zwave-program \
-    ${sysconfdir}/zwave \
     "
