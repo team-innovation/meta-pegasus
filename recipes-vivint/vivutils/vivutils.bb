@@ -3,30 +3,31 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r22"
+PR = "r23"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
 SRC_URI = "\
 	   file://ccat \
 	   file://ctail \
+	   file://fccfixup \
 	   file://firstboot \
 	   file://firstboot-setup \
 	   file://gadgetsetup \
-	   file://resize.c \
+	   file://mfr_audio_heat_test.py \
+	   file://mfr_audio_test.py \
 	   file://nfctest.c \
 	   file://pcamtest \
-	   file://touchtest \
-	   file://wlan-hwtest \
-	   file://mfr_audio_test.py \
-	   file://mfr_audio_heat_test.py \
+	   file://resize.c \
+	   file://resize.sh \
 	   file://serialnumset \
-	   file://fccfixup \
-	   file://wave_750_hz.wav \
+	   file://touchtest \
+	   file://wave_1000_hz_half_mag.wav \		
 	   file://wave_1000_hz.wav \
 	   file://wave_1800_hz.wav \
 	   file://wave_3600_hz.wav \		
-	   file://wave_1000_hz_half_mag.wav \		
+	   file://wave_750_hz.wav \
+	   file://wlan-hwtest \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -62,8 +63,11 @@ do_install() {
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
 	update-rc.d -r ${D} firstboot start 08 S .
 
+	install -d ${D}/${sysconfdir}/profile.d
+	install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
+
 	install -d ${D}/home/root/
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"
-FILES_${PN} += "/home/root /usr/local/bin/*"
+FILES_${PN} += "/home/root /usr/local/bin/* /etc/profile.d/*"
