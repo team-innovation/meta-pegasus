@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "12"
+PR = "13"
 
 inherit packagegroup
 
@@ -13,7 +13,7 @@ inherit packagegroup
 RDEPENDS_${PN} = " \
 	alsa-utils \
 	kernel-module-mt7603 \
-	libsodium13 \
+	libsodium18 \
 	openvpn \
 	packagegroup-slimline-min \
 	python3-ctypes \
