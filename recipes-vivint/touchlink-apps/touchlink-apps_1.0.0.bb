@@ -91,7 +91,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml101"
+PR = "ml102"
 
 #SRCREV = "0914ecee01d8"
 SRCREV = "${HG_APPS_ID}"
@@ -126,6 +126,7 @@ DEPENDS = " \
 	gst-plugins-ugly \
 	gstreamer \
 	python3-bcrypt-native \
+	python3-cachetools \
 	python3-cherrypy-native \
 	python3-dateutil-native \
 	python3-gnupg-native \

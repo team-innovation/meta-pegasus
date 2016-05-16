@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "14"
+PR = "15"
 
 inherit packagegroup
 
@@ -16,6 +16,7 @@ RDEPENDS_${PN} = " \
 	libsodium18 \
 	openvpn \
 	packagegroup-slimline-min \
+	python3-cachetools \
 	python3-ctypes \
 	python3-distribute \
 	python3-importlib \
