@@ -16,6 +16,7 @@ IMAGE_INSTALL_append = "\
 	mtd-utils \
 	packagegroup-ppp-config-modem \
     packagegroup-zwave-config \
+    bsp-rt288x-hg \
 "
 
 inherit core-image
