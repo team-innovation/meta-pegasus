@@ -1,0 +1,29 @@
+*** a/jinja2/tests.py	2016-03-16 16:02:54.541528129 -0600
+--- b/jinja2/tests.py	2016-03-16 16:03:29.365454608 -0600
+***************
+*** 12,18 ****
+  from collections import Mapping
+  from jinja2.runtime import Undefined
+  from jinja2._compat import text_type, string_types, integer_types
+- import decimal
+  
+  number_re = re.compile(r'^-?\d+(\.\d+)?$')
+  regex_type = type(number_re)
+--- 12,17 ----
+***************
+*** 88,94 ****
+  
+  def test_number(value):
+      """Return true if the variable is a number."""
+!     return isinstance(value, integer_types + (float, complex, decimal.Decimal))
+  
+  
+  def test_sequence(value):
+--- 87,93 ----
+  
+  def test_number(value):
+      """Return true if the variable is a number."""
+!     return isinstance(value, integer_types + (float, complex))
+  
+  
+  def test_sequence(value):

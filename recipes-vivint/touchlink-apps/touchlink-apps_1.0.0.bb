@@ -91,7 +91,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml100"
+PR = "ml101"
 
 #SRCREV = "0914ecee01d8"
 SRCREV = "${HG_APPS_ID}"
@@ -131,6 +131,7 @@ DEPENDS = " \
 	python3-gnupg-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
+	python3-markupsafe-native \
 	python3-mixpanel-native \
 	python3-mock-native \
 	python3-msgpack-native \

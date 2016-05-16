@@ -1,0 +1,18 @@
+# Fix MarkupSafe so it doesn't use setuptools and doesn't compile the speedups.
+*** a/setup.py	2016-03-16 15:35:59.592995112 -0600
+--- b/setup.py	2016-03-16 15:36:10.368970974 -0600
+***************
+*** 1,6 ****
+  import os
+  import sys
+! from setuptools import setup, Extension
+  from distutils.command.build_ext import build_ext
+  from distutils.errors import CCompilerError, DistutilsExecError, \
+       DistutilsPlatformError
+--- 1,6 ----
+  import os
+  import sys
+! from distutils.core import setup, Extension
+  from distutils.command.build_ext import build_ext
+  from distutils.errors import CCompilerError, DistutilsExecError, \
+       DistutilsPlatformError
