@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "15"
+PR = "16"
 
 inherit packagegroup
 
@@ -12,6 +12,7 @@ inherit packagegroup
 #   then add it to packagegroup-slimline-min not here.
 RDEPENDS_${PN} = " \
 	alsa-utils \
+    ca-certificates \
 	kernel-module-mt7603 \
 	libsodium18 \
 	openvpn \
