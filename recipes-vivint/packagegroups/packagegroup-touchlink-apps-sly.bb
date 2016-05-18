@@ -19,8 +19,6 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-pyftpd \
 	touchlink-apps-rtspd \
 	touchlink-apps-sundance \
-#	touchlink-apps-test-daemon \
-#	touchlink-apps-test-ui \
 	touchlink-apps-videod \
 	touchlink-apps-webd \
 	touchlink-apps-zwaved \
