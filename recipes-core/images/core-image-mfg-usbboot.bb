@@ -4,7 +4,7 @@ DESCRIPTION = "Small image to be used with usbboot capable partitioning \
 eMMC and populating the rootfs."
 
 IMAGE_INSTALL_append = " \
-	packagegroup-slimline-min \
+	packagegroup-sawmill-min \
 	util-linux-agetty \
 "
 

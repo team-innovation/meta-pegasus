@@ -9,14 +9,14 @@ inherit packagegroup
 
 # Note:
 #   If a package is also needed for minimum image
-#   then add it to packagegroup-slimline-min not here.
+#   then add it to packagegroup-sawmill-min not here.
 RDEPENDS_${PN} = " \
 	alsa-utils \
-    ca-certificates \
+	ca-certificates \
 	kernel-module-mt7603 \
 	libsodium18 \
 	openvpn \
-	packagegroup-slimline-min \
+	packagegroup-sawmill-min \
 	python3-cachetools \
 	python3-ctypes \
 	python3-distribute \
@@ -41,7 +41,6 @@ RDEPENDS_${PN} = " \
 	python3-subprocess \
 	python3-terminal \
 	python3-textutils \
-	slimline-modules \
 	slimline-version \
 	sqlite3 \
 	touchlink-ntpsync \
