@@ -17,6 +17,7 @@ RDEPENDS_${PN} = " \
 	libsodium18 \
 	openvpn \
 	packagegroup-sawmill-min \
+	procps \
 	python3-cachetools \
 	python3-ctypes \
 	python3-distribute \
@@ -47,6 +48,8 @@ RDEPENDS_${PN} = " \
 	touchlink-version \
 	tzdata \
 	tzdata-americas \
+	util-linux \
+	vim \
 	webrtc-audio-processing \
 	wps-sh \
 "
