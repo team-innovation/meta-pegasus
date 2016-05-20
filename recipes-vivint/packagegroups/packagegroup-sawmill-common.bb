@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "16"
+PR = "17"
 
 inherit packagegroup
 
@@ -43,6 +43,7 @@ RDEPENDS_${PN} = " \
 	python3-terminal \
 	python3-textutils \
 	slimline-version \
+	speedtest-cli \
 	sqlite3 \
 	touchlink-ntpsync \
 	touchlink-version \
