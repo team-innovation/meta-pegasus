@@ -19,7 +19,7 @@ test -d ${BUILD_DIR} &&
 echo Setting up new dir \"${BUILD_DIR}\"
 export MACHINE=imx6dl-slimline
 export EULA=1
-export DISTRO=sawmill
+export DISTRO=slimline
 
 source ./fsl-setup-release.sh -b ${BUILD_DIR}
 
