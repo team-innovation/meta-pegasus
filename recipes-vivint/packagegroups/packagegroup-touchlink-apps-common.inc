@@ -3,7 +3,6 @@
 inherit packagegroup
 
 VIVINT_APPS_COMMON = "\
-	touchlink-apps \
 	touchlink-apps-favicon \
 	touchlink-apps-framework \
 	touchlink-apps-global-conf \
