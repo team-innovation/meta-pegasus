@@ -17,6 +17,7 @@ RDEPENDS_${PN} = " \
 	libsodium18 \
 	openvpn \
 	packagegroup-sawmill-min \
+	packagegroup-sawmill-networktools \
 	procps \
 	python3-cachetools \
 	python3-ctypes \
