@@ -8,6 +8,7 @@ PR = "1"
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
+	dhrystone \
 	iftop \
 	iperf \
 	iputils-ping \

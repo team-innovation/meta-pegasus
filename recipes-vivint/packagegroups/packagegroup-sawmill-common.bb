@@ -16,8 +16,8 @@ RDEPENDS_${PN} = " \
 	kernel-module-mt7603 \
 	libsodium18 \
 	openvpn \
+	packagegroup-sawmill-debugtools \
 	packagegroup-sawmill-min \
-	packagegroup-sawmill-networktools \
 	procps \
 	python3-cachetools \
 	python3-ctypes \
