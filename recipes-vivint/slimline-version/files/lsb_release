@@ -1,6 +1,6 @@
 #!/bin/sh
 VERSION="$(cat /etc/slimline-version | head -n1 | awk '{print $2}')"
-CODENAME="SlimLine"
+CODENAME="Glance"
 BUILD_DATE=$(grep "Build Date" /etc/slimline-version |awk '{print $3}')
 OE_REV=$(grep "OERev" /etc/slimline-version |awk '{print $2}')
 APPS_REV=$(grep "AppsRev" /etc/slimline-version |awk '{print $2}')
@@ -20,7 +20,7 @@ case $1 in
     echo "Codename:       $CODENAME"
     ;;
 "-d")
-    echo "Description:    SlimLine GNU/Linux $VERSION ($CODENAME)"
+    echo "Description:    SAWmill GNU/Linux $VERSION ($CODENAME)"
     ;;
 "-r")
     echo "Release:        $VERSION"
@@ -30,7 +30,7 @@ case $1 in
     ;;
 "-a")
     echo "Distributor ID: Vivint."
-    echo "Description:    Vivint. GNU/Linux $VERSION ($CODENAME)"
+    echo "Description:    SAWmill GNU/Linux $VERSION ($CODENAME)"
     echo "Busybox:        $BUSYBOX_VERSION"
     echo "Linux Kernel:   $KERNEL_VERSION"
     echo "Release:        $VERSION" 
