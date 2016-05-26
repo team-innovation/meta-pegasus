@@ -28,6 +28,8 @@ SRC_URI = "\
 	   file://wave_3600_hz.wav \		
 	   file://wave_750_hz.wav \
 	   file://wlan-hwtest \
+	   file://bootsplash.rgba \
+	   file://bootsplash.sh \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -67,7 +69,17 @@ do_install() {
 	install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
 
 	install -d ${D}/home/root/
+
+    install -d ${D}/usr/lib/images/
+    install -d ${D}/media/extra/lib/images/
+    install ${S}/bootsplash.rgba ${D}/usr/lib/images
+    
+    install -d ${D}/${sysconfdir}/init.d
+    install -m 0755 ${S}/bootsplash.sh  ${D}/${sysconfdir}/init.d
+    update-rc.d -r ${D} bootsplash.sh start 04 S .
+
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"
-FILES_${PN} += "/home/root /usr/local/bin/* /etc/profile.d/*"
+FILES_${PN} += "/home/root /usr/local/bin/* /etc/profile.d/* \
+                /usr/lib/images/* /media/extra/lib/images"
