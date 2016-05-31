@@ -1,12 +1,13 @@
 DESCRIPTION = "Slimline qt5 image."
 LICENSE = "MIT"
-PR = "r7"
+PR = "r8"
 IMAGE_FEATURES += "package-management" 
 
 IMAGE_INSTALL_append = "\
 	${CORE_IMAGE_BASE_INSTALL} \
 	packagegroup-sawmill-common \
 	packagegroup-touchlink-apps-slimline \
+	packagegroup-sawmill-slimline \
 	packagegroup-sawmill-video \
 	alsa-utils-aplay \
 	pulseaudio-meta \

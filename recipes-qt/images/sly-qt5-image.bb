@@ -1,4 +1,4 @@
-DESCRIPTION = "Slimline qt5 image."
+DESCRIPTION = "Sly qt5 image."
 LICENSE = "MIT"
 PR = "r7"
 IMAGE_FEATURES += "package-management" 
