@@ -1,0 +1,34 @@
+DESCRIPTION = "Python NFC Library"
+SECTION = "devel/python"
+PRIORITY = "optional"
+LICENSE = "EUPL"
+LIC_FILES_CHKSUM = "file://README.rst;md5=22688ade7b8f42bae952b0400da27a09"
+SRCNAME = "python-nfcpy"
+PR = "m1"
+
+SRCREV = "89816998694789617f1ef7461f3bce2e806cf69e9c9cc9cc3a2edf516de3"
+PV = "1.0.0"
+SRC_URI = "https://pypi.python.org/packages/0f/25/${SRCREV}/nfcpy-0.11.1.tar.gz \
+       file://setup.py_distutil_fix.patch \
+       file://nfcpy-2to3-plus-byte-manip-fixes.patch \
+"
+
+S = "${WORKDIR}/nfcpy-0.11.1"
+
+# Allows us to create a native package for staging in OE
+BBCLASSEXTEND = "native"
+
+NATIVE_INSTALL_WORKS = "1"
+
+inherit distutils3
+
+export HOST_SYS
+export BUILD_SYS
+
+do_compile_append() {
+    # 2to3 -w ${S}/build
+    cp -r ${S}/build/* ${S}/
+}
+
+SRC_URI[md5sum] = "c3844d44c9295416e8477274e98c81f7"
+SRC_URI[sha256sum] = "7068f781408ebbc80246bddb417fb98662de15ffe5620a1202f027de522f0b5a"

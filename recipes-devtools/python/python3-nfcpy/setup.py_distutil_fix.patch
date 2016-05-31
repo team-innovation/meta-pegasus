@@ -1,0 +1,21 @@
+diff -urN nfcpy-0.11.1/setup.py nfcpy-0.11.1.b/setup.py
+--- nfcpy-0.11.1/setup.py	2016-04-22 04:36:25.000000000 -0600
++++ nfcpy-0.11.1.b/setup.py	2016-05-11 17:54:50.151942409 -0600
+@@ -1,7 +1,7 @@
+ """Setup module for nfcpy.
+ """
+ 
+-from setuptools import setup, find_packages
++from distutils.core import setup
+ from codecs import open
+ from os import path
+ import re
+@@ -23,7 +23,7 @@
+ setup(
+     name = 'nfcpy',
+     version = version_string,
+-    packages = find_packages(exclude=['examples']),
++    packages=['nfc', 'nfc.clf', 'nfc.handover', 'nfc.llcp', 'nfc.ndef', 'nfc.snep', 'nfc.tag'],
+     license = 'EUPL',
+     url = 'https://launchpad.net/nfcpy',
+
