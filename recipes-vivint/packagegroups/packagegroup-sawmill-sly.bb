@@ -7,7 +7,6 @@ PR = "r2"
 inherit packagegroup
 
 RDEPENDS_${PN} += " \
-	simple-ntpdinit \
 	sly-version \
 "
 

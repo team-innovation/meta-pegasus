@@ -16,6 +16,9 @@ SRC_URI = " \
 
 S = "${WORKDIR}/rlt_wifi"
 
+do_make_scripts[lockfiles] = "${TMPDIR}/kernel-scripts.lock"
+do_make_scripts[deptask] = "do_populate_sysroot"
+
 do_compile() {
 	LDFLAGS="" make V=1 \
 	CROSS_COMPILE=${CROSS_COMPILE} \

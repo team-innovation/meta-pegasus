@@ -19,7 +19,7 @@ RDEPENDS_${PN} = " \
 	kernel-modules \
 	sly-modules \
 	slimline-modules \
-	ntp \
+    chrony \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
 	psoc5-verify \

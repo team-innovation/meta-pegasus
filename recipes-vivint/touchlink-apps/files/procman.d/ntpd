@@ -1,9 +1,0 @@
-{
-    "ntpd":
-    {
-	"match" : "ntpd",
-	"name" : "Time Services",
-	"start": "/etc/init.d/ntpd start",
-	"stop": "/etc/init.d/ntpd stop"
-    }
-}

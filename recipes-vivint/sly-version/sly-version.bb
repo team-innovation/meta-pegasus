@@ -7,10 +7,12 @@ DEPENDS = ""
 PV = "${DISTRO_VERSION}"
 PR = "r0"
 
-SRC_URI =   "file://lsb_release"
+SRC_URI = "file://lsb_release"
 
 PACKAGES = "${PN}"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
+
+RPROVIDES_${PN} = "sly-version"
 
 do_install() {
 
