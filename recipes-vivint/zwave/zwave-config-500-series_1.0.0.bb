@@ -2,7 +2,7 @@ DESCRIPTION = "Flash zwave firmware on first boot up"
 HOMEPAGE = "http://www.vivint.com/"
 SECTION = "base"
 LICENSE = "CLOSED"
-PR = "r1"
+PR = "r2"
 
 RDEPENDS_${PN} = " \
     touchlink-apps \
@@ -20,7 +20,7 @@ SRC_URI = " \
 FW_NAME = "serialapi_controller_static_ZW050x_US.hex"
 FW_DIR = "/lib/firmware/vivint"
 
-S = "${WORKDIR}/git/SDK/Product/SerialAPI/build_prj/serialapi_controller_static_ZW050x_US/Rels"
+S = "${WORKDIR}/git/SDK/Product/SerialAPI/build_prj/serialapi_controller_static_ZW050x_US"
 
 
 do_compile() {
