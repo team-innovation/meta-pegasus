@@ -66,6 +66,10 @@ then
 fi
 }
 
+FILES_${PN}-sundance-proxies = "\
+	${INSTALL_DIR}/sundance/proxies/*	\
+	"
+
 FILES_${PN}-sundance = "\
 	${INSTALL_DIR}/sundance/*	\
 	${sysconfdir}/init.d/sundance		\

@@ -254,8 +254,8 @@ do_install () {
 
 do_install_append() {
 	# remove all .py file
-	# find ${D}/${INSTALL_DIR} -name proxies -prune -o -name *.py -print | xargs rm -f
-	# find ${D}/${INSTALL_DIR} -name *.py | xargs rm -f
+	find ${D}/${INSTALL_DIR} -name proxies -prune -o -name *.py -print | xargs rm -f
+	find ${D}/${INSTALL_DIR} -name *.py | xargs rm -f
 }
 
 pkg_postinst_${PN} () {
@@ -343,6 +343,7 @@ PACKAGES = " \
 	${PN}-pyftpd \
 	${PN}-rtspd   \
 	${PN}-ssdpd      \
+	${PN}-sundance-proxies      \
 	${PN}-sundance      \
 	${PN}-test-daemon  \
 	${PN}-test-ui  \
