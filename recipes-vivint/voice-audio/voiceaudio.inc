@@ -1,0 +1,35 @@
+# voiceaudio OE build file
+# Copyright (C) 2015, Vivint
+# 
+
+DESCRIPTION = "Voice Audio Daemon"
+SECTION = "devel"
+LICENSE = "Proprietary"
+LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
+INC_PR = "r50"
+
+SRCREV = "d9b490a9c4f8"
+MODULE = "voice-audio"
+SRC_URI = "hg://${HG_SERVER};module=${MODULE};proto=http \
+   file://COPYING"
+
+#SRC_URI = "file:///media/WD_MPassport/live555 \
+#	       file://config.linux-cross-shared-libraries"
+
+
+S = "${WORKDIR}/${MODULE}"
+TARGET_CC_ARCH += "${LDFLAGS}"
+
+DEPENDS = "pulseaudio"
+RDEPENDS_${PN} = "pulseaudio \
+	libvocal"
+
+do_configure() {
+}
+
+do_install_append() {
+	install -d ${D}/usr/local/bin
+	install -m 0755 ${WORKDIR}/${MODULE}/vaudio ${D}/usr/local/bin
+}
+
+FILES_${PN} = "/usr/local/bin/*"
