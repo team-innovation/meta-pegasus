@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "19"
+PR = "20"
 
 inherit packagegroup
 
@@ -31,8 +31,10 @@ RDEPENDS_${PN} = " \
 	python3-misc \
 	python3-msgpack \
 	python3-netserver \
+	python3-nfcpy \
 	python3-numpy \
 	python3-pexpect-u \
+	python3-pyserial \
 	python3-pytz \
 	python3-re \
 	python3-resource \
@@ -43,7 +45,6 @@ RDEPENDS_${PN} = " \
 	python3-subprocess \
 	python3-terminal \
 	python3-textutils \
-	python3-pyserial \
 	python3-threading \
 	speedtest-cli \
 	sqlite3 \
