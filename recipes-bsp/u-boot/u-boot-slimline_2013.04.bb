@@ -11,9 +11,10 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=1707d6db1d42237583f50183a5651ecb"
 SRC_URI = "git://git.vivint.com/uboot-imx.git;protocol=git;branch=master \
 	   file://fw_env.config \
 "
-SRCREV = "${AUTOREV}"
 
-PR = "r12"
+SRCREV = "${AUTOREV}"
+PV = "2013.04+git${SRCPV}"
+PR = "r14"
 
 S = "${WORKDIR}/git"
 
