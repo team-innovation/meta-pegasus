@@ -6,7 +6,7 @@ DESCRIPTION = "Voice Audio Daemon"
 SECTION = "devel"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-INC_PR = "r50"
+INC_PR = "r51"
 
 SRCREV = "d9b490a9c4f8"
 MODULE = "voice-audio"
