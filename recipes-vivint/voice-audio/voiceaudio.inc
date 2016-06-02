@@ -21,8 +21,8 @@ S = "${WORKDIR}/${MODULE}"
 TARGET_CC_ARCH += "${LDFLAGS}"
 
 DEPENDS = "pulseaudio"
-RDEPENDS_${PN} = "pulseaudio \
-	libvocal"
+RDEPENDS_${PN} = "pulseaudio"
+#	libvocal"
 
 do_configure() {
 }
