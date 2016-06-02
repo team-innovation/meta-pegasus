@@ -32,4 +32,5 @@ do_install_append() {
 	install -m 0755 ${WORKDIR}/${MODULE}/vaudio ${D}/usr/local/bin
 }
 
+FILES_${PN}-dbg += "/usr/local/bin/.debug"
 FILES_${PN} = "/usr/local/bin/*"
