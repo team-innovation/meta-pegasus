@@ -1,7 +1,7 @@
 DESCRIPTION = "dateutil for Python"
 SECTION = "devel/python"
 PRIORITY = "optional"
-LICENSE = "CUSTOM"
+LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=fa9d2e9d9366cd8d539240d9416d8465"
 SRCNAME = "python-dateutil"
 PR = "ml"

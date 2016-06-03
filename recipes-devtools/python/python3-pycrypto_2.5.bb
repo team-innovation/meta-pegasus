@@ -3,7 +3,7 @@ SECTION = "devel/python"
 PRIORITY = "optional"
 DEPENDS = "gmp autoconf"
 SRCNAME = "pycrypto"
-LICENSE = "pycrypto"
+LICENSE = "PD"
 LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=35f354d199e8cb7667b059a23578e63d"
 PR = "ml1"
 
