@@ -3,7 +3,7 @@ HOMEPAGE = "https://chrony.tuxfamily.org/index.html"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=751419260aa954499f7abaabaa882bbe"
 
-PR = "r1"
+PR = "r2"
 
 SRC_URI = "https://download.tuxfamily.org/chrony/${BPN}-${PV}.tar.gz \
 	file://chrony_start.sh \
