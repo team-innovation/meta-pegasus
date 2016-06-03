@@ -1,7 +1,7 @@
 DESCRIPTION = "Python NFC Library"
 SECTION = "devel/python"
 PRIORITY = "optional"
-LICENSE = "EUPL"
+LICENSE = "EUPL-1.1"
 LIC_FILES_CHKSUM = "file://README.rst;md5=22688ade7b8f42bae952b0400da27a09"
 SRCNAME = "python-nfcpy"
 PR = "m1"

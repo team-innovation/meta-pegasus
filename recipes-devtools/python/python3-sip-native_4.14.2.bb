@@ -2,7 +2,7 @@ DESCRIPTION = "Runtime helper for sip-generated python wrapper libraries"
 SECTION = "devel/python"
 HOMEPAGE = "http://www.riverbankcomputing.co.uk/sip"
 AUTHOR = "Phil Thompson"
-LICENSE = "GPLv2+"
+LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://siplib.sbf.in;endline=15;md5=3d462bd8cb43db3e4be998fe155ae9cf"
 DEPENDS = "python3-native"
 

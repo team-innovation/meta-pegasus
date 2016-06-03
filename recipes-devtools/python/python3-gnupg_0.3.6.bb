@@ -1,7 +1,7 @@
 DESCRIPTION = "Python interface to gnupg"
 SECTION = "devel/python"
 PRIORITY = "optional"
-LICENSE = "BSD2"
+LICENSE = "BSD-2-Clause"
 SRCNAME = "python-gnupg"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5b3cbf3c3220969afbf461f4a6ac97c9"
 PR = "ml1"

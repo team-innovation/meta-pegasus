@@ -36,13 +36,13 @@ pkg_postinst_${PN}() {
 # create symlink to /usr/share/zoneinfo for pytz to use
 #
 
-if [ ! -h /usr/lib/python3.3/site-packages/pytz ]
+if [ ! -h {D}/usr/lib/python3.3/site-packages/pytz ]
 then
-	rm -rf /usr/lib/python3.3/site-packages/pytz/zoneinfo
+	rm -rf {D}/usr/lib/python3.3/site-packages/pytz/zoneinfo
 
-	if [ -e /usr/share/zoneinfo ]
+	if [ -e {D}/usr/share/zoneinfo ]
 	then
-	    cd /usr/lib/python3.3/site-packages/pytz ; ln -s /usr/share/zoneinfo zoneinfo
+	    cd {D}/usr/lib/python3.3/site-packages/pytz ; ln -s {D}/usr/share/zoneinfo zoneinfo
 	fi
 fi
 }

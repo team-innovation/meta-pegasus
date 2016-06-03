@@ -1,6 +1,6 @@
 DESCRIPTION = "Python unit test"
 SECTION = "devel/python"
-LICENSE = "LGPL"
+LICENSE = "LGPL-2.1"
 LIC_FILES_CHKSUM = "\
    file://lgpl.txt;md5=a6f89e2100d9b6cdffcea4f398e37343 \
 "

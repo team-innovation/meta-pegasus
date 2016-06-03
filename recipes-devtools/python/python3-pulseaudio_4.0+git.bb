@@ -1,7 +1,7 @@
 DESCRIPTION = "libpulseaudio for Python"
 SECTION = "devel/python"
 PRIORITY = "optional"
-LICENSE = "LGPL"
+LICENSE = "LGPL-2.1"
 LIC_FILES_CHKSUM = "\
    file://LICENSE;md5=9df70e0e8d4e7a719b31d430c2e41447 \
 "

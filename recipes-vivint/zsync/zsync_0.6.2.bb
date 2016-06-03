@@ -4,7 +4,7 @@ DEPENDS = "popt curl"
 RDEPENDS_${PN} = "curl"
 SECTION = "net"
 LIC_FILES_CHKSUM = "file://COPYING;md5=71c0ac4d86266533509aa0825b8d323c"
-LICENSE = "Artistic License V2"
+LICENSE = "Artistic-2.0"
 PR = "r7"
 
 BBCLASSEXTEND = "native"

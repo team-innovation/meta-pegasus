@@ -23,7 +23,6 @@ inherit autotools-brokensep
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0644 ${WORKDIR}/chrony.conf ${D}${sysconfdir}/
-    install -m 0644 ${WORKDIR}/chrony.keys ${D}${sysconfdir}/
     install -m 0755 ${WORKDIR}/init ${D}${sysconfdir}/init.d/chronyd
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/chrony_start.sh ${D}${bindir}

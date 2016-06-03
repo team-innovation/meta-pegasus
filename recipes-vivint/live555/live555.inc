@@ -4,7 +4,7 @@
 
 DESCRIPTION = "LIVE555 Streaming Media libraries"
 HOMEPAGE = "http://live.com/"
-LICENSE = "LGPL"
+LICENSE = "LGPL-2.1"
 SECTION = "devel"
 
 INC_PR = "r21"

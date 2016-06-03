@@ -10,7 +10,7 @@ INC_PR = "r51"
 
 SRCREV = "d9b490a9c4f8"
 MODULE = "voice-audio"
-SRC_URI = "hg://${HG_SERVER};module=${MODULE};proto=http \
+SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
    file://COPYING"
 
 #SRC_URI = "file:///media/WD_MPassport/live555 \
