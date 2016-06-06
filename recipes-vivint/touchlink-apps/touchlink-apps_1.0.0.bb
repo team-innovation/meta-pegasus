@@ -259,34 +259,38 @@ do_install_append() {
 }
 
 pkg_postinst_${PN} () {
-#!/bin/sh
+#!/bin/sh -e
 # Post install to make sure we have the correct setup 
 #
- logging()
- {
-    if busybox ps | grep psplash | grep -qv grep
+if [ x"$D" = "x" ]; then
+     logging()
+     {
+        if busybox ps | grep psplash | grep -qv grep
+        then
+            psplash-write "MSG $*"
+        fi
+        echo $*
+        if [ ! -d /media/extra/update ]
+        then
+        mkdir -p /media/extra/update
+        fi
+        echo $(date) $* >> /media/extra/update/.firmware_update_status
+        logger $*
+     }
+     
+    if [ ! -d /media/extra/log/error ]
     then
-        psplash-write "MSG $*"
+        logging "Creating log directory..."
+        mkdir -p /media/extra/log/error
     fi
-    echo $*
-    if [ ! -d /media/extra/update ]
-    then
-	mkdir -p /media/extra/update
-    fi
-    echo $(date) $* >> /media/extra/update/.firmware_update_status
-    logger $*
- }
- 
-if [ ! -d /media/extra/log/error ]
-then
-	logging "Creating log directory..."
-	mkdir -p /media/extra/log/error
-fi
 
-if [ -d /media/extra/log/error ]
-then
-	logging "Removing all error log in /media/extra/log..."
-	rm -f /media/extra/log/*error.log*
+    if [ -d /media/extra/log/error ]
+    then
+        logging "Removing all error log in /media/extra/log..."
+        rm -f /media/extra/log/*error.log*
+    fi
+else
+    exit 1
 fi
 }
 

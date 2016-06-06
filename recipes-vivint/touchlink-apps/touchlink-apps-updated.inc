@@ -32,53 +32,58 @@ do_install_append () {
 }
 
 pkg_postinst_${PN}-updated () {
-#!/bin/sh
+#!/bin/sh -e
 # Post install to make sure we have the correct setup for updated
 #
- logging()
- {
-    if busybox ps | grep psplash | grep -qv grep
-    then
-        psplash-write "MSG $*"
+
+if [ x"$D" = "x" ]; then
+     logging()
+     {
+        if busybox ps | grep psplash | grep -qv grep
+        then
+            psplash-write "MSG $*"
+        fi
+        echo $*
+        
+        if [ ! -d /media/extra/update ]
+        then
+            mkdir -p /media/extra/update
+        fi
+        echo $(date) $* >> /media/extra/update/.firmware_update_status
+        logger $*
+     }
+
+    device=/dev/mmcblk0p7
+    # Check if we are ext3 and convert to ext4
+    if mount | grep "/media/extra" | awk '{print $5}' | grep -q ext3
+    then 
+        echo "Converting mounted $device ext3 to ext4..."
+        device=$(mount | grep "/media/extra" | awk '{print $1}')
+        if umount $device
+        then
+            tune2fs -O extents,uninit_bg,dir_index $device
+            e2fsck -fDC0 -y $device
+            mount $device /media/extra
+        else
+            echo "Failed to unmount "$device
+        fi
+    else
+        # If not mounted and we detect ext3 we convert it to ext4
+        if dumpe2fs -h $device | grep features | grep -qv extent
+        then
+            echo "Converting $device ext3 to ext4..."
+            tune2fs -O extents,uninit_bg,dir_index $device
+            e2fsck -fDC0 -y $device
+        fi
     fi
-    echo $*
-    
+     
     if [ ! -d /media/extra/update ]
     then
-		mkdir -p /media/extra/update
+        logging "Creating update directory..."
+        mkdir /media/extra/update
     fi
-    echo $(date) $* >> /media/extra/update/.firmware_update_status
-    logger $*
- }
-
-device=/dev/mmcblk0p7
-# Check if we are ext3 and convert to ext4
-if mount | grep "/media/extra" | awk '{print $5}' | grep -q ext3
-then 
-	echo "Converting mounted $device ext3 to ext4..."
-	device=$(mount | grep "/media/extra" | awk '{print $1}')
-	if umount $device
-	then
-		tune2fs -O extents,uninit_bg,dir_index $device
-		e2fsck -fDC0 -y $device
-		mount $device /media/extra
-	else
-		echo "Failed to unmount "$device
-	fi
 else
-	# If not mounted and we detect ext3 we convert it to ext4
-    if dumpe2fs -h $device | grep features | grep -qv extent
-    then
-		echo "Converting $device ext3 to ext4..."
-		tune2fs -O extents,uninit_bg,dir_index $device
-		e2fsck -fDC0 -y $device
-    fi
-fi
- 
-if [ ! -d /media/extra/update ]
-then
-	logging "Creating update directory..."
-	mkdir /media/extra/update
+    exit 1
 fi
 }
 

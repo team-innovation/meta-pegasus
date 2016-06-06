@@ -30,7 +30,7 @@ do_install_append(){
 
 pkg_postrm_${PN}-adcd () {
 #!/bin/sh
-# Post install to make sure we have the correct setup for sundance
+# Post remove to make sure we have the correct setup 
 #
  logging()
  {

@@ -52,33 +52,36 @@ do_install() {
 }
 
 pkg_postinst_${PN} () {
-#!/bin/sh
+#!/bin/sh -e
 # Post install to make sure we have the correct setup for sundance
 #
-DEFAULT_CERTS_DIR=/opt/2gig/ssl_certs
-MEDIA_DIR=/media/extra
-MEDIA_SSL_CERT_DIR=$MEDIA_DIR/ssl_certs
-if [ ! -d $MEDIA_SSL_CERT_DIR ]; then
-	echo "Creating $MEDIA_SSL_CERT_DIR"
-	mkdir -p $MEDIA_SSL_CERT_DIR
+if [ x"$D" = "x" ]; then
+    DEFAULT_CERTS_DIR=/opt/2gig/ssl_certs
+    MEDIA_DIR=/media/extra
+    MEDIA_SSL_CERT_DIR=$MEDIA_DIR/ssl_certs
+    if [ ! -d $MEDIA_SSL_CERT_DIR ]; then
+        echo "Creating $MEDIA_SSL_CERT_DIR"
+        mkdir -p $MEDIA_SSL_CERT_DIR
+    else
+        echo "$MEDIA_SSL_CERT_DIR already exists. Won't install defaults from $DEFAULT_CERTS_DIR"
+    fi
+
+    # Only upgrade the copy of certs in /media/extra/ssl_certs if what the panel
+    # has is newer.
+    DEFAULT_CERTS_TIMESTAMP=$(cat $DEFAULT_CERTS_DIR/ts 2> /dev/null || echo "0")
+    MEDIA_CERTS_TIMESTAMP=$(cat $MEDIA_SSL_CERT_DIR/ts 2> /dev/null || echo "0")
+    if [ $DEFAULT_CERTS_TIMESTAMP -gt $MEDIA_CERTS_TIMESTAMP ]; then
+        for f in $(cd $DEFAULT_CERTS_DIR ; find . -maxdepth 1 -type f) ; do
+            cp $DEFAULT_CERTS_DIR/$f $MEDIA_SSL_CERT_DIR/
+        done
+        # Remove the tar file that was previously put in place by the platform --
+        # so that the property doesn't showing the wrong
+        # certificate_bundle_version_sha224_base64 to the platform.
+        /bin/rm $MEDIA_DIR/ssl_certs.tar
+fi
 else
-	echo "$MEDIA_SSL_CERT_DIR already exists. Won't install defaults from $DEFAULT_CERTS_DIR"
+    exit 1
 fi
-
-# Only upgrade the copy of certs in /media/extra/ssl_certs if what the panel
-# has is newer.
-DEFAULT_CERTS_TIMESTAMP=$(cat $DEFAULT_CERTS_DIR/ts 2> /dev/null || echo "0")
-MEDIA_CERTS_TIMESTAMP=$(cat $MEDIA_SSL_CERT_DIR/ts 2> /dev/null || echo "0")
-if [ $DEFAULT_CERTS_TIMESTAMP -gt $MEDIA_CERTS_TIMESTAMP ]; then
-	for f in $(cd $DEFAULT_CERTS_DIR ; find . -maxdepth 1 -type f) ; do
-		cp $DEFAULT_CERTS_DIR/$f $MEDIA_SSL_CERT_DIR/
-	done
-	# Remove the tar file that was previously put in place by the platform --
-	# so that the property doesn't showing the wrong
-	# certificate_bundle_version_sha224_base64 to the platform.
-	/bin/rm $MEDIA_DIR/ssl_certs.tar
-fi
-
 }
 
 FILES_${PN} = "/opt/2gig/ssl_certs/* /etc/ssl/certs"

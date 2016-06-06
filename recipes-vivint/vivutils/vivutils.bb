@@ -77,7 +77,6 @@ do_install() {
     install -d ${D}/${sysconfdir}/init.d
     install -m 0755 ${S}/bootsplash.sh  ${D}/${sysconfdir}/init.d
     update-rc.d -r ${D} bootsplash.sh start 04 S .
-
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"

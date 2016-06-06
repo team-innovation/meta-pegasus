@@ -28,29 +28,40 @@ do_install_append (){
 }
 
 pkg_postinst_${PN}-roubaix () {
-#!/bin/sh
+#!/bin/sh -e
 # Post install to make sure we have the correct setup for roubaix 
 #
- logging()
- {
-    if busybox ps | grep psplash | grep -qv grep
-    then
-        psplash-write "MSG $*"
-    fi
-    echo $*
-    logger $*
- }
- 
-if [ ! -d /media/extra/conf ]
-then
-	logging "Creating conf directory..."
-	mkdir -p /media/extra/conf
-fi
+if [ x"$D" = "x" ]; then
 
-if [ -f /media/extra/pointercal ]
-then
-        logging "Moving /media/extra/pointercal file to /media/extra/conf..."
-        mv /media/extra/pointercal /media/extra/conf
+     logging()
+     {
+        if busybox ps | grep psplash | grep -qv grep
+        then
+            psplash-write "MSG $*"
+        fi
+        echo $*
+        logger $*
+     }
+     
+    if [ ! -d /media/extra/conf ]
+    then
+        logging "Creating conf directory..."
+        mkdir -p /media/extra/conf
+    fi
+
+    if [ ! -d /media/extra/lib/images ]
+    then
+        logging "Creating image directory..."
+        mkdir -p /media/extra/lib/images
+    fi
+
+    if [ -f /media/extra/pointercal ]
+    then
+            logging "Moving /media/extra/pointercal file to /media/extra/conf..."
+            mv /media/extra/pointercal /media/extra/conf
+    fi
+else
+    exit 1
 fi
 }
 

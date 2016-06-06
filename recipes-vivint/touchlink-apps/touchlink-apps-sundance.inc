@@ -23,46 +23,50 @@ do_install_append () {
 }
 
 pkg_postinst_${PN}-sundance () {
-#!/bin/sh
+#!/bin/sh -e
 # Post install to make sure we have the correct setup for sundance
 #
- logging()
- {
-    if busybox ps | grep psplash | grep -qv grep
-    then
-        psplash-write "MSG $*"
+if [ x"$D" = "x" ]; then
+     logging()
+     {
+        if busybox ps | grep psplash | grep -qv grep
+        then
+            psplash-write "MSG $*"
+        fi
+        echo $*
+        if [ ! -d /media/extra/update ]
+        then
+        mkdir -p /media/extra/update
+        fi
+        echo $(date) $* >> /media/extra/update/.firmware_update_status
+        logger $*
+     }
+     
+    if [ ! -d /media/extra/db ]
+    then	
+        logging "Creating db directory..."
+        mkdir /media/extra/db
+        if [ -e /media/extra/sundance.db ]
+        then
+            logging "Moving sundance.db to db directory..."
+            mv /media/extra/sundance.db /media/extra/db/
+            ln -s /media/extra/db/sundance.db /media/extra/sundance.db
+        fi
     fi
-    echo $*
-    if [ ! -d /media/extra/update ]
+
+    if [ ! -d /media/extra/log/error ]
     then
-	mkdir -p /media/extra/update
+        logging "Creating log directory..."
+        mkdir -p /media/extra/log/error
     fi
-    echo $(date) $* >> /media/extra/update/.firmware_update_status
-    logger $*
- }
- 
-if [ ! -d /media/extra/db ]
-then	
-	logging "Creating db directory..."
-	mkdir /media/extra/db
-	if [ -e /media/extra/sundance.db ]
-	then
-		logging "Moving sundance.db to db directory..."
-		mv /media/extra/sundance.db /media/extra/db/
-		ln -s /media/extra/db/sundance.db /media/extra/sundance.db
-	fi
-fi
 
-if [ ! -d /media/extra/log/error ]
-then
-	logging "Creating log directory..."
-	mkdir -p /media/extra/log/error
-fi
-
-if [ -d /media/extra/log/error ]
-then
-        logging "Removing all error log in /media/extra/log..."
-        rm -f /media/extra/log/*_error.log*
+    if [ -d /media/extra/log/error ]
+    then
+            logging "Removing all error log in /media/extra/log..."
+            rm -f /media/extra/log/*_error.log*
+    fi
+else
+    exit 1
 fi
 }
 
