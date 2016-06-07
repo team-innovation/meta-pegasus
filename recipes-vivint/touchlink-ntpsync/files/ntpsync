@@ -46,7 +46,7 @@ if [ -e /usr/bin/chronyc ]; then
                 chronyc delete $address > /dev/null
         elif [ -e $SERVERS ]; then
                 for line in `cat $SERVERS` ; do
-                        ip = `echo $line | head -n1 | cutd -d'=' -f2`
+                        ip=`echo $line | head -n1 | cut -d'=' -f2`
                         if [ -n "$ip" ]; then
                                 chronyc add server $ip offline > /dev/null
                                 chronyc burst 4/6 $ip > /dev/null
