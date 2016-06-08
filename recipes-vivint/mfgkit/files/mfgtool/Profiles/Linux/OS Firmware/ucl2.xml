@@ -147,9 +147,7 @@
 
     <CMD state="Updater" type="push" body="$ mkdir -p /mnt/mmcblk0p7"/>
     <CMD state="Updater" type="push" body="$ mount /dev/mmcblk0p7 /mnt/mmcblk0p7"/>
-    <CMD state="Updater" type="push" body="$ mkdir -p /mnt/mmcblk0p7/factory_image"/>
-    <CMD state="Updater" type="push" body="send" file="files/sly-qt5-image-imx6dl-slimline.tar.gz"/>
-    <CMD state="Updater" type="push" body="$ cp $FILE /mnt/mmcblk0p7/factory_image/sly-qt5-image-imx6dl-slimline.tar.gz">Creating factory image </CMD>
+    <CMD state="Updater" type="push" body="pipe tar -zxv -C /mnt/mmcblk0p7" file="files/media-extra.tar.gz">Sending and extracting media/extra</CMD>
 
     <CMD state="Updater" type="push" body="send" file="files/slimline-emmc-postfs-init.sh"/>
     <CMD state="Updater" type="push" body="$ cp $FILE slimline-emmc-postfs-init.sh"/>
@@ -185,9 +183,7 @@
 
     <CMD state="Updater" type="push" body="$ mkdir -p /mnt/mmcblk0p7"/>
     <CMD state="Updater" type="push" body="$ mount /dev/mmcblk0p7 /mnt/mmcblk0p7"/>
-    <CMD state="Updater" type="push" body="$ mkdir -p /mnt/mmcblk0p7/factory_image"/>
-    <CMD state="Updater" type="push" body="send" file="files/sly-qt5-image-imx6dl-slimline.tar.gz"/>
-    <CMD state="Updater" type="push" body="$ cp $FILE /mnt/mmcblk0p7/factory_image/sly-qt5-image-imx6dl-slimline.tar.gz">Creating factory image </CMD>
+    <CMD state="Updater" type="push" body="pipe tar -zxv -C /mnt/mmcblk0p7" file="files/media-extra.tar.gz">Sending and extracting media/extra</CMD>
 
     <CMD state="Updater" type="push" body="send" file="files/slimline-emmc-postfs-init.sh"/>
     <CMD state="Updater" type="push" body="$ cp $FILE slimline-emmc-postfs-init.sh"/>
