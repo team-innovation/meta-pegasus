@@ -5,7 +5,7 @@ KERNEL_SRC = "git://git.vivint.com/linux-imx.git;protocol=git"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 PV = "3.14.28+git${SRCPV}"
 
-PR = "r39"
+PR = "r40"
 
 DEFAULT_PREFERENCE = "1"
 
@@ -16,6 +16,11 @@ do_configure_prepend() {
    # HACK! overwrite imx_v7_defconfig so the above does not get
    # undone by this same task in linux-imx.bb
    cp ${S}/arch/arm/configs/slimline_defconfig ${S}/arch/arm/configs/imx_v7_defconfig
+}
+
+do_install_append() {
+	cd ${D}/${KERNEL_IMAGEDEST}/ ; md5sum ${KERNEL_IMAGETYPE}-${KERNEL_VERSION} > ${S}/${KERNEL_IMAGETYPE}.md5sum ; cd -
+	install ${S}/${KERNEL_IMAGETYPE}.md5sum ${D}/${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE}.md5sum
 }
 
 KERNEL_MODULE_PROBECONF += "rtl8192ce snd-soc-cx20704 snd-soc-imx-cx20704 snd-soc-gsm030x snd-soc-imx-gsm030x"
