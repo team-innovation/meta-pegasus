@@ -49,7 +49,6 @@ RDEPENDS_${PN} = " \
 	speedtest-cli \
 	sqlite3 \
 	touchlink-ntpsync \
-	touchlink-version \
 	tzdata \
 	tzdata-americas \
 	util-linux \

@@ -19,7 +19,8 @@ RPROVIDES_${PN} = "slimline-version"
 do_install() {
 	# version
 	install -d ${D}${sysconfdir}
-	echo "Glance ${DISTRO_VERSION}" > ${D}${sysconfdir}/slimline-version
+	echo "${GLANCE_NAME} ${DISTRO_VERSION}" > ${D}${sysconfdir}/version
+	echo "${GLANCE_NAME} ${DISTRO_VERSION}" > ${D}${sysconfdir}/slimline-version
 	echo "$(date '+Build Date: %m/%d/%Y')" >> ${D}${sysconfdir}/slimline-version
 	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/slimline-version
 	echo "OE branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/slimline-version
