@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+#
+# Test script for nfc during manufacturing process
+#
+#
+#
+import os, sys, shutil, platform
+import binascii
+
+from time import sleep
+from taurine.async_io.timer import Timer
+from taurine.rpc.rpc_client import RpcClient
+from taurine.rpc.rpc_service import RpcService
+from taurine.async_io.event_loop import EventLoop
+from taurine.async_io.delayed_call import DelayedCall
+from taurine.async_io.threaded_call import ThreadedCall
+
+def on_touchlink():
+    sys.path.insert(0, "/opt/2gig/nfcd/proxies/python")
+    sys.path.insert(0, "/opt/2gig/nfcd")
+
+__author__ = 'jeff'
+
+class NfcState:
+    PROTOCOL = 1
+    ECHO = 2
+    READ = 3
+    ECHO_RECV = 4
+    READ_RECV = 5
+
+
+class NfcTest(EventLoop):
+
+    ECHO_CMD = '55'
+    READ_CMD = '04022607'
+    PROTO_CMD = '02020200'
+    
+    def __init__(self):    
+        super().__init__(self.on_exit)
+        
+        self.nfc = None
+        self.exit_now = False
+
+        on_touchlink()
+
+        self.address = 'localhost'
+        self.port = 7040
+        self.retry = 0
+        self.state = NfcState.PROTOCOL
+
+    def setup(self):
+        self._nfc_client = RpcClient('nfcd')
+        self._nfc_client.connect(self.address, self.port, self.on_connected, auto_reconnect=True)
+
+    def on_exit(self):
+        if self.nfc:
+            self.nfc.remove_notify_handler("on_nfc_received_data", self.on_nfc_event)
+            self._nfc_client.disconnect()
+            sys.exit(0)
+
+    def on_connected(self, error):
+        if not error:
+            self.nfc = self._nfc_client.get_service_with_name("NfcService")
+            self.nfc.add_notify_handler("on_nfc_received_data", self.on_nfc_event)
+
+            # Start test
+            self.retry = 0
+            self.state = NfcState.PROTOCOL
+            self.nfc.nfc_send_command(self.PROTO_CMD)
+
+    def on_nfc_event(self, service, value):
+        if self.state == NfcState.PROTOCOL:
+            self.nfc.nfc_send_command(self.ECHO_CMD)
+            self.state = NfcState.ECHO
+        elif self.state == NfcState.ECHO:
+            if value == b'U':
+                print("Echo Test: PASSED!")
+                self.nfc.nfc_send_command(self.READ_CMD)
+                self.state = NfcState.READ
+            elif value != b'U':
+                print("Echo Test: FAILED!")
+                self.on_exit()
+        elif self.state == NfcState.READ:
+            if value.__len__() > 2:
+                if value[0] == 0x80:
+                    print("Read Test: PASSED!")
+                    self.on_exit()
+                elif value[0] != 0x80 and self.retry < 5:
+                    self.nfc.nfc_send_command(self.READ_CMD)
+                elif value[0] != 0x80 and self.retry >= 5:
+                    print("Read Test: FAILED!")
+                    self.on_exit()
+            else:
+                self.nfc.nfc_send_command(self.READ_CMD)
+        else:
+            print("Test failed")
+            self.on_exit()
+        self.retry += 1
+
+    def run(self):
+        DelayedCall(0, self.setup)
+        super().run()
+
+def main():
+    loop = NfcTest()
+    loop.run()
+
+if __name__ == "__main__":
+    main()
+
