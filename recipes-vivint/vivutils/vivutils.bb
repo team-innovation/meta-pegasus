@@ -28,6 +28,7 @@ SRC_URI = "\
 	   file://wave_3600_hz.wav \		
 	   file://wave_750_hz.wav \
 	   file://wlan-hwtest \
+	   file://netm-hwtest.py \
 	   file://bootsplash.rgba \
 	   file://bootsplash.sh \
 "
@@ -53,6 +54,7 @@ do_install() {
 	install -m 0755 ${S}/fccfixup ${D}/usr/local/bin
 	install -m 0755 ${S}/touchtest ${D}/usr/local/bin
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
+	install -m 0755 ${S}/netm-hwtest.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_750_hz.wav ${D}/usr/local/bin
