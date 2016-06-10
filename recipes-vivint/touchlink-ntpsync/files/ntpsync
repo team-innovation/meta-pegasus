@@ -103,7 +103,7 @@ fi
 
 if [ $ret -eq 0 ]; then
 	# set the hwclock
-	hwclock -w
+	hwclock -w -u
 	exit 0
 fi
 exit 1
