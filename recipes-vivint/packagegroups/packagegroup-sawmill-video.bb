@@ -33,6 +33,7 @@ RDEPENDS_${PN} = " \
 	gst-plugins-bad-h264parse \
 	gst-plugins-bad-mpegtsmux \
 	gst-plugins-base \
+	gst-plugins-base-alsa \
 	gst-plugins-base-audioconvert \
 	gst-plugins-base-audioresample \
 	gst-plugins-base-audiotestsrc \
