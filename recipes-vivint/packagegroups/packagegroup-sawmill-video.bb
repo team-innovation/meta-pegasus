@@ -35,6 +35,7 @@ RDEPENDS_${PN} = " \
 	gst-plugins-base \
 	gst-plugins-base-audioconvert \
 	gst-plugins-base-audioresample \
+	gst-plugins-base-audiotestsrc \
 	gst-plugins-base-decodebin2 \
 	gst-plugins-base-ffmpegcolorspace \
 	gst-plugins-base-playbin \
