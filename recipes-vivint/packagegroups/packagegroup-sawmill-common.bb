@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "21"
+PR = "22"
 
 inherit packagegroup
 
@@ -52,6 +52,7 @@ RDEPENDS_${PN} = " \
 	tzdata \
 	tzdata-americas \
 	util-linux \
+	udev-rules-sawmill \
 	vim \
 	webrtc-audio-processing \
 	wps-sh \
