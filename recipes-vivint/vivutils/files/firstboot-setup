@@ -51,9 +51,14 @@ umntbootscript()
 
 mntbootscriptrw()
 {
-	umntbootscript
-	mount ${BSPART} -o rw ||
+	mount ${BSPART} -o remount,rw ||
 		carp "unable to mount ${BSPART} read/write"
+}
+
+mntbootscriptro()
+{
+	mount ${BSPART} -o remount,ro ||
+		carp "unable to mount ${BSPART} read/only"
 }
 
 # does bootscript match one in rootfs
@@ -70,8 +75,7 @@ bootscrcheck() {
 bootscrupdate() {
 	mntbootscriptrw
 	cp /boot/boot.scr /media/bootscript/boot.scr
-	umntbootscript
-	mntbootscript
+	mntbootscriptro
 	true
 }
 
@@ -88,7 +92,7 @@ serialnumcheck() {
 
 # warn about no serialnumber
 serialnumwarn() {
-	info "board as no serial number, which is normal for first boot"
+	info "board has no serial number, which is normal for first boot"
 	true
 }
 
