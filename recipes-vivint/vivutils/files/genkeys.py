@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+#
+# Copyright 2016 Vivint Innovation
+#
+# Used by manufacturer to generate a private/public keypair
+#
+# -
+import os
+import sys
+
+import pysodium
+from base64 import b64encode
+import argparse
+from subprocess import check_call, call
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-l', '--key-location', nargs=1, default='/media/bootscript',
+        help='Location where keys will be located', metavar='KEY_LOCATION')
+args = parser.parse_args()
+
+key_location = args.key_location
+key_type = 'ed25519'
+key_file = key_type
+pk_file_path = key_location + '/id_' + key_type + '.pub'
+sk_file_path = key_location + '/id_' + key_type
+bootscript_partition = "/dev/mmcblk0p3"
+
+
+def generate_keypair():
+    # Check if the keys are already there
+    if not os.path.isfile(pk_file_path) or not os.path.isfile(sk_file_path):
+        print('Generating keys...')
+        pk, sk = pysodium.crypto_sign_keypair()
+        pk = b64encode(pk).decode("ascii")
+        sk = b64encode(sk).decode("ascii")
+
+        # Write the keys
+        pk_file = open(pk_file_path, 'w')
+        pk_file.write(pk)
+        pk_file.close()
+
+        sk_file = open(sk_file_path, 'w')
+        sk_file.write(sk)
+        sk_file.close()
+        os.chmod(sk_file_path, 0o600)
+
+        print('Successfully wrote keys to ' + key_location)
+    else:
+        # Read in the public key
+        pk_file = open(pk_file_path, 'r')
+        pk = pk_file.read()
+        pk_file.close()
+
+    print('Public key: ' + pk)
+
+def mount_bootscripts(attr):
+    call(["umount", bootscript_partition])
+    check_call(["mount", "-o", attr, bootscript_partition])
+
+try:
+    # First we remount the bootscript partition so we can write to it
+    mount_bootscripts("rw")
+
+    # Generate the keypair and write them to the filesystem if they don't already exist
+    generate_keypair()
+
+    # Remount the bootscript read only
+    mount_bootscripts("ro")
+
+except Exception as e:
+    print("Unexpected error: {0}".format(e))
+    sys.exit(1)
+
+sys.exit(0)
