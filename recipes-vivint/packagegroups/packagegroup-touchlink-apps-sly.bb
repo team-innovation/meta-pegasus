@@ -18,7 +18,6 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-netd \
 	touchlink-apps-pyftpd \
 	touchlink-apps-roubaix-images-png \
-	touchlink-apps-roubaix-images-svg \
 	touchlink-apps-rtspd \
 	touchlink-apps-sundance \
 	touchlink-apps-videod \
