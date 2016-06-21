@@ -2,7 +2,7 @@
 
     "roubaix":
     {
-    	"priority" : 1,
+    	"priority" : -3,
     	"name" : "User Interface",
 	"scheduler": "os.SCHED_RR",
 	"scheduler_pri": 1,
