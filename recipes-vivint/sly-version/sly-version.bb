@@ -19,7 +19,8 @@ RPROVIDES_${PN} = "sly-version"
 do_install() {
 	# version
 	install -d ${D}${sysconfdir}
-	echo "SkyHub ${DISTRO_VERSION}" > ${D}${sysconfdir}/sly-version
+	echo "${SKYHUB_NAME} ${DISTRO_VERSION}" > ${D}${sysconfdir}/version
+	echo "${SKYHUB_NAME} ${DISTRO_VERSION}" > ${D}${sysconfdir}/sly-version
 	echo "$(date '+Build Date: %m/%d/%Y')" >> ${D}${sysconfdir}/sly-version
 	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/sly-version
 	echo "OE branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/sly-version

@@ -58,6 +58,10 @@ do_compile() {
 	# copy qt5 image to files directory in mfgtool tree
 	cp ${DEPLOY_DIR_IMAGE}/${platform}-qt5-image-imx6dl-slimline.tar.gz ${ddir}/mfgtool/Profiles/Linux/OS\ Firmware/files/
 
+	# Get the media/extra/factory_image directory into the tree
+    d=$(latest '${platform}-qt5-image.*media-extra.d$' ${DEPLOY_DIR_IMAGE})
+    tar -C ${d} -zcvf ${ddir}/mfgtool/Profiles/Linux/OS\ Firmware/files/media-extra.tar.gz factory_image 
+
 	# and finally zip it all up
 	(cd ${DEPLOY_DIR_MFG}; zip -r ${mfgimagename}.zip ${mfgimagename})
 

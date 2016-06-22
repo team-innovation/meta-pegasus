@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "20"
+PR = "22"
 
 inherit packagegroup
 
@@ -49,10 +49,10 @@ RDEPENDS_${PN} = " \
 	speedtest-cli \
 	sqlite3 \
 	touchlink-ntpsync \
-	touchlink-version \
 	tzdata \
 	tzdata-americas \
 	util-linux \
+	udev-rules-sawmill \
 	vim \
 	webrtc-audio-processing \
 	wps-sh \

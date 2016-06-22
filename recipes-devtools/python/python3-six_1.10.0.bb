@@ -1,4 +1,4 @@
-DESCRIPTION = "Python six whatever that is"
+DESCRIPTION = "Python six - compatibilty library between python2 and python3 "
 SECTION = "devel/python"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=6f00d4a50713fa859858dd9abaa35b21"

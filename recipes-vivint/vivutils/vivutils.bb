@@ -3,9 +3,13 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r23"
+PR = "r25"
 
 PACKAGES = "${PN} ${PN}-dbg"
+
+RDPENDS_${PN} = " \
+    python3-pysodium \
+"
 
 SRC_URI = "\
 	   file://ccat \
@@ -17,6 +21,7 @@ SRC_URI = "\
 	   file://mfr_audio_heat_test.py \
 	   file://mfr_audio_test.py \
 	   file://nfctest.c \
+	   file://nfctest-sly \
 	   file://pcamtest \
 	   file://resize.c \
 	   file://resize.sh \
@@ -28,8 +33,10 @@ SRC_URI = "\
 	   file://wave_3600_hz.wav \		
 	   file://wave_750_hz.wav \
 	   file://wlan-hwtest \
+	   file://netm-hwtest.py \
 	   file://bootsplash.rgba \
 	   file://bootsplash.sh \
+       file://genkeys.py \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -48,11 +55,13 @@ do_install() {
 	install -m 0755 ${S}/gadgetsetup ${D}/usr/local/bin
 	install -m 0755 ${S}/resize ${D}/usr/local/bin
 	install -m 0755 ${S}/nfctest ${D}/usr/local/bin
+	install -m 0755 ${S}/nfctest-sly ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
 	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
 	install -m 0755 ${S}/fccfixup ${D}/usr/local/bin
 	install -m 0755 ${S}/touchtest ${D}/usr/local/bin
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
+	install -m 0755 ${S}/netm-hwtest.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_750_hz.wav ${D}/usr/local/bin
@@ -60,6 +69,7 @@ do_install() {
 	install -m 0755 ${S}/wave_1800_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_3600_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
+	install -m 0755 ${S}/genkeys.py ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot

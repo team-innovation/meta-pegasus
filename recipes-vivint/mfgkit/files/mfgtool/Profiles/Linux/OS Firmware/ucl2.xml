@@ -145,6 +145,10 @@
     <CMD state="Updater" type="push" body="$ mount /dev/mmcblk0p5 /mnt/mmcblk0p5"/>
     <CMD state="Updater" type="push" body="pipe tar -zxv -C /mnt/mmcblk0p5" file="files/sly-qt5-image-imx6dl-slimline.tar.gz">Sending and extracting rootfs</CMD>
 
+    <CMD state="Updater" type="push" body="$ mkdir -p /mnt/mmcblk0p7"/>
+    <CMD state="Updater" type="push" body="$ mount /dev/mmcblk0p7 /mnt/mmcblk0p7"/>
+    <CMD state="Updater" type="push" body="pipe tar -zxv -C /mnt/mmcblk0p7" file="files/media-extra.tar.gz">Sending and extracting media/extra</CMD>
+
     <CMD state="Updater" type="push" body="send" file="files/slimline-emmc-postfs-init.sh"/>
     <CMD state="Updater" type="push" body="$ cp $FILE slimline-emmc-postfs-init.sh"/>
     <CMD state="Updater" type="push" body="$ bash slimline-emmc-postfs-init.sh">Running post-fsextract script</CMD>
@@ -176,6 +180,10 @@
     <CMD state="Updater" type="push" body="$ mkdir -p /mnt/mmcblk0p5"/>
     <CMD state="Updater" type="push" body="$ mount /dev/mmcblk0p5 /mnt/mmcblk0p5"/>
     <CMD state="Updater" type="push" body="pipe tar -zxv -C /mnt/mmcblk0p5" file="files/sly-qt5-image-imx6dl-slimline.tar.gz">Sending and extracting rootfs</CMD>
+
+    <CMD state="Updater" type="push" body="$ mkdir -p /mnt/mmcblk0p7"/>
+    <CMD state="Updater" type="push" body="$ mount /dev/mmcblk0p7 /mnt/mmcblk0p7"/>
+    <CMD state="Updater" type="push" body="pipe tar -zxv -C /mnt/mmcblk0p7" file="files/media-extra.tar.gz">Sending and extracting media/extra</CMD>
 
     <CMD state="Updater" type="push" body="send" file="files/slimline-emmc-postfs-init.sh"/>
     <CMD state="Updater" type="push" body="$ cp $FILE slimline-emmc-postfs-init.sh"/>

@@ -247,7 +247,7 @@ addmediaextrafs() {
     local volname=$2
     local start=$3
     local size=$4
-    local extrad="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.d/factory_image"
+    local extrad="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.d/"
     local gzname="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.tar.gz"
     mkdir -p $extrad/factory_image
     cp $gzname $extrad/factory_image
@@ -257,8 +257,7 @@ addmediaextrafs() {
 	count=0 \
 	seek=$size
     mkfs.ext4 -F ${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
-	-L $volname \
-	-d $extrad
+	-L $volname -d $extrad 
     dd if=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
 	of=$EMMC conv=notrunc \
 	bs=$(ctob 1) \

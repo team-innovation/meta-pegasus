@@ -3,7 +3,7 @@
 DESCRIPTION = "primary aka sly touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r12"
+PR = "r14"
 
 require packagegroup-touchlink-apps-common.inc
 
@@ -17,6 +17,7 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-multiplexerd \
 	touchlink-apps-netd \
 	touchlink-apps-pyftpd \
+	touchlink-apps-roubaix-images-png \
 	touchlink-apps-rtspd \
 	touchlink-apps-sundance \
 	touchlink-apps-videod \

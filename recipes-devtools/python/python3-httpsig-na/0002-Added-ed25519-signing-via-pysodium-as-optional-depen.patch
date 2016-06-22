@@ -1,0 +1,143 @@
+From 784631b2df302d7d708119951af4876d196bb2a5 Mon Sep 17 00:00:00 2001
+From: Stephen Farnsworth <robotoman@gmail.com>
+Date: Thu, 9 Jun 2016 16:15:50 -0600
+Subject: [PATCH] Added ed25519 signing via pysodium as optional dependency
+
+---
+ httpsig/sign.py              | 24 ++++++++++++++++++++++--
+ httpsig/tests/test_verify.py | 20 ++++++++++++++++++++
+ httpsig/utils.py             |  2 +-
+ httpsig/verify.py            | 11 +++++++++++
+ 4 files changed, 54 insertions(+), 3 deletions(-)
+
+diff --git a/httpsig/sign.py b/httpsig/sign.py
+index 7125035..b0d8676 100644
+--- a/httpsig/sign.py
++++ b/httpsig/sign.py
+@@ -27,7 +27,10 @@ class Signer(object):
+         
+         self._rsa = None
+         self._hash = None
+-        self.sign_algorithm, self.hash_algorithm = algorithm.split('-')
++        try:
++            self.sign_algorithm, self.hash_algorithm = algorithm.split('-')
++        except ValueError:
++            self.sign_algorithm = algorithm
+         
+         if self.sign_algorithm == 'rsa':
+             try:
+@@ -40,9 +43,15 @@ class Signer(object):
+         elif self.sign_algorithm == 'hmac':
+             self._hash = HMAC.new(secret, digestmod=HASHES[self.hash_algorithm])
+ 
++        elif self.sign_algorithm == 'ed25519':
++            self._ed25519 = base64.b64decode(secret)
++
+     @property
+     def algorithm(self):
+-        return '%s-%s' % (self.sign_algorithm, self.hash_algorithm)
++        if self.sign_algorithm == 'ed25519':
++            return self.sign_algorithm
++        else:
++            return '%s-%s' % (self.sign_algorithm, self.hash_algorithm)
+ 
+     def _sign_rsa(self, data):
+         if isinstance(data, six.string_types): data = data.encode("ascii")
+@@ -56,6 +65,15 @@ class Signer(object):
+         hmac.update(data)
+         return hmac.digest()
+ 
++    def _sign_ed25519(self, data):
++        if isinstance(data, six.string_types): data = data.encode("ascii")
++        try:
++            from pysodium import crypto_sign_detached
++            return crypto_sign_detached(data, self._ed25519)
++        except ImportError:
++            raise HttpSigException("Unsupported algorithm")
++
++
+     def _sign(self, data):
+         if isinstance(data, six.string_types): data = data.encode("ascii")
+         signed = None
+@@ -63,6 +81,8 @@ class Signer(object):
+             signed = self._sign_rsa(data)
+         elif self._hash:
+             signed = self._sign_hmac(data)
++        elif self._ed25519:
++            signed = self._sign_ed25519(data)
+         if not signed:
+             raise SystemError('No valid encryptor found.')
+         return base64.b64encode(signed).decode("ascii")
+diff --git a/httpsig/tests/test_verify.py b/httpsig/tests/test_verify.py
+index f49eeb3..77d6d52 100755
+--- a/httpsig/tests/test_verify.py
++++ b/httpsig/tests/test_verify.py
+@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+ 
+ import json
+ import unittest
++from base64 import b64encode
+ 
+ from httpsig.sign import HeaderSigner, Signer
+ from httpsig.verify import HeaderVerifier, Verifier
+@@ -165,3 +166,22 @@ class TestVerifyRSASHA512(TestVerifyRSASHA1):
+     def setUp(self):
+         super(TestVerifyRSASHA512, self).setUp()
+         self.algorithm = "rsa-sha512"
++
++try:
++    from pysodium import crypto_sign_keypair
++    class TestVerifyED25519(TestVerifyHMACSHA1):
++        def setUp(self):
++            public_key, private_key = crypto_sign_keypair()
++            self.keyId = "Test"
++            self.algorithm = "ed25519"
++            self.sign_secret = b64encode(private_key)
++            self.verify_secret = b64encode(public_key)
++
++except ImportError, e:
++    if e.message.find('pysodium') >= 0:
++        class TestMissingDependency(unittest.TestCase):
++            @unittest.skip('Optional dependency missing - ' + e.message)
++            def test_ed25519():
++                pass
++
++
+diff --git a/httpsig/utils.py b/httpsig/utils.py
+index b34e3fa..9ac4152 100644
+--- a/httpsig/utils.py
++++ b/httpsig/utils.py
+@@ -14,7 +14,7 @@ except ImportError:
+ from Crypto.PublicKey import RSA
+ from Crypto.Hash import SHA, SHA256, SHA512
+ 
+-ALGORITHMS = frozenset(['rsa-sha1', 'rsa-sha256', 'rsa-sha512', 'hmac-sha1', 'hmac-sha256', 'hmac-sha512'])
++ALGORITHMS = frozenset(['rsa-sha1', 'rsa-sha256', 'rsa-sha512', 'hmac-sha1', 'hmac-sha256', 'hmac-sha512', 'ed25519'])
+ HASHES = {'sha1':   SHA,
+           'sha256': SHA256,
+           'sha512': SHA512}
+diff --git a/httpsig/verify.py b/httpsig/verify.py
+index a6e1ba3..aae51ce 100644
+--- a/httpsig/verify.py
++++ b/httpsig/verify.py
+@@ -37,6 +37,17 @@ class Verifier(Signer):
+             h = self._sign_hmac(data)
+             s = b64decode(signature)
+             return ct_bytes_compare(h, s)
++
++        elif self.sign_algorithm == 'ed25519':
++            try:
++                from pysodium import crypto_sign_verify_detached
++                crypto_sign_verify_detached(b64decode(signature), data, self._ed25519)
++            except ValueError:
++                return False
++            except ImportError:
++                raise HttpSigException("Unsupported algorithm.")
++                return False
++            return True
+         
+         else:
+             raise HttpSigException("Unsupported algorithm.")
+-- 
+2.7.4
+

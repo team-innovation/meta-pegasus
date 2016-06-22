@@ -77,6 +77,7 @@ FILES_${PN}-roubaix = "\
     ${INSTALL_DIR}/roubaix/definitions.pyo \
     ${INSTALL_DIR}/roubaix/roubaix.pyo \
     ${INSTALL_DIR}/roubaix/proxies/* \
+    ${INSTALL_DIR}/roubaix/KeyEventDispatcher.pyo \
     ${INSTALL_DIR}/roubaix/FileMixin.pyo \
     ${INSTALL_DIR}/roubaix/ConnectionsMixin.pyo \
     ${INSTALL_DIR}/roubaix/AudioMixin.pyo \
