@@ -6,7 +6,6 @@
 #
 import os, sys, shutil, platform
 import binascii
-
 from time import sleep
 from taurine.async_io.timer import Timer
 from taurine.rpc.rpc_client import RpcClient
@@ -35,7 +34,7 @@ class NfcTest(EventLoop):
     READ_CMD = '04022607'
     PROTO_CMD = '02020200'
     
-    def __init__(self):    
+    def __init__(self, echo, read):
         super().__init__(self.on_exit)
         
         self.nfc = None
@@ -47,7 +46,8 @@ class NfcTest(EventLoop):
         self.port = 7040
         self.retry = 0
         self.state = NfcState.PROTOCOL
-
+        self.echo = echo
+        self.read = read
     def setup(self):
         self._nfc_client = RpcClient('nfcd')
         self._nfc_client.connect(self.address, self.port, self.on_connected, auto_reconnect=True)
@@ -71,25 +71,33 @@ class NfcTest(EventLoop):
     def on_nfc_event(self, service, value):
         if self.state == NfcState.PROTOCOL:
             self.nfc.nfc_send_command(self.ECHO_CMD)
-            self.state = NfcState.ECHO
+            if self.echo:
+                self.state = NfcState.ECHO
+            elif self.read:
+                self.state = NfcState.READ
+            else:
+                print("No test")
+                self.on_exit()
         elif self.state == NfcState.ECHO:
             if value == b'U':
                 print("Echo Test: PASSED!")
                 self.nfc.nfc_send_command(self.READ_CMD)
-                self.state = NfcState.READ
+                if self.read:
+                    self.state = NfcState.READ
+                else:
+                    self.on_exit()
             elif value != b'U':
                 print("Echo Test: FAILED!")
                 self.on_exit()
         elif self.state == NfcState.READ:
-            if value.__len__() > 2:
-                if value[0] == 0x80:
-                    print("Read Test: PASSED!")
-                    self.on_exit()
-                elif value[0] != 0x80 and self.retry < 5:
-                    self.nfc.nfc_send_command(self.READ_CMD)
-                elif value[0] != 0x80 and self.retry >= 5:
-                    print("Read Test: FAILED!")
-                    self.on_exit()
+            if value[0] == 0x80:
+                print("Read Test: PASSED!")
+                self.on_exit()
+            elif value[0] != 0x80 and self.retry < 5:
+                self.nfc.nfc_send_command(self.READ_CMD)
+            elif value[0] != 0x80 and self.retry >= 5:
+                print("Read Test: FAILED!")
+                self.on_exit()
             else:
                 self.nfc.nfc_send_command(self.READ_CMD)
         else:
@@ -101,9 +109,31 @@ class NfcTest(EventLoop):
         DelayedCall(0, self.setup)
         super().run()
 
+def print_options():
+    print("Useage:")
+    print("To run echo command: nfctest-sly -e")
+    print("To run read command: nfctest-sly -r")
+    print("To run all  command: nfctest-sly -a")
+
 def main():
-    loop = NfcTest()
-    loop.run()
+
+    if sys.argv.__len__() < 2:
+        print_options()
+        return
+
+    if sys.argv[1] == '-e':
+        loop = NfcTest(True, False)
+        loop.run()
+    elif sys.argv[1] == '-r':
+        loop = NfcTest(False, True)
+        loop.run()
+    elif sys.argv[1] == '-a':
+        loop = NfcTest(True, True)
+        loop.run()
+    else:
+        print("Not a valid option:")
+        print_options()
+
 
 if __name__ == "__main__":
     main()
