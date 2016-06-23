@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r25"
+PR = "r26"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -36,7 +36,7 @@ SRC_URI = "\
 	   file://netm-hwtest.py \
 	   file://bootsplash.rgba \
 	   file://bootsplash.sh \
-       file://genkeys.py \
+       file://genkeys \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -69,7 +69,7 @@ do_install() {
 	install -m 0755 ${S}/wave_1800_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_3600_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
-	install -m 0755 ${S}/genkeys.py ${D}/usr/local/bin
+	install -m 0755 ${S}/genkeys ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
