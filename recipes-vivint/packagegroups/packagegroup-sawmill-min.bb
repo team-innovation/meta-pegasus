@@ -7,7 +7,7 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "5"
+PR = "6"
 
 inherit packagegroup
 
@@ -33,4 +33,5 @@ RDEPENDS_${PN} = " \
 	util-linux-sfdisk \
 	vivutils \
 	memtester \
+	obp-utils \
 "
