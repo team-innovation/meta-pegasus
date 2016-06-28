@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<eventmgr version="0101">
+        <maxprocess>1</maxprocess>
+        <schedule id="0">
+                <duration>
+                        <weekday>0,1,2,3,4,5,6</weekday>
+                        <time>00:00:00-23:59:59</time>
+                </duration>
+        </schedule>
+        <motion condition="0">
+                <status id="0">normal~trigger</status>
+        </motion>
+        <event id="1">
+                <description>omnicast</description>
+                <scheduleno>0</scheduleno>
+                <condition>c0</condition>
+                <delay>3</delay>
+                <trylater>1</trylater>
+                <priority>1</priority>
+                <function>fifocmd -p /tmp/motionvadpeventfifo -r "MotionTrigger"</function>
+        </event>
+</eventmgr>

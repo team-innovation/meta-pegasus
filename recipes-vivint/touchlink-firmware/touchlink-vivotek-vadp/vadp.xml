@@ -1,0 +1,39 @@
+<vadp>
+	<!-- NECESSARY parameters -->
+	<!-- Package name -->
+	<name>VivintAnalytics</name>
+	<!-- Vendor name -->
+	<vendor>Vivint.</vendor>
+	<!-- Package version -->
+	<version>%VERSION%</version>
+	<!-- Define the name of main script -->
+	<initscr>main.sh</initscr>
+	<!-- Package size [kB] -->
+	<pkgsize>572</pkgsize>
+	<!-- Memory requirement [kB] -->
+	<resource>
+		<memory>35</memory>
+	</resource>
+	<!-- Default license status -->
+	<license>N/A</license>
+	<!-- Required VADP version -->
+	<reqvadpversion>1.2.1.1</reqvadpversion>
+
+	<!-- OPTIONAL parameters -->
+	<!-- Home page of vendor -->
+	<vendorurl>http://www.vivint.com</vendorurl>
+	<!-- Link to module page -->
+	<moduleurl></moduleurl>
+	<!-- Identify if the package support upgrade -->
+	<upgrade>yes</upgrade>
+	<!-- Execute chkver when upload -->
+	<chkver>no</chkver>
+	<!-- ONVIF description file of event registration -->
+	<!--<regevent>conf.d/SupportedRules.xml</regevent> -->
+	<!-- Identify if the package using VVTK license mechanism -->
+	<vvtklicensemec>no</vvtklicensemec>
+	<!-- Define the default running status -->
+	<defaultrun>no</defaultrun>
+	<!-- Alias name of the package. It will be shown on the UI only -->
+	<extendedname>Vivint. Analytics</extendedname>
+</vadp>
