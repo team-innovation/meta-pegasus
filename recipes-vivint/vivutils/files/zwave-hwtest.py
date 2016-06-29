@@ -2,7 +2,9 @@
 
 from serial import Serial, SerialException
 import sys
+import os
 import time
+import subprocess
 
 def checksum(data):
     ret = 0xff
@@ -89,8 +91,10 @@ class ZwaveTest:
         
         
 def main(args):
+    fnull = open(os.devnull, 'w')
     with ZwaveTest() as zwave:
         if args[1] == "1":
+            subprocess.call(["procman","stop","zwaved"], stdout=fnull, stderr=subprocess.STDOUT)
             zwave.writep(add_cmd)
             zwave.readp()
         else:
@@ -98,6 +102,7 @@ def main(args):
             zwave.readp()
             zwave.writep(stop_cmd)
             zwave.readp(True)
+            subprocess.call(["procman","start","zwaved"], stdout=fnull, stderr=subprocess.STDOUT)
 
 if __name__=='__main__':
     sys.exit(main(sys.argv))
