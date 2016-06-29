@@ -24,8 +24,8 @@ class NfcState:
     PROTOCOL = 1
     ECHO = 2
     READ = 3
-    ECHO_RECV = 4
-    READ_RECV = 5
+    HIBERNATE = 4
+    HIBERNATE_RECV = 5
 
 
 class NfcTest(EventLoop):
@@ -33,8 +33,9 @@ class NfcTest(EventLoop):
     ECHO_CMD = '55'
     READ_CMD = '04022607'
     PROTO_CMD = '02020200'
+    HIBERNATE_CMD = '070E0804000400180000000000000000'
     
-    def __init__(self, echo, read):
+    def __init__(self, echo, read, hibernate):    
         super().__init__(self.on_exit)
         
         self.nfc = None
@@ -48,6 +49,8 @@ class NfcTest(EventLoop):
         self.state = NfcState.PROTOCOL
         self.echo = echo
         self.read = read
+        self.hibernate = hibernate
+
     def setup(self):
         self._nfc_client = RpcClient('nfcd')
         self._nfc_client.connect(self.address, self.port, self.on_connected, auto_reconnect=True)
@@ -71,18 +74,29 @@ class NfcTest(EventLoop):
     def on_nfc_event(self, service, value):
         if self.state == NfcState.PROTOCOL:
             self.nfc.nfc_send_command(self.ECHO_CMD)
-            if self.echo:
+            if self.hibernate:
+                self.state = NfcState.HIBERNATE
+            elif self.echo:
                 self.state = NfcState.ECHO
             elif self.read:
                 self.state = NfcState.READ
             else:
                 print("No test")
                 self.on_exit()
+        elif self.state == NfcState.HIBERNATE:
+            self.nfc.nfc_send_command(self.HIBERNATE_CMD)
+            self.state = NfcState.HIBERNATE_RECV
+        elif self.state == NfcState.HIBERNATE_RECV:
+            if value == b'\x00':
+                print("Hibernate Success")
+            else:
+                print("Hibernate Fail")
+            self.on_exit()
         elif self.state == NfcState.ECHO:
             if value == b'U':
                 print("Echo Test: PASSED!")
-                self.nfc.nfc_send_command(self.READ_CMD)
                 if self.read:
+                    self.nfc.nfc_send_command(self.READ_CMD)
                     self.state = NfcState.READ
                 else:
                     self.on_exit()
@@ -90,12 +104,12 @@ class NfcTest(EventLoop):
                 print("Echo Test: FAILED!")
                 self.on_exit()
         elif self.state == NfcState.READ:
-            if value[0] == 0x80:
+            if value && value[0] == 0x80:
                 print("Read Test: PASSED!")
                 self.on_exit()
-            elif value[0] != 0x80 and self.retry < 5:
+            elif value[0] != 0x80 and self.retry < 8:
                 self.nfc.nfc_send_command(self.READ_CMD)
-            elif value[0] != 0x80 and self.retry >= 5:
+            elif value[0] != 0x80 and self.retry >= 8:
                 print("Read Test: FAILED!")
                 self.on_exit()
             else:
@@ -122,13 +136,16 @@ def main():
         return
 
     if sys.argv[1] == '-e':
-        loop = NfcTest(True, False)
+        loop = NfcTest(True, False, False)
         loop.run()
     elif sys.argv[1] == '-r':
-        loop = NfcTest(False, True)
+        loop = NfcTest(False, True, False)
         loop.run()
     elif sys.argv[1] == '-a':
-        loop = NfcTest(True, True)
+        loop = NfcTest(True, True, False)
+        loop.run()
+    elif sys.argv[1] == '-h':
+        loop = NfcTest(False, False, True)
         loop.run()
     else:
         print("Not a valid option:")
