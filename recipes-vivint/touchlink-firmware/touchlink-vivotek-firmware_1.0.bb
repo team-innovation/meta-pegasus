@@ -1,5 +1,5 @@
 DESCRIPTION = "Vivotek V520IR video camera firmware"
-LICENSE = "Closed"
+LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://../camera-firmwares/Vivotek/README;md5=46a88f675dacde70017748b93f5875ed"
 HOMEPAGE = "http://www.vivint.com"
 

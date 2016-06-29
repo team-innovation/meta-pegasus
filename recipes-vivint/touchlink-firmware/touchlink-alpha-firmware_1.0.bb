@@ -1,5 +1,5 @@
 DESCRIPTION = "Alpha Network video camera firmware"
-LICENSE = "Closed"
+LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://../camera-firmwares/Alpha/README;md5=b30f2526a2a1704f1edb4469b86216b8"
 HOMEPAGE = "http://www.vivint.com"
 PR = "3"
@@ -58,6 +58,6 @@ FILES_${PN}-cs6022-ov4689 = "${FIRMWARE_DIR}/${FIRMWARE_CS6022_OV4689}"
 FILES_${PN}-cs6022-lic = "${FIRMWARE_DIR}/README"
 
 PACKAGES = "${PN}-cs6022 \
-			${PN}-cs6022 \
+			${PN}-cs6022-lic \
 			${PN}-cs6022-ov4689 \
            "
