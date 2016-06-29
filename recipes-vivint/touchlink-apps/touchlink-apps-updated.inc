@@ -1,7 +1,7 @@
 ###
 ### Change UPDATED_PREPEND everything you touch this script
 ###
-UPDATED_PREPEND = "-2"
+UPDATED_PREPEND = "-3"
 
 UPDATED_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-updated = "${PR}${UPDATED_PREPEND}${UPDATED_REVISION}"
@@ -24,6 +24,10 @@ RDEPENDS_${PN}-updated ="\
   gzip \
   zsync \
 "
+INITSCRIPT_PACKAGES += "${PN}-updated"
+
+INITSCRIPT_NAME_${PN}-updated = "updated"
+INITSCRIPT_PARAMS_${PN}-updated = "defaults 2 17"
 
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/updated/

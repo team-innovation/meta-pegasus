@@ -1,7 +1,7 @@
 ###
 ### Change SUNDANCE_PREPEND everything you touch this script
 ###
-SUNDANCE_PREPEND = "-1"
+SUNDANCE_PREPEND = "-2"
 
 
 SUNDANCE_REVISION ?= "${DISTRO_PR}"
@@ -16,6 +16,11 @@ RDEPENDS_${PN}-sundance = "\
 	python3-mmap \
     python3-httpsig-na \
 	"
+
+INITSCRIPT_PACKAGES += "${PN}-sundance"
+
+INITSCRIPT_NAME_${PN}-sundance = "sundance"
+INITSCRIPT_PARAMS_${PN}-sundance = "defaults 3 17"
 
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/sundance/
