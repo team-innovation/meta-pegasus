@@ -1,6 +1,6 @@
 DESCRIPTION = "Sly qt5 image."
 LICENSE = "MIT"
-PR = "r8"
+PR = "r9"
 IMAGE_FEATURES += "package-management" 
 
 IMAGE_INSTALL_append = "\
@@ -14,13 +14,10 @@ IMAGE_INSTALL_append = "\
 	python3-pyqt5 \
 	audio-sh \
 	mtd-utils \
+	packagegroup-camera-firmware \
 	packagegroup-ppp-config-modem \
 	packagegroup-zwave-config \
 	bsp-rt288x-hg \
-	touchlink-alpha-firmware-cs6022-ov4689 \
-	touchlink-vivotek-firmware-db8332w \
-	touchlink-vivotek-firmware-db8331w \
-	touchlink-vivotek-firmware-721w \	
 "
 
 inherit core-image

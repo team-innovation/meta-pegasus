@@ -58,5 +58,6 @@ FILES_${PN}-cs6022-ov4689 = "${FIRMWARE_DIR}/${FIRMWARE_CS6022_OV4689}"
 FILES_${PN}-cs6022-lic = "${FIRMWARE_DIR}/README"
 
 PACKAGES = "${PN}-cs6022 \
-	    ${PN}-cs6022-ov4689 \
+			${PN}-cs6022 \
+			${PN}-cs6022-ov4689 \
            "

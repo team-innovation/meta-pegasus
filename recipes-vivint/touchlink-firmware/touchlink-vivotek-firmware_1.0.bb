@@ -77,6 +77,7 @@ FILES_${PN}-db8332w = "${FIRMWARE_DIR}/${FIRMWARE_DB8332W}"
 FILES_${PN}-520ir-lic = "${FIRMWARE_DIR}/README"
 
 PACKAGES = "${PN}-520ir \
+			${PN}-520ir-lic\
             ${PN}-620pt \
             ${PN}-cc8130 \
             ${PN}-fd8134v \

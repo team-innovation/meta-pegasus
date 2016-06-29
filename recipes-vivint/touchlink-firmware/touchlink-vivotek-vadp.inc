@@ -1,6 +1,6 @@
 DESCRIPTION = "Vivotek VADP module"
 LICENSE = "Closed"
-LIC_FILES_CHKSUM = "file://README;md5=68ad62c64cc6c620126241fd429e68fe"
+LIC_FILES_CHKSUM = "file://../analytics/README.Vivotek;md5=1044bb6610afc7316ff1017973833fb4"
 HOMEPAGE = "http://www.vivint.com"
 
 #
@@ -12,7 +12,7 @@ PR = "ml32"
 
 SRCREV = "e89fafc1974a"
 
-SRC_URI = "hg://${HG_SERVER};module=analytics;proto=http"
+SRC_URI = "hg://${HG_SERVER};module=analytics;protocol=http"
 
 S = "${WORKDIR}/analytics"
 
