@@ -1,7 +1,0 @@
-{
-    "adtd":
-    {	
-	"name" : "DSP Services",
-    	"start": "/etc/init.d/adtd start"
-    }
-}

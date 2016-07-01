@@ -1,7 +1,0 @@
-{
-    "adcd":
-    {
-	"name" : "ALARM.COM Services",
-    	"start": "/etc/init.d/adcd start"
-    }
-}
