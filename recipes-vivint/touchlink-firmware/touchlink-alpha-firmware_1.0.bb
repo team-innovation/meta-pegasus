@@ -1,6 +1,5 @@
 DESCRIPTION = "Alpha Network video camera firmware"
-LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = "file://../camera-firmwares/Alpha/README;md5=b30f2526a2a1704f1edb4469b86216b8"
+LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
 PR = "3"
 
