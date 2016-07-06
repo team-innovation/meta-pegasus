@@ -35,9 +35,9 @@ SRC_URI = "\
 	   file://wlan-hwtest \
 	   file://netm-hwtest.py \
 	   file://zwave-hwtest.py \
-	   file://bootsplash.rgba \
 	   file://bootsplash.sh \
        file://genkeys \
+       file://splash_app.py \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -72,6 +72,7 @@ do_install() {
 	install -m 0755 ${S}/wave_3600_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/genkeys ${D}/usr/local/bin
+    install -m 0755 ${S}/splash_app.py ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
@@ -82,10 +83,6 @@ do_install() {
 
 	install -d ${D}/home/root/
 
-    install -d ${D}/usr/lib/images/
-    install -d ${D}/media/extra/lib/images/
-    install ${S}/bootsplash.rgba ${D}/usr/lib/images
-    
     install -d ${D}/${sysconfdir}/init.d
     install -m 0755 ${S}/bootsplash.sh  ${D}/${sysconfdir}/init.d
     update-rc.d -r ${D} bootsplash.sh start 04 S .

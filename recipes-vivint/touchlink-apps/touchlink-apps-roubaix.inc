@@ -49,12 +49,6 @@ if [ x"$D" = "x" ]; then
         mkdir -p /media/extra/conf
     fi
 
-    if [ ! -d /media/extra/lib/images ]
-    then
-        logging "Creating image directory..."
-        mkdir -p /media/extra/lib/images
-    fi
-
     if [ -f /media/extra/pointercal ]
     then
             logging "Moving /media/extra/pointercal file to /media/extra/conf..."
