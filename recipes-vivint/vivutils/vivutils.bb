@@ -36,8 +36,6 @@ SRC_URI = "\
 	   file://netm-hwtest.py \
 	   file://zwave-hwtest.py \
 	   file://bootsplash.sh \
-	   file://bootsplash.gif \
-       file://splash_app.py \
        file://genkeys \
 "
 
@@ -73,7 +71,6 @@ do_install() {
 	install -m 0755 ${S}/wave_3600_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/genkeys ${D}/usr/local/bin
-    install -m 0755 ${S}/splash_app.py ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
@@ -83,9 +80,6 @@ do_install() {
 	install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
 
 	install -d ${D}/home/root/
-
-    install -d ${D}/usr/lib/images
-    install ${S}/bootsplash.gif ${D}/usr/lib/images
 
     install -d ${D}/${sysconfdir}/init.d
     install -m 0755 ${S}/bootsplash.sh  ${D}/${sysconfdir}/init.d

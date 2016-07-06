@@ -13,7 +13,6 @@ if [ ! -e /dev/fb0 ]; then
         return
 fi
 
-
 if [ -e /usr/local/bin/splash_app.py ]; then
-    QT_EGLFS_IMX6_NO_FB_MULTI_BUFFER=1 /usr/local/bin/splash_app.py&
+    QT_EGLFS_IMX6_NO_FB_MULTI_BUFFER=1 /opt/2gig/utils/splash_app.py&
 fi
