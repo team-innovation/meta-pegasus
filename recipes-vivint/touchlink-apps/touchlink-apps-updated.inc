@@ -27,7 +27,7 @@ RDEPENDS_${PN}-updated ="\
 INITSCRIPT_PACKAGES += "${PN}-updated"
 
 INITSCRIPT_NAME_${PN}-updated = "updated"
-INITSCRIPT_PARAMS_${PN}-updated = "defaults 2 17"
+INITSCRIPT_PARAMS_${PN}-updated = "defaults 3 17"
 
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/updated/

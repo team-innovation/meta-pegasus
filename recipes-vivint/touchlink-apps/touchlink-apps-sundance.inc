@@ -20,7 +20,7 @@ RDEPENDS_${PN}-sundance = "\
 INITSCRIPT_PACKAGES += "${PN}-sundance"
 
 INITSCRIPT_NAME_${PN}-sundance = "sundance"
-INITSCRIPT_PARAMS_${PN}-sundance = "defaults 3 17"
+INITSCRIPT_PARAMS_${PN}-sundance = "defaults 2 17"
 
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/sundance/

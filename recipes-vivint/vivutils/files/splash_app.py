@@ -18,7 +18,7 @@ class SplashScreen(QThread):
         self.app = app
         self.gif_anim = QLabel()
 
-        movie = QMovie("/home/root/Splash475.gif")
+        movie = QMovie("/usr/lib/images/bootsplash.gif")
         movie.setScaledSize(QSize(1024,600))
         self.gif_anim.setMovie(movie)
         movie.start()

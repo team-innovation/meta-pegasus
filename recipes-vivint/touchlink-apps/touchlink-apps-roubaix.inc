@@ -8,7 +8,7 @@ PKGR_${PN}-roubaix = "${PR}${ROUBAIX_PREPEND}${ROUBAIX_REVISION}"
 
 INITSCRIPT_PACKAGES += "${PN}-roubaix"
 INITSCRIPT_NAME_${PN}-roubaix = "roubaix"
-INITSCRIPT_PARAMS_${PN}-roubaix = "stop 19 runlvl 0 6 ."
+INITSCRIPT_PARAMS_${PN}-roubaix = "defaults 1 17"
 
 RPROVIDES_${PN}-movial = "touchlink-ui-core"
 

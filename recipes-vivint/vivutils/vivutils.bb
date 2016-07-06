@@ -36,8 +36,9 @@ SRC_URI = "\
 	   file://netm-hwtest.py \
 	   file://zwave-hwtest.py \
 	   file://bootsplash.sh \
-       file://genkeys \
+	   file://bootsplash.gif \
        file://splash_app.py \
+       file://genkeys \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -83,6 +84,9 @@ do_install() {
 
 	install -d ${D}/home/root/
 
+    install -d ${D}/usr/lib/images
+    install ${S}/bootsplash.gif ${D}/usr/lib/images
+
     install -d ${D}/${sysconfdir}/init.d
     install -m 0755 ${S}/bootsplash.sh  ${D}/${sysconfdir}/init.d
     update-rc.d -r ${D} bootsplash.sh start 04 S .
@@ -90,4 +94,4 @@ do_install() {
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"
 FILES_${PN} += "/home/root /usr/local/bin/* /etc/profile.d/* \
-                /usr/lib/images/* /media/extra/lib/images"
+                /usr/lib/images/*"
