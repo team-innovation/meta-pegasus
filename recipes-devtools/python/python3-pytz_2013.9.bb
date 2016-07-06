@@ -32,18 +32,56 @@ SRC_URI[md5sum] = "ec7076947a46a8a3cb33cbf2983a562c"
 SRC_URI[sha256sum] = "4252226fa20e0715d4dcd05f9233f0076c44bca30e4f1793b2fe03cdfb422ed4"
 
 pkg_postinst_${PN}() {
-#!/bin/sh
+#!/bin/sh -e
 # create symlink to /usr/share/zoneinfo for pytz to use
 #
 
-if [ ! -h {D}/usr/lib/python3.3/site-packages/pytz ]
-then
-	rm -rf {D}/usr/lib/python3.3/site-packages/pytz/zoneinfo
+if [ x"$D" = "x" ]; then
 
-	if [ -e {D}/usr/share/zoneinfo ]
-	then
-	    cd {D}/usr/lib/python3.3/site-packages/pytz ; ln -s {D}/usr/share/zoneinfo zoneinfo
-	fi
+    if [ ! -h /usr/lib/python3.3/site-packages/pytz ]; then
+        rm -rf /usr/lib/python3.3/site-packages/pytz/zoneinfo
+
+        if [ -e /usr/share/zoneinfo ]; then
+            cd /usr/lib/python3.3/site-packages/pytz ; ln -s /usr/share/zoneinfo zoneinfo
+        fi
+    fi
+
+# Copy over old timezone to new run partition
+
+    eval $(fw_printenv bootnum || echo bootnum=1)
+
+    case $bootnum in
+        1)
+            previous_localtime=/media/mmcblk0p6/etc/localtime
+            previous_timezone=/media/mmcblk0p6/etc/timezone
+            ;;
+        2)
+            previous_localtime=/media/mmcblk0p5/etc/localtime
+            previous_timezone=/media/mmcblk0p5/etc/timezone
+            ;;
+        *)
+            exit 0
+            ;;
+    esac
+
+    new_path="/etc"
+    default_timezone="US/Mountain"
+    zone_location="/usr/share/zoneinfo"
+    if [ -f $previous_timezone ]; then
+        cp -p $previous_timezone $new_path
+    else
+        echo $default_timezone > $new_path/timezone
+    fi
+
+    actual_zone=$(readlink $previous_localtime)
+
+    if [ -z $actual_zone ]; then
+        cd $new_path && ln -sf $zone_location/$default_timezone localtime
+    else
+        cd $new_path && ln -sf $actual_zone localtime
+    fi
+else
+    exit 1
 fi
 }
 
