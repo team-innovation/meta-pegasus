@@ -250,6 +250,9 @@ do_install () {
         # Install init.d scripts
 	install -d ${D}/${sysconfdir}/init.d/
 	cp -a ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
+
+    # Put the bootsplash script in place
+    update-rc.d -r ${D} bootsplash.sh start 04 S .
 }
 
 do_install_append() {

@@ -8,7 +8,7 @@ PKGR_${PN}-iod = "${PR}${IOD_PREPEND}${IOD_REVISION}"
 
 INITSCRIPT_PACKAGES += "${PN}-iod"
 INITSCRIPT_NAME_${PN}-iod = "iod"
-INITSCRIPT_PARAMS_${PN}-iod = "defaults 2 17"
+INITSCRIPT_PARAMS_${PN}-iod = "start 02 2 3 4 5 ."
 
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/iod/

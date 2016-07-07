@@ -35,7 +35,6 @@ SRC_URI = "\
 	   file://wlan-hwtest \
 	   file://netm-hwtest.py \
 	   file://zwave-hwtest.py \
-	   file://bootsplash.sh \
        file://genkeys \
 "
 
@@ -80,10 +79,6 @@ do_install() {
 	install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
 
 	install -d ${D}/home/root/
-
-    install -d ${D}/${sysconfdir}/init.d
-    install -m 0755 ${S}/bootsplash.sh  ${D}/${sysconfdir}/init.d
-    update-rc.d -r ${D} bootsplash.sh start 04 S .
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"
