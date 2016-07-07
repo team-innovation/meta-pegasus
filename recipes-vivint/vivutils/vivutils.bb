@@ -82,5 +82,4 @@ do_install() {
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"
-FILES_${PN} += "/home/root /usr/local/bin/* /etc/profile.d/* \
-                /usr/lib/images/*"
+FILES_${PN} += "/home/root /usr/local/bin/* /etc/profile.d/*"

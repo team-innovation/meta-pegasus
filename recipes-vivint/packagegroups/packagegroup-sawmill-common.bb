@@ -56,4 +56,5 @@ RDEPENDS_${PN} = " \
 	vim \
 	webrtc-audio-processing \
 	wps-sh \
+    busybox-httpd \
 "

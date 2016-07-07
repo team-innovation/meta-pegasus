@@ -1,0 +1,70 @@
+#!/bin/sh
+DAEMON=/usr/sbin/httpd
+NAME=httpd
+DESC="Busybox HTTP Daemon"
+HTTPROOT="/srv/www"
+ARGS="-h $HTTPROOT"
+
+test -f $DAEMON || exit 0
+
+set -e
+
+create_thumbnail_links() {
+	if [ ! -h $HTTPROOT/thumbnails ]; then
+		echo "Create thumbnails symlink..."		
+		ln -sf /tmp/thumbnails $HTTPROOT/thumbnails
+        fi
+}
+
+create_clips_links() {
+	if [ ! -h $HTTPROOT/clips ]; then
+		echo "Create clips symlink..."
+		ln -sf /media/clips $HTTPROOT/clips
+        fi
+}
+
+create_slupdate_links() {
+	if [ ! -h $HTTPROOT/update ]; then
+		echo "Create update symlink..."
+		ln -sf /media/extra/update $HTTPROOT/update
+        fi
+}
+
+case "$1" in
+    start)
+        echo -n "starting $DESC: $NAME... "
+	if [ ! -d $HTTPROOT ]; then
+		echo "$HTTPROOT is missing."
+		exit 1
+	fi
+
+	create_thumbnail_links
+	create_clips_links
+	create_slupdate_links
+
+	start-stop-daemon -S -b -n $NAME -a $DAEMON -- $ARGS
+	echo "done."
+	;;
+    stop)
+        echo -n "stopping $DESC: $NAME... "
+	start-stop-daemon -K -n $NAME
+	echo "done."
+	;;
+    restart)
+        echo "restarting $DESC: $NAME... "
+ 	$0 stop
+	$0 start
+	echo "done."
+	;;
+    reload)
+    	echo -n "reloading $DESC: $NAME... "
+    	killall -HUP $(basename ${DAEMON})
+	echo "done."
+	;;
+    *)
+	echo "Usage: $0 {start|stop|restart|reload}"
+	exit 1
+	;;
+esac
+
+exit 0
