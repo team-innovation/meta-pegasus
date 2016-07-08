@@ -1,8 +1,0 @@
-{
-    "chronyd":
-    {
-	"name" : "Time Services",
-	"start": "/etc/init.d/chronyd start",
-	"stop": "/etc/init.d/chronyd stop"
-    }
-}

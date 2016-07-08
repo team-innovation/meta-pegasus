@@ -1,9 +1,9 @@
 #!/bin/sh
-DAEMON=/usr/sbin/httpd
-NAME=httpd
+DAEMON=/bin/busybox
+NAME=busybox
 DESC="Busybox HTTP Daemon"
 HTTPROOT="/srv/www"
-ARGS="-h $HTTPROOT"
+ARGS="httpd -h $HTTPROOT"
 
 test -f $DAEMON || exit 0
 
