@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+#
+# Test script for nfc during manufacturing process
+#
+#
+#
+import os, sys, shutil, platform
+import binascii
+from time import sleep
+from taurine.async_io.timer import Timer
+from taurine.rpc.rpc_client import RpcClient
+from taurine.rpc.rpc_service import RpcService
+from taurine.async_io.event_loop import EventLoop
+from taurine.async_io.delayed_call import DelayedCall
+from taurine.async_io.threaded_call import ThreadedCall
+
+def on_touchlink():
+    sys.path.insert(0, "/opt/2gig/nfcd/proxies/python")
+    sys.path.insert(0, "/opt/2gig/nfcd")
+
+__author__ = 'jeff'
+
+class NfcState:
+    PROTOCOL = 1
+    ECHO = 2
+    READ = 3
+    HIBERNATE = 4
+    HIBERNATE_RECV = 5
+
+
+class NfcTest(EventLoop):
+
+    ECHO_CMD = '55'
+    READ_CMD = '04022607'
+    PROTO_CMD = '02020200'
+    HIBERNATE_CMD = '070E0804000400180000000000000000'
+    
+    def __init__(self, arg):    
+        super().__init__(self.on_exit)
+        
+        self.nfc = None
+        self.exit_now = False
+
+        on_touchlink()
+
+        self.address = 'localhost'
+        self.port = 7040
+        self.retry = 0
+        self.state = NfcState.PROTOCOL
+        self.arg = arg
+
+    def setup(self):
+        self._nfc_client = RpcClient('nfcd')
+        self._nfc_client.connect(self.address, self.port, self.on_connected, auto_reconnect=True)
+
+    def on_exit(self):
+        if self.nfc:
+            self.nfc.remove_notify_handler("on_nfc_received_data", self.on_nfc_event)
+            self._nfc_client.disconnect()
+            sys.exit(0)
+
+    def on_connected(self, error):
+        if not error:
+            self.nfc = self._nfc_client.get_service_with_name("NfcService")
+            self.nfc.add_notify_handler("on_nfc_received_data", self.on_nfc_event)
+
+            # Start test
+            self.retry = 0
+            self.nfc.nfc_send_command(self.arg)
+
+    def on_nfc_event(self, service, value):
+        print(">>>> retrun = {}".format(value))
+        self.on_exit()
+
+    def run(self):
+        DelayedCall(0, self.setup)
+        super().run()
+
+def print_options():
+    print("Useage:")
+    print("nfccmd [command]")
+    print("Example: nfccmd 02020200")
+
+def main():
+
+    if sys.argv.__len__() < 2:
+        print_options()
+        return
+
+    loop = NfcTest(sys.argv[1])
+    loop.run()
+
+
+if __name__ == "__main__":
+    main()
+
