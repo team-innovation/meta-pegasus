@@ -18,6 +18,7 @@ SRC_URI = "\
 	   file://firstboot \
 	   file://firstboot-setup \
 	   file://gadgetsetup \
+       file://bootgadgets.sh \
 	   file://mfr_audio_heat_test.py \
 	   file://mfr_audio_test.py \
 	   file://nfctest.c \
@@ -76,6 +77,9 @@ do_install() {
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
 	update-rc.d -r ${D} firstboot start 08 S .
+
+    install -m 0755 ${S}/bootgadgets.sh ${D}/${sysconfdir}/init.d/bootgadgets.sh
+    update-rc.d -r ${D} bootgadgets.sh start 34 S .
 
 	install -d ${D}/${sysconfdir}/profile.d
 	install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
