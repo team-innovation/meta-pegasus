@@ -4,10 +4,14 @@ HOMEPAGE = "www.atmel.com"
 
 AUTHOR = "Atmel"
 SECTION = "base"
-LICENSE = "Is only provided by Atmel under NDA"
+#"Is only provided by Atmel under NDA"
+LICENSE = "BSD" 
 LIC_FILES_CHKSUM = "file://LICENSE;md5=8b6acde4490765c7b838377ac61e2d2d"
 
-PR = "r2"
+PR = "r3"
+
+DEPENDS="libusb1"
+
 
 SRC_URI = "git://github.com/atmel-maxtouch/obp-utils.git;protocol=git \
            file://obp-utils-makefile.patch \
