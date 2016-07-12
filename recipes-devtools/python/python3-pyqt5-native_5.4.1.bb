@@ -2,7 +2,7 @@ DESCRIPTION = "Python Qt5 Bindings"
 HOMEPAGE = "http://riverbankcomputing.co.uk"
 AUTHOR = "Phil Thomson @ riverbank.co.uk"
 SECTION = "devel/python"
-LICENSE = "GPL-3.0"
+LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "\
     file://LICENSE;md5=027a10affabd63483e5a6ef03ed8590a \
 "
@@ -14,7 +14,7 @@ inherit python-dir qmake5_base distutils3-base
 inherit native
 
 PYQT_OE_VERSION = "Qt_5_4_1"
-PR = "r1"
+PR = "r4"
 
 CONF_FILE = "touchlink_pyqt5_native.cfg"
 
@@ -43,8 +43,7 @@ export OE_QMAKE_LDFLAGS = "${LDFLAGS}"
 export OE_QMAKE_AR = "${AR}"
 export INSTALL_ROOT = "${STAGING_DIR}/${MULTIMACH_TARGET_SYS}"
 
-#SIP_MODULES = "QtCore QtGui QtMultimedia QtMultimediaWidgets QtNetwork QtOpenGL QtQml QtQuick QtWebKit QtWebKitWidgets QtWidgets QtXmlPatterns _QOpenGLFunctions_ES2"
-SIP_MODULES = "QtCore QtNetwork"
+SIP_MODULES = "QtCore QtGui QtNetwork"
 
 do_configure_prepend() {
 	mkdir -p ${CONFIG_DIR}
