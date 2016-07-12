@@ -24,11 +24,6 @@ RDEPENDS_${PN}-updated ="\
   gzip \
   zsync \
 "
-INITSCRIPT_PACKAGES += "${PN}-updated"
-
-INITSCRIPT_NAME_${PN}-updated = "updated"
-INITSCRIPT_PARAMS_${PN}-updated = "start 03 2 3 4 5 ."
-
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/updated/
         ${RSYNC_CMD} --exclude=docs --exclude=*.cmd ${S}/code/updated/ ${D}/${INSTALL_DIR}/updated/
