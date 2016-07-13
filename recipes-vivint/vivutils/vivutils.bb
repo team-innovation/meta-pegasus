@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r30"
+PR = "r31"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -37,7 +37,7 @@ SRC_URI = "\
 	   file://wlan-hwtest \
 	   file://netm-hwtest.py \
 	   file://zwave-hwtest.py \
-       file://genkeys \
+	   file://genkeys \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"

@@ -12,6 +12,9 @@ import pysodium
 from base64 import b64encode
 import argparse
 from subprocess import check_call, call
+from taurine.utils.which_hardware import WhichHardware
+from datetime import datetime
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-l', '--key-location', nargs=1, default='/media/bootscript',
@@ -24,7 +27,6 @@ key_file = key_type
 pk_file_path = key_location + '/id_' + key_type + '.pub'
 sk_file_path = key_location + '/id_' + key_type
 bootscript_partition = "/dev/mmcblk0p3"
-
 
 def generate_keypair():
     # Check if the keys are already there
@@ -51,7 +53,9 @@ def generate_keypair():
         pk = pk_file.read()
         pk_file.close()
 
-    print('Public key: ' + pk)
+    print('Public key: {}'.format(pk))
+    print('Date generated: {}'.format(datetime.fromtimestamp(os.path.getmtime(pk_file_path)).isoformat()))
+    print('Hardware type: {}'.format(WhichHardware.get_type()))
 
 def mount_bootscripts(attr):
     call(["umount", bootscript_partition])
