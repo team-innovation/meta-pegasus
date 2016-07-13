@@ -58,8 +58,10 @@ def generate_keypair():
     print('Hardware type: {}'.format(WhichHardware.get_type()))
 
 def mount_bootscripts(attr):
-    call(["umount", bootscript_partition])
-    check_call(["mount", "-o", attr, bootscript_partition])
+    return_code = call(["mount", "-o", "remount,{}".format(attr), bootscript_partition])
+    if return_code != 0:
+        check_call(["mount", "-o", attr, bootscript_partition])
+
 
 try:
     # First we remount the bootscript partition so we can write to it
