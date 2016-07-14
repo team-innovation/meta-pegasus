@@ -88,6 +88,7 @@ QT5_PKGS = "\
 	qtbase-fonts-ttf-dejavu   \
 	qtbase-fonts-ttf-vera     \
 	qtgstreamer \
+    qtquickcontrols-qmlplugins \
 	"
 
 PULSE_DEPENDS = "python3-pulseaudio \
