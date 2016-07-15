@@ -314,11 +314,61 @@ fusecheck || {
 	export FACTORYFIRSTBOOT="true"
 }
 
+modelfromubootenv() {
+	bd=$(fw_printenv | grep -i board=)
+	bd=${bd##board=}
+
+	case "$bd" in
+		*Sly*)
+			echo 'export SH_BOARD_MODEL="28-600052-001"'
+			;;
+		*Slimline*)
+			echo 'export SL_BOARD_MODEL="28-600015-001"'
+			;;
+		*)
+			echo XX_BOARD_MODEL="#unknown board"
+			;;
+	esac
+}
+
+revfromubootenv() {
+	bd=$(fw_printenv | grep -i board=)
+	bd=${bd##board=}
+
+	case "$bd" in
+		*Sly*)
+			echo 'export SH_BOARD_REV="V-SH1-A0"'
+			;;
+		*Slimline*)
+			echo 'export SL_BOARD_REV="V-SHD1-A13"'
+			;;
+		*)
+			;;
+	esac
+}
+
+panelinfocheck() {
+	mntbootscript
+	pit="/media/bootscript/panelinfo.txt"
+
+	test -f $pit &&
+		grep -q _BOARD_MODEL $pit
+}
+
+panelinfoupdate() {
+	pit="/media/bootscript/panelinfo.txt"
+	mntbootscriptrw
+	modelfromubootenv >> $pit
+	revfromubootenv >> $pit
+	mntbootscriptro
+}
+
 succeed_or bootscrcheck bootscrupdate
 succeed_or ubootcheck ubootupdate
 succeed_or mmcbootbitscheck mmcbootbitsset
 succeed_or fusecheck fuseset
 succeed_or serialnumcheck serialnumwarn
+succeed_or panelinfocheck panelinfoupdate
 
 test "${FACTORYFIRSTBOOT}" = "true" && {
 	info "Initial factory board setup complete -- halting!"
