@@ -314,33 +314,34 @@ fusecheck || {
 	export FACTORYFIRSTBOOT="true"
 }
 
-modelfromubootenv() {
+addmodelfromubootenv() {
 	bd=$(fw_printenv | grep -i board=)
 	bd=${bd##board=}
+	pit="/media/bootscript/panelinfo.txt"
 
 	case "$bd" in
 		*Sly*)
-			echo 'export SH_BOARD_MODEL="28-600052-001"'
+			echo 'export SH_BOARD_MODEL="28-600052-001"' >> $pit
 			;;
 		*Slimline*)
-			echo 'export SL_BOARD_MODEL="28-600015-001"'
+			echo 'export SL_BOARD_MODEL="28-600015-001"' >> $pit
 			;;
 		*)
-			echo XX_BOARD_MODEL="#unknown board"
 			;;
 	esac
 }
 
-revfromubootenv() {
+addrevfromubootenv() {
 	bd=$(fw_printenv | grep -i board=)
 	bd=${bd##board=}
+	pit="/media/bootscript/panelinfo.txt"
 
 	case "$bd" in
 		*Sly*)
-			echo 'export SH_BOARD_REV="V-SH1-A0"'
+			echo 'export SH_BOARD_REV="V-SH1-A0"' >> $pit
 			;;
 		*Slimline*)
-			echo 'export SL_BOARD_REV="V-SHD1-A13"'
+			echo 'export SL_BOARD_REV="V-SHD1-A13"' >> $pit
 			;;
 		*)
 			;;
@@ -351,15 +352,20 @@ panelinfocheck() {
 	mntbootscript
 	pit="/media/bootscript/panelinfo.txt"
 
-	test -f $pit &&
-		grep -q _BOARD_MODEL $pit
+	test -f $pit ||
+		return $(false)
+	grep -q XX_BOARD $pit &&
+		return $(false)
+	grep -q _BOARD_MODEL $pit
 }
 
 panelinfoupdate() {
 	pit="/media/bootscript/panelinfo.txt"
 	mntbootscriptrw
-	modelfromubootenv >> $pit
-	revfromubootenv >> $pit
+	grep -v .._BOARD $pit > /tmp/panelinfo.new
+	mv /tmp/panelinfo.new $pit
+	addmodelfromubootenv
+	addrevfromubootenv
 	mntbootscriptro
 }
 
