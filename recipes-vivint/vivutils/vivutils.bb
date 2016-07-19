@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r31"
+PR = "r32"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -38,6 +38,7 @@ SRC_URI = "\
 	   file://netm-hwtest.py \
 	   file://zwave-hwtest.py \
 	   file://genkeys \
+       file://clips.sh \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -77,6 +78,9 @@ do_install() {
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
 	update-rc.d -r ${D} firstboot start 08 S .
+
+    install -m 0755 ${S}/clips.sh ${D}/${sysconfdir}/init.d/
+    update-rc.d -r ${D} clips.sh start 34 S .
 
     install -m 0755 ${S}/bootgadgets.sh ${D}/${sysconfdir}/init.d/bootgadgets.sh
     update-rc.d -r ${D} bootgadgets.sh start 34 S .
