@@ -1,10 +1,14 @@
 ###
 ### Change MODEMD_PREPEND everytime you touch this script
 ###
-MODEMD_PREPEND = "-2"
+MODEMD_PREPEND = "-3"
 
 MODEMD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-modemd = "${PR}${MODEMD_PREPEND}${MODEMD_REVISION}"
+
+INITSCRIPT_PACKAGES += "${PN}-modemd"
+INITSCRIPT_NAME_${PN}-modemd = "modemd"
+INITSCRIPT_PARAMS_${PN}-modemd = "start 04 2 3 4 5 ."
 
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/modemd/

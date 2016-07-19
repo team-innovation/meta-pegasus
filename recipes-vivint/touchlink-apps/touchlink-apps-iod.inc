@@ -1,10 +1,14 @@
 ###
 ### Change IOD_PREPEND everything you touch this script
 ###
-IOD_PREPEND = "-1"
+IOD_PREPEND = "-2"
 
 IOD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-iod = "${PR}${IOD_PREPEND}${IOD_REVISION}"
+
+INITSCRIPT_PACKAGES += "${PN}-iod"
+INITSCRIPT_NAME_${PN}-iod = "iod"
+INITSCRIPT_PARAMS_${PN}-iod = "start 05 2 3 4 5 ."
 
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/iod/

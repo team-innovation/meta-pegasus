@@ -23,7 +23,6 @@ do_install () {
 
 	# Creat run level links
 	update-rc.d -r ${D} network_conf_verify start 41 S 3 .
-	update-rc.d -r ${D} udhcpc_wlan0 start 41 3 4 5 . stop 41 6 .
 }
 
 FILES_${PN} += "/usr/local/bin/*"

@@ -1,12 +1,16 @@
 ###
 ### Change ROUBAIX_PREPEND everytime you touch this script
 ###
-ROUBAIX_PREPEND = "-12"
+ROUBAIX_PREPEND = "-13"
 
 ROUBAIX_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix = "${PR}${ROUBAIX_PREPEND}${ROUBAIX_REVISION}"
 
 RPROVIDES_${PN}-movial = "touchlink-ui-core"
+
+INITSCRIPT_PACKAGES += "${PN}-roubaix"
+INITSCRIPT_NAME_${PN}-roubaix = "roubaix"
+INITSCRIPT_PARAMS_${PN}-roubaix = "start 03 2 3 4 5 ."
 
 do_install_append (){
 	install -d ${D}/${INSTALL_DIR}/roubaix/

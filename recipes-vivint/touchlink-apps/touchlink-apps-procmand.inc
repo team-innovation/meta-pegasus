@@ -1,7 +1,7 @@
 ###
 ### Change PROCMAND_PREPEND everything you touch this script
 ###
-PROCMAND_PREPEND = "-3"
+PROCMAND_PREPEND = "-4"
 
 PROCMAND_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-procmand = "${PR}${PROCMAND_PREPEND}${PROCMAND_REVISION}"
@@ -18,7 +18,6 @@ RCONFLICTS_${PN}-procmand = "monit"
 
 
 INITSCRIPT_PACKAGES += "${PN}-procmand"
-
 INITSCRIPT_NAME_${PN}-procmand = "procmand"
 INITSCRIPT_PARAMS_${PN}-procmand = "defaults 5 15"
 
