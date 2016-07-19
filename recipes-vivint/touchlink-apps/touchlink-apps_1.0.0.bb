@@ -14,8 +14,8 @@ require touchlink-apps-rtspd.inc
 require touchlink-apps-videod.inc
 
 # fcc test apps
-#require touchlink-apps-test-ui.inc
-#require touchlink-apps-test-daemon.inc
+require touchlink-apps-test-ui.inc
+require touchlink-apps-test-daemon.inc
 
 require touchlink-apps-pcamd.inc
 require touchlink-apps-iod.inc
