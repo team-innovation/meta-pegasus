@@ -90,6 +90,11 @@
     <CMD state="Updater" type="push" body="$ /mnt/mmcblk0p5/usr/local/bin/serialnumset">Prompting for serialnumber</CMD>
   </LIST>
 
+  <LIST name="Sly-Preflashed-eMMC" desc="Boot from preflashed eMMC">
+    <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot.imx">Loading U-boot</CMD>
+    <CMD state="BootStrap" type="jump" > Jumping to OS image. </CMD>
+  </LIST>
+
   <LIST name="Sly-v3-Reflash-No-Serial" desc="Reflash a Sly-v3, do not prompt for serialnumber">
     <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot.imx">Loading U-boot</CMD>
 
