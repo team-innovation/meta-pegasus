@@ -43,10 +43,10 @@ import_fs()
      convert=0
      
      # Check if we are vfat
-	$TUNE2FS $STORAGE/$IMAGE
+	$TUNE2FS $STORAGE/$IMAGE > /dev/null
 	if [ $? -eq 1 ]
         then
-		# Migrate to ext4
+		# Migrate to ext2
 		logging "Migrating old vfat based img to ext2..."
 		convert=1
 	else
@@ -63,7 +63,6 @@ import_fs()
 	
 	if [ $convert -eq 1 ]
 	then
-        $UMOUNT /media/clips
 		$MKDIR $STORAGE/clips.orig
 		$MKDIR $STORAGE/clips.new
 		$MV $STORAGE/$IMAGE $STORAGE/clips.old.img
@@ -78,7 +77,6 @@ import_fs()
 		$RM $STORAGE/clips.old.img
 		$RMDIR $STORAGE/clips.orig
 		$RMDIR $STORAGE/clips.new
-        $MOUNT /media/clips
 	fi
 }
 
@@ -95,10 +93,17 @@ then
   # 1G size
   $DD of=$STORAGE/$IMAGE bs=$BS seek=$SEEK count=$COUNT
   $MKFS $STORAGE/$IMAGE
-  $MOUNT /media/clips
 else
   logging "$STORAGE/$IMAGE is already created..."
   import_fs
+fi
+
+if $GREP -q "\/media\/clips" /proc/mounts
+then
+    logging "Clips is already mounted..."
+else
+    logging "Mounting clips..."
+    $MOUNT /media/clips
 fi
 
 exit 0
