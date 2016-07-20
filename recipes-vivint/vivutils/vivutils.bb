@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r32"
+PR = "r33"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -18,7 +18,8 @@ SRC_URI = "\
 	   file://firstboot \
 	   file://firstboot-setup \
 	   file://gadgetsetup \
-       file://bootgadgets.sh \
+	   file://bootgadgets.sh \
+	   file://mfg_test \
 	   file://mfr_audio_heat_test.py \
 	   file://mfr_audio_test.py \
 	   file://nfctest.c \
@@ -28,6 +29,7 @@ SRC_URI = "\
 	   file://resize.c \
 	   file://resize.sh \
 	   file://serialnumset \
+	   file://sly-update \
 	   file://touchtest \
 	   file://wave_1000_hz_half_mag.wav \		
 	   file://wave_1000_hz.wav \
@@ -38,7 +40,7 @@ SRC_URI = "\
 	   file://netm-hwtest.py \
 	   file://zwave-hwtest.py \
 	   file://genkeys \
-       file://clips.sh \
+	   file://clips.sh \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -61,6 +63,7 @@ do_install() {
 	install -m 0755 ${S}/nfccmd-sly ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
 	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
+	install -m 0755 ${S}/sly-update ${D}/usr/local/bin
 	install -m 0755 ${S}/fccfixup ${D}/usr/local/bin
 	install -m 0755 ${S}/touchtest ${D}/usr/local/bin
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
@@ -78,6 +81,9 @@ do_install() {
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
 	update-rc.d -r ${D} firstboot start 08 S .
+
+	install -m 0755 ${S}/mfg_test ${D}/${sysconfdir}/init.d/
+	update-rc.d -r ${D} mfg_test defaults 86 5 .
 
     install -m 0755 ${S}/clips.sh ${D}/${sysconfdir}/init.d/
     update-rc.d -r ${D} clips.sh start 34 S .

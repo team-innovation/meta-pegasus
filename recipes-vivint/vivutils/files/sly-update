@@ -1,0 +1,118 @@
+#!/bin/sh
+
+image=$1
+img_dir="/home/root"
+
+if [[ $image == "help" ]]
+then
+	echo "Usage: $0 help|image_file"
+	echo -e "\tIf no image file is specified, this will download the latest image from the server"
+	exit 1
+fi
+
+if [[ -z $image ]]
+then
+	imagepath="$img_dir/sly-qt5-image-imx6dl-slimline.tar.bz2"
+	echo "No image was specified, downloading the latest image from server..."
+	if [[ -e $imagepath ]]
+	then
+		echo "Removing existing image:" $imagepath
+		rm $imagepath
+	fi
+	# increase timout from default (15min) to 2.5 hours to allow for lousy WiFi throughput some people have experienced - SC-3766
+	wget --timeout=9000 -P $img_dir http://updateseng.vivint.com/innovation/openembed/sly/sly-qt5-image-imx6dl-slimline.tar.bz2
+
+	exit_status=$?
+
+	if [[ $exit_status -ne 0 ]]
+	then
+		echo "wget: result is" $exit_status
+		echo "FAILED to download rootfs image. ABORT..."
+		exit $exit_status
+	fi
+else
+	imagepath=`readlink -f $image`
+fi
+
+if [[ ! -e $imagepath ]]
+then
+	echo "Image $imagepath not found..."
+	exit 2
+fi
+
+# first check for a roughly reasonable image size -> 135722003 Jun  3 16:19 sly-qt5-image-imx6dl-slimline.tar.bz2 
+# http://www.tldp.org/LDP/abs/html/system.html
+file_size=$(stat -c%s "$imagepath")
+#  Certainly easier than using "ls -l $FILENAME"
+#  and then parsing with sed.
+echo "File size:          $file_size"
+
+mini_size=130000000
+echo "Minimum Size:       $mini_size"
+
+if [[ $file_size -lt  $mini_size ]]
+then
+	echo "Image $imagepath looks too small and is probably corrupt..."
+	exit 3
+fi
+
+echo "Installing..."
+
+# install and switch to new installation 
+c_partition=$(cat /proc/cmdline | cut -d= -f3 | cut -d' ' -f1)
+
+if [[ $c_partition == '/dev/mmcblk0p6' ]]
+then
+	n_partition=/media/mmcblk0p5
+	dev_partition=/dev/mmcblk0p5
+	echo "Preparing to install $imagepath on $dev_partition bootnum=1"
+elif [[ $c_partition == '/dev/mmcblk0p5' ]]
+then
+	n_partition=/media/mmcblk0p6
+	dev_partition=/dev/mmcblk0p6
+	echo "Preparing to install $imagepath on $dev_partition bootnum=2"
+else
+	echo "Can't find file system partition"
+	exit 4
+fi
+
+echo "Creating ext4 filesystem on $dev_partition"
+umount $dev_partition
+mkfs.ext4 $dev_partition
+
+echo "Mounting $dev_partition..."
+mount $dev_partition $n_partition
+
+echo "Untar $imagepath to $n_partition"
+tar -C $n_partition -xvjf $imagepath
+
+if [[ $? -ne 0 ]]
+then
+	echo "FAILED to extract files..."
+	echo "ABORT update..."
+	exit 5
+fi
+
+echo "Switching boot partition.."
+bootnum=$(fw_printenv bootnum | cut -d= -f2)
+
+echo 0 > /sys/block/mmcblk0boot1/force_ro
+
+if [[ $bootnum -eq 1 ]]
+then
+	fw_setenv bootnum 2
+elif [[ $bootnum -eq 2 ]]
+then
+	fw_setenv bootnum 1
+else
+	echo "Uh Oh, blindly setting bootnum to 2."
+	fw_setenv bootnum 2
+fi
+
+sync
+
+echo "Done, Rebooting..."
+reboot
+
+exit 0
+
