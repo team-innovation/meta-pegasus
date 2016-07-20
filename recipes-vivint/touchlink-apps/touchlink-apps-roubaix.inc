@@ -8,10 +8,6 @@ PKGR_${PN}-roubaix = "${PR}${ROUBAIX_PREPEND}${ROUBAIX_REVISION}"
 
 RPROVIDES_${PN}-movial = "touchlink-ui-core"
 
-INITSCRIPT_PACKAGES += "${PN}-roubaix"
-INITSCRIPT_NAME_${PN}-roubaix = "roubaix"
-INITSCRIPT_PARAMS_${PN}-roubaix = "start 03 2 3 4 5 ."
-
 do_install_append (){
 	install -d ${D}/${INSTALL_DIR}/roubaix/
 	# TL-3036 removed enphase and energy

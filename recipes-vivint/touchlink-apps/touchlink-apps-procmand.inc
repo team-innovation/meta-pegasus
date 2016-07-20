@@ -19,7 +19,7 @@ RCONFLICTS_${PN}-procmand = "monit"
 
 INITSCRIPT_PACKAGES += "${PN}-procmand"
 INITSCRIPT_NAME_${PN}-procmand = "procmand"
-INITSCRIPT_PARAMS_${PN}-procmand = "defaults 5 15"
+INITSCRIPT_PARAMS_${PN}-procmand = "defaults 99 18"
 
 do_install_append() {
 	install -d ${D}/${INSTALL_DIR}/procmand/
