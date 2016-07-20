@@ -19,9 +19,14 @@ cp .hidden/procman.d/multiplexerd procman.d
 cp .hidden/procman.d/345d procman.d
 ls procman.d
 
-echo "disabling zwave programming"
-cd /mnt/mmcblk0p5/etc/
-rm init.d/zwave-program
+echo "disabling init.d scripts"
+cd /mnt/mmcblk0p5/etc/init.d
+mkdir .hidden
+mv zwave-program .hidden
+mv iod .hidden
+mv modemd .hidden
+mv roubaix .hidden
+mv sundance .hidden
 
 sync
 exit 0
