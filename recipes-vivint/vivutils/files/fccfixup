@@ -20,7 +20,8 @@ cp .hidden/procman.d/345d procman.d
 ls procman.d
 
 echo "disabling zwave programming"
-rm /etc/init.d/zwave-program
+cd /mnt/mmcblk0p5/etc/
+rm init.d/zwave-program
 
 sync
 exit 0
