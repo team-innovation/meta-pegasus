@@ -52,7 +52,8 @@ fi
 test_script=$(find /media -name run_mfg_test.sh)
 if [ -z $test_script ]
 then
-    exit 0
+	echo "No run_mfg_test.sh file found"
+	exit 0
 fi
 
 # verify signature
@@ -84,6 +85,7 @@ fi
 ##
 
 export PATH=$PATH:$test_dir
+echo "Running "${dec_script}
 sh ${dec_script}
 
 exit 0
