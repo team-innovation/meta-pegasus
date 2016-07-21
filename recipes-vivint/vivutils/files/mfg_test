@@ -49,10 +49,10 @@ then
     done
 fi
 
-test_script=$(find /media -name run_mfg_test.sh)
+test_script=$(find /media -name run_mfg_test_sly.sh)
 if [ -z $test_script ]
 then
-	echo "No run_mfg_test.sh file found"
+	echo "No run_mfg_test_sly.sh file found"
 	exit 0
 fi
 
@@ -74,7 +74,7 @@ done
 # decrypt the scrypt
 test_dir=$(dirname $test_script)
 
-dec_script="${test_dir}/run_mfg_test_dec.sh"
+dec_script="${test_dir}/run_mfg_test_sly_dec.sh"
 
 gpg $GPG_HOME_OPT --output ${dec_script} --yes --decrypt $test_script
 if [ $? -ne 0 ]
