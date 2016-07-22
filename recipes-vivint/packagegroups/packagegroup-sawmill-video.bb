@@ -72,6 +72,8 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-good-imagefreeze \
 	gstreamer1.0-plugins-good-isomp4 \
 	gstreamer1.0-plugins-good-jpeg \
+	gstreamer1.0-plugins-good-mulaw \
+	gstreamer1.0-plugins-good-pulse \
 	gstreamer1.0-plugins-good-rtp \
 	gstreamer1.0-plugins-good-rtpmanager \
 	gstreamer1.0-plugins-good-rtsp \
