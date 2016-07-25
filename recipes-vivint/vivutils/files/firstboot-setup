@@ -315,20 +315,16 @@ fusecheck || {
 }
 
 addmodelfromubootenv() {
-	bd=$(fw_printenv | grep -i board=)
-	bd=${bd##board=}
 	pit="/media/bootscript/panelinfo.txt"
+	cmp="/proc/device-tree/compatible"
 
-	case "$bd" in
-		*Sly*)
-			echo 'export SH_BOARD_MODEL="28-600052-001"' >> $pit
-			;;
-		*Slimline*)
-			echo 'export SL_BOARD_MODEL="28-600015-001"' >> $pit
-			;;
-		*)
-			;;
-	esac
+	grep -q vivint,sly $cmp &&
+		echo 'export SH_BOARD_MODEL="28-600052-001"' >> $pit &&
+		return
+
+	grep -q vivint,slimline $cmp &&
+		echo 'export SL_BOARD_MODEL="28-600015-001"' >> $pit &&
+		return
 }
 
 addrevfromubootenv() {
