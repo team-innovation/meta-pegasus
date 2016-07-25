@@ -1,7 +1,7 @@
 LICENSE = "CLOSED"
 
 PV = "1.0.0"
-PR = "r10"
+PR = "r11"
 
 SRC_URI = "file://ntpsync"
 
