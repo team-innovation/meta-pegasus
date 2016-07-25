@@ -37,13 +37,18 @@ fi
 
 if [ -e /usr/bin/chronyc ]; then
         if [ -n "$address" ]; then
-                chronyc add server $address offline > /dev/null
-                chronyc burst 4/6 $address > /dev/null
+                # Resolve IP address first to handle pools
+                ip=`nslookup $address | awk 'f{print $3;f=0} /Name:/{f=1}'`
+                chronyc add server $ip offline > /dev/null
+                present=$?
+                chronyc burst 4/6 $ip > /dev/null
                 sleep 10
                 chronyc makestep > /dev/null
                 chronyc waitsync 1 1 > /dev/null
                 ret=$?
-                chronyc delete $address > /dev/null
+                if ((! $present)); then
+                    chronyc delete $ip > /dev/null
+                fi
         elif [ -e $SERVERS ]; then
                 for line in `cat $SERVERS` ; do
                         ip=`echo $line | head -n1 | cut -d'=' -f2`
