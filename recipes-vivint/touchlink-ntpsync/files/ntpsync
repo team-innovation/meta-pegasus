@@ -39,6 +39,9 @@ if [ -e /usr/bin/chronyc ]; then
         if [ -n "$address" ]; then
                 # Resolve IP address first to handle pools
                 ip=`nslookup $address | awk 'f{print $3;f=0} /Name:/{f=1}'`
+                if [ -z "${ip}" ]; then
+                    exit 1
+                fi
                 chronyc add server $ip offline > /dev/null
                 present=$?
                 chronyc burst 4/6 $ip > /dev/null
