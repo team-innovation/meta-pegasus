@@ -24,8 +24,23 @@ mkdir functions/acm.GS0
 #   Local address bit is 02-xx-xx... 
 #   Rest could be random but use a fixed address so tools like network-manager
 #   recognize the device as the same each time.
-echo '02:04:9f:1f:00:42' > functions/rndis.usb0/host_addr
-echo '02:04:9f:2f:00:42' > functions/rndis.usb0/dev_addr
+#   MBW: Base last 2 MAC bytes on board serial number. Multiple panels won't
+#        conflict on same network and MAC value is consistent after rebooting
+if [ -e /media/bootscript/serialnumber.txt ]; then
+  serno="0x$(cat /media/bootscript/serialnumber.txt)"
+  val1=$( printf "%02x" $[ $serno & 0xff ] )
+  # Don't allow a 255 "broadcast" address to be used in the lsb
+  if [[ $val1 -eq ff ]]; then
+    val1=$( printf "%2x" 0xfe )
+  fi
+  [[ 0x$val1 -eq 0xff ]] && (( val1=0 ))
+  val2=$( printf "%02x" $[ $[ $serno & 0xff00 ] >> 8 ] )
+else
+  val1='42'
+  val2='00'
+fi
+echo 02:04:9f:1f:${val2}:${val1} > functions/rndis.usb0/host_addr
+echo 02:04:9f:2f:${val2}:${val1} > functions/rndis.usb0/dev_addr
 
 # create config with the two functions defined above
 mkdir configs/c.1
