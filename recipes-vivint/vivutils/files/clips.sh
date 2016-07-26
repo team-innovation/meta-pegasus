@@ -44,8 +44,7 @@ import_fs()
      
      # Check if we are vfat
 	$TUNE2FS $STORAGE/$IMAGE > /dev/null
-	if [ $? -eq 1 ]
-        then
+	if [ $? -eq 1 ]; then
 		# Migrate to ext2
 		logging "Migrating old vfat based img to ext2..."
 		convert=1
@@ -61,8 +60,7 @@ import_fs()
           fi
 	fi
 	
-	if [ $convert -eq 1 ]
-	then
+	if [ $convert -eq 1 ]; then
 		$MKDIR $STORAGE/clips.orig
 		$MKDIR $STORAGE/clips.new
 		$MV $STORAGE/$IMAGE $STORAGE/clips.old.img
@@ -81,14 +79,12 @@ import_fs()
 }
 
 
-if [ ! -d /media/clips ]
-then
+if [ ! -d /media/clips ]; then
   logging "Create clips mountpoint..."
   $MKDIR /media/clips
 fi
 
-if [ ! -e $STORAGE/$IMAGE ]
-then
+if [ ! -e $STORAGE/$IMAGE ]; then
   logging "Creating clips partition, please wait..."
   # 1G size
   $DD of=$STORAGE/$IMAGE bs=$BS seek=$SEEK count=$COUNT
@@ -96,13 +92,18 @@ then
 else
   logging "$STORAGE/$IMAGE is already created..."
   import_fs
+  $FSCK $STORAGE/$IMAGE
+  if [ $? -eq 4 ]; then
+    logging "$STORAGE/$IMAGE failed auto-check, force repairs..." 
+    $FSCK_Y $STORAGE/$IMAGE
+  fi
 fi
 
-if $GREP -q "\/media\/clips" /proc/mounts
-then
+if $GREP -q "\/media\/clips" /proc/mounts; then
     logging "Clips is already mounted..."
 else
     logging "Mounting clips..."
+
     $MOUNT /media/clips
 fi
 
