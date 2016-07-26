@@ -314,39 +314,67 @@ fusecheck || {
 	export FACTORYFIRSTBOOT="true"
 }
 
-addmodelanddevfromdevtree() {
+addboardmodelfromdevtree() {
 	pit="/media/bootscript/panelinfo.txt"
 	cmp="/proc/device-tree/compatible"
 
 	grep -q vivint,sly $cmp &&
 		echo 'export SH_BOARD_MODEL="28-600052-001"' >> $pit &&
-		echo 'export SH_BOARD_REV="V-SH1-A0"' >> $pit &&
 		return
 
 
 	grep -q vivint,slimline $cmp &&
 		echo 'export SL_BOARD_MODEL="28-600015-001"' >> $pit &&
+		return
+}
+
+addboardrevfromdevtree() {
+	pit="/media/bootscript/panelinfo.txt"
+	cmp="/proc/device-tree/compatible"
+
+	grep -q vivint,sly $cmp &&
+		echo 'export SH_BOARD_REV="V-SH1-A0"' >> $pit &&
+		return
+
+
+	grep -q vivint,slimline $cmp &&
 		echo 'export SL_BOARD_REV="V-SHD1-A13"' >> $pit &&
 		return
 }
 
-panelinfocheck() {
+panelinfoboardmodelcheck() {
 	mntbootscript
 	pit="/media/bootscript/panelinfo.txt"
 
 	test -f $pit ||
 		return $(false)
-	grep -q XX_BOARD $pit &&
-		return $(false)
 	grep -q _BOARD_MODEL $pit
 }
 
-panelinfoupdate() {
+panelinfoboardrevcheck() {
+	mntbootscript
+	pit="/media/bootscript/panelinfo.txt"
+
+	test -f $pit ||
+		return $(false)
+	grep -q _BOARD_REV $pit
+}
+
+panelinfoboardmodelupdate() {
 	pit="/media/bootscript/panelinfo.txt"
 	mntbootscriptrw
-	grep -v .._BOARD $pit > /tmp/panelinfo.new
+	grep -v .._BOARD_MODEL $pit > /tmp/panelinfo.new
 	mv /tmp/panelinfo.new $pit
-	addmodelanddevfromdevtree
+	addboardmodelfromdevtree
+	mntbootscriptro
+}
+
+panelinfoboardrevupdate() {
+	pit="/media/bootscript/panelinfo.txt"
+	mntbootscriptrw
+	grep -v .._BOARD_rev $pit > /tmp/panelinfo.new
+	mv /tmp/panelinfo.new $pit
+	addboardrevfromdevtree
 	mntbootscriptro
 }
 
@@ -355,7 +383,8 @@ succeed_or ubootcheck ubootupdate
 succeed_or mmcbootbitscheck mmcbootbitsset
 succeed_or fusecheck fuseset
 succeed_or serialnumcheck serialnumwarn
-succeed_or panelinfocheck panelinfoupdate
+succeed_or panelinfoboardmodelcheck panelinfoboardmodelupdate
+succeed_or panelinfoboardrevcheck panelinfoboardrevupdate
 
 test "${FACTORYFIRSTBOOT}" = "true" && {
 	info "Initial factory board setup complete -- halting!"
