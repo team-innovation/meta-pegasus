@@ -1,32 +1,32 @@
 #!/bin/bash
 #set -x
 
+fixuproot=/
+test -d /mnt/mmcblk0p5/etc/ &&
+	fixuproot=/mnt/mmcblk0p5/
+
 echo "fixing up procman.d..."
-cd /mnt/mmcblk0p5/etc/
+cd ${fixuproot}etc/
 mkdir .hidden
 mv procman.d .hidden
 mv procman.d-fcc procman.d 
 
 echo "fixing up fonts..."
-cd /mnt/mmcblk0p5/usr/lib/fonts
+cd ${fixuproot}usr/lib/fonts
 mkdir .hidden
 mv * .hidden/
 mv .hidden/DejaVu* .
 
 echo "adding 345d and multiplexerd to procman.d"
-cd /mnt/mmcblk0p5/etc/
+cd ${fixuproot}etc/
 cp .hidden/procman.d/multiplexerd procman.d
 cp .hidden/procman.d/345d procman.d
 ls procman.d
 
 echo "disabling init.d scripts"
-cd /mnt/mmcblk0p5/etc/init.d
+cd ${fixuproot}etc/init.d
 mkdir .hidden
-mv zwave-program .hidden
-mv iod .hidden
-mv modemd .hidden
-mv roubaix .hidden
-mv sundance .hidden
+mv bootsplash.sh .hidden
 
 sync
 exit 0
