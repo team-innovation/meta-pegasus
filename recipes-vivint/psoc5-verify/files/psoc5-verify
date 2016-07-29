@@ -23,12 +23,13 @@ psoc5_verify()
 		return 1
 	fi
 
-	if [ ! -e /lib/firmware/vivint/sly-psoc5.fw ]; then
-		echo "PSOC5 firmware not found"
-		return 1
+	path=vivint/$platform-psoc5.fw
+	# use fcc version of fw if in fcc test mode
+	if [ -f /etc/procman.d/test_ui ]; then
+		path=vivint/$platform-fcc-psoc5.fw
 	fi
 
-	if [ ! -e /lib/firmware/vivint/slimline-psoc5.fw ]; then
+	if [ ! -e /lib/firmware/$path ]; then
 		echo "PSOC5 firmware not found"
 		return 1
 	fi
@@ -38,7 +39,6 @@ psoc5_verify()
 		echo "PSOC5 firmware already verified"
 		return 0
 	else
-		path=vivint/$platform-psoc5.fw
 		lsmod | grep -q $monpwr_driver && rmmod $monpwr_driver
 		test -f /sys/class/swd/psoc50/access &&
 			echo 1 > /sys/class/swd/psoc50/access

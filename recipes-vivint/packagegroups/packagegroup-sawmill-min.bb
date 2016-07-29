@@ -7,7 +7,7 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "6"
+PR = "7"
 
 inherit packagegroup
 
@@ -19,12 +19,10 @@ RDEPENDS_${PN} = " \
 	kernel-modules \
 	sly-modules \
 	slimline-modules \
-    chrony \
+	chrony \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
 	psoc5-verify \
-	psoc-fw-sly \
-	psoc-fw-slimline \
 	strace \
 	u-boot-fw-utils \
 	u-boot-slimline \
