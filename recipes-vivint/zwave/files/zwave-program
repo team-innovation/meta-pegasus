@@ -6,6 +6,12 @@
 zwave_program ()
 {
     path=/lib/firmware/vivint/serialapi_controller_static_ZW050x_US.hex
+
+    # if in fcc test mode use a different fw file
+    if [ -f /etc/procman.d/test_ui ]; then
+        path=/lib/firmware/vivint/micro_rf_linkX_ZW050x_ALL.hex
+    fi
+
     if [ ! -e $path ]; then
         echo "Zwave firmware not found"
         return 1
