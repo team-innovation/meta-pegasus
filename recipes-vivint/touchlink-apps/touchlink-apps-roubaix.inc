@@ -1,7 +1,7 @@
 ###
 ### Change ROUBAIX_PREPEND everytime you touch this script
 ###
-ROUBAIX_PREPEND = "-14"
+ROUBAIX_PREPEND = "-15"
 
 ROUBAIX_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix = "${PR}${ROUBAIX_PREPEND}${ROUBAIX_REVISION}"
@@ -12,7 +12,7 @@ do_install_append (){
 	install -d ${D}/${INSTALL_DIR}/roubaix/
 	# TL-3036 removed enphase and energy
 	# TL-3143 added enphase back
-    	${RSYNC_CMD} --exclude=font --exclude=energy --exclude=rules --exclude=libaudio ${S}/code/roubaix/ ${D}/${INSTALL_DIR}/roubaix/
+	${RSYNC_CMD} --exclude=font --exclude=energy --exclude=rules ${S}/code/roubaix/ ${D}/${INSTALL_DIR}/roubaix/
 
         chmod +x ${D}/${INSTALL_DIR}/roubaix/utils/CameraStatusHelper.pyo
         chmod +x ${D}/${INSTALL_DIR}/roubaix/definitions.pyo
