@@ -1,0 +1,15 @@
+PKGR_${PN}-fd8134v = "${PR}.4"
+
+FIRMWARE_FD8134V = "FD8134-VINT-0301a4.flash.pkg"
+
+SRC_URI += "http://${UPDATESENG}/camera_firmwares/Vivotek/${FIRMWARE_FD8134V};name=fd8134v" 
+
+SRC_URI[fd8134v.md5sum] = "14e5f000c2aa244b5e12c1561e344395"
+SRC_URI[fd8134v.sha256sum] = "f500e0635b4833a3e45c18f8a68921db8f694983545ce1361fb49938419e55e3"
+
+do_install_append() {
+     cp ${WORKDIR}/${FIRMWARE_FD8134V} ${D}/${FIRMWARE_DIR}
+}
+
+FILES_${PN}-fd8134v = "${FIRMWARE_DIR}/${FIRMWARE_FD8134V}"
+

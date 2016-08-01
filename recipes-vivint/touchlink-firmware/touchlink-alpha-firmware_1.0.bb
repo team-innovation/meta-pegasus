@@ -1,23 +1,18 @@
 DESCRIPTION = "Alpha Network video camera firmware"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
-PR = "3"
 
-PKGR_${PN}-cs6022 = "${PR}.19"
-PKGR_${PN}-cs6022-ov4689 = "${PR}.34"
-
-FIRMWARE_CS6022 = "update_CS-6022_1.0.0_260.bin"
-FIRMWARE_CS6022_OV4689 = "update_CS-6022_1.0.0_ov4689_*.bin"
+FIRMWARE_CS6022_OV4689 = "update_CS-6022_1.0.0_ov4689_181.bin"
 
 FIRMWARE_DIR = "/var/lib/firmware/AlphaNetwork"
 
-SRC_URI = "file://${FIRMWARE_CS6022} \
-	   file://${FIRMWARE_CS6022_OV4689} \
+SRC_URI = "http://${UPDATESENG}/camera_firmwares/Alpha/${FIRMWARE_CS6022_OV4689} \
 	  "
+SRC_URI[md5sum] = "2fd75acb01960001d691b3c8230c261a"
+SRC_URI[sha256sum] = "a074d77cfe010fc09e91beb30922af9775be22df0d0b294b53fc3cbd56ae20e1"
 
-SRCREV = "${AUTOREV}"
-SRC_URI = "hg://${HG_SERVER};module=camera-firmwares/Alpha;protocol=http"
-PV = "${SRCPV}"
+PV_prepend = "1"
+PKGR_${PN}-cs6022-ov4689 = "${PR}.35"
 
 do_compile() {
      :
@@ -49,14 +44,12 @@ do_copy_license() {
 
 do_install() {
      install -d ${D}/${FIRMWARE_DIR}
-     cp ${WORKDIR}/camera-firmwares/Alpha/* ${D}/${FIRMWARE_DIR}
+     cp ${WORKDIR}/${FIRMWARE_CS6022_OV4689} ${D}/${FIRMWARE_DIR}
 }
 
-FILES_${PN}-cs6022 = "${FIRMWARE_DIR}/${FIRMWARE_CS6022}"
 FILES_${PN}-cs6022-ov4689 = "${FIRMWARE_DIR}/${FIRMWARE_CS6022_OV4689}"
 FILES_${PN}-cs6022-lic = "${FIRMWARE_DIR}/README"
 
-PACKAGES = "${PN}-cs6022 \
-			${PN}-cs6022-lic \
-			${PN}-cs6022-ov4689 \
+PACKAGES = "${PN}-cs6022-lic \
+	    ${PN}-cs6022-ov4689 \
            "
