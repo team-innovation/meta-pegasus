@@ -1,6 +1,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+PR_append = "-1"
 
 SRC_URI += "file://finish.sh    \
+	    file://hostname.sh  \
             "
 do_install_append () {
     install -m 0755    ${WORKDIR}/finish.sh   ${D}${sysconfdir}/init.d
