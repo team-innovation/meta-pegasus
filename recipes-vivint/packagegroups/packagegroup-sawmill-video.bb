@@ -4,7 +4,7 @@ DESCRIPTION = "touchlink video packages, imx firmware, gst plugins, etc"
 LICENSE = "MIT"
 LICENSE_FLAGS_WHITELIST = "commercial license"
 
-PR = "r7"
+PR = "r8"
 
 inherit packagegroup
 
@@ -66,6 +66,7 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-bad-videoparsersbad \
 	gstreamer1.0-plugins-base \
 	gstreamer1.0-plugins-base-playback \
+	gstreamer1.0-plugins-base-tcp \
 	gstreamer1.0-plugins-base-typefindfunctions \
 	gstreamer1.0-plugins-base-videotestsrc \
 	gstreamer1.0-plugins-good \

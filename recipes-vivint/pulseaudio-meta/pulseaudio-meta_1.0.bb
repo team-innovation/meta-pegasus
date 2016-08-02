@@ -2,28 +2,29 @@ DESCRIPTION = "Pulseaudio Meta package w/ initscript et. al."
 SECTION = "audio"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r5"
+PR = "r6"
 
 RDEPENDS_${PN} = "\
-  pulseaudio-server \
-  pulseaudio-module-echo-cancel \
-  pulseaudio-module-null-sink \
   pulseaudio-module-alsa-sink \
   pulseaudio-module-alsa-source \
   pulseaudio-module-cli \
+  pulseaudio-module-cli-protocol-tcp \
+  pulseaudio-module-cli-protocol-unix \
+  pulseaudio-module-combine \
   pulseaudio-module-default-device-restore \
   pulseaudio-module-detect\
-  pulseaudio-module-simple-protocol-tcp \
-  pulseaudio-module-native-protocol-unix \
-  pulseaudio-module-cli-protocol-unix \
-  pulseaudio-module-cli-protocol-tcp \
-  pulseaudio-module-rescue-streams\
-  pulseaudio-module-suspend-on-idle \
-  pulseaudio-module-volume-restore \
+  pulseaudio-module-echo-cancel \
   pulseaudio-module-loopback \
-  pulseaudio-module-combine \
+  pulseaudio-module-native-protocol-unix \
+  pulseaudio-module-null-sink \
   pulseaudio-module-pipe-sink \
   pulseaudio-module-pipe-source \
+  pulseaudio-module-remap-source \
+  pulseaudio-module-rescue-streams\
+  pulseaudio-module-simple-protocol-tcp \
+  pulseaudio-module-suspend-on-idle \
+  pulseaudio-module-volume-restore \
+  pulseaudio-server \
 "
 
 inherit update-rc.d
