@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-if [ -e /dev/ttyGS0 ]; then
-	/sbin/getty -L ttyGS0 115200 vt100
+if [ -e /sys/class/tty/ttyGS0 ]; then
+	/sbin/getty -L ttyGS0 115200 xterm
 else
 	sleep 100000
 fi

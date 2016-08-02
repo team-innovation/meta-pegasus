@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/sysvinit:"
 
-SRC_URI_append = " file://rc_gs.S"
+SRC_URI_append = " file://rc_mxc.S file://rc_gs.S"
 
 do_install_append() {
     install -d ${D}${sysconfdir} ${D}${sysconfdir}/init.d
