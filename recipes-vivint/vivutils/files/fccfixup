@@ -17,12 +17,6 @@ mkdir .hidden
 mv * .hidden/
 mv .hidden/DejaVu* .
 
-echo "adding 345d and multiplexerd to procman.d"
-cd ${fixuproot}etc/
-cp .hidden/procman.d/multiplexerd procman.d
-cp .hidden/procman.d/345d procman.d
-ls procman.d
-
 echo "disabling init.d scripts"
 cd ${fixuproot}etc/init.d
 mkdir .hidden
