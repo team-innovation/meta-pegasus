@@ -14,8 +14,7 @@ do_compile_prepend() {
 	# compile pcamd C code
 	ln -sf ${STAGING_DIR}/${MACHINE}/usr/include/gnu/stubs-hard.h \
 		${STAGING_DIR}/${MACHINE}/usr/include/gnu/stubs-soft.h
-	make -C ${S}/code/pcamd/libpcam SYSTEM="SLIMLINE" \
-		GST_DIR=${STAGING_DIR}/${MACHINE}/usr
+	make -C ${S}/code/pcamd/libpcam SYSTEM="SLIMLINE" 
 }
 
 do_install_append () {

@@ -1,10 +1,11 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/sysvinit:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-SRC_URI_append = " file://rc_mxc.S file://rc_gs.S"
+SRC_URI_append = " file://rc_mxc_vivint.S file://rc_gs.S"
 
 do_install_append() {
     install -d ${D}${sysconfdir} ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/rc_gs.S ${D}${sysconfdir}/init.d
+    install -m 0755 ${WORKDIR}/rc_mxc_vivint.S ${D}${sysconfdir}/init.d/rc_mxc.S
 
     echo "" >> ${D}${sysconfdir}/inittab
     echo "GS::respawn:/etc/init.d/rc_gs.S" >> ${D}${sysconfdir}/inittab
