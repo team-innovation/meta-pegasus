@@ -12,4 +12,4 @@ S = "${WORKDIR}/git"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 KERNEL_MODULE_PROBECONF += "monpwr-sly"
-module_conf_monpwr = "blacklist monpwr-sly"
+module_conf_monpwr-sly = "blacklist monpwr-sly"

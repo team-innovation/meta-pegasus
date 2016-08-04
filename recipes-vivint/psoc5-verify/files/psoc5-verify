@@ -14,8 +14,6 @@ else
 	monpwr_driver=monpwr
 fi
 
-lsmod | grep -q $monpwr_driver || modprobe $monpwr_driver
-
 psoc5_verify()
 {
 	if [ ! -d /sys/class/swd/psoc50 ]; then
@@ -47,7 +45,6 @@ psoc5_verify()
 			touch /tmp/psoc5fwverified
 		test -f /sys/class/swd/psoc50/access &&
 			echo 0 > /sys/class/swd/psoc50/access
-		modprobe $monpwr_driver
 	fi
 
 	return 0
@@ -60,6 +57,7 @@ stop() {
 case "$1" in
     start|restart|reload)
 	psoc5_verify
+    lsmod | grep -q $monpwr_driver || modprobe $monpwr_driver
 	;;
     stop)
 	stop
