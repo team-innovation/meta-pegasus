@@ -17,9 +17,19 @@ pkg_postinst_${PN}-server_prepend() {
         addgroup pulse audio
 }
 
+DEPENDS += "gdbm speex webrtc-audio-processing"
+
+EXTRA_OECONF = "--enable-neon-opt \
+		--enable-webrtc-aec \
+		--disable-orc \
+"
+
 RDEPENDS_pulseaudio-server += " \
         pulseaudio-module-rtp-send \
         pulseaudio-module-rtp-recv \
 	pulseaudio-module-native-protocol-tcp \
 	pulseaudio-module-tunnel-source \
-	pulseaudio-module-tunnel-sink"
+	pulseaudio-module-tunnel-sink \
+	pulseaudio-module-remap-source \
+	pulseaudio-module-remap-sink \
+"

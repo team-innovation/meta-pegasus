@@ -26,7 +26,7 @@ load-module module-remap-source source_name=mic master=alsa_input.aic channels=1
 
 # Add echo cancel module
 # still not working
-#load-module module-echo-cancel rate=8000 adjust_time=2 sink_name=aec_output source_name=aec_input aec_method=webrtc aec_args="high_pass_filter=true noise_suppression=true routing_mode=speakerphone mobile=true analog_gain_control=false"
+load-module module-echo-cancel rate=8000 channels=1 source_master=mic sink_master=alsa_output.aic adjust_time=2 sink_name=aec_output source_name=aec_input aec_method=webrtc aec_args="high_pass_filter=true noise_suppression=false routing_mode=loud-speakerphone mobile=true analog_gain_control=false digital_gain_control=true"
 
 # Load the GSM source and sink given the names below
 load-module module-alsa-source device=hw:1,0 name=gsm rate=8000 channels=1 tsched=0 deferred_volume=0
