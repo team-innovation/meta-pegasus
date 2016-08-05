@@ -22,7 +22,7 @@ patch_aec() {
 	echo 0x0f51 0xb0 > regwrite
 
 	# 12 dB mic boost
-	echo 0x101e 0x2 > regwrite
+	echo 0x101e 0x5 > regwrite
 	# Stream 1 input rate 16/16/2
 	#echo 0x116a 0xa2 > regwrite
 
