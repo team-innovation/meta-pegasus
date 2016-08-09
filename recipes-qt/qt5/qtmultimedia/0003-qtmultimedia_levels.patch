@@ -1,0 +1,121 @@
+diff -r e1c8f8cb50e6 src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp
+--- a/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp	Fri Sep 18 03:57:19 2015 +0000
++++ b/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp	Fri Sep 18 04:05:47 2015 +0000
+@@ -54,6 +54,8 @@
+ #include <QtCore/qdir.h>
+ #include <QtCore/qstandardpaths.h>
+ 
++#include <math.h>
++
+ //#define DEBUG_PLAYBIN
+ //#define DEBUG_VO_BIN_DUMP
+ 
+@@ -160,25 +162,40 @@
+ 
+         GstElement *audioSink = gst_element_factory_make("autoaudiosink", "audiosink");
+         if (audioSink) {
++            //GstCaps *caps = gst_caps_from_string ("audio/x-raw-int,channels=2");
++            GstElement * level = gst_element_factory_make( "level", "gulevelctrl" );
++
+             if (usePlaybinVolume()) {
+                 m_audioSink = audioSink;
+                 m_volumeElement = m_playbin;
+             } else {
+                 m_volumeElement = gst_element_factory_make("volume", "volumeelement");
+                 if (m_volumeElement) {
+-                    m_audioSink = gst_bin_new("audio-output-bin");
++                   qDebug() << "USING AUDIO-SINK BIN!!!!";
++                   m_audioSink = gst_bin_new("audio-output-bin");
++                   if (m_audioSink && level) {
+ 
+-                    gst_bin_add_many(GST_BIN(m_audioSink), m_volumeElement, audioSink, NULL);
+-                    gst_element_link(m_volumeElement, audioSink);
+-
++                    gst_bin_add_many(GST_BIN(m_audioSink), m_volumeElement, level, audioSink, NULL);
++                    gst_element_link_many( m_volumeElement, level, audioSink, NULL );
+                     GstPad *pad = gst_element_get_static_pad(m_volumeElement, "sink");
+                     gst_element_add_pad(GST_ELEMENT(m_audioSink), gst_ghost_pad_new("sink", pad));
+                     gst_object_unref(GST_OBJECT(pad));
++		   } else { 
++                     qDebug() << "NOT USING AUDIO-SINK BIN!!!!";
++                     gst_bin_add_many(GST_BIN(m_audioSink), m_volumeElement, audioSink, NULL);
++                     gst_element_link_many( m_volumeElement, audioSink, NULL );
++
++                     GstPad *pad = gst_element_get_static_pad(m_volumeElement, "sink");
++                     gst_element_add_pad(GST_ELEMENT(m_audioSink), gst_ghost_pad_new("sink", pad));
++                     gst_object_unref(GST_OBJECT(pad));
++                    }
+                 } else {
+                     m_audioSink = audioSink;
+                     m_volumeElement = m_playbin;
+                 }
+             }
++            g_object_set( level, "message", TRUE, NULL );
++            g_object_set( level, "interval", gint64( 250000000 ), NULL );
+ 
+             g_object_set(G_OBJECT(m_playbin), "audio-sink", m_audioSink, NULL);
+             addAudioBufferProbe();
+@@ -993,6 +1010,63 @@
+         } else if (GST_MESSAGE_TYPE(gm) == GST_MESSAGE_DURATION) {
+             updateDuration();
+         }
++        else  if (GST_MESSAGE_TYPE(gm) == GST_MESSAGE_ELEMENT) {
++            const GstStructure *s = gst_message_get_structure (gm);
++	    const gchar *name = gst_structure_get_name (s);
++
++            // Audio Levels, this is used to populate the metaData.peakValue
++            // and metaData.averageLevel
++            if (strcmp (name, "level") == 0) {
++            //if (qstrcmp(GST_OBJECT_NAME(GST_MESSAGE_SRC(gm)), "level") == 0) {
++              gint channels;
++              GstClockTime endtime;
++              gdouble rms_dB, peak_dB, decay_dB;
++              gdouble rms, peak;
++              const GValue *list;
++              const GValue *value;
++
++              gint i;
++
++              if (!gst_structure_get_clock_time (s, "endtime", &endtime))
++                qWarning() << "Could not parse endtime";
++              /* we can get the number of channels as the length of any of the value
++               * lists */
++              list = gst_structure_get_value (s, "rms");
++              channels = gst_value_list_get_size (list);
++
++              //qDebug() << "endtime: " << endtime << ", channels: "
++              //        << channels;
++              for (i = 0; i < channels; ++i) {
++                //qDebug() << "channel " << i;
++                list = gst_structure_get_value (s, "rms");
++                value = gst_value_list_get_value (list, i);
++                rms_dB = g_value_get_double (value);
++                list = gst_structure_get_value (s, "peak");
++                value = gst_value_list_get_value (list, i);
++                peak_dB = g_value_get_double (value);
++                list = gst_structure_get_value (s, "decay");
++                value = gst_value_list_get_value (list, i);
++                decay_dB = g_value_get_double (value);
++                //qDebug() << "    RMS: " << rms_dB << " dB, peak: " << peak_dB << " dB, decay:  " << decay_dB << " dB";
++
++                /* converting from dB to normal gives us a value between 0.0 and 1.0 */
++                rms = pow (10, rms_dB / 20);
++                //qDebug() << "    normalized rms value: " << rms;
++
++                peak = pow (10, peak_dB / 20);
++                //qDebug() << "    normalized peak value: " << peak;
++
++                //  populate the metaData.peakValue = peak
++                m_tags.insert(QMediaMetaData::PeakValue.toUtf8(), QVariant(peak));
++                //  populate the metaData.averageLevel = rms
++                m_tags.insert(QMediaMetaData::AverageLevel.toUtf8(), QVariant(rms));
++                //  populate the metaData.channelCount = channels
++                m_tags.insert(QMediaMetaData::ChannelCount.toUtf8(), QVariant(channels));
++
++                emit tagsChanged();
++              }
++            }
++          }
+ 
+ #ifdef DEBUG_PLAYBIN
+         if (m_sourceType == MMSSrc && qstrcmp(GST_OBJECT_NAME(GST_MESSAGE_SRC(gm)), "source") == 0) {
