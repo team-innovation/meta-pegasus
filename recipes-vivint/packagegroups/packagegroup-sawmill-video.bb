@@ -4,7 +4,7 @@ DESCRIPTION = "touchlink video packages, imx firmware, gst plugins, etc"
 LICENSE = "MIT"
 LICENSE_FLAGS_WHITELIST = "commercial license"
 
-PR = "r8"
+PR = "r9"
 
 inherit packagegroup
 
@@ -41,6 +41,7 @@ RDEPENDS_${PN} = " \
 	gst-plugins-base-ffmpegcolorspace \
 	gst-plugins-base-playbin \
 	gst-plugins-base-videotestsrc \
+	gst-plugins-base-volume \
 	gst-plugins-good \
 	gst-plugins-good-alaw \
 	gst-plugins-good-audiofx \
@@ -51,6 +52,7 @@ RDEPENDS_${PN} = " \
 	gst-plugins-good-imagefreeze \
 	gst-plugins-good-isomp4 \
 	gst-plugins-good-jpeg \
+	gst-plugins-good-level \
 	gst-plugins-good-mulaw \
 	gst-plugins-good-pulse \
 	gst-plugins-good-rtp \
