@@ -10,7 +10,7 @@ DEPENDS += "python3 live555"
 RDEPENDS_${PN} = "live555-libUsageEnvironment live555-libBasicUsageEnvironment live555-libgroupsock live555-libliveMedia"
 DEPENDS_virtclass-native += "python3-native"
 
-SRCREV = "0f078a5ae218"
+SRCREV = "40410484b400"
 MODULE = "live555-proxy-server"
 SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http"
 #SRC_URI = "file:///home/craig/hg/live555-proxy-server"
