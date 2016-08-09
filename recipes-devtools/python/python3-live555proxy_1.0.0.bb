@@ -3,7 +3,7 @@ SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "CLOSED"
 SRCNAME = "live555-proxy-server"
-PR = "ml24"
+PR = "ml25"
 
 DEPENDS += "python3 live555"
 #RDEPENDS = "live555-lib"

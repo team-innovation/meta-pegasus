@@ -7,9 +7,9 @@ HOMEPAGE = "http://live.com/"
 LICENSE = "LGPL-2.1"
 SECTION = "devel"
 
-INC_PR = "r36"
+INC_PR = "r37"
 
-SRCREV = "37b2d3593a44"
+SRCREV = "525ceba595e4"
 MODULE = "live555"
 SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
 	       file://config.linux-cross-shared-libraries \
