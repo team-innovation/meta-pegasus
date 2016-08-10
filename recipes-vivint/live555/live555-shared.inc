@@ -7,9 +7,10 @@ HOMEPAGE = "http://live.com/"
 LICENSE = "LGPL-2.1"
 SECTION = "devel"
 
-INC_PR = "r38"
+INC_PR = "r39"
 
-SRCREV = "525ceba595e4"
+# IF UPDATING THE LIVE555 MAKE SURE TO UPDATE SKYCONTROL RECIPES AS WELL
+SRCREV = "31e9d98ca654"
 MODULE = "live555"
 SRC_URI = "hg://${HG_SERVER};module=${MODULE};proto=http \
 "
@@ -45,7 +46,7 @@ do_install() {
 	echo ${D} > /tmp/t
 	cp ${S}/*/*.so.* ${D}${libdir}
 	install -d ${D}${bindir}
-	for i in MPEG2TransportStreamIndexer openRTSP playSIP sapWatch testMPEG1or2ProgramToTransportStream testMPEG1or2Splitter testMPEG1or2VideoReceiver testMPEG2TransportStreamTrickPlay testOnDemandRTSPServer testRelay testAMRAudioStreamer testDVVideoStreamer testMP3Receiver testMP3Streamer testMPEG1or2AudioVideoStreamer testMPEG1or2VideoStreamer testMPEG2TransportStreamer testMPEG4VideoStreamer testWAVAudioStreamer vobStreamer; do
+	for i in openRTSP playSIP sapWatch testOnDemandRTSPServer testRelay testAMRAudioStreamer testDVVideoStreamer testMP3Receiver testMP3Streamer testMPEG1or2AudioVideoStreamer testMPEG1or2VideoStreamer testMPEG4VideoStreamer testWAVAudioStreamer vobStreamer; do
 		install -m 0755 ${S}/testProgs/${i} ${D}${bindir}/
 	done
 	install -m 0755 ${S}/mediaServer/live555MediaServer ${D}${bindir}/
@@ -54,12 +55,12 @@ do_install() {
 
 PACKAGES += "live555-openrtsp live555-playsip live555-mediaserver live555-proxyserver live555-test"
 PACKAGES += "live555-libUsageEnvironment live555-libBasicUsageEnvironment live555-libgroupsock live555-libliveMedia"
-FILES_${PN} = "${bindir}/sapWatch ${bindir}/testMPEG1or2ProgramToTransportStream ${bindir}/testMPEG1or2Splitter ${bindir}/testMPEG1or2VideoReceiver ${bindir}/testMPEG2TransportStreamTrickPlay ${bindir}/testOnDemandRTSPServer ${bindir}/testRelay ${bindir}/testAMRAudioStreamer ${bindir}/testDVVideoStreamer ${bindir}/testMP3Receiver ${bindir}/testMP3Streamer ${bindir}/testMPEG1or2AudioVideoStreamer ${bindir}/testMPEG1or2VideoStreamer ${bindir}/testMPEG2TransportStreamer ${bindir}/testMPEG4VideoStreamer ${bindir}/testWAVAudioStreamer ${bindir}/vobStreamer ${bindir}/MPEG2TransportStreamIndexer"
+FILES_${PN} = "${bindir}/sapWatch ${bindir}/testOnDemandRTSPServer ${bindir}/testRelay ${bindir}/testAMRAudioStreamer ${bindir}/testDVVideoStreamer ${bindir}/testMP3Receiver ${bindir}/testMP3Streamer ${bindir}/testMPEG1or2AudioVideoStreamer ${bindir}/testMPEG1or2VideoStreamer ${bindir}/testMPEG2TransportStreamer ${bindir}/testMPEG4VideoStreamer ${bindir}/testWAVAudioStreamer ${bindir}/vobStreamer ${bindir}/MPEG2TransportStreamIndexer"
 FILES_live555-openrtsp = "${bindir}/openRTSP"
 FILES_live555-playsip = "${bindir}/playSIP"
 FILES_live555-mediaserver = "${bindir}/live555MediaServer"
 FILES_live555-proxyserver = "${bindir}/live555ProxyServer"
-FILES_live555-test = "${bindir}/test* ${bindir}/registerRTSPStream"
+FILES_live555-test = "${bindir}/test*"
 
 FILES_live555-libUsageEnvironment = "${libdir}/libUsageEnvironment.so.*"
 FILES_live555-libBasicUsageEnvironment = "${libdir}/libBasicUsageEnvironment.so.*"
