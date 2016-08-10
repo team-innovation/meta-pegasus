@@ -104,6 +104,7 @@ DISPLAY_DEPENDS = "\
 MISC_DEPENDS = "\
 	ppp \
 	socat \
+	live555-openrtsp \
 	"
 
 PYTHON_EXTRA_DEPENDS = "\
