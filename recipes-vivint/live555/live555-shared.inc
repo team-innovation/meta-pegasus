@@ -7,24 +7,18 @@ HOMEPAGE = "http://live.com/"
 LICENSE = "LGPL-2.1"
 SECTION = "devel"
 
-INC_PR = "r37"
+INC_PR = "r38"
 
 SRCREV = "525ceba595e4"
 MODULE = "live555"
-SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
-	       file://config.linux-cross-shared-libraries \
-	       file://do-not-build-testprogs.patch \
+SRC_URI = "hg://${HG_SERVER};module=${MODULE};proto=http \
 "
-
-#SRC_URI = "file:///media/WD_MPassport/live555 \
-#	       file://config.linux-cross-shared-libraries"
 
 S = "${WORKDIR}/${MODULE}"
 TARGET_CC_ARCH += "${LDFLAGS}"
 
 do_configure() {
-	cp ${WORKDIR}/config.linux-cross-shared-libraries .
-	./genMakefiles linux-cross-shared-libraries
+	./genMakefiles linux-with-shared-libraries
 }
 
 do_compile() {
@@ -51,6 +45,9 @@ do_install() {
 	echo ${D} > /tmp/t
 	cp ${S}/*/*.so.* ${D}${libdir}
 	install -d ${D}${bindir}
+	for i in MPEG2TransportStreamIndexer openRTSP playSIP sapWatch testMPEG1or2ProgramToTransportStream testMPEG1or2Splitter testMPEG1or2VideoReceiver testMPEG2TransportStreamTrickPlay testOnDemandRTSPServer testRelay testAMRAudioStreamer testDVVideoStreamer testMP3Receiver testMP3Streamer testMPEG1or2AudioVideoStreamer testMPEG1or2VideoStreamer testMPEG2TransportStreamer testMPEG4VideoStreamer testWAVAudioStreamer vobStreamer; do
+		install -m 0755 ${S}/testProgs/${i} ${D}${bindir}/
+	done
 	install -m 0755 ${S}/mediaServer/live555MediaServer ${D}${bindir}/
 	install -m 0755 ${S}/proxyServer/live555ProxyServer ${D}${bindir}/
 }
