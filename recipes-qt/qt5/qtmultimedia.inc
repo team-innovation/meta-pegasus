@@ -26,4 +26,5 @@ SRC_URI += "\
     file://0001-Initial-porting-effort-to-GStreamer-1.0.patch \
     file://0002-qtmultimedia_log.patch \
     file://0003-qtmultimedia_levels.patch \
+    file://0004-qtmultimedia_audiosink_fix.patch \
 "
