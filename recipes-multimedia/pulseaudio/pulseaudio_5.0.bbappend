@@ -32,4 +32,7 @@ RDEPENDS_pulseaudio-server += " \
 	pulseaudio-module-tunnel-sink \
 	pulseaudio-module-remap-source \
 	pulseaudio-module-remap-sink \
+    libwrap \
+    libcrypto \
+    libssl \
 "
