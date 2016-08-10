@@ -7,12 +7,12 @@ HOMEPAGE = "http://live.com/"
 LICENSE = "LGPL-2.1"
 SECTION = "devel"
 
-INC_PR = "r39"
+INC_PR = "r40"
 
 # IF UPDATING THE LIVE555 MAKE SURE TO UPDATE SKYCONTROL RECIPES AS WELL
 SRCREV = "31e9d98ca654"
 MODULE = "live555"
-SRC_URI = "hg://${HG_SERVER};module=${MODULE};proto=http \
+SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
 "
 
 S = "${WORKDIR}/${MODULE}"
@@ -53,8 +53,9 @@ do_install() {
 	install -m 0755 ${S}/proxyServer/live555ProxyServer ${D}${bindir}/
 }
 
+
 PACKAGES += "live555-openrtsp live555-playsip live555-mediaserver live555-proxyserver live555-test"
-PACKAGES += "live555-libUsageEnvironment live555-libBasicUsageEnvironment live555-libgroupsock live555-libliveMedia"
+PACKAGES += "live555-libusageenvironment live555-libbasicusageenvironment live555-libgroupsock live555-liblivemedia"
 FILES_${PN} = "${bindir}/sapWatch ${bindir}/testOnDemandRTSPServer ${bindir}/testRelay ${bindir}/testAMRAudioStreamer ${bindir}/testDVVideoStreamer ${bindir}/testMP3Receiver ${bindir}/testMP3Streamer ${bindir}/testMPEG1or2AudioVideoStreamer ${bindir}/testMPEG1or2VideoStreamer ${bindir}/testMPEG2TransportStreamer ${bindir}/testMPEG4VideoStreamer ${bindir}/testWAVAudioStreamer ${bindir}/vobStreamer ${bindir}/MPEG2TransportStreamIndexer"
 FILES_live555-openrtsp = "${bindir}/openRTSP"
 FILES_live555-playsip = "${bindir}/playSIP"
@@ -62,8 +63,8 @@ FILES_live555-mediaserver = "${bindir}/live555MediaServer"
 FILES_live555-proxyserver = "${bindir}/live555ProxyServer"
 FILES_live555-test = "${bindir}/test*"
 
-FILES_live555-libUsageEnvironment = "${libdir}/libUsageEnvironment.so.*"
-FILES_live555-libBasicUsageEnvironment = "${libdir}/libBasicUsageEnvironment.so.*"
+FILES_live555-libusageenvironment = "${libdir}/libUsageEnvironment.so.*"
+FILES_live555-libbasicusageenvironment = "${libdir}/libBasicUsageEnvironment.so.*"
 FILES_live555-libgroupsock = "${libdir}/libgroupsock.so.*"
-FILES_live555-libliveMedia = "${libdir}/libliveMedia.so.*"
+FILES_live555-liblivemedia = "${libdir}/libliveMedia.so.*"
 
