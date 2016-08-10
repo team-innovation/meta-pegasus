@@ -3,11 +3,11 @@ SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "CLOSED"
 SRCNAME = "live555-proxy-server"
-PR = "ml25"
+PR = "ml26"
 
 DEPENDS += "python3 live555"
 #RDEPENDS = "live555-lib"
-RDEPENDS_${PN} = "live555-libUsageEnvironment live555-libBasicUsageEnvironment live555-libgroupsock live555-libliveMedia"
+RDEPENDS_${PN} = "live555-libusageenvironment live555-libbasicusageenvironment live555-libgroupsock live555-liblivemedia"
 DEPENDS_virtclass-native += "python3-native"
 
 SRCREV = "40410484b400"
