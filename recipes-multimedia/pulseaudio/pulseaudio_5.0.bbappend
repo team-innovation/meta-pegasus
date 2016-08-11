@@ -24,6 +24,10 @@ EXTRA_OECONF = "--enable-neon-opt \
 		--disable-orc \
 "
 
+# This is fixed in upstream poky, until we update to it fix it here
+RDEPENDS_pulseaudio-module-console-kit = ""
+RDEPENDS_pulseaudio-module-console-kit =+ "${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'consolekit', '', d)}"
+
 RDEPENDS_pulseaudio-server += " \
         pulseaudio-module-rtp-send \
         pulseaudio-module-rtp-recv \
@@ -32,7 +36,6 @@ RDEPENDS_pulseaudio-server += " \
 	pulseaudio-module-tunnel-sink \
 	pulseaudio-module-remap-source \
 	pulseaudio-module-remap-sink \
-    libwrap \
-    libcrypto \
-    libssl \
+    tcp-wrappers \
+    openssl \
 "
