@@ -3,14 +3,14 @@ SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "CLOSED"
 SRCNAME = "live555-proxy-server"
-PR = "ml26"
+PR = "ml27"
 
 DEPENDS += "python3 live555"
 #RDEPENDS = "live555-lib"
 RDEPENDS_${PN} = "live555-libusageenvironment live555-libbasicusageenvironment live555-libgroupsock live555-liblivemedia"
 DEPENDS_virtclass-native += "python3-native"
 
-SRCREV = "40410484b400"
+SRCREV = "baebfb125a47"
 MODULE = "live555-proxy-server"
 SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http"
 #SRC_URI = "file:///home/craig/hg/live555-proxy-server"
@@ -25,6 +25,7 @@ NATIVE_INSTALL_WORKS = "1"
 inherit distutils3
 
 do_configure_prepend() {
+#	cp -a ${WORKDIR}/home/craig/live555-proxy-server/* ${S}
 }
 
 do_install_prepend() {
