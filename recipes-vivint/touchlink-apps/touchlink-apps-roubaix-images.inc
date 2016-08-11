@@ -11,11 +11,6 @@ ROUBAIX_IMG_TOOLBOX_PREPEND = "-1"
 ROUBAIX_IMG_VIDEO_PREPEND = "-1"
 ROUBAIX_IMG_WP_PREPEND = "-1"
 
-### Themes
-ROUBAIX_TH_ALA_PREPEND = "-1"
-ROUBAIX_TH_AQUA_PREPEND = "-1"
-ROUBAIX_TH_FOREST_PREPEND = "-1"
-
 ROUBAIX_IMG_COIN_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix-images-coin = "${PR}${ROUBAIX_IMG_COIN_PREPEND}${ROUBAIX_IMG_COIN_REVISION}"
 
@@ -42,15 +37,6 @@ PKGR_${PN}-roubaix-images-video = "${PR}${ROUBAIX_IMG_VIDEO_PREPEND}${ROUBAIX_IM
 
 ROUBAIX_IMG_WP_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix-images-wallpapers = "${PR}${ROUBAIX_IMG_WP_PREPEND}${ROUBAIX_IMG_WP_REVISION}"
-
-ROUBAIX_TH_ALA_REVISION ?= "${DISTRO_PR}"
-PKGR_${PN}-roubaix-themes-alabaster = "${PR}${ROUBAIX_TH_ALA_PREPEND}${ROUBAIX_TH_ALA_REVISION}"
-
-ROUBAIX_TH_AQUA_REVISION ?= "${DISTRO_PR}"
-PKGR_${PN}-roubaix-themes-aqua = "${PR}${ROUBAIX_TH_AQUA_PREPEND}${ROUBAIX_TH_AQUA_REVISION}"
-
-ROUBAIX_TH_FOREST_REVISION ?= "${DISTRO_PR}"
-PKGR_${PN}-roubaix-themes-forest = "${PR}${ROUBAIX_TH_FOREST_PREPEND}${ROUBAIX_TH_FOREST_REVISION}"
 
 FILES_${PN}-roubaix-images-coin = "\
 	${INSTALL_DIR}/roubaix/images/coin/* \
@@ -87,16 +73,3 @@ FILES_${PN}-roubaix-images-video = "\
 FILES_${PN}-roubaix-images-wallpapers = "\
 	${INSTALL_DIR}/roubaix/images/wallpapers/* \
 	"
-
-FILES_${PN}-roubaix-themes-alabaster = "\
-	${INSTALL_DIR}/roubaix/images/themes/alabaster/* \
-	"
-
-FILES_${PN}-roubaix-themes-aqua = "\
-	${INSTALL_DIR}/roubaix/images/themes/aqua/* \
-	"
-
-FILES_${PN}-roubaix-themes-forest = "\
-	${INSTALL_DIR}/roubaix/images/themes/forest/* \
-	"
-

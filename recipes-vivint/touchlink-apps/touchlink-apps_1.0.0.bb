@@ -326,9 +326,6 @@ PACKAGES = " \
 	${PN}-roubaix-images-toolbox \
 	${PN}-roubaix-images-video \
 	${PN}-roubaix-images-wallpapers \
-	${PN}-roubaix-themes-alabaster \
-	${PN}-roubaix-themes-aqua \
-	${PN}-roubaix-themes-forest \
 	${PN}-roubaix-popups  \
 	${PN}-roubaix-scripts  \
 	${PN}-roubaix-style  \
