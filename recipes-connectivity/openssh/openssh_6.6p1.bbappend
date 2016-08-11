@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI = "file://sshd_not_to_be_run"
+SRC_URI_append = " file://sshd_not_to_be_run"
 PR = "1"
 
 do_install_append () {
