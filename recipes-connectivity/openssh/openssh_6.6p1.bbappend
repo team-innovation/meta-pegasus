@@ -1,7 +1,7 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI_append = " file://sshd_not_to_be_run"
-PR = "1"
+PR = "2"
 
 do_install_append () {
     install -d ${D}/${sysconfdir}/ssh
