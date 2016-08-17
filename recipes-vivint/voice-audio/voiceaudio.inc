@@ -6,12 +6,13 @@ DESCRIPTION = "Voice Audio Daemon"
 SECTION = "devel"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-INC_PR = "r51"
+INC_PR = "r61"
 
-SRCREV = "d9b490a9c4f8"
+SRCREV = "7d740ed1abac"
 MODULE = "voice-audio"
 SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
-   file://COPYING"
+   	file://COPYING \
+	file://libvocal.a"
 
 #SRC_URI = "file:///media/WD_MPassport/live555 \
 #	       file://config.linux-cross-shared-libraries"
@@ -25,6 +26,7 @@ RDEPENDS_${PN} = "pulseaudio"
 #	libvocal"
 
 do_configure() {
+	cp ${WORKDIR}/libvocal.a ${STAGING_LIBDIR}
 }
 
 do_install_append() {

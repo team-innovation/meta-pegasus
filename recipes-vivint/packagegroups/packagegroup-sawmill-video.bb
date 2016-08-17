@@ -4,7 +4,7 @@ DESCRIPTION = "touchlink video packages, imx firmware, gst plugins, etc"
 LICENSE = "MIT"
 LICENSE_FLAGS_WHITELIST = "commercial license"
 
-PR = "r8"
+PR = "r10"
 
 inherit packagegroup
 
@@ -41,6 +41,7 @@ RDEPENDS_${PN} = " \
 	gst-plugins-base-ffmpegcolorspace \
 	gst-plugins-base-playbin \
 	gst-plugins-base-videotestsrc \
+	gst-plugins-base-volume \
 	gst-plugins-good \
 	gst-plugins-good-alaw \
 	gst-plugins-good-audiofx \
@@ -51,6 +52,7 @@ RDEPENDS_${PN} = " \
 	gst-plugins-good-imagefreeze \
 	gst-plugins-good-isomp4 \
 	gst-plugins-good-jpeg \
+	gst-plugins-good-level \
 	gst-plugins-good-mulaw \
 	gst-plugins-good-pulse \
 	gst-plugins-good-rtp \
@@ -65,14 +67,19 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-bad \
 	gstreamer1.0-plugins-bad-videoparsersbad \
 	gstreamer1.0-plugins-base \
+	gstreamer1.0-plugins-base-audioconvert \
+	gstreamer1.0-plugins-base-audioresample \
 	gstreamer1.0-plugins-base-playback \
 	gstreamer1.0-plugins-base-tcp \
 	gstreamer1.0-plugins-base-typefindfunctions \
 	gstreamer1.0-plugins-base-videotestsrc \
+	gstreamer1.0-plugins-base-videoconvert \
+	gstreamer1.0-plugins-base-volume \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0-plugins-good-imagefreeze \
 	gstreamer1.0-plugins-good-isomp4 \
 	gstreamer1.0-plugins-good-jpeg \
+	gstreamer1.0-plugins-good-level \
 	gstreamer1.0-plugins-good-mulaw \
 	gstreamer1.0-plugins-good-pulse \
 	gstreamer1.0-plugins-good-rtp \

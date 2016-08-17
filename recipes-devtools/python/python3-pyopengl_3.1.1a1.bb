@@ -24,7 +24,7 @@ pkg_postinst_${PN}() {
 #
 # We need to run ldconfig otherwise we cannot find the 
 # GL library when try to use it
-if [ x"$D" = "x"]; then
+if [ x"$D" = "x" ]; then
     echo "Running ldconfig"
     ldconfig
 else

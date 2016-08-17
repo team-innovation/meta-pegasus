@@ -34,9 +34,6 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-roubaix-scripts \
 	touchlink-apps-roubaix-services \
 	touchlink-apps-roubaix-style \
-	touchlink-apps-roubaix-themes-alabaster \
-	touchlink-apps-roubaix-themes-aqua \
-	touchlink-apps-roubaix-themes-forest \
 	touchlink-apps-roubaix-views \
 	touchlink-apps-rtspd \
 	touchlink-apps-sound-roubaix-back \
@@ -104,6 +101,7 @@ DISPLAY_DEPENDS = "\
 MISC_DEPENDS = "\
 	ppp \
 	socat \
+	live555-openrtsp \
 	"
 
 PYTHON_EXTRA_DEPENDS = "\

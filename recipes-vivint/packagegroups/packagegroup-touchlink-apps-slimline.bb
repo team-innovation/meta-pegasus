@@ -3,6 +3,6 @@
 DESCRIPTION = "slimline aka primary panel touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r11"
+PR = "r12"
 
 require packagegroup-touchlink-apps-common.inc
