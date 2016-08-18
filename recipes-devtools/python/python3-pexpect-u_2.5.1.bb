@@ -31,7 +31,8 @@ RDEPENDS_${PN} = "\
 RDEPENDS_${PN}_class-native = ""
 
 do_compile_append() {
-	2to3 -w -p ${S}/build
+	2to3 -w ${S}/build
+    2to3 -w -p ${S}/build
 }
 
 SRC_URI[md5sum] = "7c916a9f42d636ec6aec39f7cdd96eb5"
