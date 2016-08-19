@@ -21,4 +21,6 @@ do_install_append () {
         install -d ${D}${sysconfdir}/udev
         install -m 0644 ${WORKDIR}/mount.blacklist ${D}${sysconfdir}/udev/mount.blacklist
     fi
+
+    sed -i 's/--timeout=3/--timeout=10/' ${D}${sysconfdir}/init.d/udev
 }

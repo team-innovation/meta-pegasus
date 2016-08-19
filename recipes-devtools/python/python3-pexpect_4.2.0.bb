@@ -1,12 +1,12 @@
 DESCRIPTION = "A Pure Python Expect-u like Module for Python"
 SECTION = "devel/python"
 PRIORITY = "optional"
-LICENSE = "PSF"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=04a2bf11b85ce49d4a8c0c413fd34404"
-SRCNAME = "pexpect-u"
+LICENSE = "ISC"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=1c7a725251880af8c6a148181665385b"
+SRCNAME = "pexpect"
 PR = "ml1"
-SRC_URI = "https://pypi.python.org/packages/source/p/pexpect-u/${SRCNAME}-${PV}.tar.gz \
-		   file://fixup_setuptool_to_distutils.patch"
+
+SRC_URI = "https://pypi.python.org/packages/source/p/pexpect/${SRCNAME}-${PV}.tar.gz"
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
@@ -25,13 +25,10 @@ RDEPENDS_${PN} = "\
   python3-terminal \
   python3-resource \
   python3-fcntl \
+  python3-ptyprocess \
 "
 
 RDEPENDS_${PN}_class-native = ""
 
-do_compile_append() {
-	2to3 -w ${S}/build
-}
-
-SRC_URI[md5sum] = "7c916a9f42d636ec6aec39f7cdd96eb5"
-SRC_URI[sha256sum] = "ab24557ef52c1bc6ff79f81408d9357888dfa55a4d90657576822c24c36f077e"
+SRC_URI[md5sum] = "8071ec5df0f3d515daedafad672d1632"
+SRC_URI[sha256sum] = "bf6816b8cc8d301a499e7adf338828b39bc7548eb64dbed4dd410ed93d95f853"
