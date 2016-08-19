@@ -9,6 +9,7 @@ _APPS_ID="default"
 test -d ${BUILD_DIR} &&
 	sed -i '/HG_APPS_TAG/d' ${BUILD_DIR}/conf/local.conf &&
 	sed -i '/HG_APPS_ID/d' ${BUILD_DIR}/conf/local.conf && 
+	sed -i '/UPDATESENG/d' ${BUILD_DIR}/conf/local.conf && 
 	echo "HG_APPS_TAG ?= \"${_APPS_TAG}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "HG_APPS_ID ?= \"${_APPS_ID}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "UPDATESENG ?= \"updateseng.vivint.com/innovation\"" >> ${BUILD_DIR}/conf/local.conf &&
