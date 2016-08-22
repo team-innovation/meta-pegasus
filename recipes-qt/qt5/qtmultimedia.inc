@@ -27,4 +27,5 @@ SRC_URI += "\
     file://0002-qtmultimedia_log.patch \
     file://0003-qtmultimedia_levels.patch \
     file://0004-qtmultimedia_audiosink_fix.patch \
+    file://0005-SC-4336-Fixes-1080p-clip-playback-on-imx6.patch \
 "
