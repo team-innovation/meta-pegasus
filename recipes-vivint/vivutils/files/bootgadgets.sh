@@ -17,9 +17,7 @@ do_nothing() {
 
 case "$1" in
 	start)
-        if [ ! -e /media/extra/serial_lock ]; then
-		    gogogadget
-        fi
+		gogogadget
 		;;
 	stop|restart|reload)
 		do_nothing
