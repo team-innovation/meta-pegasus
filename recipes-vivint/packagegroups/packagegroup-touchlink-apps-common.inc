@@ -67,6 +67,7 @@ QT5_DEPENDS = "\
 	"
 
 QT5_PKGS = "\
+	mtdev \
 	tslib tslib-calibrate tslib-tests \
 	libqt5declarative5 \
 	libqt5xmlpatterns5 \
