@@ -47,9 +47,9 @@ do_install() {
     install -d ${D}/${sysconfdir}/procman.d
     install -m 0755 ${WORKDIR}/pulseaudio ${D}/${sysconfdir}/init.d/
     install -d ${D}/${sysconfdir}/pulse
-    install -m 0755 ${WORKDIR}/session ${D}/${sysconfdir}/pulse/session.pulseaudio-meta
-    install -m 0644 ${WORKDIR}/asound.conf ${D}/${sysconfdir}/pulse/asound.conf.pulseaudio-meta
-    install -m 0644 ${WORKDIR}/daemon.conf ${D}/${sysconfdir}/pulse/daemon.conf.pulseaudio-meta
+    install -m 0755 ${WORKDIR}/session ${D}/${sysconfdir}/pulse/session.pulseaudio-meta-sly
+    install -m 0644 ${WORKDIR}/asound.conf ${D}/${sysconfdir}/pulse/asound.conf.pulseaudio-meta-sly
+    install -m 0644 ${WORKDIR}/daemon.conf ${D}/${sysconfdir}/pulse/daemon.conf.pulseaudio-meta-sly
 
     if [ "x${TARGET_PFPU}" = "xsoft" ] ; then
          sed -i -e s:resample-method=sinc-fastest:resample-method=trivial: ${D}${sysconfdir}/init.d/pulseaudio
@@ -70,17 +70,17 @@ if grep audio /etc/group; then
 fi
 
 # Overwrite existing configfiles, yuck!
-cp /etc/pulse/session.pulseaudio-meta /etc/pulse/session
-cp /etc/pulse/asound.conf.pulseaudio-meta /etc/pulse/asound.conf
-cp /etc/pulse/daemon.conf.pulseaudio-meta /etc/pulse/daemon.conf
+cp /etc/pulse/session.pulseaudio-meta-sly /etc/pulse/session
+cp /etc/pulse/asound.conf.pulseaudio-meta-sly /etc/pulse/asound.conf
+cp /etc/pulse/daemon.conf.pulseaudio-meta-sly /etc/pulse/daemon.conf
 }
 
 
 CONFFILES_${PN} = "\
   ${sysconfdir}/init.d/pulseaudio \
-  ${sysconfdir}/pulse/session.pulseaudio-meta \
-  ${sysconfdir}/pulse/asound.conf.pulseaudio-meta \
-  ${sysconfdir}/pulse/daemon.conf.pulseaudio-meta \
+  ${sysconfdir}/pulse/session.pulseaudio-meta-sly \
+  ${sysconfdir}/pulse/asound.conf.pulseaudio-meta-sly \
+  ${sysconfdir}/pulse/daemon.conf.pulseaudio-meta-sly \
 "
 
 # At the time the postinst runs, dbus might not be setup so only restart if running
