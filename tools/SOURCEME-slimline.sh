@@ -3,7 +3,7 @@ export BUILD_DIR=$1
 : ${BUILD_DIR:=build}
 
 _APPS_TAG="apps-hg"
-_APPS_ID="default"
+_APPS_ID="unstable"
 
 # if already set up then we just run the setup-environment script
 test -d ${BUILD_DIR} &&
@@ -14,6 +14,7 @@ test -d ${BUILD_DIR} &&
 	echo "HG_APPS_ID ?= \"${_APPS_ID}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "UPDATESENG ?= \"updateseng.vivint.com/innovation\"" >> ${BUILD_DIR}/conf/local.conf &&
 	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
+	grep -q oe-meta-go ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
 	return
 
@@ -27,6 +28,10 @@ source ./fsl-setup-release.sh -b ${BUILD_DIR}
 
 grep -q meta-vivint ./conf/bblayers.conf ||
 	echo "BBLAYERS += \" \${BSPDIR}/sources/meta-vivint \"" \
+		>> ./conf/bblayers.conf
+
+grep -q oe-meta-go ./conf/bblayers.conf ||
+	echo "BBLAYERS += \" \${BSPDIR}/sources/oe-meta-go \"" \
 		>> ./conf/bblayers.conf
 
 ln -s ../sstate-cache . || true
