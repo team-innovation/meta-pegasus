@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "25"
+PR = "26"
 
 inherit packagegroup
 
@@ -55,5 +55,6 @@ RDEPENDS_${PN} = " \
 	vim \
 	webrtc-audio-processing \
 	wps-sh \
-    busybox-httpd \
+        busybox-httpd \
+        fabric-go \
 "
