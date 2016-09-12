@@ -7,13 +7,14 @@ DEPENDS = "go-cross"
 inherit go
 
 SRC_URI += " \
-    http://updateseng.vivint.com/innovation/downloads/fabric-go-2016-08-11.tar.gz \
+    http://updateseng.vivint.com/innovation/downloads/fabric-go-2016-09-12.tar.gz \
     file://init \
     file://schooner.config \
     file://schooner.procman \
 "
-SRC_URI[md5sum] = "ca85642136b6dba2f5decfa0220b0704"
-SRC_URI[sha256sum] = "d9505be15db08a0d7f6519116cdc0823a2f21c3cd8e9b01fa0c0d27de729e4f8"
+
+SRC_URI[md5sum] = "1e0756120fe23af19e71fdf31e27bea5"
+SRC_URI[sha256sum] = "2854f074e4c40ee264e14fc8f913fb516207eaa5d959a82a675cf5da33d598fa"
 
 LICENSE = "CLOSED"
 
