@@ -15,5 +15,4 @@ RDEPENDS_${PN} += " \
 	touchlink-vivotek-firmware-hd400w \
 	touchlink-vivotek-vadp \
 	touchlink-vivotek-vadp-rossini \
-
 "
