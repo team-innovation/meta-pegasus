@@ -8,9 +8,9 @@ HOMEPAGE = "http://www.vivint.com"
 # changes in analytics source you want to be build
 #
 
-PR = "ml32"
+PR = "ml36"
 
-SRCREV = "e89fafc1974a"
+SRCREV = "b3f0eecd4cd6"
 
 SRC_URI = "hg://${HG_SERVER};module=analytics;protocol=http"
 
@@ -18,7 +18,7 @@ S = "${WORKDIR}/analytics"
 
 FIRMWARE_DIR = "/var/lib/firmware/Vivotek"
 
-VADP_VERSION = "1.26"
+VADP_VERSION = "1.30"
 
 SUPPORT_FILES = "${S}/VADP/package"
 
