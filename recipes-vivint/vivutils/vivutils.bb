@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r38"
+PR = "r39"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -29,6 +29,7 @@ SRC_URI = "\
 	   file://resize.c \
 	   file://resize.sh \
 	   file://serialnumset \
+	   file://slimline-update \
 	   file://sly-update \
 	   file://touchtest \
 	   file://wave_1000_hz_half_mag.wav \		
@@ -64,6 +65,7 @@ do_install() {
 	install -m 0755 ${S}/nfccmd-sly ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
 	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
+	install -m 0755 ${S}/slimline-update ${D}/usr/local/bin
 	install -m 0755 ${S}/sly-update ${D}/usr/local/bin
 	install -m 0755 ${S}/fccfixup ${D}/usr/local/bin
 	install -m 0755 ${S}/touchtest ${D}/usr/local/bin

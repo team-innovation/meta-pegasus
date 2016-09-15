@@ -1,0 +1,55 @@
+#!/usr/bin/pulseaudio -nF
+
+#
+# Barebones PA Session File for Devices w/ ALSA
+# (C) Michael 'Mickey' Lauer <mlauer@vanille-media.de>
+#
+# Modified by Craig Matsuura (cmatsuura@vivint.com)
+# For use on SkyControl Panel
+#
+#load-module module-alsa-card device_id=/dev/snd/controlC0 name=codec.0 card_name=alsa_card.codec tsched=1 rate=8000
+
+# Core protocols
+load-module module-simple-protocol-tcp
+load-module module-native-protocol-unix
+load-module module-cli-protocol-unix
+load-module module-cli-protocol-tcp
+
+# alsa-source needs to have a deferred_volume=0 or we get an assert in rtpoll.c (pa_assert(usec <= PA_USEC_PER_SEC*60ULL*60ULL); line 387 in pa_rtpoll_set_timer_relative() )
+
+# Load the Codec source and sink given the names below
+load-module module-alsa-source device=hw:0,0 name=aic control='Mic Gain' rate=8000 channels=2 tsched=0 fixed_latency_range=0 deferred_volume=0
+load-module module-alsa-sink device=hw:0,0 name=aic control='Playback Gain' rate=8000 channels=2 tsched=0 fixed_latency_range=0 deferred_volume=0
+
+# remap mono to the AIC output. Mic comes off the left channel
+load-module module-remap-source source_name=mic master=alsa_input.aic channels=1 master_channel_map=front-left channel_map=mono
+
+# Add echo cancel module
+# still not working
+load-module module-echo-cancel rate=8000 channels=1 source_master=mic sink_master=alsa_output.aic adjust_time=2 sink_name=aec_output source_name=aec_input aec_method=webrtc aec_args="high_pass_filter=true noise_suppression=false routing_mode=loud-speakerphone mobile=true analog_gain_control=false digital_gain_control=true"
+
+# Load the GSM source and sink given the names below
+#load-module module-alsa-source device=hw:1,0 name=gsm rate=8000 channels=1 tsched=0 deferred_volume=0
+#load-module module-alsa-sink device=hw:1,0 name=gsm rate=8000 channels=1 tsched=0 deferred_volume=0
+
+# Suspend on idle
+load-module module-suspend-on-idle
+
+#load-module module-rtp-recv
+
+# Set default sink and source
+set-default-sink alsa_output.aic
+set-default-source alsa_input.aic
+
+# Don't fail if the audio files referred to below don't exist
+.nofail
+
+# Load an audio to the sample cache for usage with module-x11-bell
+#load-sample-lazy x11-bell /usr/share/openmoko/sounds/notify_doorbell.wav
+#load-module module-x11-bell sample=x11-bell
+
+# Load samples
+#load-sample startup /usr/share/openmoko/sounds/startup_unintrusive.wav
+#load-sample touchscreen /usr/share/openmoko/sounds/touchscreen_click.wav
+#load-sample ringtone /usr/share/openmoko/sounds/ringtone_classy.wav
+

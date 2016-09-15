@@ -1,8 +1,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-dirs755_append = " /media/card /media/extra /media/bootscript /media/mmcblk0p6 /media/mmcblk0p5 "
+dirs755_append = " /media/ram /media/card /media/extra /media/bootscript /media/mmcblk0p6 /media/mmcblk0p5 "
 
-PR = "r90"
+PR = "r91"
 
 SRC_URI += "file://vivintbuild_gpg.pub  \
             "

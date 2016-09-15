@@ -3,6 +3,12 @@
 image=$1
 img_dir="/home/root"
 
+if [[ `uname -a |cut -d' ' -f2` != "imx6dl-skyhub" ]]
+then
+    echo "This is not SkyHub, quickie update refused!"
+	exit 6
+fi
+
 if [[ $image == "help" ]]
 then
 	echo "Usage: $0 help|image_file"

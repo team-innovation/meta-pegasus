@@ -9,6 +9,7 @@ require touchlink-vivotek-620pt-firmware.inc
 require touchlink-vivotek-720-firmware.inc   
 require touchlink-vivotek-720w-firmware.inc  
 require touchlink-vivotek-721w-firmware.inc  
+require touchlink-vivotek-hd400w-firmware.inc  
 require touchlink-vivotek-cc8130-firmware.inc   
 require touchlink-vivotek-fd8134v-firmware.inc
 require touchlink-vivotek-fd8151v-firmware.inc
@@ -55,6 +56,7 @@ PACKAGES = "${PN}-520ir \
 	    ${PN}-720 \
             ${PN}-720w \
             ${PN}-721w \
+            ${PN}-hd400w \
             ${PN}-cc8130 \
             ${PN}-db8331w \
             ${PN}-db8332w \
