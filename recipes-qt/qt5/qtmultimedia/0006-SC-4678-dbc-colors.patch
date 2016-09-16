@@ -1,7 +1,7 @@
-diff --git a/multimedia/video/qvideoframe.cpp b/multimedia/video/qvideoframe.cpp
+diff --git a/src/multimedia/video/qvideoframe.cpp b/src/multimedia/video/qvideoframe.cpp
 index dfa26d8..5ba3bee 100644
---- a/multimedia/video/qvideoframe.cpp
-+++ b/multimedia/video/qvideoframe.cpp
+--- a/src/multimedia/video/qvideoframe.cpp
++++ b/src/multimedia/video/qvideoframe.cpp
 @@ -433,13 +433,22 @@ int QVideoFrame::height() const
  */
  int QVideoFrame::extraHeight() const
