@@ -1,0 +1,30 @@
+diff --git a/multimedia/video/qvideoframe.cpp b/multimedia/video/qvideoframe.cpp
+index dfa26d8..5ba3bee 100644
+--- a/multimedia/video/qvideoframe.cpp
++++ b/multimedia/video/qvideoframe.cpp
+@@ -433,13 +433,22 @@ int QVideoFrame::height() const
+ */
+ int QVideoFrame::extraHeight() const
+ {
+-    //Fixes SC-4336.
+-    //The gstreamer-imx decodes 1080p video frames with
++    //Fixes SC-4336 and SC-4678
++    //The gstreamer-imx decodes 1080p and 360p video frames with
+     //8 extra lines of padding for the GPU but doesn't
+     //pass this information along the GstVideoMetadata.
+     //So this is a fix for Qt to inform the GPU and to
+     //crop the boundary of the extra 8 lines.
+-    return d->size.height() == 1080 ? 8 : 0;
++    switch (d->size.height()) {
++    // The height might need to be divisible by 16
++    // the documentation doesn't say why.
++    // 368, 448, and 1088 are all divisible by 16 
++    case 360:
++    case 1080:
++      return 8;
++    default: 
++      return 0;
++    }
+ }
+ 
+ /*!
