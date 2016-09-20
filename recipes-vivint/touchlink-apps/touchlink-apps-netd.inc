@@ -1,10 +1,14 @@
 ###
 ### Change NETD_PREPEND everything you touch this script
 ###
-NETD_PREPEND = "-1"
+NETD_PREPEND = "-2"
 
 NETD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-netd = "${PR}${NETD_PREPEND}${NETD_REVISION}"
+
+INITSCRIPT_PACKAGES += "${PN}-netd"
+INITSCRIPT_NAME_${PN}-netd = "netd"
+INITSCRIPT_PARAMS_${PN}-netd = "start 26 2 3 4 5 ."
 
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/netd/

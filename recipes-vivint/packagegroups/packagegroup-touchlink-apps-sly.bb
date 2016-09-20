@@ -3,7 +3,7 @@
 DESCRIPTION = "primary aka sly touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r16"
+PR = "r18"
 
 require packagegroup-touchlink-apps-common.inc
 

@@ -1,10 +1,14 @@
 ###
 ### Change UPDATED_PREPEND everything you touch this script
 ###
-UPDATED_PREPEND = "-4"
+UPDATED_PREPEND = "-5"
 
 UPDATED_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-updated = "${PR}${UPDATED_PREPEND}${UPDATED_REVISION}"
+
+INITSCRIPT_PACKAGES += "${PN}-updated"
+INITSCRIPT_NAME_${PN}-updated = "updated"
+INITSCRIPT_PARAMS_${PN}-updated = "start 89 2 3 4 5 ."
 
 RDEPENDS_${PN}-updated ="\
   rsync \

@@ -14,7 +14,7 @@ do_install () {
 	install -m 0755 ${WORKDIR}/audio.sh ${D}${sysconfdir}/init.d
 
 	# Creat run level links
-	update-rc.d -r ${D} audio.sh start 97 5 . 
+	update-rc.d -r ${D} audio.sh start 38 S . 
 }
 
 FILES_${PN} += "/usr/local/bin/*"

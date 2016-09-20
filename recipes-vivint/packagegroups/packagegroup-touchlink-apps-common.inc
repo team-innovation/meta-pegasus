@@ -7,6 +7,7 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-framework \
 	touchlink-apps-global-conf \
 	touchlink-apps-iod \
+	touchlink-apps-launcherd \
 	touchlink-apps-netd \
 	touchlink-apps-nfcd \
 	touchlink-apps-procmand \

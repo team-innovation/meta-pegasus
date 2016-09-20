@@ -1,13 +1,16 @@
 ###
 ### Change SUNDANCE_PREPEND everything you touch this script
 ###
-SUNDANCE_PREPEND = "-3"
+SUNDANCE_PREPEND = "-4"
 
 
 SUNDANCE_REVISION ?= "${DISTRO_PR}"
 
 PKGR_${PN}-sundance = "${PR}${SUNDANCE_PREPEND}${SUNDANCE_REVISION}"
- 
+
+INITSCRIPT_PACKAGES += "${PN}-sundance"
+INITSCRIPT_NAME_${PN}-sundance = "sundance"
+INITSCRIPT_PARAMS_${PN}-sundance = "start 91 2 3 4 5 ."
 
 RDEPENDS_${PN}-sundance = "\
 	python3-pyinotify \

@@ -13,6 +13,8 @@ require touchlink-apps-sundance.inc
 require touchlink-apps-rtspd.inc
 require touchlink-apps-videod.inc
 
+require touchlink-apps-launcherd.inc
+
 # fcc test apps
 require touchlink-apps-test-ui.inc
 require touchlink-apps-test-daemon.inc
@@ -343,6 +345,7 @@ PACKAGES = " \
 	${PN}-global-conf \
 	${PN}-httpd \
 	${PN}-iod   \
+	${PN}-launcherd \
 	${PN}-modemd          \
 	${PN}-netd  \
 	${PN}-pcamd        \
