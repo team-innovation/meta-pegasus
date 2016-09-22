@@ -50,6 +50,11 @@ if [ x"$D" = "x" ]; then
             logging "Moving /media/extra/pointercal file to /media/extra/conf..."
             mv /media/extra/pointercal /media/extra/conf
     fi
+
+    if [ ! -e /usr/share/licenses ]
+    then
+        ln -s /usr/share/common_licenses /usr/share/licenses
+    fi
 else
     exit 1
 fi
