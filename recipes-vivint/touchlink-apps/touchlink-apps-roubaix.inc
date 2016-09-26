@@ -53,7 +53,7 @@ if [ x"$D" = "x" ]; then
 
     if [ ! -e /usr/share/licenses ]
     then
-        ln -s /usr/share/common_licenses /usr/share/licenses
+        ln -s /usr/share/common-licenses /usr/share/licenses
     fi
 else
     exit 1
