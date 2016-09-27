@@ -12,7 +12,7 @@ PR = "r4"
 # This URL gives us a PEM formatted file of Mozilla.org's certs
 # See also https://curl.haxx.se/cvssource/lib/mk-ca-bundle.pl, which downloads
 # Mozilla.org's certs, and converts them to pem format.
-SRC_URI = "https://curl.haxx.se/ca/cacert.pem \
+SRC_URI = "http://updateseng.vivint.com/innovation/downloads/cacert.pem \
            file://ca-certificates-subset.crt \
            file://spacemonkey.crt \
            file://LICENSE"
