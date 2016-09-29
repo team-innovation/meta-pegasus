@@ -1,6 +1,6 @@
 DESCRIPTION = "Build spacemonkey fabric for arm"
 
-PR = "r1"
+PR = "r2"
 
 DEPENDS = "go-cross"
 
@@ -14,6 +14,7 @@ SRC_URI += " \
     file://init \
     file://schooner.config \
     file://schooner.procman \
+    file://schooner.logrotate \
 "
 LICENSE = "CLOSED"
 
@@ -32,6 +33,9 @@ do_install() {
 
     install -d "${D}${sysconfdir}/procman.d"
     install "${WORKDIR}/schooner.procman" "${D}${sysconfdir}/procman.d/schooner"
+
+    install -d "${D}${sysconfdir}/logrotate.d"
+    install -m 0600 "${WORKDIR}/schooner.logrotate" "${D}${sysconfdir}/logrotate.d/schooner"
 }
 
 FILES_${PN} = "\
@@ -39,4 +43,5 @@ FILES_${PN} = "\
 	${sysconfdir}/schooner.config  \
 	${sysconfdir}/init.d/schooner \
 	${sysconfdir}/procman.d/schooner \
+    ${sysconfdir}/logrotate.d/schooner \ 
 	"

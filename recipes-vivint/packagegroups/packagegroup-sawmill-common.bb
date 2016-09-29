@@ -56,4 +56,6 @@ RDEPENDS_${PN} = " \
 	webrtc-audio-processing \
 	wps-sh \
     busybox-httpd \
+    logrotate \
+    cronie \
 "
