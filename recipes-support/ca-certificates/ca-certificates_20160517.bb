@@ -6,7 +6,7 @@ SECTION = "misc"
 PRIORITY = "optional"
 LICENSE = "MPL-2.0"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/LICENSE;md5=815ca599c9df247a0c7f619bab123dad"
-PR = "r3"
+PR = "r4"
 
 
 # This URL gives us a PEM formatted file of Mozilla.org's certs
@@ -16,9 +16,9 @@ SRC_URI = "https://curl.haxx.se/ca/cacert.pem \
            file://ca-certificates-subset.crt \
            file://spacemonkey.crt \
            file://LICENSE"
-SRC_URI[md5sum] = "1fc922c991c9d8e7c4bfb3e2c64df3fa"
-SRC_URI[sha256sum] = "3cc92f8dd07034e5edc9456aed28dff0930e2734d16cf6d132e6080878fe9dcc"
 
+SRC_URI[md5sum] = "8d35a5cef6ce28da07867a0712558067"
+SRC_URI[sha256sum] = "4943df7f17fb2105e94a5d5ab0384ede066b42d7bb03ee4ec025dd81fb29fb64"
 
 do_config() {
 :
