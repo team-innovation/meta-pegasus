@@ -4,7 +4,7 @@ DESCRIPTION = "touchlink video packages, imx firmware, gst plugins, etc"
 LICENSE = "MIT"
 LICENSE_FLAGS_WHITELIST = "commercial license"
 
-PR = "r10"
+PR = "r11"
 
 inherit packagegroup
 
@@ -118,4 +118,5 @@ RDEPENDS_${PN} = " \
 	libgstsdp-1.0-0 \
 	libgsturidownloader-1.0-0 \
 	libgstvideo-0.10-0 \
+    libav \
 "
