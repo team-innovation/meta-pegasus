@@ -9,7 +9,8 @@ SRC_URI = "https://download.tuxfamily.org/chrony/${BPN}-${PV}.tar.gz \
 	file://chrony_start.sh \
 	file://chrony_stop.sh \
 	file://init \
-	file://chrony.conf \
+	file://chrony.conf.slimline \
+    file://chrony.conf.sly \
 "
 
 SRC_URI[md5sum] = "db6d46afea66f75dcc362f44623c1af4"
@@ -22,7 +23,8 @@ inherit autotools-brokensep
 
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d
-    install -m 0644 ${WORKDIR}/chrony.conf ${D}${sysconfdir}/
+    install -m 0644 ${WORKDIR}/chrony.conf.sly ${D}${sysconfdir}
+    install -m 0644 ${WORKDIR}/chrony.conf.slimline ${D}${sysconfdir}
     install -m 0755 ${WORKDIR}/init ${D}${sysconfdir}/init.d/chronyd
     install -d ${D}${bindir}
     install -m 0755 ${WORKDIR}/chrony_start.sh ${D}${bindir}
