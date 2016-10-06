@@ -354,6 +354,7 @@ PACKAGES = " \
 	${PN}-rtspd   \
 	${PN}-ssdpd      \
 	${PN}-sundance-proxies      \
+    ${PN}-zwaved-proxies \
 	${PN}-sundance      \
 	${PN}-test-daemon  \
 	${PN}-test-ui  \
