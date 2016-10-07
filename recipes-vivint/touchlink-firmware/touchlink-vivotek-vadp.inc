@@ -1,6 +1,5 @@
 DESCRIPTION = "Vivotek VADP module"
-LICENSE = "Closed"
-LIC_FILES_CHKSUM = "file://../analytics/README.Vivotek;md5=1044bb6610afc7316ff1017973833fb4"
+LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
 
 #
@@ -8,7 +7,9 @@ HOMEPAGE = "http://www.vivint.com"
 # changes in analytics source you want to be build
 #
 
-PR = "ml36"
+inherit gettext
+
+PR = "ml37"
 
 SRCREV = "b3f0eecd4cd6"
 

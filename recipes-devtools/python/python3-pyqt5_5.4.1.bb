@@ -14,7 +14,7 @@ RDEPENDS_${PN} = "python3-core"
 inherit python-dir qmake5_base distutils3-base
 
 PYQT_OE_VERSION = "Qt_5_4_1"
-PR = "r1"
+PR = "r2"
 
 #SRC_URI = "http://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-${PV}/PyQt-gpl-${PV}.tar.gz 
 
