@@ -13,8 +13,7 @@ pkg_postinst_${PN}-server_prepend() {
         grep -q pulse: /etc/group || addgroup pulse
         grep -q pulse: /etc/passwd || \
             adduser --disabled-password --home=/var/run/pulse --system \
-                    --ingroup pulse --no-create-home -g "Pulse audio daemon" pulse
-        addgroup pulse audio
+                    --ingroup pulse --ingroup audio --no-create-home -g "Pulse audio daemon" pulse
 }
 
 DEPENDS += "gdbm speex webrtc-audio-processing"
