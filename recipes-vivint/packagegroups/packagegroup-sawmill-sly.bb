@@ -13,5 +13,6 @@ RDEPENDS_${PN} += " \
 	touchlink-rtc-firmware \
 	touchlink-telit-firmware-he910 \
 	touchlink-telit-firmware-ue910 \
+	fabric-go \
 "
 
