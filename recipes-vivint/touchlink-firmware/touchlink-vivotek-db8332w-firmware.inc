@@ -1,11 +1,11 @@
-PKGR_${PN}-db8332w = "${PR}.15"
+PKGR_${PN}-db8332w = "${PR}.16"
 
-FIRMWARE_DB8332W = "DB8332W-VINT-0100t.flash.pkg"
+FIRMWARE_DB8332W = "DB8332W-VINT-0100u.flash.pkg"
 
 SRC_URI += "http://${UPDATESENG}/camera_firmwares/Vivotek/${FIRMWARE_DB8332W};name=db8332w"
 
-SRC_URI[db8332w.md5sum] = "c36f6ec8ff42f73e1d9a423ffc8cc2fc"
-SRC_URI[db8332w.sha256sum] = "fbef4600e6a180dcf49d8229bb4591a9cf72215c59f1f64f81ae13f990de54ff"
+SRC_URI[db8332w.md5sum] = "6a5d4e8b4f9d62f5adc4cf7940373637"
+SRC_URI[db8332w.sha256sum] = "ec13718f38a96307588421585491ef651389a1f4ac64ec4f00bb76540212207b"
 
 do_install_append() {
      cp ${WORKDIR}/${FIRMWARE_DB8332W} ${D}/${FIRMWARE_DIR}
