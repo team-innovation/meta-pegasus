@@ -1,6 +1,8 @@
-pool us.pool.ntp.org offline
+pool us.pool.ntp.org 
 allow
+cmdport 0
 local stratum 10
 driftfile /etc/chrony.drift
 dumpdir /var/log/chrony
 dumponexit
+acquisitionport 123

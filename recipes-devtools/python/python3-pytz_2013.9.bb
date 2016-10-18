@@ -67,8 +67,8 @@ if [ x"$D" = "x" ]; then
     new_path="/etc"
     default_timezone="US/Mountain"
     zone_location="/usr/share/zoneinfo"
-    actual_zone=$(readlink $previous_localtime)
     if [ -f $previous_timezone ]; then
+        actual_zone=$(readlink $previous_localtime)
         cp -p $previous_timezone $new_path
         cd $new_path && ln -sf $actual_zone localtime
     else

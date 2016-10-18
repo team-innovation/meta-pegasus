@@ -1,0 +1,7 @@
+/var/log/schooner.log {
+    missingok
+    size 1M
+    copytruncate
+    rotate 5
+    compress
+}

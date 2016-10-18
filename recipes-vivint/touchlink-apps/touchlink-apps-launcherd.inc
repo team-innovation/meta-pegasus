@@ -6,10 +6,6 @@ LAUNCHERD_PREPEND = "-4"
 LAUNCHERD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-launcherd = "${PR}${LAUNCHERD_PREPEND}${LAUNCHERD_REVISION}"
 
-INITSCRIPT_PACKAGES += "${PN}-launcherd"
-INITSCRIPT_NAME_${PN}-launcherd = "launcherd"
-INITSCRIPT_PARAMS_${PN}-launcherd = "defaults 3"
-
 do_install_append() {
 	install -d ${D}/${INSTALL_DIR}/launcherd/
         ${RSYNC_CMD} ${S}/code/launcherd/ ${D}/${INSTALL_DIR}/launcherd/
