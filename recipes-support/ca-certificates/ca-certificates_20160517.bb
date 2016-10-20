@@ -77,7 +77,7 @@ if [ x"$D" = "x" ]; then
         # Remove the tar file that was previously put in place by the platform --
         # so that the property doesn't showing the wrong
         # certificate_bundle_version_sha224_base64 to the platform.
-        /bin/rm $MEDIA_DIR/ssl_certs.tar
+        /bin/rm -f $MEDIA_DIR/ssl_certs.tar
 fi
 else
     exit 1

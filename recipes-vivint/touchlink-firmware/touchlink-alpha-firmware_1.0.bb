@@ -3,7 +3,6 @@ LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
 
 FIRMWARE_CS6022_OV4689 = "update_CS-6022_1.0.0_ov4689_211.bin"
-
 FIRMWARE_DIR = "/var/lib/firmware/AlphaNetwork"
 
 SRC_URI = "http://${UPDATESENG}/camera_firmwares/Alpha/${FIRMWARE_CS6022_OV4689} \

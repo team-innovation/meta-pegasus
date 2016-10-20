@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "25"
+PR = "27"
 
 inherit packagegroup
 
@@ -56,4 +56,6 @@ RDEPENDS_${PN} = " \
 	webrtc-audio-processing \
 	wps-sh \
     busybox-httpd \
+    logrotate \
+    cronie \
 "

@@ -51,10 +51,6 @@ if [ x"$D" = "x" ]; then
             mv /media/extra/pointercal /media/extra/conf
     fi
 
-    if [ ! -e /usr/share/licenses ]
-    then
-        ln -s /usr/share/common-licenses /usr/share/licenses
-    fi
 else
     exit 1
 fi
