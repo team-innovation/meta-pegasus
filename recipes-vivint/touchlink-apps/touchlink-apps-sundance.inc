@@ -17,6 +17,8 @@ RDEPENDS_${PN}-sundance = "\
 	python3-requests \
 	python3-multiprocessing \
 	python3-mmap \
+	python3-soco \
+	python3-brisa \
     python3-httpsig-na \
 	"
 do_install_append () {
