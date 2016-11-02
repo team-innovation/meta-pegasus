@@ -25,6 +25,7 @@ license_create_manifest_append() {
         rm -f ${IMAGE_ROOTFS}/usr/share/common-licenses/generic_*
         for d in $(find ${IMAGE_ROOTFS}/usr/share/common-licenses -type d); do
            rm -f "$d"/generic_* 
+           rmdir --ignore-fail-on-non-empty "$d"
         done
 
     fi

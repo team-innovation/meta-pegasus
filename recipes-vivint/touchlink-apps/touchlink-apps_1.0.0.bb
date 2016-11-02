@@ -152,6 +152,7 @@ DEPENDS = " \
 	python3-requests-native \
 	python3-six-native \
 	python3-setproctitle-native \
+	python3-soco-native \
 "
 
 
@@ -163,6 +164,8 @@ RDEPENDS_${PN} = "\
 	python3-pytz \
 	python3-threading \
 	python3-setproctitle \
+	python3-soco \
+	python3-brisa \
 "
 
 do_compile() {

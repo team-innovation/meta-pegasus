@@ -113,6 +113,8 @@ PYTHON_EXTRA_DEPENDS = "\
 	python3-mmap \
 	python3-requests \
 	python3-six \
+	python3-soco \
+	python3-brisa \
 	"
 
 RDEPENDS_${PN} = " \
