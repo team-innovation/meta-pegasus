@@ -26,6 +26,7 @@ MV=/bin/mv
 CP=/bin/cp
 RM=/bin/rm
 RMDIR=/bin/rmdir
+SLIMLINESIZE=30M
 
 logging()
 {
@@ -79,32 +80,41 @@ import_fs()
 }
 
 
+platform=`strings /proc/device-tree/compatible |        \
+            grep vivint |                               \
+            head -n 1 |                                 \
+            cut -d"," -f2`
+
 if [ ! -d /media/clips ]; then
   logging "Create clips mountpoint..."
   $MKDIR /media/clips
 fi
 
-if [ ! -e $STORAGE/$IMAGE ]; then
-  logging "Creating clips partition, please wait..."
-  # 1G size
-  $DD of=$STORAGE/$IMAGE bs=$BS seek=$SEEK count=$COUNT
-  $MKFS $STORAGE/$IMAGE
-else
-  logging "$STORAGE/$IMAGE is already created..."
-  import_fs
-  $FSCK $STORAGE/$IMAGE
-  if [ $? -eq 4 ]; then
+if [ "$platform" = "sly" ]; then
+    if [ ! -e $STORAGE/$IMAGE ]; then
+    logging "Creating clips partition, please wait..."
+    # 1G size
+    $DD of=$STORAGE/$IMAGE bs=$BS seek=$SEEK count=$COUNT
+    $MKFS $STORAGE/$IMAGE
+    else
+    logging "$STORAGE/$IMAGE is already created..."
+    import_fs
+    $FSCK $STORAGE/$IMAGE
+    if [ $? -eq 4 ]; then
     logging "$STORAGE/$IMAGE failed auto-check, force repairs..." 
     $FSCK_Y $STORAGE/$IMAGE
-  fi
-fi
+    fi
+    fi
 
-if $GREP -q "\/media\/clips" /proc/mounts; then
+    if $GREP -q "\/media\/clips" /proc/mounts; then
     logging "Clips is already mounted..."
-else
+    else
     logging "Mounting clips..."
 
     $MOUNT /media/clips
+    fi
+else
+    $MOUNT -t tmpfs -o size=$SLIMLINESIZE tmpfs /media/clips
 fi
 
 exit 0
