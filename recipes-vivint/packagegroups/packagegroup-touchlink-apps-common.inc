@@ -36,7 +36,6 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-roubaix-services \
 	touchlink-apps-roubaix-style \
 	touchlink-apps-roubaix-views \
-	touchlink-apps-rtspd \
 	touchlink-apps-sound-roubaix-back \
 	touchlink-apps-sound-roubaix-chimes \
 	touchlink-apps-sound-roubaix-click \
