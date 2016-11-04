@@ -6,16 +6,18 @@ DEPENDS = "go-cross"
 
 inherit go
 
-GIT_SSH_COMMAND="ssh -F fabric_config"
-
 SRCREV = "${AUTOREV}"
 SRC_URI += " \
-    gitsm://git.vivint.com/katamari;protocol=git;branch=release/current-panel \
+    http://updateseng.vivint.com/innovation/downloads/fabric-go-${PV}.tar.gz \        
     file://init \
     file://schooner.config \
     file://schooner.procman \
     file://schooner.logrotate \
 "
+
+SRC_URI[md5sum] = "d6da3b49e467e76997d17ecea1ebc8a4"
+SRC_URI[sha256sum] = "2b5bbf43c52a27d6ee151a165a3a72e53805fe4c0e7a09d2d7cae3ed62aec697"
+
 LICENSE = "CLOSED"
 
 do_compile() {
