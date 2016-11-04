@@ -21,7 +21,7 @@ SRC_URI[sha256sum] = "2b5bbf43c52a27d6ee151a165a3a72e53805fe4c0e7a09d2d7cae3ed62
 LICENSE = "CLOSED"
 
 do_compile() {
-    GOPATH=${WORKDIR}/git/go go build fabric/bin/schooner
+    GOPATH=${WORKDIR} go build fabric/bin/schooner
 }
 
 do_install() {
