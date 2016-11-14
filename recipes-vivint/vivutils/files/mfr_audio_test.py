@@ -26,6 +26,7 @@ try:
     import math
     from pprint import pprint
     from subprocess import call
+    from struct import *
 except ImportError:
     print('ERROR: numpy library not installed')
 
@@ -33,12 +34,17 @@ __author__ = 'mark'
 
 frequencies = [750, 1000, 1800, 3600]
 wave_files = ['wave_750_hz.wav', 'wave_1000_hz.wav', 'wave_1800_hz.wav', 'wave_3600_hz.wav']
-FFT_SIZE = 4096
+FFT_SIZE = 4092
 FS = 8000
 
 class AudioTest:
     def __init__(self, audioFile, idx):
         #print('Testing at frequency {}'.format(frequencies[idx]))
+        
+        # force off noise reduction and echo cancellation
+        os.system("echo 0x117a 0x8 > /sys/class/cx20704/cx20704_controls/regwrite")
+        os.system("echo 1 > /sys/class/cx20704/cx20704_controls/newc")
+
         self.idx = idx
         self.audioFile = audioFile
         self.playing = False
@@ -51,6 +57,13 @@ class AudioTest:
         #pprint(self.fftfreq)
         #pprint(np.amax(self.fftfreq))
         #pprint(np.searchsorted(self.fftfreq, 2, side='left'))
+        self._create_playback_stream()
+        self._create_record_stream()
+        file = wave.open(self.audioFile, 'rb')
+        self.frames = file.getnframes()
+        self.data = file.readframes(self.frames)
+        file.close()
+
         self.playThread = threading.Thread(name='PlayThread', target=self._start_playback)
         self.recordThread = threading.Thread(name='RecordThread', target=self._start_record)
         self.recordThread.start()
@@ -73,30 +86,37 @@ class AudioTest:
         self.rec_stream = pa_simple_new(None, b'AudioTest', PA_STREAM_RECORD, None, b'record', ss, None, None, None)
 
     def _start_playback(self):
-        self._create_playback_stream()
-        file = wave.open(self.audioFile, 'rb')
-        self.frames = file.getnframes()*2
-        data = file.readframes(self.frames)
+        data = self.data + self.data
 
         self.playing = True
         self._play_buffer(data)
-        self._play_buffer(data)
 
     def _start_record(self):
-        self._create_record_stream()
+        #self._create_record_stream()
         freq = frequencies[self.idx]
-
-        # wait for playback to start
-        while self.frames == 0:
-            pass
 
         rec_data = (c_short * self.frames)()
         self.recording = True
+
+        while self.playing is False:
+            pass
+
         self._record_buffer(rec_data)
 
+        file = wave.open('tmp.wav', 'wb')
+        file.setnchannels(1)
+        file.setsampwidth(2)
+        file.setframerate(8000)
+        file.writeframes(rec_data)
+        file.close()
+
+        #print(rec_data[1:self.frames+1])
+
+        #d = np.ctypeslib.as_array((ctypes.c_short * self.frames).from_address(ctypes.addressof(self.data)))
+        #d = unpack_from('<4000h', self.data)
         x = np.ctypeslib.as_array((ctypes.c_short * self.frames).from_address(ctypes.addressof(rec_data)))
         x = x / 32768
-        y = np.fft.rfft(x, FFT_SIZE)/self.frames
+        y = np.fft.rfft(x, FFT_SIZE)/self.frames        
 
         y = np.absolute(y)
 
@@ -117,11 +137,15 @@ class AudioTest:
 
     def _play_buffer(self, buffer):
         error = c_int()
+        pa_simple_flush(self.play_stream, error)
         pa_simple_write(self.play_stream, buffer, len(buffer), error)
+        pa_simple_free(self.play_stream)
 
     def _record_buffer(self, buffer):
         error = c_int()
-        pa_simple_read(self.rec_stream, buffer, self.frames, error)
+        pa_simple_flush(self.rec_stream, error)
+        pa_simple_read(self.rec_stream, buffer, self.frames*2, error)
+        pa_simple_free(self.rec_stream)
 
     def _find_nearest(self, array, value):
         idx = np.searchsorted(self.fftfreq, value, side="left")
@@ -133,7 +157,7 @@ class AudioTest:
 
     def _find_nearest_index(self,  value):
         idx = np.searchsorted(self.fftfreq, value, side="left")
-        #print('find nearest {} {}'.format(value, idx))
+        #print('find nearest index {} {}'.format(value, idx))
         if math.fabs(value - self.fftfreq[idx-1]) < math.fabs(value - self.fftfreq[idx]):
             return idx-1
         else:
@@ -147,7 +171,7 @@ class AudioTest:
             #print('i: {} mag: {} sum: {}'.format(i, tmp, sum_of_squares))
         fi = self._find_nearest_index(freq)
         base_power = (x[fi] + x[fi+1]) ** 2
-        #print('base power: {}'.format(base_power))
+        print('base power: {}'.format(base_power))
         return (sum_of_squares / base_power) * 100
 
 def setup_gains():
