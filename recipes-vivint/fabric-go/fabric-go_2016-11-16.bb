@@ -15,8 +15,8 @@ SRC_URI += " \
     file://schooner.logrotate \
 "
 
-SRC_URI[md5sum] = "86c14ce99a82e0222f44dca36f2d9770"
-SRC_URI[sha256sum] = "1fbce2f92154aa234b9510f52f05fa8d5dd1daf742c2c99f3cc0f44fb7e25358"
+SRC_URI[md5sum] = "7d558b58e00ccb9f12e9cae4d4630081"
+SRC_URI[sha256sum] = "e571a9ad6b111ed478beb81bd938ee39d6c21aa8c8007328627443cb08ac212c"
 
 LICENSE = "CLOSED"
 
