@@ -1,11 +1,11 @@
-PKGR_${PN}-db8331w = "${PR}.29"
+PKGR_${PN}-db8331w = "${PR}.30"
 
-FIRMWARE_DB8331W = "DB8331W-VINT-0101q.flash.pkg"
+FIRMWARE_DB8331W = "DB8331W-VINT-0101r.flash.pkg"
 
 SRC_URI += "http://${UPDATESENG}/camera_firmwares/Vivotek/${FIRMWARE_DB8331W};name=db8331w"
 
-SRC_URI[db8331w.md5sum] = "55d47f1458ace525fbf0f29cb580200c"
-SRC_URI[db8331w.sha256sum] = "aefaf77c1dcd50e9693fd98fc5a9fef07eb5ff23051f7d36ac359f748c7a6461"
+SRC_URI[db8331w.md5sum] = "d797cc1e4095d841cabbd39aed47cb83"
+SRC_URI[db8331w.sha256sum] = "10f7fdd562c75ddb9504e9b72137204b44fa2fc5f7321fe03a80f7fffffe49cb"
 
 do_install_append() {
      cp ${WORKDIR}/${FIRMWARE_DB8331W} ${D}/${FIRMWARE_DIR}
