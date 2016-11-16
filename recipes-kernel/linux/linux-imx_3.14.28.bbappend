@@ -1,4 +1,4 @@
-SRCBRANCH = "camera"
+SRCBRANCH = "slimline-dizzy"
 LOCALVERSION = "-1.0.0_slimline"
 SRCREV = "${AUTOREV}"
 KERNEL_SRC = "git://git.vivint.com/linux-imx.git;protocol=git"
