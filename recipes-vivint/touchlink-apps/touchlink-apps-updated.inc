@@ -85,6 +85,27 @@ if [ x"$D" = "x" ]; then
         logging "Creating update directory..."
         mkdir /media/extra/update
     fi
+
+	# Copy SSH identity and authorized key files
+
+	eval $(fw_printenv bootnum || echo bootnum=1)
+	case $bootnum in
+		1) previous_bootmount=/media/mmcblk0p6 ;;
+		2) previous_bootmount=/media/mmcblk0p5 ;;
+		*) ;;
+	esac
+
+	old_ssh_config_dir=$previous_bootmount/etc/ssh
+	for f in $(cd $previous_bootmount/etc/ssh/ && find . -maxdepth 1 -type f -name \*key\*) ; do
+		cp $old_ssh_config_dir/$f /etc/ssh/
+		logging "Copied $old_ssh_config_dir/$f to /etc/ssh/"
+	done
+	old_root_ssh_config=$previous_bootmount/home/root/.ssh
+	if [ -d $old_root_ssh_config ]; then
+		cp -a $old_root_ssh_config /home/root/
+		logging "Copied $old_root_ssh_config to /home/root/"
+	fi
+
 else
     exit 1
 fi
