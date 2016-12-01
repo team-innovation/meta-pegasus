@@ -7,12 +7,13 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "7"
+PR = "8"
 
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
 	e2fsprogs-mke2fs \
+	e2fsprogs-dumpe2fs \
 	iw \
 	kernel-devicetree \
 	kernel-image \
