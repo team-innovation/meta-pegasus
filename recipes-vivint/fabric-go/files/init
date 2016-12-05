@@ -6,11 +6,7 @@ PIDFILE=/var/run/schooner.pid
 
 case "$1" in
     start)
-        start-stop-daemon -S -b -m -p $PIDFILE -x $EXEC -- $ARGS
-	sleep 1
-	read PID <$PIDFILE
-	chrt -i -p 0 $PID
-	ionice -c 2 -n 7 -p $PID
+        chrt -i 0 ionice -c 2 -n 7 start-stop-daemon -S -b -m -p $PIDFILE -x $EXEC -- $ARGS
         ;;
     stop)
         start-stop-daemon -K -p $PIDFILE
