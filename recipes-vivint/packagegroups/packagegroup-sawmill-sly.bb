@@ -13,6 +13,7 @@ RDEPENDS_${PN} += " \
 	psoc-fw-sly-fcc \
 	fabric-go \
 	touchlink-rtc-firmware \
+	touchlink-kwikset-firmware \
 	touchlink-telit-firmware-he910 \
 	touchlink-telit-firmware-ue910 \
 "
