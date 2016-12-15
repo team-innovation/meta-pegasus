@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "27"
+PR = "28"
 
 inherit packagegroup
 
@@ -15,7 +15,6 @@ RDEPENDS_${PN} = " \
 	ca-certificates \
 	kernel-module-mt7603 \
 	libsodium18 \
-	openvpn \
 	packagegroup-sawmill-debugtools \
 	packagegroup-sawmill-min \
 	procps \
