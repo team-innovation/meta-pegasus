@@ -1,7 +1,7 @@
 ###
 ### Change ROUBAIX_PREPEND everytime you touch this script
 ###
-ROUBAIX_PREPEND = "-15"
+ROUBAIX_PREPEND = "-16"
 
 ROUBAIX_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix = "${PR}${ROUBAIX_PREPEND}${ROUBAIX_REVISION}"
@@ -69,6 +69,7 @@ FILES_${PN}-roubaix = "\
     ${INSTALL_DIR}/roubaix/definitions.pyo \
     ${INSTALL_DIR}/roubaix/roubaix.pyo \
     ${INSTALL_DIR}/roubaix/proxies/* \
+    ${INSTALL_DIR}/roubaix/ErrorLogWatcherMixin.pyo \
     ${INSTALL_DIR}/roubaix/KeyEventDispatcher.pyo \
     ${INSTALL_DIR}/roubaix/FileMixin.pyo \
     ${INSTALL_DIR}/roubaix/ConnectionsMixin.pyo \
