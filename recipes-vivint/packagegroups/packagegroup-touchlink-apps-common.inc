@@ -113,6 +113,7 @@ PYTHON_EXTRA_DEPENDS = "\
 	python3-requests \
 	python3-six \
 	python3-soco \
+	python3-jsonschema \
 	python3-brisa \
 	"
 

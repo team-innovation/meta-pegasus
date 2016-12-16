@@ -165,6 +165,7 @@ RDEPENDS_${PN} = "\
 	python3-threading \
 	python3-setproctitle \
 	python3-soco \
+        python3-jsonschema \
 	python3-brisa \
 "
 
