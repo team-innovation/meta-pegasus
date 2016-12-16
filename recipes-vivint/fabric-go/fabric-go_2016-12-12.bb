@@ -1,8 +1,8 @@
 DESCRIPTION = "Build spacemonkey fabric for arm"
 
-PR = "r2"
+PR = "r3"
 
-DEPENDS = "go-cross"
+DEPENDS = "go-cross sqlite3"
 
 inherit go
 
@@ -15,13 +15,13 @@ SRC_URI += " \
     file://schooner.logrotate \
 "
 
-SRC_URI[md5sum] = "2beadaa3089ff37512a60daefc1fb473"
-SRC_URI[sha256sum] = "fa60b1d0d03d9d45e1362368566ab5f79af45a4dba4243705c607d563e6093dd"
+SRC_URI[md5sum] = "4782bced2d4781583059ed06e91e8541"
+SRC_URI[sha256sum] = "7d9d8498ca3bb19dcba11d59844e4ba87727d6b41479b1d529a2870aeccfe1ed"
 
 LICENSE = "CLOSED"
 
 do_compile() {
-    GOPATH=${WORKDIR} go build fabric/bin/schooner
+    CGO_ENABLED=1 GOPATH=${WORKDIR} go build fabric/bin/schooner
 }
 
 do_install() {

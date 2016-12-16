@@ -37,13 +37,40 @@ wave_files = ['wave_750_hz.wav', 'wave_1000_hz.wav', 'wave_1800_hz.wav', 'wave_3
 FFT_SIZE = 4092
 FS = 8000
 
+class SecioIO:
+
+    @staticmethod
+    def f_write(sys_path, sys_file, value):
+        with open(os.path.join(sys_path, sys_file), 'w') as f:
+            f.write(value)
+
+    @staticmethod
+    def f_read(sys_path, sys_file, typ=None):
+        val = None
+        with open(os.path.join(sys_path, sys_file), 'r') as f:
+            val = f.read()
+            if typ:
+                val = typ(val)
+
+        return val
+
 class AudioTest:
+
+    AUDIO_AMP_PATH = "/sys/class/lm48511/lm485110"
+    AUDIO_AMP_ACCESS_FILE = "access"
+    AUDIO_AMP_FB_SEL_FILE = "fb_sel"
+    AUDIO_AMP_SD_AMP_FILE = "sd_amp"
+    AUDIO_AMP_SD_BOOST_FILE = "sd_boost"
+    AUDIO_AMP_SS_FF_FILE = "ss_ff"
+
     def __init__(self, audioFile, idx):
         #print('Testing at frequency {}'.format(frequencies[idx]))
         
         # force off noise reduction and echo cancellation
         os.system("echo 0x117a 0x8 > /sys/class/cx20704/cx20704_controls/regwrite")
         os.system("echo 1 > /sys/class/cx20704/cx20704_controls/newc")
+        
+        self._enable_sly_audio_amp()
 
         self.idx = idx
         self.audioFile = audioFile
@@ -70,6 +97,17 @@ class AudioTest:
         self.playThread.start()
         self.playThread.join()
         self.recordThread.join()
+
+    def _enable_sly_audio_amp(self):
+        try:
+            SecioIO.f_write(self.AUDIO_AMP_PATH, self.AUDIO_AMP_ACCESS_FILE, '1')
+            SecioIO.f_write(self.AUDIO_AMP_PATH, self.AUDIO_AMP_SS_FF_FILE, '1')
+            SecioIO.f_write(self.AUDIO_AMP_PATH, self.AUDIO_AMP_SD_BOOST_FILE, '1')
+            SecioIO.f_write(self.AUDIO_AMP_PATH, self.AUDIO_AMP_SD_AMP_FILE, '1')
+            SecioIO.f_write(self.AUDIO_AMP_PATH, self.AUDIO_AMP_FB_SEL_FILE, '1')
+            SecioIO.f_write(self.AUDIO_AMP_PATH, self.AUDIO_AMP_ACCESS_FILE, '0')
+        except Exception as why:
+            self.logger.warn('Enable battery charger failed: {}'.format(why))
 
     def _create_playback_stream(self):
         ss = pa_sample_spec()

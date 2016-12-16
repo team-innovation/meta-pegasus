@@ -2,13 +2,14 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r7"
+PR = "r8"
 
 inherit packagegroup
 
 RDEPENDS_${PN} += " \
 	sly-utils \
 	sly-version \
+	openvpn \
 	psoc-fw-sly \
 	psoc-fw-sly-fcc \
 	fabric-go \
