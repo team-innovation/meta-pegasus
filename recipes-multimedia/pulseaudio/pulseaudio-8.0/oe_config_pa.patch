@@ -1,0 +1,19 @@
+# HG changeset patch
+# User Craig Matsuura <cmatsuura@vivnt.com>
+# Date 1406008599 21600
+# Node ID 481acced67e2c0e5aa4e9393309a0103506a7797
+# Parent  6deaf555b9248db7c04751804df1b5dd98382475
+Changed to use libtoosl 2.2
+
+diff --git a/configure.ac b/configure.ac
+--- a/configure.ac
++++ b/configure.ac
+@@ -344,7 +344,7 @@
+ 
+ #### libtool stuff ####
+ 
+-LT_PREREQ(2.4)
++LT_PREREQ(2.2)
+ LT_INIT([dlopen win32-dll disable-static])
+ 
+ dnl As an extra safety device, check for lt_dladvise_init() which is
