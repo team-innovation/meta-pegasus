@@ -10,7 +10,7 @@
 #
 
 retval=1
-threshold=40
+threshold=60
 log_file=/tmp/test.log
 diff_file=/tmp/diff.png
 test_image=/tmp/test_image.jpg
@@ -77,6 +77,23 @@ capture ()
 	gst-launch-0.10 imxv4l2src num-buffers=1 ! \
 	video/x-raw-yuv, framerate=30/1, width=640, height=480 ! \
 	jpegenc ! filesink location=$test_image > /dev/null 2>&1
+
+	size=$(du $test_image | awk '{ print $1 }')
+	echo "Size of file = " $size
+	if ((size==0)) ;
+	then
+		echo 'Image file size zero. Reload driver'
+		rmmod gc2145_camera_mipi
+		sleep 2
+		modprobe gc2145_camera_mipi
+		sleep 2
+		# Recapture
+		gst-launch-0.10 imxv4l2src num-buffers=1 ! \
+		video/x-raw-yuv, framerate=30/1, width=640, height=480 ! \
+		jpegenc ! filesink location=$test_image > /dev/null 2>&1
+	else
+		echo 'Image capture success'
+	fi
 
 	# Display captured snapshot
 	gst-launch-1.0 filesrc location=$test_image blocksize=512000 ! \
