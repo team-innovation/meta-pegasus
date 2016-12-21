@@ -69,6 +69,9 @@ class AudioTest:
         # force off noise reduction and echo cancellation
         os.system("echo 0x117a 0x8 > /sys/class/cx20704/cx20704_controls/regwrite")
         os.system("echo 1 > /sys/class/cx20704/cx20704_controls/newc")
+
+        # restart pulseaudio to get a good connection
+        os.system("/etc/init.d/pulseaudio restart  > /dev/null")
         
         self._enable_sly_audio_amp()
 
