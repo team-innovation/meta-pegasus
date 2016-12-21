@@ -132,6 +132,7 @@ elif [ "$1" == "-g" ];
 then
 	echo "Generating new golden image"
 	capture
+	capture
 	echo "Setting new image to golden status"
 	mkdir -p /var/local/images
 	cp $test_image $golden_image
