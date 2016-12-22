@@ -72,6 +72,7 @@ class AudioTest:
 
         # restart pulseaudio to get a good connection
         os.system("/etc/init.d/pulseaudio restart  > /dev/null")
+        time.sleep(1)
         
         self._enable_sly_audio_amp()
 
