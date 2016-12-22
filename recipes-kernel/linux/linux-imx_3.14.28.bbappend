@@ -1,11 +1,15 @@
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+
 SRCBRANCH = "slimline-dizzy"
 LOCALVERSION = "-1.0.0_slimline"
 SRCREV = "${AUTOREV}"
 KERNEL_SRC = "git://git.vivint.com/linux-imx.git;protocol=git"
-SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
+SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH} \
+           file://960-mlme-increase-timeout.patch \
+           "
 PV = "3.14.28+git${SRCPV}"
 
-PR = "r47"
+PR = "r48"
 
 DEFAULT_PREFERENCE = "1"
 
