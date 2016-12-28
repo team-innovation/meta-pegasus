@@ -6,8 +6,11 @@ QT_VERSION ?= "${PV}"
 # it's different for RC versions
 QT_VERSION_DIR ?= "5.4"
 
+# official release url
+# http://download.qt-project.org/official_releases/qt/${QT_VERSION_DIR}/${QT_VERSION}/submodules/${QT_MODULE}-opensource-src-${QT_VERSION}.tar.xz 
+
 SRC_URI += " \
-    http://download.qt-project.org/official_releases/qt/${QT_VERSION_DIR}/${QT_VERSION}/submodules/${QT_MODULE}-opensource-src-${QT_VERSION}.tar.xz \
+	http://updateseng.vivint.com/innovation/downloads/${QT_MODULE}-opensource-src-${QT_VERSION}.tar.xz \
 "
 
 S = "${WORKDIR}/${QT_MODULE}-opensource-src-${QT_VERSION}"
