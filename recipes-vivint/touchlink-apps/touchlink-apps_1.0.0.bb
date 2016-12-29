@@ -42,6 +42,7 @@ require touchlink-apps-dbapd.inc
 require touchlink-apps-procmand.inc
 require touchlink-apps-favicon.inc
 require touchlink-apps-global-conf.inc
+require touchlink-apps-mmpd.inc
 
 #roubaix
 require touchlink-apps-roubaix.inc
