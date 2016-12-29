@@ -3,7 +3,7 @@
 DESCRIPTION = "primary aka sly touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r19"
+PR = "r20"
 
 require packagegroup-touchlink-apps-common.inc
 
@@ -20,6 +20,7 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-roubaix-images-png \
 	touchlink-apps-rtspd \
 	touchlink-apps-sundance \
+	touchlink-apps-mmpd \
 	touchlink-apps-test-daemon \
 	touchlink-apps-test-ui \
 	touchlink-apps-videod \
