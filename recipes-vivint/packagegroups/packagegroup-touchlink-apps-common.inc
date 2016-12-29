@@ -10,6 +10,7 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-launcherd \
 	touchlink-apps-netd \
 	touchlink-apps-nfcd \
+	touchlink-apps-mmpd \
 	touchlink-apps-procmand \
 	touchlink-apps-qml-framework \
 	touchlink-apps-qml-framework-images-controls \
