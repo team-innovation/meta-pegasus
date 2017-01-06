@@ -70,9 +70,10 @@ class AudioTest:
         os.system("echo 0x117a 0x8 > /sys/class/cx20704/cx20704_controls/regwrite")
         os.system("echo 1 > /sys/class/cx20704/cx20704_controls/newc")
 
+	# This was put in to patch pulse 8.0. We need to figure out what's wrong with 8.0
         # restart pulseaudio to get a good connection
-        os.system("/etc/init.d/pulseaudio restart  > /dev/null")
-        time.sleep(1)
+        #os.system("/etc/init.d/pulseaudio restart  > /dev/null")
+        #time.sleep(1)
         
         self._enable_sly_audio_amp()
 
