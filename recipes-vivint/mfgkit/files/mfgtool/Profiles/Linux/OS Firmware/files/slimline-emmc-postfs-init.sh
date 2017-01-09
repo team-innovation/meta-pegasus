@@ -88,9 +88,37 @@ echo 8 > ${SYSFSDIR}/boot_config
 sleep 1
 cat ${SYSFSDIR}/boot_info
 
+# board identification helpers
+is_slimline() {
+	grep -q vivint,slimline "/proc/device-tree/compatible"
+}
+
+is_sly() {
+	grep -q vivint,sly "/proc/device-tree/compatible"
+}
+
+is_wallsly() {
+	grep -q vivint,wallsly "/proc/device-tree/compatible"
+}
+
+# slimline and sly share a common u-boot binary
+# wallsly has a specific version
+ubootbinary() {
+	is_slimline &&
+		echo "/boot/u-boot.imx" &&
+		return
+	is_sly &&
+		echo "/boot/u-boot.imx" &&
+		return
+	is_wallsly &&
+		echo "/boot/u-boot-wallsly.imx" &&
+		return
+	carp "unsupported platform looking for u-boot binary"
+}
+
 # finally copy u-boot into the boot partition
-dd if=/dev/zero of=/dev/mmcblk0boot0 bs=512 count=16
-dd if=/mnt/mmcblk0p5/boot/u-boot.imx of=/dev/mmcblk0boot0 bs=512 seek=2
+dd if=/dev/zero of=/dev/mmcblk0boot0 bs=1024 count=2048
+dd if=$(ubootbinary) of=/dev/mmcblk0boot0 bs=512 seek=2
 sync
 
 # u-boot env lives in the second eMMC boot sector
@@ -108,18 +136,64 @@ dd if=/dev/zero of=/dev/mmcblk0boot1 bs=2M count=1
 #              0 1 1 1 0 0 0 0 = 0x70
 #
 # BOOT_CONFIG2[7:5] = 010 - 8-bit
-# BOOT_CONFIG2[4:3] = 11  - USDHC-4
+# BOOT_CONFIG2[4:3] =
+#		      11  - USDHC-4
+#		      10  - USDHC-3
+#		      01  - USDHC-2
+#		      00  - USDHC-1
 #
 # BOOT_CONFIG2[7 6 5 4 3 2 1 0]
-#              0 1 0 1 1 0 0 0 = 0x58
-
+#              0 1 0 1 1 0 0 0 = 0x58  - USDHC-4
+#              0 1 0 1 0 0 0 0 = 0x50  - USDHC-3
+#              0 1 0 0 1 0 0 0 = 0x48  - USDHC-2
+#              0 1 0 0 0 0 0 0 = 0x40  - USDHC-1
+#
 # HW_OCOTP_CFG4 contains [boot_config4:boot_config3:boot_config2:boot_config1]
-echo 0x5870 > /sys/fsl_otp/HW_OCOTP_CFG4
+
+# use mmc0 sysclass link to find physical usdhc interface
+boot_config2()
+{
+	bc2=0x0
+	mmcdev=$(readlink /sys/class/mmc_host/mmc0) ||
+		carp "unable to read mmc0 device link"
+	case "$mmcdev" in
+		*219c000.usdhc*)
+			bc2=0x58;
+			;;
+		*2198000.usdhc*)
+			bc2=0x50;
+			;;
+		*2194000.usdhc*)
+			bc2=0x48;
+			;;
+		*2190000.usdhc*)
+			bc2=0x40;
+			;;
+		*)
+			carp "bad mmcdev $mmcdev"
+			;;
+	esac
+	echo $bc2
+}
+
+hw_ocotp_cfg4_val()
+{
+	printf "0x%04x\n" $(( $(boot_config2) << 8 | 0x70 ))
+}
+
+hw_ocotp_cfg4_val > /sys/fsl_otp/HW_OCOTP_CFG4
 cat /sys/fsl_otp/HW_OCOTP_CFG4
 
+# BT_FUSE_SEL is the fuse that indicates that boot settings are in
+# the fuses (it is a special case so this is not really recursive)
 # BT_FUSE_SEL is bit 4 (1 << 4 == 0x10) in HW_OCOTP_CFG5
-# this bit is what tells the core to use the other boot fuses
-echo 0x10 > /sys/fsl_otp/HW_OCOTP_CFG5
+#
+hw_ocotp_cfg5_val()
+{
+	echo 0x10
+}
+
+hw_ocotp_cfg5_val > /sys/fsl_otp/HW_OCOTP_CFG5
 cat /sys/fsl_otp/HW_OCOTP_CFG5
 
 # Done with i.mx6 boot fuse setup

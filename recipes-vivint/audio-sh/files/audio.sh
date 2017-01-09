@@ -157,6 +157,7 @@ dumpregs before
 patch_aec
 dumpregs after
 
+# FIXME: wallsly
 grep -q sly /proc/device-tree/compatible && {
 	modprobe snd_soc_gsm030x
 	modprobe snd_soc_imx_gsm030x

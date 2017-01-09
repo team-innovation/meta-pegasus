@@ -74,6 +74,8 @@ grep -q vivint,slimline /proc/device-tree/compatible &&
 	export BOARDNAME=slimline
 grep -q vivint,sly /proc/device-tree/compatible &&
 	export BOARDNAME=sly
+grep -q vivint,wallsly /proc/device-tree/compatible &&
+	export BOARDNAME=wallsly
 
 test $BOARDNAME = "unknown" &&
 	carp "unknown boardname, exiting..."

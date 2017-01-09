@@ -27,6 +27,7 @@ RDEPENDS_${PN} = " \
 	strace \
 	u-boot-fw-utils \
 	u-boot-slimline \
+	u-boot-wallsly \
 	u-boot-script-slimline \
 	util-linux-mkfs \
 	util-linux-sfdisk \

@@ -47,9 +47,10 @@ do_compile() {
 	# all the files we need are relative symlinks so cp with -L will convert
 	# the links to files
 	tar  xvf ${DEPLOY_DIR_IMAGE}/${platform}-qt5-image-imx6dl-slimline.tar.gz -C ${tmpdir} --wildcards ./boot/
-	cp -L ${tmpdir}/boot/u-boot.imx ${tmpdir}/staging/
+	cp -L ${tmpdir}/boot/u-boot*.imx ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/imx6dl-slimline-ldo-nofec.dtb  ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/imx6dl-sly*.dtb  ${tmpdir}/staging/
+	cp -L ${tmpdir}/boot/imx6dl-wallsly*.dtb  ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/usb-reflash-boot.scr ${tmpdir}/staging/
 
 	# copy from staging area to files directory in mfgtool tree
@@ -59,8 +60,8 @@ do_compile() {
 	cp ${DEPLOY_DIR_IMAGE}/${platform}-qt5-image-imx6dl-slimline.tar.gz ${ddir}/mfgtool/Profiles/Linux/OS\ Firmware/files/
 
 	# Get the media/extra/factory_image directory into the tree
-    d=$(latest '${platform}-qt5-image.*media-extra.d$' ${DEPLOY_DIR_IMAGE})
-    tar -C ${d} -zcvf ${ddir}/mfgtool/Profiles/Linux/OS\ Firmware/files/media-extra.tar.gz factory_image 
+	d=$(latest '${platform}-qt5-image.*media-extra.d$' ${DEPLOY_DIR_IMAGE})
+	tar -C ${d} -zcvf ${ddir}/mfgtool/Profiles/Linux/OS\ Firmware/files/media-extra.tar.gz factory_image 
 
 	# and finally zip it all up
 	(cd ${DEPLOY_DIR_MFG}; zip -r ${mfgimagename}.zip ${mfgimagename})

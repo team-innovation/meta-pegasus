@@ -3,6 +3,7 @@
 #
 # Check the PSOC5 firmware and update if necessary
 
+# FIXME: wallsly
 platform=`strings /proc/device-tree/compatible |	\
             grep vivint |				\
 	    head -n 1 |					\
