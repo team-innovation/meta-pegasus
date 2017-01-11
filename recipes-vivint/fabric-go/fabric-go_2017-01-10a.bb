@@ -1,6 +1,6 @@
 DESCRIPTION = "Build spacemonkey fabric for arm"
 
-PR = "r4"
+PR = "r5"
 
 DEPENDS = "go-cross sqlite3"
 
@@ -15,8 +15,8 @@ SRC_URI += " \
     file://schooner.logrotate \
 "
 
-SRC_URI[md5sum] = "4782bced2d4781583059ed06e91e8541"
-SRC_URI[sha256sum] = "7d9d8498ca3bb19dcba11d59844e4ba87727d6b41479b1d529a2870aeccfe1ed"
+SRC_URI[md5sum] = "bd5814c114bcf42892a7ec74bc0d12d2"
+SRC_URI[sha256sum] = "3821a66375758575a06d93b6ed2f1d4d69082133c2688649e957af5ecd57d1b7"
 
 LICENSE = "CLOSED"
 
