@@ -2,7 +2,7 @@ DESCRIPTION = "Pulseaudio Meta package w/ initscript et. al."
 SECTION = "audio"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r8"
+PR = "r9"
 
 RDEPENDS_${PN} = "\
   pulseaudio-module-alsa-sink \
@@ -31,7 +31,7 @@ inherit update-rc.d
 
 export TARGET_PFPU = "${TARGET_FPU}"
 INITSCRIPT_NAME = "pulseaudio"
-INITSCRIPT_PARAMS = "defaults 23"
+INITSCRIPT_PARAMS = "defaults 81"
 
 SRC_URI = "\
   file://COPYING \
