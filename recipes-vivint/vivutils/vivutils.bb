@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r46"
+PR = "r47"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -19,7 +19,6 @@ SRC_URI = "\
 	   file://firstboot-setup \
 	   file://gadgetsetup \
 	   file://bootgadgets.sh \
-	   file://mfg_test \
 	   file://mfr_audio_heat_test.py \
 	   file://mfr_audio_test.py \
 	   file://nfctest.c \
@@ -85,9 +84,6 @@ do_install() {
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
 	update-rc.d -r ${D} firstboot start 08 S .
-
-	install -m 0755 ${S}/mfg_test ${D}/${sysconfdir}/init.d/mfg_test
-	update-rc.d -r ${D} mfg_test start 86 5 .
 
     install -m 0755 ${S}/clips.sh ${D}/${sysconfdir}/init.d/
     update-rc.d -r ${D} clips.sh start 34 S .
