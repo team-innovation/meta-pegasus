@@ -43,6 +43,8 @@ require touchlink-apps-procmand.inc
 require touchlink-apps-favicon.inc
 require touchlink-apps-global-conf.inc
 require touchlink-apps-mmpd.inc
+require touchlink-apps-smarthomed.inc
+require touchlink-apps-listenerd.inc
 
 #roubaix
 require touchlink-apps-roubaix.inc
@@ -381,6 +383,10 @@ PACKAGES = " \
 	${PN}-vocabulary    \
 	${PN}-webd  \
 	${PN}-zwaved        \
+	${PN}-smarthomed      \
+	${PN}-smarthomed-proxies      \
+	${PN}-listenerd      \
+	${PN}-listenerd-proxies      \
 	${PN}-sound-roubaix-back \
 	${PN}-sound-roubaix-chimes \
 	${PN}-sound-roubaix-click \

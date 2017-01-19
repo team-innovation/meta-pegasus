@@ -1,0 +1,7 @@
+{
+    "smarthomed":
+    {
+	"name" : "Smarthome Services",
+    	"start": "/etc/init.d/smarthomed start"
+    }
+}
