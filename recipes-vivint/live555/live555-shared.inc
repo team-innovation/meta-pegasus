@@ -7,10 +7,10 @@ HOMEPAGE = "http://live.com/"
 LICENSE = "LGPL-2.1"
 SECTION = "devel"
 
-INC_PR = "r52"
+INC_PR = "r54"
 
 # IF UPDATING THE LIVE555 MAKE SURE TO UPDATE SKYCONTROL RECIPES AS WELL
-SRCREV = "9e993be31201"
+SRCREV = "9e665c1e9470"
 MODULE = "live555"
 SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
 "
