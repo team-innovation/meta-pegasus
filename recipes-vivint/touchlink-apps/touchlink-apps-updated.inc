@@ -58,21 +58,24 @@ if [ x"$D" = "x" ]; then
 
     device=/dev/mmcblk0p7
     # Check if we are ext3 and convert to ext4
-    if mount | grep "/media/extra" | awk '{print $5}' | grep -q ext3
+    if mount | grep -q "/media/extra"
     then 
-        echo "Converting mounted $device ext3 to ext4..."
-        device=$(mount | grep "/media/extra" | awk '{print $1}')
-        if umount $device
+        if mount | grep "/media/extra" | awk '{print $5}' | grep -q ext3
         then
-            tune2fs -O extents,uninit_bg,dir_index $device
-            e2fsck -fDC0 -y $device
-            mount $device /media/extra
-        else
-            echo "Failed to unmount "$device
+            echo "Converting mounted $device ext3 to ext4..."
+            device=$(mount | grep "/media/extra" | awk '{print $1}')
+            if umount $device
+            then
+                tune2fs -O extents,uninit_bg,dir_index $device
+                e2fsck -fDC0 -y $device
+                mount $device /media/extra
+            else
+                echo "Failed to unmount "$device
+            fi
         fi
     else
         # If not mounted and we detect ext3 we convert it to ext4
-        if dumpe2fs -h $device | grep features | grep -qv extent
+        if ! dumpe2fs -h $device | grep features | grep -q extent
         then
             echo "Converting $device ext3 to ext4..."
             tune2fs -O extents,uninit_bg,dir_index $device
@@ -86,6 +89,12 @@ if [ x"$D" = "x" ]; then
         mkdir /media/extra/update
     fi
 
+    # Make sure usb_update exists
+    echo 0 > /sys/block/mmcblk0boot1/force_ro
+    fw_printenv usb_update 2&> /dev/null || fw_setenv usb_update no
+    fw_printenv bootnum 2&> /dev/null || fw_setenv bootnum 1
+    echo 1 > /sys/block/mmcblk0boot1/force_ro
+
 	# Copy SSH identity and authorized key files
 
 	eval $(fw_printenv bootnum || echo bootnum=1)
@@ -96,15 +105,19 @@ if [ x"$D" = "x" ]; then
 	esac
 
 	old_ssh_config_dir=$previous_bootmount/etc/ssh
-	for f in $(cd $previous_bootmount/etc/ssh/ && find . -maxdepth 1 -type f -name \*key\*) ; do
-		cp $old_ssh_config_dir/$f /etc/ssh/
-		logging "Copied $old_ssh_config_dir/$f to /etc/ssh/"
-	done
-	old_root_ssh_config=$previous_bootmount/home/root/.ssh
-	if [ -d $old_root_ssh_config ]; then
-		cp -a $old_root_ssh_config /home/root/
-		logging "Copied $old_root_ssh_config to /home/root/"
-	fi
+
+    if [ -d old_ssh_config_dir ] 
+    then
+        for f in $(cd $previous_bootmount/etc/ssh/ && find . -maxdepth 1 -type f -name \*key\*) ; do
+            cp $old_ssh_config_dir/$f /etc/ssh/
+            logging "Copied $old_ssh_config_dir/$f to /etc/ssh/"
+        done
+        old_root_ssh_config=$previous_bootmount/home/root/.ssh
+        if [ -d $old_root_ssh_config ]; then
+            cp -a $old_root_ssh_config /home/root/
+            logging "Copied $old_root_ssh_config to /home/root/"
+        fi
+    fi
 
 else
     exit 1

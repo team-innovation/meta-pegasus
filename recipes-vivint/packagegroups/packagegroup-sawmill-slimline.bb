@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for slimline"
 LICENSE = "MIT"
 
-PR = "r2"
+PR = "r3"
 
 inherit packagegroup
 
@@ -10,5 +10,6 @@ RDEPENDS_${PN} += " \
 	slimline-utils \
 	slimline-version \
 	psoc-fw-slimline \
+    hostapd \
 "
 
