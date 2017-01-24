@@ -58,6 +58,7 @@ require ${PN}-roubaix-mixin.inc
 require ${PN}-roubaix-framework.inc
 require ${PN}-roubaix-models.inc
 require ${PN}-roubaix-views.inc
+require ${PN}-roubaix-widgets.inc
 require ${PN}-roubaix-images.inc
 require ${PN}-roubaix-popups.inc
 require ${PN}-roubaix-scripts.inc
@@ -335,6 +336,7 @@ PACKAGES = " \
 	${PN}-roubaix-mixin  \
 	${PN}-roubaix-models  \
 	${PN}-roubaix-views  \
+	${PN}-roubaix-widgets  \
 	${PN}-roubaix-fonts  \
 	${PN}-roubaix-html  \
 	${PN}-roubaix-legal  \
@@ -347,6 +349,7 @@ PACKAGES = " \
 	${PN}-roubaix-images-toolbox \
 	${PN}-roubaix-images-video \
 	${PN}-roubaix-images-wallpapers \
+	${PN}-roubaix-images-multimedia \
 	${PN}-roubaix-popups  \
 	${PN}-roubaix-scripts  \
 	${PN}-roubaix-style  \
@@ -383,10 +386,10 @@ PACKAGES = " \
 	${PN}-vocabulary    \
 	${PN}-webd  \
 	${PN}-zwaved        \
-	${PN}-smarthomed      \
 	${PN}-smarthomed-proxies      \
-	${PN}-listenerd      \
 	${PN}-listenerd-proxies      \
+	${PN}-smarthomed      \
+	${PN}-listenerd      \
 	${PN}-sound-roubaix-back \
 	${PN}-sound-roubaix-chimes \
 	${PN}-sound-roubaix-click \
