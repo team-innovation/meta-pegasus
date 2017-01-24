@@ -84,7 +84,7 @@ patch_aec() {
 	# Stream 2 mic input
 	echo 0x116b 0x22 > regwrite
 	# Stream 3 input rate 16/2 8->16k
-	echo 0x116d 0xa0 > regwrite
+	echo 0x116d 0xaa > regwrite
 	# Stream 3 routing: DP1 In
 	echo 0x116e 0x0 > regwrite
 
@@ -92,19 +92,19 @@ patch_aec() {
 	echo 0x1171 0x20 > regwrite
 	# Stream 7 output rate 16/16
 	echo 0x1173 0x02 > regwrite
-	# Misc routing: wideband AEC, 16 kHz scale out
-	echo 0x1176 0x22 > regwrite
-	# AEC + NR
-	echo 0x117a 0x05 > regwrite
-	# Enable Voice processing
-	#echo 0x117c 0x0 > regwrite
+	# Misc routing: NO wideband AEC, 16 kHz scale out
+	echo 0x1176 0x02 > regwrite
+	# NO AEC + NR
+	echo 0x117a 0x00 > regwrite
+	# Disable Voice processing
+	#echo 0x117c 0x80 > regwrite
 	# Disable line in
 	#echo 0x117d 0xac > regwrite
 
 	# DACin source
-	echo 0x117f 0x05 > regwrite
+	echo 0x117f 0x03 > regwrite
 	# I2S1 source
-	echo 0x1181 0x06 > regwrite
+	echo 0x1181 0x02 > regwrite
 	# mixin0 source
 	echo 0x1184 0x00 > regwrite
 	# mixin2 source
