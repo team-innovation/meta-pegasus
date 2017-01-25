@@ -94,7 +94,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml104"
+PR = "ml105"
 
 #SRCREV = "0914ecee01d8"
 SRCREV = "${HG_APPS_ID}"
@@ -154,6 +154,7 @@ DEPENDS = " \
 	python3-six-native \
 	python3-setproctitle-native \
 	python3-soco-native \
+	python3-sparsedict-native \
 "
 
 
@@ -168,6 +169,7 @@ RDEPENDS_${PN} = "\
 	python3-soco \
         python3-jsonschema \
 	python3-brisa \
+	python3-sparsedict \
 "
 
 do_compile() {
@@ -181,6 +183,9 @@ do_compile() {
 				cp ${HOME}/CodeHG/strings/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
 			fi
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table
+			if [ ${LOCK_PORTS} ] ; then
+				python3 ${S}/code/utils/lock_daemon_servers.py lock ${S}/code
+			fi
 	else 
 			if [ -e ${HOME}/CodeHG/strings/string_table.py ]; then
 				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
