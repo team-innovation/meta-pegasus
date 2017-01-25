@@ -8,6 +8,7 @@ PKGR_${PN}-framework = "${PR}${FRAMEWORK_PREPEND}${FRAMEWORK_REVISION}"
 
 RDEPENDS_${PN}-framework = "\
         python3-dateutil \
+        python3-sparsedict \
 	"
 
 do_install_append () {

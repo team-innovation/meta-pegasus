@@ -115,6 +115,7 @@ PYTHON_EXTRA_DEPENDS = "\
 	python3-soco \
 	python3-jsonschema \
 	python3-brisa \
+	python3-sparsedict \
 	"
 
 RDEPENDS_${PN} = " \
