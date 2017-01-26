@@ -176,6 +176,7 @@ do_compile() {
 
 	# generate proxies
 	if [ ${BUILD_BOT_BUILD} ] ; then
+			bbnote "This is a buildbot build"
 			if [ -e ${HOME}/CodeHG/strings/string_table.py ]; then
 				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
 				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
@@ -184,9 +185,13 @@ do_compile() {
 			fi
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table
 			if [ ${LOCK_PORTS} ] ; then
+				bbnote "Found ${LOCK_PORTS} - locking daemon servers"
 				python3 ${S}/code/utils/lock_daemon_servers.py lock ${S}/code
+			else
+			    bbnote "Found ${LOCK_PORTS} - daemon servers remain unlocked"
 			fi
-	else 
+	else
+	        bbnote "This is NOT a buildbot build"
 			if [ -e ${HOME}/CodeHG/strings/string_table.py ]; then
 				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
 				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
@@ -199,29 +204,29 @@ do_compile() {
 	# generate .pyc files
 	python3 -O -mcompileall -b -x docs -d${INSTALL_DIR} ${S}/code
 
-	skip="false"
-	# running  only run test on build machine
-	if [ -z ${BUILD_BOT_BUILD} ] ; then
-		bbnote "Skip test and doc build"
-		skip="true"
-	else
-		export PYTHONPATH=${S}/code/framework
-		if [ -e /usr/local/bin/nosetests-3.3 ]; then
-			nosetests_bin="/usr/local/bin/nosetests-3.3"
-	    elif [ -e /usr/local/bin/nosetests-3.2 ]; then
-			nosetests_bin="/usr/local/bin/nosetests-3.2"
-		else
-			nosetests_bin="nosetests"
-    	fi
-	
-	fi
-
-	if [ ${skip} = "false" ]; then	
-		${S}/scripts/python_test_coverage.py --nosetests ${nosetests_bin}
-
-	   	# building documentation
-		make -C ${S}/docs html
-	fi
+#	skip="false"
+#	# running  only run test on build machine
+#	if [ -z ${BUILD_BOT_BUILD} ] ; then
+#		bbnote "Skip test and doc build"
+#		skip="true"
+#	else
+#		export PYTHONPATH=${S}/code/framework
+#		if [ -e /usr/local/bin/nosetests-3.3 ]; then
+#			nosetests_bin="/usr/local/bin/nosetests-3.3"
+#		elif [ -e /usr/local/bin/nosetests-3.2 ]; then
+#			nosetests_bin="/usr/local/bin/nosetests-3.2"
+#		else
+#			nosetests_bin="nosetests"
+#		fi
+#
+#	fi
+#
+#	if [ ${skip} = "false" ]; then
+#		${S}/scripts/python_test_coverage.py --nosetests ${nosetests_bin}
+#
+#	   	# building documentation
+#		make -C ${S}/docs html
+#	fi
 }
 
 do_compile_append(){
