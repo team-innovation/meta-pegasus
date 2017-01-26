@@ -1,4 +1,4 @@
-LIC_FILES_CHKSUM = "file://COPYING;md5=b2441e6cf44092fbcfe3689038c48992"
+LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504"
 
 require live555-shared.inc
 
