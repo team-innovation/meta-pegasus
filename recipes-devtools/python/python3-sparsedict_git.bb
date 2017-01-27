@@ -1,6 +1,6 @@
 DESCRIPTION = "Light-weight Python dict"
 SECTION = "devel/python"
-LICENSE = "OPEN"
+LICENSE = "PSF"
 SRCNAME = "sparsedict"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5afd36d4fa6a787b36a0313a4b803424"
 PR = "r1"
