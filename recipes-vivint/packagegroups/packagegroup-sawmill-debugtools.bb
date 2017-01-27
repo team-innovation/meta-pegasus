@@ -16,4 +16,5 @@ RDEPENDS_${PN} = " \
 	libpcap \
 	netcat \
 	tcpdump \
+    iproute2-tc \
 "
