@@ -12,6 +12,7 @@ RDEPENDS_${PN} += " \
 	openvpn \
 	psoc-fw-sly \
 	psoc-fw-sly-fcc \
+	psoc-fw-wallsly \
 	sly-utils \
 	sly-version \
 	swdltool \
