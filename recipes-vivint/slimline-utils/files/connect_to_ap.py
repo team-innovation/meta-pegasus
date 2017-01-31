@@ -4,6 +4,7 @@ import cgi
 import cgitb
 import sys
 import os
+import time
 from taurine.rpc.rpc_client import RpcClient
 from taurine.async_io.event_loop import EventLoop
 from taurine.async_io.delayed_call import DelayedCall
@@ -39,10 +40,23 @@ class NetworkHelper(EventLoop):
             self.connect_to_panel()
 
     def connect_to_panel(self):
-        self.netd.start_wifi_connect(self.ssid, self.password)
         print("Content-type: text/html")
         print("<html><head><title>Connecting</title></head><body><Connecting></body></html>")
-        sys.exit(0)
+        sys.stdout.flush()
+        os.close(sys.stdout.fileno())
+
+        try:
+            pid = os.fork()
+            if pid:
+                sys.exit(0)
+            
+            time.sleep(1)
+            os.setsid()
+
+            self.netd.start_wifi_connect(self.ssid, self.password)
+            os._exit(0)
+        except OSError as e:
+            sys.exit(1)
 
     def on_exit(self):
         pass
