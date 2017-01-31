@@ -65,7 +65,7 @@ mntbootscriptrw()
 {
 	umntbootscript || true
 	mount ${BSPART} -o rw ||
-		crap "unable to mount ${BSPART} read/write"
+		carp "unable to mount ${BSPART} read/write"
 }
 
 read_serial() {
