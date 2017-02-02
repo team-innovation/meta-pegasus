@@ -100,7 +100,9 @@ class NfcTest(EventLoop):
                     self.state = NfcState.READ
                 else:
                     self.on_exit()
-            elif value != b'U':
+            elif value != b'U' and self.retry < 8:
+                self.nfc.nfc_command(self.ECHO_CMD, True)
+            else:
                 print("Echo Test: FAILED!")
                 self.on_exit()
         elif self.state == NfcState.READ:
@@ -109,11 +111,9 @@ class NfcTest(EventLoop):
                 self.on_exit()
             elif value[0] != 0x80 and self.retry < 8:
                 self.nfc.nfc_command(self.READ_CMD, True)
-            elif value[0] != 0x80 and self.retry >= 8:
+            else:
                 print("Read Test: FAILED!")
                 self.on_exit()
-            else:
-                self.nfc.nfc_command(self.READ_CMD, True)
         else:
             print("Test failed")
             self.on_exit()
