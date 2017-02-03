@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r49"
+PR = "r50"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -23,6 +23,7 @@ SRC_URI = "\
 	   file://mfr_audio_test.py \
 	   file://nfctest.c \
 	   file://nfctest-sly \
+	   file://nfcslytest \
 	   file://nfccmd-sly \
 	   file://pcamtest \
 	   file://resize.c \
@@ -61,6 +62,7 @@ do_install() {
 	install -m 0755 ${S}/resize ${D}/usr/local/bin
 	install -m 0755 ${S}/nfctest ${D}/usr/local/bin
 	install -m 0755 ${S}/nfctest-sly ${D}/usr/local/bin
+	install -m 0755 ${S}/nfcslytest ${D}/usr/local/bin
 	install -m 0755 ${S}/nfccmd-sly ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
 	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
