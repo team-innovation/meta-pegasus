@@ -11,5 +11,5 @@ PR = "r3"
 S = "${WORKDIR}/git"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-KERNEL_MODULE_PROBECONF += "monpwr-wallsly"
-module_conf_monpwr-wallsly = "blacklist monpwr-wallsly"
+KERNEL_MODULE_PROBECONF += "monpwr-wall"
+module_conf_monpwr-wall = "blacklist monpwr-wall"
