@@ -6,11 +6,12 @@ LICENSE = "CLOSED"
 DEPENDS = ""
 # PV = "${DISTRO_VERSION}"
 PV = "1.0.0"
-PR = "r2"
+PR = "r3"
 
 SRC_URI = "\
 	file://mfg_test \
     file://connect_to_ap.py \
+    file://reset_to_factory_defaults.py \
     file://udhcpd.conf \
     file://udhcpd.leases \
 "
