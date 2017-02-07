@@ -1,6 +1,6 @@
 DESCRIPTION = "Sly qt5 image."
 LICENSE = "MIT"
-PR = "r9"
+PR = "r10"
 IMAGE_FEATURES += "package-management" 
 
 IMAGE_INSTALL_append = "\
@@ -17,7 +17,7 @@ IMAGE_INSTALL_append = "\
 	packagegroup-camera-firmware \
 	packagegroup-ppp-config-modem \
 	packagegroup-zwave-config \
-	bsp-rt288x-hg \
+	openwrt \
 "
 
 inherit core-image
