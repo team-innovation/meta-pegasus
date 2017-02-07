@@ -158,6 +158,7 @@ DEPENDS = " \
 	python3-setproctitle-native \
 	python3-soco-native \
 	python3-sparsedict-native \
+	python3-phue-native \
 "
 
 
@@ -173,6 +174,7 @@ RDEPENDS_${PN} = "\
         python3-jsonschema \
 	python3-brisa \
 	python3-sparsedict \
+	python3-phue \
 "
 
 do_compile() {
