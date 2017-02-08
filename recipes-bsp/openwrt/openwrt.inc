@@ -50,7 +50,7 @@ do_install() {
     
     #MT7620
     install ${WORKDIR}/MT7620_uboot.img ${D}${FW_DIR}/MT7620_uboot.img
-    install ${WORKDIR}/MT7620_uImage ${D}${FW_DIR}/MT7620_uImage.img
+    install ${WORKDIR}/MT7620_uImage ${D}${FW_DIR}/MT7620_uImage
 
     md5sum ${D}${FW_DIR}/MT7620_uboot.img > ${D}${FW_DIR}/MT7620_uboot.img.md5sum
     md5sum ${D}${FW_DIR}/MT7620_uImage > ${D}${FW_DIR}/MT7620_uImage.md5sum
