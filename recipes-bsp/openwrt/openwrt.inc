@@ -11,6 +11,10 @@ PR = "r1"
 SRCREV = "${AUTOREV}"
 MODULE = "openwrt"
 
+RPROVIDES_${PN} = "openwrt"
+
+RREPLACES_${PN} = "bsp-rt288x-hg"
+RCONFLICTS_${PN} = "bsp-rt288x-hg"
 
 BB_STRICT_CHECKSUM = "0"
 
