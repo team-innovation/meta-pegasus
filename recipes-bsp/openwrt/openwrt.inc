@@ -41,19 +41,21 @@ do_compile() {
 do_install() {
     install -d ${D}${FW_DIR}
 
-    #RT3352
+    #RT3352 u-boot
     install ${WORKDIR}/RT3352_uboot.img ${D}${FW_DIR}/RT3352_uboot.img
+    md5sum ${D}${FW_DIR}/RT3352_uboot.img | awk '{ print $1 }' > ${D}${FW_DIR}/RT3352_uboot.img.md5sum
+
+    #RT3352 sysrootfs
     install ${WORKDIR}/RT3352_uImage ${D}${FW_DIR}/RT3352_uImage
-
-    md5sum ${D}${FW_DIR}/RT3352_uboot.img > ${D}${FW_DIR}/RT3352_uboot.img.md5sum
-    md5sum ${D}${FW_DIR}/RT3352_uImage > ${D}${FW_DIR}/RT3352_uImage.md5sum
+    md5sum ${D}${FW_DIR}/RT3352_uImage | awk '{ print $1 }' > ${D}${FW_DIR}/RT3352_uImage.md5sum
     
-    #MT7620
+    #MT7620 u-boot
     install ${WORKDIR}/MT7620_uboot.img ${D}${FW_DIR}/MT7620_uboot.img
-    install ${WORKDIR}/MT7620_uImage ${D}${FW_DIR}/MT7620_uImage
+    md5sum ${D}${FW_DIR}/MT7620_uboot.img | awk '{ print $1 }' > ${D}${FW_DIR}/MT7620_uboot.img.md5sum
 
-    md5sum ${D}${FW_DIR}/MT7620_uboot.img > ${D}${FW_DIR}/MT7620_uboot.img.md5sum
-    md5sum ${D}${FW_DIR}/MT7620_uImage > ${D}${FW_DIR}/MT7620_uImage.md5sum
+    #MT7620 sysrootfs
+    install ${WORKDIR}/MT7620_uImage ${D}${FW_DIR}/MT7620_uImage
+    md5sum ${D}${FW_DIR}/MT7620_uImage | awk '{ print $1 }' > ${D}${FW_DIR}/MT7620_uImage.md5sum
 }
 
 FILES_${PN} = "\
