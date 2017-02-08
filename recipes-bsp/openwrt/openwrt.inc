@@ -7,7 +7,7 @@ HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-PR = "r2"
+PR = "r3"
 SRCREV = "${AUTOREV}"
 MODULE = "openwrt"
 
@@ -42,15 +42,15 @@ do_install() {
     install -d ${D}${FW_DIR}
 
     #RT3352
-    install ${WORKDIR}/RT3352_uboot.img ${D}${FW_DIR}
-    install ${WORKDIR}/RT3352_uImage ${D}${FW_DIR} 
+    install ${WORKDIR}/RT3352_uboot.img ${D}${FW_DIR}/RT3352_uboot.img
+    install ${WORKDIR}/RT3352_uImage ${D}${FW_DIR}/RT3352_uImage
 
     md5sum ${D}${FW_DIR}/RT3352_uboot.img > ${D}${FW_DIR}/RT3352_uboot.img.md5sum
     md5sum ${D}${FW_DIR}/RT3352_uImage > ${D}${FW_DIR}/RT3352_uImage.md5sum
     
     #MT7620
-    install ${WORKDIR}/MT7620_uboot.img ${D}${FW_DIR}
-    install ${WORKDIR}/MT7620_uImage ${D}${FW_DIR} 
+    install ${WORKDIR}/MT7620_uboot.img ${D}${FW_DIR}/MT7620_uboot.img
+    install ${WORKDIR}/MT7620_uImage ${D}${FW_DIR}/MT7620_uImage.img
 
     md5sum ${D}${FW_DIR}/MT7620_uboot.img > ${D}${FW_DIR}/MT7620_uboot.img.md5sum
     md5sum ${D}${FW_DIR}/MT7620_uImage > ${D}${FW_DIR}/MT7620_uImage.md5sum
