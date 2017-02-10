@@ -7,7 +7,7 @@ HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-PR = "r5"
+PR = "r6"
 SRCREV = "${AUTOREV}"
 MODULE = "openwrt"
 
@@ -103,15 +103,15 @@ do_install() {
 }
 
 FILES_${PN}-rt3352 = "\
-    ${FW_DIR}\RT3352_uboot.img \
-    ${FW_DIR}\RT3352_uboot.img.md5sum \
-    ${FW_DIR}\RT3352_uImage \
-    ${FW_DIR}\RT3352_uImage.md5sum \
+    ${FW_DIR}/RT3352_uboot.img \
+    ${FW_DIR}/RT3352_uboot.img.md5sum \
+    ${FW_DIR}/RT3352_uImage \
+    ${FW_DIR}/RT3352_uImage.md5sum \
     "
 FILES_${PN}-mt7620 = "\
-    ${FW_DIR}\MT7620_uboot.img \
-    ${FW_DIR}\MT7620_uboot.img.md5sum \
-    ${FW_DIR}\MT7620_uImage \
-    ${FW_DIR}\MT7620_uImage.md5sum \
+    ${FW_DIR}/MT7620_uboot.img \
+    ${FW_DIR}/MT7620_uboot.img.md5sum \
+    ${FW_DIR}/MT7620_uImage \
+    ${FW_DIR}/MT7620_uImage.md5sum \
     "
 
