@@ -7,7 +7,7 @@ HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-PR = "r4"
+PR = "r5"
 SRCREV = "${AUTOREV}"
 MODULE = "openwrt"
 
@@ -15,8 +15,6 @@ RPROVIDES_${PN} = "openwrt"
 
 RREPLACES_${PN} = "bsp-rt288x-hg"
 RCONFLICTS_${PN} = "bsp-rt288x-hg"
-
-BB_STRICT_CHECKSUM = "0"
 
 DOWNLOAD_SERVER="updateseng.vivint.com/innovation/openwrt/check"
 
@@ -38,6 +36,43 @@ SRC_URI[MT7620_uboot.sha256sum] = "be9e22a08e88900402db5d27673751dfc18f1767a7c4a
 FW_DIR = "${base_libdir}/firmware"
 
 inherit gettext
+
+python do_removedownloadedimages() {
+    try:
+        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/RT3352_uImage"))
+    except:
+        pass
+    try:
+        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/RT3352_uboot.img"))
+    except:
+        pass
+    try:
+        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/MT7620_uImage"))
+    except:
+        pass
+    try:
+        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/MT7620_uboot.img"))
+    except:
+        pass
+    try:
+        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/RT3352_uImage.done"))
+    except:
+        pass
+    try:
+        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/RT3352_uboot.img.done"))
+    except:
+        pass
+    try:
+        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/MT7620_uImage.done"))
+    except:
+        pass
+    try:
+        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/MT7620_uboot.img.done"))
+    except:
+        pass
+}
+
+addtask removedownloadedimages before do_fetch
 
 do_configure() {
     :
