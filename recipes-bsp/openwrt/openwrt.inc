@@ -102,12 +102,13 @@ do_install() {
     md5sum ${D}${FW_DIR}/MT7620_uImage | awk '{ print $1 }' > ${D}${FW_DIR}/MT7620_uImage.md5sum
 }
 
-FILES_${PN} = "\
-    ${FW_DIR} \
+FILES_${PN}-rt3352 = "\
     ${FW_DIR}\RT3352_uboot.img \
     ${FW_DIR}\RT3352_uboot.img.md5sum \
     ${FW_DIR}\RT3352_uImage \
     ${FW_DIR}\RT3352_uImage.md5sum \
+    "
+FILES_${PN}-mt7620 = "\
     ${FW_DIR}\MT7620_uboot.img \
     ${FW_DIR}\MT7620_uboot.img.md5sum \
     ${FW_DIR}\MT7620_uImage \

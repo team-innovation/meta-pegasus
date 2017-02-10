@@ -17,7 +17,6 @@ IMAGE_INSTALL_append = "\
 	packagegroup-camera-firmware \
 	packagegroup-ppp-config-modem \
 	packagegroup-zwave-config \
-	openwrt \
 "
 
 inherit core-image
