@@ -1,5 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
-PR = "2"
+PR = "3"
 
 SRC_URI += "file://hostapd.conf"
 

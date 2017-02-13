@@ -37,6 +37,8 @@ boardcheck() {
 		return 0
 	grep -q vivint,sly /proc/device-tree/compatible &&
 		return 0
+	grep -q vivint,wallsly /proc/device-tree/compatible &&
+		return 0
 	carp "Unknown board type, exiting..."
 }
 
@@ -63,7 +65,7 @@ mntbootscriptrw()
 {
 	umntbootscript || true
 	mount ${BSPART} -o rw ||
-		crap "unable to mount ${BSPART} read/write"
+		carp "unable to mount ${BSPART} read/write"
 }
 
 read_serial() {

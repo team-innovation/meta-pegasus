@@ -12,4 +12,4 @@ inherit mfgtool-initramfs-image
 # regular u-boot should work fine
 
 DEPENDS_remove = "u-boot-mfgtool"
-RDEPENDS_${PN} += "u-boot-slimline u-boot-script-slimline"
+RDEPENDS_${PN} += "u-boot-slimline u-boot-wallsly u-boot-script-slimline u-boot-wallsly"

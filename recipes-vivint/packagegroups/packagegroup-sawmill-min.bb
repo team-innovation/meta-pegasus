@@ -7,30 +7,32 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "8"
+PR = "9"
 
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
-	e2fsprogs-mke2fs \
+	chrony \
 	e2fsprogs-dumpe2fs \
+	e2fsprogs-mke2fs \
 	iw \
 	kernel-devicetree \
 	kernel-image \
 	kernel-modules \
-	sly-modules \
-	slimline-modules \
-	chrony \
+	memtester \
+	obp-utils \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
 	psoc5-verify \
+	slimline-modules \
+	sly-modules \
 	strace \
 	u-boot-fw-utils \
-	u-boot-slimline \
 	u-boot-script-slimline \
+	u-boot-slimline \
+	u-boot-wallsly \
 	util-linux-mkfs \
 	util-linux-sfdisk \
 	vivutils \
-	memtester \
-	obp-utils \
+	wallsly-modules \
 "

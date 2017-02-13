@@ -2,19 +2,24 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r8"
+PR = "r10"
 
 inherit packagegroup
 
 RDEPENDS_${PN} += " \
-	sly-utils \
-	sly-version \
+	acm-usb-v6 \
+	fabric-go \
 	openvpn \
+	openwrt-rt3352 \
+	openwrt-mt7620 \
 	psoc-fw-sly \
 	psoc-fw-sly-fcc \
-	fabric-go \
-	touchlink-rtc-firmware \
+	psoc-fw-wallsly \
+	sly-utils \
+	sly-version \
+	swdltool \
 	touchlink-kwikset-firmware \
+	touchlink-rtc-firmware \
 	touchlink-telit-firmware-he910 \
 	touchlink-telit-firmware-ue910 \
 "

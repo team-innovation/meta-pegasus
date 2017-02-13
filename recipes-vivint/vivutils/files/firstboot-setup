@@ -30,6 +30,19 @@ info() {
 		echo "$SCRIPTNAME: $1"
 }
 
+# board identification helpers
+is_slimline() {
+	grep -q vivint,slimline "/proc/device-tree/compatible"
+}
+
+is_sly() {
+	grep -q vivint,sly "/proc/device-tree/compatible"
+}
+
+is_wallsly() {
+	grep -q vivint,wallsly "/proc/device-tree/compatible"
+}
+
 #
 # The bootscript and serial number are in the bootscript partition
 #
@@ -112,18 +125,33 @@ emmcro() {
 	echo 1 > /sys/block/mmcblk0boot${num}/force_ro
 }
 
+# slimline and sly share a common u-boot binary
+# wallsly has a specific version
+ubootbinary() {
+	is_slimline &&
+		echo "/boot/u-boot.imx" &&
+		return
+	is_sly &&
+		echo "/boot/u-boot.imx" &&
+		return
+	is_wallsly &&
+		echo "/boot/u-boot-wallsly.imx" &&
+		return
+	carp "unsupported platform looking for u-boot binary"
+}
+
 # Is u-boot in boot partition same version as one in rootfs
 ubootcheck() {
 	vold=$(strings /dev/mmcblk0boot0 | grep "U-Boot.20")
-	vnew=$(strings /boot/u-boot.imx | grep "U-Boot.20")
+	vnew=$(strings $(ubootbinary) | grep "U-Boot.20")
 	test "$vold" = "$vnew"
 }
 
-# Duh
+#
 ubootupdate() {
 	emmcrw 0
 	dd if=/dev/zero of=/dev/mmcblk0boot0 bs=1024 count=2048
-	dd if=/boot/u-boot.imx of=/dev/mmcblk0boot0 bs=512 seek=2
+	dd if=$(ubootbinary) of=/dev/mmcblk0boot0 bs=512 seek=2
 	sync
 	emmcro 0
 
@@ -254,36 +282,78 @@ mmcbootbitsset() {
 #              0 1 1 1 0 0 0 0 = 0x70
 #
 # BOOT_CONFIG2[7:5] = 010 - 8-bit
-# BOOT_CONFIG2[4:3] = 11  - USDHC-4
+# BOOT_CONFIG2[4:3] =
+#		      11  - USDHC-4
+#		      10  - USDHC-3
+#		      01  - USDHC-2
+#		      00  - USDHC-4
 #
 # BOOT_CONFIG2[7 6 5 4 3 2 1 0]
-#              0 1 0 1 1 0 0 0 = 0x58
+#              0 1 0 1 1 0 0 0 = 0x58  - USDHC-4
+#              0 1 0 1 0 0 0 0 = 0x50  - USDHC-3
+#              0 1 0 0 1 0 0 0 = 0x48  - USDHC-2
+#              0 1 0 0 0 0 0 0 = 0x40  - USDHC-1
+#
 # HW_OCOTP_CFG4 contains [boot_config4:boot_config3:boot_config2:boot_config1]
 #
-HW_OCOTP_CFG4_VAL=0x5870
+
+# use mmc0 sysclass link to find physical usdhc interface
+boot_config2()
+{
+	bc2=0x0
+	mmcdev=$(readlink /sys/class/mmc_host/mmc0) ||
+		carp "unable to read mmc0 device link"
+	case "$mmcdev" in
+		*219c000.usdhc*)
+			bc2=0x58;
+			;;
+		*2198000.usdhc*)
+			bc2=0x50;
+			;;
+		*2194000.usdhc*)
+			bc2=0x48;
+			;;
+		*2190000.usdhc*)
+			bc2=0x40;
+			;;
+		*)
+			carp "bad mmcdev $mmcdev"
+			;;
+	esac
+	echo $bc2
+}
+
+hw_ocotp_cfg4_val()
+{
+	printf "0x%04x\n" $(( $(boot_config2) << 8 | 0x70 ))
+}
 
 # BT_FUSE_SEL is the fuse that indicates that boot settings are in
 # the fuses (it is a special case so this is not really recursive)
 # BT_FUSE_SEL is bit 4 (1 << 4 == 0x10) in HW_OCOTP_CFG5
 #
-HW_OCOTP_CFG5_VAL=0x10
+hw_ocotp_cfg5_val()
+{
+	echo 0x10
+}
+
 
 fusecheck()
 {
 	local f
 	f=$(cat /sys/fsl_otp/HW_OCOTP_CFG4)
-	test "${f}" = "${HW_OCOTP_CFG4_VAL}" ||
+	test "${f}" = "$(hw_ocotp_cfg4_val)" ||
 		return 1
 	f=$(cat /sys/fsl_otp/HW_OCOTP_CFG5)
-	test "${f}" = "${HW_OCOTP_CFG5_VAL}" ||
+	test "${f}" = "$(hw_ocotp_cfg5_val)" ||
 		return 1
 	true
 }
 
 fuseset()
 {
-	echo "${HW_OCOTP_CFG4_VAL}" > /sys/fsl_otp/HW_OCOTP_CFG4
-	echo "${HW_OCOTP_CFG5_VAL}" > /sys/fsl_otp/HW_OCOTP_CFG5
+	hw_ocotp_cfg4_val > /sys/fsl_otp/HW_OCOTP_CFG4
+	hw_ocotp_cfg5_val > /sys/fsl_otp/HW_OCOTP_CFG5
 	true
 }
 
@@ -316,29 +386,29 @@ fusecheck || {
 
 addboardmodelfromdevtree() {
 	pit="/media/bootscript/panelinfo.txt"
-	cmp="/proc/device-tree/compatible"
 
-	grep -q vivint,sly $cmp &&
+	is_slimline &&
+		echo 'export SL_BOARD_MODEL="28-600015-001"' >> $pit &&
+		return
+	is_sly &&
 		echo 'export SH_BOARD_MODEL="28-600052-001"' >> $pit &&
 		return
-
-
-	grep -q vivint,slimline $cmp &&
-		echo 'export SL_BOARD_MODEL="28-600015-001"' >> $pit &&
+	is_wallsly &&
+		echo 'export SH_BOARD_MODEL="28-FIX-ME"' >> $pit &&
 		return
 }
 
 addboardrevfromdevtree() {
 	pit="/media/bootscript/panelinfo.txt"
-	cmp="/proc/device-tree/compatible"
 
-	grep -q vivint,sly $cmp &&
+	is_slimline &&
+		echo 'export SL_BOARD_REV="V-SHD1-A13"' >> $pit &&
+		return
+	is_sly &&
 		echo 'export SH_BOARD_REV="V-SH1-A0"' >> $pit &&
 		return
-
-
-	grep -q vivint,slimline $cmp &&
-		echo 'export SL_BOARD_REV="V-SHD1-A13"' >> $pit &&
+	is_wallsly &&
+		echo 'export SH_BOARD_REV="V-FIX-ME"' >> $pit &&
 		return
 }
 

@@ -11,23 +11,20 @@ from taurine.async_io.delayed_call import DelayedCall
 
 cgitb.enable()
 
-sys.path.insert(0, "/opt/2gig/netd/proxies/python")
-sys.path.insert(0, "/opt/2gig/netd")
-
-import services.singletons.slim_line.scripts.wps
+sys.path.insert(0, "/opt/2gig/procmand/proxies/python")
+sys.path.insert(0, "/opt/2gig/procmand")
 
 
-class NetworkHelper(EventLoop):
+class RestoreHelper(EventLoop):
     def __init__(self):
         super().__init__(self.on_exit)
-        self.netd = None
+        self.procmand = None
         self.form = cgi.FieldStorage()
-        self.ssid = self.form.getvalue("ssid", "")
-        self.password = self.form.getvalue("password","")
+        self.ssid = self.form.getvalue("reset", "")
 
     def setup(self):
-        self.__client = RpcClient("netd")
-        self.__client.connect('localhost', 7170, self.on_connected, auto_reconnect=False)
+        self.__client = RpcClient("procmand")
+        self.__client.connect('localhost', 7016, self.on_connected, auto_reconnect=False)
 
     def run(self):
         DelayedCall(0, self.setup)
@@ -35,12 +32,12 @@ class NetworkHelper(EventLoop):
 
     def on_connected(self, error):
         if not error:
-            self.netd = self.__client.get_service_with_name("NetworkService")
+            self.procmand = self.__client.get_service_with_name("RestoreService")
             self.connect_to_panel()
 
     def connect_to_panel(self):
         print("Content-type: text/html")
-        print("<html><head><title>Connecting</title></head><body><Connecting></body></html>")
+        print("<html><head><title>Reseting</title></head><body><Connecting></body></html>")
         sys.stdout.flush()
         os.close(sys.stdout.fileno())
 
@@ -52,7 +49,7 @@ class NetworkHelper(EventLoop):
             time.sleep(1)
             os.setsid()
 
-            self.netd.start_wifi_connect(self.ssid, self.password)
+            self.procmand.reset_to_factory_defaults()
             os._exit(0)
         except OSError as e:
             sys.exit(1)
@@ -60,5 +57,5 @@ class NetworkHelper(EventLoop):
     def on_exit(self):
         pass
 
-nh = NetworkHelper()
-nh.run()
+rh = RestoreHelper()
+rh.run()

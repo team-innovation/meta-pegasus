@@ -2,17 +2,21 @@
 # Copyright (c) 2015, Vivint.
 #
 # Check the PSOC5 firmware and update if necessary
+#set -x
 
-platform=`strings /proc/device-tree/compatible |	\
-            grep vivint |				\
-	    head -n 1 |					\
-	    cut -d"," -f2`
+platform=$(strings /proc/device-tree/compatible |
+	grep vivint |
+	head -n 1 |
+	cut -d"," -f2)
 
-if [ "$platform" == "sly" ]; then
-	monpwr_driver=monpwr_$platform
+if [ "$platform" == "wallsly" ]; then
+	monpwr_driver=monpwr_wall
+elif [ "$platform" == "sly" ]; then
+	monpwr_driver=monpwr_sly
 else
 	monpwr_driver=monpwr
 fi
+
 
 psoc5_verify()
 {
@@ -22,8 +26,9 @@ psoc5_verify()
 	fi
 
 	path=vivint/$platform-psoc5.fw
-	# use fcc version of fw if in fcc test mode
-	if [ -f /etc/procman.d/test_ui ]; then
+	# if sly use fcc version of fw if in fcc test mode
+	# FIXME: do we have fcc fw from wallsly?
+	if [ "$platform" == "sly" -a -f /etc/procman.d/test_ui ]; then
 		path=vivint/$platform-fcc-psoc5.fw
 	fi
 
@@ -37,9 +42,13 @@ psoc5_verify()
 		echo "PSOC5 firmware already verified"
 		return 0
 	else
-		lsmod | grep -q $monpwr_driver && rmmod $monpwr_driver
+		monpwr_loaded=$(lsmod | grep monpwr | sed -e 's/ \+/\t/g' | cut -f 1)
+		test "$monpwr_loaded" = "$monpwr_driver" &&
+			rmmod $monpwr_driver
 		test -f /sys/class/swd/psoc50/access &&
 			echo 1 > /sys/class/swd/psoc50/access
+		echo "echoing $path to fw_path"
+		echo 1 > /sys/class/swd/psoc50/acquire
 		echo $path > /sys/class/swd/psoc50/fw_path &&
 			echo 1 > /sys/class/swd/psoc50/doall &&
 			touch /tmp/psoc5fwverified
@@ -55,16 +64,18 @@ stop() {
 }
 
 case "$1" in
-    start|restart|reload)
-	psoc5_verify
-    lsmod | grep -q $monpwr_driver || modprobe $monpwr_driver
-	;;
-    stop)
-	stop
-	;;
-    *)
-	echo "Usage: $0 {start|stop|restart}"
-	exit 1
+	start|restart|reload)
+		psoc5_verify
+		monpwr_loaded=$(lsmod | grep monpwr | sed -e 's/ \+/\t/g' | cut -f 1)
+		test "$monpwr_loaded" = "$monpwr_driver" ||
+			modprobe $monpwr_driver
+		;;
+	stop)
+		stop
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
 esac
 
 exit $?

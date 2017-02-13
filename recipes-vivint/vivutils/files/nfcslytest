@@ -1,0 +1,165 @@
+#!/usr/bin/env python3
+#
+# Test script for nfc during manufacturing process
+#
+#
+#
+import os, sys, shutil, platform
+import binascii
+from time import sleep
+from taurine.async_io.timer import Timer
+from taurine.rpc.rpc_client import RpcClient
+from taurine.rpc.rpc_service import RpcService
+from taurine.async_io.event_loop import EventLoop
+from taurine.async_io.delayed_call import DelayedCall
+from taurine.async_io.threaded_call import ThreadedCall
+
+def on_touchlink():
+    sys.path.insert(0, "/opt/2gig/nfcd/proxies/python")
+    sys.path.insert(0, "/opt/2gig/nfcd")
+
+__author__ = 'jeff'
+
+class NfcState:
+    PROTOCOL = 1
+    ECHO = 2
+    READ = 3
+    HIBERNATE = 4
+    HIBERNATE_RECV = 5
+
+
+class NfcTest(EventLoop):
+
+    ECHO_CMD = '55'
+    READ_CMD = '04022607'
+    PROTO_CMD = '02020200'
+    HIBERNATE_CMD = '070E0804000400180000000000000000'
+    
+    def __init__(self, echo, read, hibernate, silent):    
+        super().__init__(self.on_exit)
+        
+        self.nfc = None
+        self.exit_now = False
+
+        on_touchlink()
+
+        self.address = 'localhost'
+        self.port = 7040
+        self.retry = 0
+        self.state = NfcState.PROTOCOL
+        self.echo = echo
+        self.read = read
+        self.hibernate = hibernate
+        self.silent = silent
+
+    def setup(self):
+        self._nfc_client = RpcClient('nfcd')
+        self._nfc_client.connect(self.address, self.port, self.on_connected, auto_reconnect=True)
+
+    def on_exit(self):
+        if self.nfc:
+            self.nfc.remove_notify_handler("on_nfc_received_data", self.on_nfc_event)
+            self._nfc_client.disconnect()
+            sys.exit(0)
+
+    def on_connected(self, error):
+        if not error:
+            self.nfc = self._nfc_client.get_service_with_name("NfcService")
+            self.nfc.add_notify_handler("on_nfc_received_data", self.on_nfc_event)
+
+            # Start test
+            self.retry = 0
+            self.state = NfcState.PROTOCOL
+            self.nfc.nfc_command(self.PROTO_CMD, True)
+
+    def on_nfc_event(self, service, value):
+        if self.state == NfcState.PROTOCOL:
+            self.nfc.nfc_command(self.ECHO_CMD, True)
+            if self.hibernate:
+                self.state = NfcState.HIBERNATE
+            elif self.echo:
+                self.state = NfcState.ECHO
+            elif self.read:
+                self.state = NfcState.READ
+            else:
+                print("No test")
+                self.on_exit()
+        elif self.state == NfcState.HIBERNATE:
+            self.nfc.nfc_command(self.HIBERNATE_CMD, True)
+            self.state = NfcState.HIBERNATE_RECV
+        elif self.state == NfcState.HIBERNATE_RECV:
+            if value == b'\x00':
+                print("Hibernate Success")
+            else:
+                print("Hibernate Fail")
+            self.on_exit()
+        elif self.state == NfcState.ECHO:
+            if self.silent:
+                self.nfc.nfc_command(self.ECHO_CMD, False)
+                self.on_exit()
+
+            if value == b'U':
+                print("Echo Test: PASSED!")
+                if self.read:
+                    self.nfc.nfc_command(self.READ_CMD, True)
+                    self.state = NfcState.READ
+                else:
+                    self.on_exit()
+            elif value != b'U' and self.retry < 8:
+                self.nfc.nfc_command(self.ECHO_CMD, True)
+            else:
+                print("Echo Test: FAILED!")
+                self.on_exit()
+        elif self.state == NfcState.READ:
+            if value and value[0] == 0x80:
+                print("Read Test: PASSED!")
+                self.on_exit()
+            elif value[0] != 0x80 and self.retry < 16:
+                self.nfc.nfc_command(self.READ_CMD, True)
+            else:
+                print("Read Test: FAILED!")
+                self.on_exit()
+        else:
+            print("Test failed")
+            self.on_exit()
+        self.retry += 1
+
+    def run(self):
+        DelayedCall(0, self.setup)
+        super().run()
+
+def print_options():
+    print("Useage:")
+    print("To run echo command: nfctest-sly -e")
+    print("To run read command: nfctest-sly -r")
+    print("To run all  command: nfctest-sly -a")
+
+def main():
+
+    if sys.argv.__len__() < 2:
+        print_options()
+        return
+
+    if sys.argv[1] == '-e':
+        loop = NfcTest(True, False, False, False)
+        loop.run()
+    elif sys.argv[1] == '-r':
+        loop = NfcTest(False, True, False, False)
+        loop.run()
+    elif sys.argv[1] == '-a':
+        loop = NfcTest(True, True, False, False)
+        loop.run()
+    elif sys.argv[1] == '-h':
+        loop = NfcTest(False, False, True, False)
+        loop.run()
+    elif sys.argv[1] == '-s':
+        loop = NfcTest(True, False, False, True)
+        loop.run()
+    else:
+        print("Not a valid option:")
+        print_options()
+
+
+if __name__ == "__main__":
+    main()
+
