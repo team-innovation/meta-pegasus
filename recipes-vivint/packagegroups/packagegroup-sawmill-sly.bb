@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r10"
+PR = "r11"
 
 inherit packagegroup
 
@@ -10,8 +10,8 @@ RDEPENDS_${PN} += " \
 	acm-usb-v6 \
 	fabric-go \
 	openvpn \
-	openwrt-rt3352 \
 	openwrt-mt7620 \
+	openwrt-rt3352 \
 	psoc-fw-sly \
 	psoc-fw-sly-fcc \
 	psoc-fw-wallsly \

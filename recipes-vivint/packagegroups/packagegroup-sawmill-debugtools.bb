@@ -3,7 +3,7 @@
 DESCRIPTION = "Packages needed for network debug"
 LICENSE = "MIT"
 
-PR = "2"
+PR = "3"
 
 inherit packagegroup
 
@@ -12,9 +12,9 @@ RDEPENDS_${PN} = " \
 	i2c-tools \
 	iftop \
 	iperf \
+	iproute2-tc \
 	iputils-ping \
 	libpcap \
 	netcat \
 	tcpdump \
-    iproute2-tc \
 "

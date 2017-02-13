@@ -4,25 +4,25 @@ DESCRIPTION = "touchlink video packages, imx firmware, gst plugins, etc"
 LICENSE = "MIT"
 LICENSE_FLAGS_WHITELIST = "commercial license"
 
-PR = "r11"
+PR = "r12"
 
 inherit packagegroup
 
 RPROVIDES_${PN} = " \
+	libg2d0.8 \
 	libglib-2.0-utils \
 	libgstapp-0.10-0 \
+	libgstapp-1.0 \
+	libgstaudio-1.0 \
 	libgstnetbuffer-0.10-0 \
+	libgstpbutils-1.0 \
 	libgstrtp-0.10-0 \
 	libgstrtsp-0.10-0 \
 	libgstsdp-0.10-0 \
 	libgstvideo-0.10-0 \
-	libgudev-1.0-0 \
-	libgstpbutils-1.0 \
 	libgstvideo-1.0 \
-	libgstapp-1.0 \
-	libgstaudio-1.0 \
 	libgudev-1.0-0 \
-	libg2d0.8 \
+	libgudev-1.0-0 \
 "
 
 RDEPENDS_${PN} = " \
@@ -72,8 +72,8 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-base-playback \
 	gstreamer1.0-plugins-base-tcp \
 	gstreamer1.0-plugins-base-typefindfunctions \
-	gstreamer1.0-plugins-base-videotestsrc \
 	gstreamer1.0-plugins-base-videoconvert \
+	gstreamer1.0-plugins-base-videotestsrc \
 	gstreamer1.0-plugins-base-volume \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0-plugins-good-imagefreeze \
@@ -99,6 +99,7 @@ RDEPENDS_${PN} = " \
 	gstreamer-imx-imxvpu \
 	gstreamer-imx-meta \
 	imx-lib \
+	libav \
 	libfslcodec \
 	libfslparser \
 	libglib-2.0-utils \
@@ -118,5 +119,4 @@ RDEPENDS_${PN} = " \
 	libgstsdp-1.0-0 \
 	libgsturidownloader-1.0-0 \
 	libgstvideo-0.10-0 \
-    libav \
 "
