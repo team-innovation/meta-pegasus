@@ -39,6 +39,11 @@ test -n "$iface" || iface=wlan0
 test -n "$ap" || usage
 test -n "rawout" || rawout=false
 
+if [ -e /etc/init.d/hostapd ]; then
+    /etc/init.d/hostapd stop
+    sleep 2
+fi
+
 iw $iface disconnect && echo "ended previous connection" > /tmp/rawout
 test "$rawout" = "true" && cat /tmp/rawout
 
