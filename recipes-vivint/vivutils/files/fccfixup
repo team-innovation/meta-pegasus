@@ -1,27 +1,70 @@
 #!/bin/bash
 #set -x
 
-fixuproot=/
-test -d /mnt/mmcblk0p5/etc/ &&
-	fixuproot=/mnt/mmcblk0p5/
+fccfixup() {
+	fixuproot=/
+	test -d /mnt/mmcblk0p5/etc/ &&
+		fixuproot=/mnt/mmcblk0p5/
 
-echo "fixing up procman.d..."
-cd ${fixuproot}etc/
-mkdir .hidden
-mv procman.d .hidden
-mv procman.d-fcc procman.d 
+	cd ${fixuproot}etc/
+	test -d .hidden || {
+		echo "fixing up procman.d..."
+		mkdir .hidden
+		mv procman.d .hidden
+		mv procman.d-fcc procman.d
+	}
 
-echo "fixing up fonts..."
-cd ${fixuproot}usr/lib/fonts
-mkdir .hidden
-mv * .hidden/
-mv .hidden/DejaVu* .
+	cd ${fixuproot}usr/lib/fonts
+	test -d .hidden || {
+		echo "fixing up fonts..."
+		mkdir .hidden
+		mv * .hidden/
+		mv .hidden/DejaVu* .
+	}
 
-echo "disabling init.d scripts"
-cd ${fixuproot}etc/init.d
-mkdir .hidden
-mv bootsplash.sh .hidden
+	cd ${fixuproot}etc/init.d
+	test -d .hidden || {
+		echo "disabling init.d scripts"
+		mkdir .hidden
+		for d in _345d bootsplash.sh iod modemd multiplexerd nfcd sundance updated
+		do
+			test -f $d && mv $d .hidden
+		done
+	}
+	true
+}
+
+fccundo() {
+	fixuproot=/
+	test -d /mnt/mmcblk0p5/etc/ &&
+		fixuproot=/mnt/mmcblk0p5/
+
+	cd ${fixuproot}etc/
+	test -d .hidden && {
+		echo "restoring procman.d..."
+		mv procman.d procman.d-fcc
+		mv .hidden/procman.d .
+		rmdir .hidden
+	}
+
+	cd ${fixuproot}usr/lib/fonts
+	test -d .hidden && {
+		echo "restoring fonts..."
+		mv .hidden/* .
+		rmdir .hidden
+	}
+
+	cd ${fixuproot}etc/init.d
+	test -d .hidden && {
+		echo "re-enabling init.d scripts"
+		mv .hidden/* .
+		rmdir .hidden
+	}
+	true
+}
+
+test -z "$1" && fccfixup
+test "$1" = "undo" && fccundo
 
 sync
 exit 0
-
