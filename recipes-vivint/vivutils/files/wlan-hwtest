@@ -44,6 +44,12 @@ if [ -e /etc/init.d/hostapd ]; then
     sleep 2
 fi
 
+ip link set dev $iface down > /tmp/rawout
+test "$rawout" = "true" && cat /tmp/rawout
+
+ip link set dev $iface up > /tmp/rawout
+test "$rawout" = "true" && cat /tmp/rawout
+
 iw $iface disconnect && echo "ended previous connection" > /tmp/rawout
 test "$rawout" = "true" && cat /tmp/rawout
 

@@ -3,5 +3,5 @@ ctrl_interface_group=0
 update_config=1
 
 network={
-        key_mgmt=WPA-PSK
+        key_mgmt=NONE
 }
