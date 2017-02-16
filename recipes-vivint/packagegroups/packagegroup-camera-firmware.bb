@@ -3,15 +3,15 @@
 DESCRIPTION = "packages for touchlink firmware"
 LICENSE = "MIT"
 
-PR = "r2"
+PR = "r3"
 
 inherit packagegroup
 
 RDEPENDS_${PN} += " \
 	touchlink-alpha-firmware-cs6022-ov4689 \
-	touchlink-vivotek-firmware-db8332w \
-	touchlink-vivotek-firmware-db8331w \
 	touchlink-vivotek-firmware-721w \
+	touchlink-vivotek-firmware-db8331w \
+	touchlink-vivotek-firmware-db8332w \
 	touchlink-vivotek-firmware-hd400w \
 	touchlink-vivotek-vadp \
 	touchlink-vivotek-vadp-rossini \

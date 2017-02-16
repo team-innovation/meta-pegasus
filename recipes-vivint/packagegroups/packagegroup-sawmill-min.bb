@@ -7,7 +7,7 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "9"
+PR = "10"
 
 inherit packagegroup
 

@@ -24,14 +24,8 @@ SRC_URI = "http://${DOWNLOAD_SERVER}/RT3352_uImage;name=RT3352_uImage \
            http://${DOWNLOAD_SERVER}/MT7620_uboot.img;name=MT7620_uboot \
            file://COPYING \
            "
-SRC_URI[RT3352_uImage.md5sum] = "d6283f63ab2be949a344f1f76eab9bc4"
-SRC_URI[RT3352_uImage.sha256sum] = "dc4d6e035d7f2f40a0f1d3d81576168082e976fbce615af6f18d7014dff70c74"
-SRC_URI[RT3352_uboot.md5sum] = "d78a51f5fdb52747df72bce5989b76aa"
-SRC_URI[RT3352_uboot.sha256sum] = "bf32d459691fe2e95f6d376cd293df260d985781dc4535c4dbfdc38b9bfbc90b"
-SRC_URI[MT7620_uImage.md5sum] = "f3724d472a05cf353eafa1bad32d22da"
-SRC_URI[MT7620_uImage.sha256sum] = "55d3e3757ba0bd64b5b7901762cf8874236287125abd6d62c9294864470b4ccf"
-SRC_URI[MT7620_uboot.md5sum] = "c917a291ac16826d76c51be3d895a4d1"
-SRC_URI[MT7620_uboot.sha256sum] = "be9e22a08e88900402db5d27673751dfc18f1767a7c4ad97c4ae4dabd70a6ef9"
+
+BB_STRICT_CHECKSUM="0"
 
 FW_DIR = "${base_libdir}/firmware"
 
