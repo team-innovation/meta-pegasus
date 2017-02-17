@@ -52,79 +52,79 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-sound-wav-vocab \
 	touchlink-apps-ssdpd \
 	touchlink-apps-sundance-proxies \
-	touchlink-apps-zwaved-proxies \
 	touchlink-apps-updated \
 	touchlink-apps-usage-analytics \
 	touchlink-apps-utils \
+	touchlink-apps-zwaved-proxies \
 	touchlink-simlock \
 	voiceaudio \
-	"
+"
 
 QT5_DEPENDS = "\
 	libegl-mx6 \
 	libgles2-mx6 \
 	python3-pyopengl \
 	touchlink-qt5-profile \
-	"
+"
 
 QT5_PKGS = "\
-	mtdev \
-	tslib tslib-calibrate tslib-tests \
 	libqt5declarative5 \
 	libqt5xmlpatterns5 \
+	mtdev \
 	qtbase	\
-	qtbase-plugins	\
-	qtscript 	\
-	qtdeclarative 	\
-	qtdeclarative-tools \
-	qtdeclarative-qmlplugins \
-	qtgraphicaleffects-qmlplugins \
-	qtmultimedia-plugins \
-	qtmultimedia-qmlplugins \
 	qtbase-fonts-pfa  \
 	qtbase-fonts-pfb  \
 	qtbase-fonts-qpf  \
 	qtbase-fonts-ttf-dejavu   \
 	qtbase-fonts-ttf-vera     \
+	qtbase-plugins	\
+	qtdeclarative 	\
+	qtdeclarative-qmlplugins \
+	qtdeclarative-tools \
+	qtgraphicaleffects-qmlplugins \
 	qtgstreamer \
-    qtquickcontrols-qmlplugins \
-	"
+	qtmultimedia-plugins \
+	qtmultimedia-qmlplugins \
+	qtquickcontrols-qmlplugins \
+	qtscript 	\
+	tslib tslib-calibrate tslib-tests \
+"
 
 PULSE_DEPENDS = "python3-pulseaudio \
 		"
 TOUCHSCREEN_DEPENDS = "libinput \
 	evtest \
-	"
+"
 
 DISPLAY_DEPENDS = "\
 	imagemagick \
-	"
+"
 
 MISC_DEPENDS = "\
 	ppp \
 	socat \
 	live555-openrtsp \
-	"
+"
 
 PYTHON_EXTRA_DEPENDS = "\
+	python3-brisa \
+	python3-jsonschema \
 	python3-mixpanel \
-	python3-multiprocessing \
 	python3-mmap \
+	python3-multiprocessing \
 	python3-requests \
 	python3-six \
 	python3-soco \
-	python3-jsonschema \
-	python3-brisa \
 	python3-sparsedict \
-	"
+"
 
 RDEPENDS_${PN} = " \
-	${VIVINT_APPS_COMMON} \
-	${QT5_DEPENDS} \
-	${QT5_PKGS} \
-	${PULSE_DEPENDS} \
-	${TOUCHSCREEN_DEPENDS} \
 	${DISPLAY_DEPENDS} \
 	${MISC_DEPENDS} \
+	${PULSE_DEPENDS} \
 	${PYTHON_EXTRA_DEPENDS} \
+	${QT5_DEPENDS} \
+	${QT5_PKGS} \
+	${TOUCHSCREEN_DEPENDS} \
+	${VIVINT_APPS_COMMON} \
 "

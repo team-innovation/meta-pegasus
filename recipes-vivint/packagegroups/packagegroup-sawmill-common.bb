@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "28"
+PR = "29"
 
 inherit packagegroup
 
@@ -12,9 +12,12 @@ inherit packagegroup
 #   then add it to packagegroup-sawmill-min not here.
 RDEPENDS_${PN} = " \
 	alsa-utils \
+	busybox-httpd \
 	ca-certificates \
+	cronie \
 	kernel-module-mt7603 \
 	libsodium18 \
+	logrotate \
 	packagegroup-sawmill-debugtools \
 	packagegroup-sawmill-min \
 	procps \
@@ -54,7 +57,4 @@ RDEPENDS_${PN} = " \
 	vim \
 	webrtc-audio-processing \
 	wps-sh \
-    busybox-httpd \
-    logrotate \
-    cronie \
 "
