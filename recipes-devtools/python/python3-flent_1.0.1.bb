@@ -3,7 +3,7 @@ SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "CLOSED"
 SRCNAME = "flent"
-PR = "r0"
+PR = "r1"
 
 DEPENDS += "python3 netperf fping"
 DEPENDS_virtclass-native += "python3-native"
@@ -25,9 +25,17 @@ inherit distutils3
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
+    install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages/flent/tests
+    install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages/flent/scripts
+    echo "Copy " ${S}/flent/tests "to" ${D}/${libdir}/${PYTHON_DIR}/site-packages/flent/tests/
+    cp -r ${S}/flent/tests ${D}/${libdir}/${PYTHON_DIR}/site-packages/flent/
+    cp -r ${S}/flent/scripts ${D}/${libdir}/${PYTHON_DIR}/site-packages/flent/
 }
 
-RDEPENDS_${PN} = "\
-  python3-distutils \
-"
+do_install_append() {
+    install -d ${D}/${bindir}
+    install -m 0755 ${S}/flent/__main__.py ${D}/${bindir}/flent
+    sed -i  '1i#!/usr/bin/python3\n' ${D}/${bindir}/flent
+}
 
+RDEPENDS_${PN} = "python3-distutils python3-xmlrpc"
