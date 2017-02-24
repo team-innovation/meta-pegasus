@@ -3,10 +3,15 @@ SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "CLOSED"
 SRCNAME = "flent"
-PR = "r1"
+PR = "r2"
 
-DEPENDS += "python3 netperf fping"
+DEPENDS += "python3"
 DEPENDS_virtclass-native += "python3-native"
+
+RDEPENDS_${PN} = "python3-distutils python3-xmlrpc"
+RDEPENDS_${PN} += "iperf (>= 1.9)"                                                                                                                           
+RDEPENDS_${PN} += "netperf (>= 2.6)"                                                                                                                         
+RDEPENDS_${PN} += "fping (>= 3.5)"  
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
@@ -23,6 +28,10 @@ S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 inherit distutils3
 
+do_package_qa() {
+    echo "Skipping QA ..."
+}
+
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages/flent/tests
@@ -38,4 +47,3 @@ do_install_append() {
     sed -i  '1i#!/usr/bin/python3\n' ${D}/${bindir}/flent
 }
 
-RDEPENDS_${PN} = "python3-distutils python3-xmlrpc"
