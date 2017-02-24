@@ -3,11 +3,14 @@
 DESCRIPTION = "Packages needed for network debug"
 LICENSE = "MIT"
 
-PR = "3"
+PR = "4"
 
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
+	python3-flent \
+	netperf \
+	fping \
 	dhrystone \
 	i2c-tools \
 	iftop \
