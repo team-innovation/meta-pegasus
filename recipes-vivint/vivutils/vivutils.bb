@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r50"
+PR = "r51"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -43,6 +43,7 @@ SRC_URI = "\
 	   file://genkeys \
 	   file://clips.sh \
 	   file://lockdown_panel \
+	   file://user_battery_test.py \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -82,6 +83,7 @@ do_install() {
 	install -m 0755 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/genkeys ${D}/usr/local/bin
 	install -m 0755 ${S}/lockdown_panel ${D}/usr/local/bin
+	install -m 0755 ${S}/user_battery_test.py ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot

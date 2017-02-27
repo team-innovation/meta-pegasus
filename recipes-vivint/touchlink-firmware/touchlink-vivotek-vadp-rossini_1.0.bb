@@ -23,8 +23,8 @@ VADP_MODULE_NAME = "rossini-vadp_${VADP_VERSION}.tar.gz"
 do_compile_prepend() {
     sed -i "/TOOLCHAIN_PATH=/d" ./SOURCEME-ROSSINI
     if [ ${BUILD_ARCH} = "x86_64" ]; then
-        TOOLCHAIN_PATH="${WORKDIR}/arm-eabi-uclibc/usr/bin" source ./SOURCEME-ROSSINI
+        TOOLCHAIN_PATH="${WORKDIR}/arm-eabi-uclibc/usr/bin" . ./SOURCEME-ROSSINI
     else
-        TOOLCHAIN_PATH="${WORKDIR}/vtcs_toolchain/arm-eabi-uclibc/usr/bin" source ./SOURCEME-ROSSINI
+        TOOLCHAIN_PATH="${WORKDIR}/vtcs_toolchain/arm-eabi-uclibc/usr/bin" . ./SOURCEME-ROSSINI
     fi
 }

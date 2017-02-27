@@ -17,7 +17,7 @@ VADP_MODULE_NAME = "dbc-vadp_${VADP_VERSION}.tar.gz"
 
 do_compile_prepend() {
     sed -i "/TOOLCHAIN_PATH=/d" ./SOURCEME-DM36x
-    TOOLCHAIN_PATH="${WORKDIR}/bin" source ./SOURCEME-DM36x
+    TOOLCHAIN_PATH="${WORKDIR}/bin" . ./SOURCEME-DM36x
 }
 
 FILES_${PN} = "${FIRMWARE_DIR}/${VADP_MODULE_NAME}"

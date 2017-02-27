@@ -7,7 +7,7 @@ HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-PR = "r6"
+PR = "r12"
 SRCREV = "${AUTOREV}"
 MODULE = "openwrt"
 
@@ -24,49 +24,25 @@ SRC_URI = "http://${DOWNLOAD_SERVER}/RT3352_uImage;name=RT3352_uImage \
            http://${DOWNLOAD_SERVER}/MT7620_uboot.img;name=MT7620_uboot \
            file://COPYING \
            "
-
-BB_STRICT_CHECKSUM="0"
+SRC_URI[RT3352_uImage.md5sum] = "ba2b635f2b308bb59414a1a61fe15344"
+SRC_URI[RT3352_uImage.sha256sum] = "410137aa56b7c76a629002beb2e3d367480e88fd2fdf4e8273d8d354684eba3e"
+SRC_URI[RT3352_uboot.md5sum] = "d78a51f5fdb52747df72bce5989b76aa"
+SRC_URI[RT3352_uboot.sha256sum] = "bf32d459691fe2e95f6d376cd293df260d985781dc4535c4dbfdc38b9bfbc90b"
+SRC_URI[MT7620_uImage.md5sum] = "455c1db77269581e02fb6eade7980fb6"
+SRC_URI[MT7620_uImage.sha256sum] = "49b717149dd7742083f483b6fc7483cbbdbcbfee5dbb75020ece7fad9bfd4abc"
+SRC_URI[MT7620_uboot.md5sum] = "c917a291ac16826d76c51be3d895a4d1"
+SRC_URI[MT7620_uboot.sha256sum] = "be9e22a08e88900402db5d27673751dfc18f1767a7c4ad97c4ae4dabd70a6ef9"
 
 FW_DIR = "${base_libdir}/firmware"
 
 inherit gettext
 
-python do_removedownloadedimages() {
-    try:
-        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/RT3352_uImage"))
-    except:
-        pass
-    try:
-        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/RT3352_uboot.img"))
-    except:
-        pass
-    try:
-        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/MT7620_uImage"))
-    except:
-        pass
-    try:
-        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/MT7620_uboot.img"))
-    except:
-        pass
-    try:
-        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/RT3352_uImage.done"))
-    except:
-        pass
-    try:
-        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/RT3352_uboot.img.done"))
-    except:
-        pass
-    try:
-        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/MT7620_uImage.done"))
-    except:
-        pass
-    try:
-        os.unlink(os.path.join(d.getVar('BSPDIR'), "downloads/MT7620_uboot.img.done"))
-    except:
-        pass
-}
-
 addtask removedownloadedimages before do_fetch
+
+do_removedownloadedimages() {
+    rm -f ${DL_DIR}/RT3352*
+    rm -f ${DL_DIR}/MT7620*
+}
 
 do_configure() {
     :
