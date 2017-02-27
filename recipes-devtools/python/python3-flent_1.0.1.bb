@@ -3,7 +3,7 @@ SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "CLOSED"
 SRCNAME = "flent"
-PR = "r2"
+PR = "r3"
 
 DEPENDS += "python3"
 DEPENDS_virtclass-native += "python3-native"
@@ -17,6 +17,8 @@ RDEPENDS_${PN} += "fping (>= 3.5)"
 BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
+
+INSANE_SKIP_${PN} = "installed-vs-shipped"
 
 SRC_URI = "https://github.com/tohojo/flent/archive/v1.0.1.tar.gz"
 SRC_URI += "file://flent_use_distutils_for_yocto.patch"
