@@ -23,6 +23,7 @@ SRC_URI = "http://${DOWNLOAD_SERVER}/RT3352_uImage;name=RT3352_uImage \
            http://${DOWNLOAD_SERVER}/MT7620_uImage;name=MT7620_uImage \
            http://${DOWNLOAD_SERVER}/MT7620_uboot.img;name=MT7620_uboot \
            file://COPYING \
+           "
 
 SRC_URI[RT3352_uImage.md5sum] = "9f42afc9ea5fc36f0ffa860c07d81268"
 SRC_URI[RT3352_uImage.sha256sum] = "1f1aed49935e0199782fbb390895542c78ab98377216d9a718bbc0a8f9a2fefd"
