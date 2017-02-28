@@ -1,7 +1,7 @@
 ###
 ### Change ROUBAIX_PREPEND everytime you touch this script
 ###
-ROUBAIX_PREPEND = "-16"
+ROUBAIX_PREPEND = "-17"
 
 ROUBAIX_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix = "${PR}${ROUBAIX_PREPEND}${ROUBAIX_REVISION}"
@@ -60,6 +60,7 @@ FILES_${PN}-roubaix = "\
     ${INSTALL_DIR}/roubaix/conf_files/slim_line/roubaix_conf.json \
     ${INSTALL_DIR}/roubaix/conf_files/sky/roubaix_conf.json \
     ${INSTALL_DIR}/roubaix/conf_files/sly/roubaix_conf.json \
+    ${INSTALL_DIR}/roubaix/conf_files/wall_sly/roubaix_conf.json \
     ${INSTALL_DIR}/roubaix/roubaix_demo_conf.json \
     ${INSTALL_DIR}/roubaix/roubaix_demo_log.json \
     ${INSTALL_DIR}/roubaix/roubaix_log.json \
