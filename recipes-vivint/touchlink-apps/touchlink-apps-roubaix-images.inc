@@ -10,6 +10,7 @@ ROUBAIX_IMG_SVG_PREPEND = "-1"
 ROUBAIX_IMG_TOOLBOX_PREPEND = "-1"
 ROUBAIX_IMG_VIDEO_PREPEND = "-1"
 ROUBAIX_IMG_WP_PREPEND = "-1"
+ROUBAIX_IMG_MULTIMEDIA_PREPEND = "-1"
 
 ROUBAIX_IMG_COIN_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix-images-coin = "${PR}${ROUBAIX_IMG_COIN_PREPEND}${ROUBAIX_IMG_COIN_REVISION}"
@@ -37,6 +38,9 @@ PKGR_${PN}-roubaix-images-video = "${PR}${ROUBAIX_IMG_VIDEO_PREPEND}${ROUBAIX_IM
 
 ROUBAIX_IMG_WP_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix-images-wallpapers = "${PR}${ROUBAIX_IMG_WP_PREPEND}${ROUBAIX_IMG_WP_REVISION}"
+
+ROUBAIX_IMG_MULTIMEDIA_REVISION ?= "${DISTRO_PR}"
+PKGR_${PN}-roubaix-images-multimedia = "${PR}${ROUBAIX_IMG_MULTIMEDIA_PREPEND}${ROUBAIX_IMG_MULTIMEDIA_REVISION}"
 
 FILES_${PN}-roubaix-images-coin = "\
 	${INSTALL_DIR}/roubaix/images/coin/* \
@@ -72,4 +76,8 @@ FILES_${PN}-roubaix-images-video = "\
 
 FILES_${PN}-roubaix-images-wallpapers = "\
 	${INSTALL_DIR}/roubaix/images/wallpapers/* \
+	"
+
+FILES_${PN}-roubaix-images-multimedia = "\
+	${INSTALL_DIR}/roubaix/images/multimedia/* \
 	"

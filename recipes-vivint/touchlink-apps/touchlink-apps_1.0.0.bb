@@ -43,6 +43,8 @@ require touchlink-apps-procmand.inc
 require touchlink-apps-favicon.inc
 require touchlink-apps-global-conf.inc
 require touchlink-apps-mmpd.inc
+require touchlink-apps-smarthomed.inc
+require touchlink-apps-listenerd.inc
 
 #roubaix
 require touchlink-apps-roubaix.inc
@@ -56,6 +58,7 @@ require ${PN}-roubaix-mixin.inc
 require ${PN}-roubaix-framework.inc
 require ${PN}-roubaix-models.inc
 require ${PN}-roubaix-views.inc
+require ${PN}-roubaix-widgets.inc
 require ${PN}-roubaix-images.inc
 require ${PN}-roubaix-popups.inc
 require ${PN}-roubaix-scripts.inc
@@ -155,6 +158,7 @@ DEPENDS = " \
 	python3-setproctitle-native \
 	python3-soco-native \
 	python3-sparsedict-native \
+	python3-phue-native \
 "
 
 
@@ -170,6 +174,7 @@ RDEPENDS_${PN} = "\
         python3-jsonschema \
 	python3-brisa \
 	python3-sparsedict \
+	python3-phue \
 "
 
 do_compile() {
@@ -333,6 +338,7 @@ PACKAGES = " \
 	${PN}-roubaix-mixin  \
 	${PN}-roubaix-models  \
 	${PN}-roubaix-views  \
+	${PN}-roubaix-widgets  \
 	${PN}-roubaix-fonts  \
 	${PN}-roubaix-html  \
 	${PN}-roubaix-legal  \
@@ -345,6 +351,7 @@ PACKAGES = " \
 	${PN}-roubaix-images-toolbox \
 	${PN}-roubaix-images-video \
 	${PN}-roubaix-images-wallpapers \
+	${PN}-roubaix-images-multimedia \
 	${PN}-roubaix-popups  \
 	${PN}-roubaix-scripts  \
 	${PN}-roubaix-style  \
@@ -381,6 +388,10 @@ PACKAGES = " \
 	${PN}-vocabulary    \
 	${PN}-webd  \
 	${PN}-zwaved        \
+	${PN}-smarthomed-proxies      \
+	${PN}-listenerd-proxies      \
+	${PN}-smarthomed      \
+	${PN}-listenerd      \
 	${PN}-sound-roubaix-back \
 	${PN}-sound-roubaix-chimes \
 	${PN}-sound-roubaix-click \

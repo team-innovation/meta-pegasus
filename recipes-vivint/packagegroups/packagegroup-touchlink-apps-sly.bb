@@ -21,6 +21,8 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-roubaix-images-png \
 	touchlink-apps-rtspd \
 	touchlink-apps-sundance \
+	touchlink-apps-smarthomed \
+	touchlink-apps-listenerd \
 	touchlink-apps-test-daemon \
 	touchlink-apps-test-ui \
 	touchlink-apps-videod \

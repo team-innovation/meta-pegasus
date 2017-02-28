@@ -36,6 +36,7 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-roubaix-services \
 	touchlink-apps-roubaix-style \
 	touchlink-apps-roubaix-views \
+	touchlink-apps-roubaix-widgets \
 	touchlink-apps-sound-roubaix-back \
 	touchlink-apps-sound-roubaix-chimes \
 	touchlink-apps-sound-roubaix-click \
@@ -52,6 +53,8 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-sound-wav-vocab \
 	touchlink-apps-ssdpd \
 	touchlink-apps-sundance-proxies \
+	touchlink-apps-smarthomed-proxies \
+	touchlink-apps-listenerd-proxies \
 	touchlink-apps-updated \
 	touchlink-apps-usage-analytics \
 	touchlink-apps-utils \
@@ -116,6 +119,7 @@ PYTHON_EXTRA_DEPENDS = "\
 	python3-six \
 	python3-soco \
 	python3-sparsedict \
+	python3-phue \
 "
 
 RDEPENDS_${PN} = " \
