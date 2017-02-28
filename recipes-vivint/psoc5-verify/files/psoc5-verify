@@ -6,16 +6,23 @@
 
 platform=$(strings /proc/device-tree/compatible |
 	grep vivint |
-	head -n 1 |
-	cut -d"," -f2)
+	sed s/^vivint,//)
 
 if [ "$platform" == "wallsly" ]; then
-	monpwr_driver=monpwr_wall
+	monpwr_module=monpwr_wall
+	monpwr_devlink=/sys/bus/i2c/devices/1-0034
 elif [ "$platform" == "sly" ]; then
-	monpwr_driver=monpwr_sly
+	monpwr_module=monpwr_sly
+	monpwr_devlink=/sys/bus/i2c/devices/3-0034
 else
-	monpwr_driver=monpwr
+	monpwr_module=monpwr
+	monpwr_devlink=/sys/bus/i2c/devices/3-0034
 fi
+
+# create a platform independent link to the monpwr psoc i2c device directory
+mkdir -p /dev/vivint
+rm -f /dev/vivint/psoc
+ln -s $monpwr_devlink /dev/vivint/psoc
 
 
 psoc5_verify()
@@ -43,8 +50,8 @@ psoc5_verify()
 		return 0
 	else
 		monpwr_loaded=$(lsmod | grep monpwr | sed -e 's/ \+/\t/g' | cut -f 1)
-		test "$monpwr_loaded" = "$monpwr_driver" &&
-			rmmod $monpwr_driver
+		test "$monpwr_loaded" = "$monpwr_module" &&
+			rmmod $monpwr_module
 		test -f /sys/class/swd/psoc50/access &&
 			echo 1 > /sys/class/swd/psoc50/access
 		echo "echoing $path to fw_path"
@@ -67,8 +74,8 @@ case "$1" in
 	start|restart|reload)
 		psoc5_verify
 		monpwr_loaded=$(lsmod | grep monpwr | sed -e 's/ \+/\t/g' | cut -f 1)
-		test "$monpwr_loaded" = "$monpwr_driver" ||
-			modprobe $monpwr_driver
+		test "$monpwr_loaded" = "$monpwr_module" ||
+			modprobe $monpwr_module
 		;;
 	stop)
 		stop
