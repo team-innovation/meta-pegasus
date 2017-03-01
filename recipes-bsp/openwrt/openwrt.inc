@@ -25,12 +25,12 @@ SRC_URI = "http://${DOWNLOAD_SERVER}/RT3352_uImage;name=RT3352_uImage \
            file://COPYING \
            "
 
-SRC_URI[RT3352_uImage.md5sum] = "8f7eadb6b68d2bc47b3fedd09840cf52"
-SRC_URI[RT3352_uImage.sha256sum] = "f1bf209e3abace81fa79199d6cd4cea7e2ad9266e93b97e2ed7b41a36626ba16"
+SRC_URI[RT3352_uImage.md5sum] = "b052fe2de7027e8a540f22bc1233a428"
+SRC_URI[RT3352_uImage.sha256sum] = "6244ea1e82f867afb10fb31c7e215bd1b04e303fc43c92a3dc9ab9ec1d5fbd1f"
 SRC_URI[RT3352_uboot.md5sum] = "d78a51f5fdb52747df72bce5989b76aa"
 SRC_URI[RT3352_uboot.sha256sum] = "bf32d459691fe2e95f6d376cd293df260d985781dc4535c4dbfdc38b9bfbc90b"
-SRC_URI[MT7620_uImage.md5sum] = "46dcde29e2c01a3f70165f1665681e4e"
-SRC_URI[MT7620_uImage.sha256sum] = "1f3f5c358be17673883034b2d5392b4263018b6f2e7345c69ae231df71cdba38"
+SRC_URI[MT7620_uImage.md5sum] = "633fec02add3c2d953c54b1a99ea3b44"
+SRC_URI[MT7620_uImage.sha256sum] = "3dc2ee231908607a9f81fbf12cc154b2743fd707f21bf0c12bfef8ef943f2698"
 SRC_URI[MT7620_uboot.md5sum] = "2a0895c22467e353a8b007856240451e"
 SRC_URI[MT7620_uboot.sha256sum] = "568391ba7a12c65987de834b02a474a879e4c18ad2a962f5813d1bb8f3464f4a"
 
