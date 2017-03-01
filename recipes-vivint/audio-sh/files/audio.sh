@@ -6,16 +6,32 @@ rmmods() {
 		rmmod snd_soc_cx20704
 }
 
+frob_cx() {
+	v=$1
+	test -f /sys/class/lm48511/lm485110/aud_reset &&
+		echo $1 > /sys/class/lm48511/lm485110/aud_reset
+	test -f /sys/iodbus/codec/aud_reset/value &&
+		echo $1 > /sys/iodbus/codec/aud_reset/value
+}
+
+reset_cx() {
+	frob_cx 0
+}
+
+enable_cx() {
+	frob_cx 1
+}
+
 initall() {
 	echo 1 > /sys/class/lm48511/lm485110/access
 	lsmod | grep -q snd_soc_cx20704 ||
-		echo 0 > /sys/class/lm48511/lm485110/aud_reset
+		reset_cx
 	echo 1 > /sys/class/lm48511/lm485110/sd_amp
 	echo 1 > /sys/class/lm48511/lm485110/sd_boost
 	echo 1 > /sys/class/lm48511/lm485110/fb_sel
 	echo 1 > /sys/class/lm48511/lm485110/ss_ff
 	lsmod | grep -q snd_soc_cx20704 ||
-		echo 1 > /sys/class/lm48511/lm485110/aud_reset
+		enable_cx
 }
 
 dumpreg() {
