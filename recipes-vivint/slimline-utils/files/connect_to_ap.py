@@ -14,9 +14,6 @@ cgitb.enable()
 sys.path.insert(0, "/opt/2gig/netd/proxies/python")
 sys.path.insert(0, "/opt/2gig/netd")
 
-import services.singletons.slim_line.scripts.wps
-
-
 class NetworkHelper(EventLoop):
     def __init__(self):
         super().__init__(self.on_exit)
