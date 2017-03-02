@@ -104,19 +104,19 @@ if [ x"$D" = "x" ]; then
 		*) ;;
 	esac
 
-	old_ssh_config_dir=$previous_bootmount/etc/ssh
-
-    if [ -d old_ssh_config_dir ] 
+    old_ssh_config_dir=$previous_bootmount/etc/ssh
+    if [ -d $old_ssh_config_dir ]
     then
         for f in $(cd $previous_bootmount/etc/ssh/ && find . -maxdepth 1 -type f -name \*key\*) ; do
             cp $old_ssh_config_dir/$f /etc/ssh/
             logging "Copied $old_ssh_config_dir/$f to /etc/ssh/"
         done
-        old_root_ssh_config=$previous_bootmount/home/root/.ssh
-        if [ -d $old_root_ssh_config ]; then
-            cp -a $old_root_ssh_config /home/root/
-            logging "Copied $old_root_ssh_config to /home/root/"
-        fi
+    fi
+    old_root_ssh_config=$previous_bootmount/home/root/.ssh
+    if [ -d $old_root_ssh_config ]
+    then
+        cp -a $old_root_ssh_config /home/root/
+        logging "Copied $old_root_ssh_config to /home/root/"
     fi
 
 else
