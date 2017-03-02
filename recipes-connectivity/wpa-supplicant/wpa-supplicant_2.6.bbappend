@@ -1,4 +1,4 @@
-pkg_postinst_${PN}-updated () {
+pkg_postinst_${PN} () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for updated
 #
