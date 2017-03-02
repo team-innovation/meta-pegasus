@@ -1,7 +1,7 @@
 ###
 ### Change UPDATED_PREPEND everything you touch this script
 ###
-UPDATED_PREPEND = "-5"
+UPDATED_PREPEND = "-6"
 
 UPDATED_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-updated = "${PR}${UPDATED_PREPEND}${UPDATED_REVISION}"
