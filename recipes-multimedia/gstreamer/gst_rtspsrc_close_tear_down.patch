@@ -1,0 +1,11 @@
+--- gst-plugins-good-1.4.1/gst/rtsp/gstrtspsrc.c	2014-07-21 02:24:27.000000000 -0600
++++ gst-plugins-good-1.4.1.a/gst/rtsp/gstrtspsrc.c	2017-03-02 16:57:17.000000000 -0700
+@@ -7787,7 +7787,7 @@
+   GST_OBJECT_UNLOCK (src);
+ 
+   /* ensure synchronously all is closed and clean */
+-  gst_rtspsrc_close (src, FALSE, TRUE);
++  gst_rtspsrc_close (src, FALSE, FALSE);
+ 
+   return TRUE;
+ }
