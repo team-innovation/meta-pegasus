@@ -19,6 +19,7 @@ RDEPENDS_${PN} += " \
 	sly-version \
 	swdltool \
 	touchlink-kwikset-firmware \
+	touchlink-microsemi-firmware \
 	touchlink-rtc-firmware \
 	touchlink-telit-firmware-he910 \
 	touchlink-telit-firmware-ue910 \
