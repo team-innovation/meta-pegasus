@@ -5,7 +5,7 @@ PR = "r1"
 
 FIRMWARE_ZL380    = "MICROSEMI_firmware.s3"
 
-FIRMWARE_DIR = "/var/lib/firmware"
+FIRMWARE_DIR = "/lib/firmware"
 
 
 SRC_URI = "file://${FIRMWARE_ZL380} "
