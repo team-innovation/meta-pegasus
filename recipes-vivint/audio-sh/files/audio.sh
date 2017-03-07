@@ -174,8 +174,6 @@ patch_cx_aec() {
 	echo 0x117d 0xad > regwrite
 
 	echo 1 > newc
-
-	patch_lm48511_amp
 }
 
 init_wallsly() {
@@ -184,7 +182,10 @@ init_wallsly() {
 	modprobe snd_soc_zl380tw
 	modprobe snd_soc_imx_zl380tw
 	patch_lm48511_amp
-	# FIXME: wallsly    gsm030x equivalent needed
+	grep -q sly /proc/device-tree/compatible && {
+		modprobe snd_soc_gsm030x
+		modprobe snd_soc_imx_gsm030x
+	}
 }
 
 init_slimline() {
@@ -198,6 +199,7 @@ init_slimline() {
 	cx_dumpregs before
 	patch_cx_aec
 	cx_dumpregs after
+	patch_lm48511_amp
 	grep -q sly /proc/device-tree/compatible && {
 		modprobe snd_soc_gsm030x
 		modprobe snd_soc_imx_gsm030x

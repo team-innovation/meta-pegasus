@@ -4,7 +4,7 @@ HOMEPAGE = "http://git.vivint.com"
 SECTION = "base"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r9"
+PR = "r10"
 
 SRC_URI = "file://COPYING \
            file://audio.sh"
