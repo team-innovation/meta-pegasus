@@ -1,12 +1,24 @@
 #!/bin/bash
 rmmods() {
+        lsmod | grep -q snd_soc_imx_zl380tw &&
+                rmmod snd_soc_imx_zl380tw
+        lsmod | grep -q snd_soc_zl380tw &&
+                rmmod snd_soc_zl380tw
 	lsmod | grep -q snd_soc_imx_cx20704 &&
 		rmmod snd_soc_imx_cx20704
 	lsmod | grep -q snd_soc_cx20704 &&
 		rmmod snd_soc_cx20704
 }
 
-frob_cx() {
+initall_withoutcx() {
+	echo 1 > /sys/class/lm48511/lm485110/access
+	echo 1 > /sys/class/lm48511/lm485110/sd_amp
+	echo 1 > /sys/class/lm48511/lm485110/sd_boost
+	echo 1 > /sys/class/lm48511/lm485110/fb_sel
+	echo 1 > /sys/class/lm48511/lm485110/ss_ff
+}
+
+cx_frob() {
 	v=$1
 	test -f /sys/class/lm48511/lm485110/aud_reset &&
 		echo $1 > /sys/class/lm48511/lm485110/aud_reset
@@ -14,80 +26,87 @@ frob_cx() {
 		echo $1 > /sys/iodbus/codec/aud_reset/value
 }
 
-reset_cx() {
-	frob_cx 0
+cx_reset() {
+	cx_frob 0
 }
 
-enable_cx() {
-	frob_cx 1
+cx_enable() {
+	cx_frob 1
 }
 
-initall() {
+initall_withcx() {
 	echo 1 > /sys/class/lm48511/lm485110/access
 	lsmod | grep -q snd_soc_cx20704 ||
-		reset_cx
+		cx_reset
 	echo 1 > /sys/class/lm48511/lm485110/sd_amp
 	echo 1 > /sys/class/lm48511/lm485110/sd_boost
 	echo 1 > /sys/class/lm48511/lm485110/fb_sel
 	echo 1 > /sys/class/lm48511/lm485110/ss_ff
 	lsmod | grep -q snd_soc_cx20704 ||
-		enable_cx
+		cx_enable
 }
 
-dumpreg() {
+cx_dumpreg() {
 	echo $1 > regread
 	echo -n "$1: " >> /tmp/cxregs
 	cat regread >> /tmp/cxregs
 }
 
-dumpregs() {
+cx_dumpregs() {
 	echo '===================' >> /tmp/cxregs
 	echo regs $1 >> /tmp/cxregs
 	echo '===================' >> /tmp/cxregs
 	cd /sys/class/cx20704/cx20704_controls
 	echo '===================' >> /tmp/cxregs
-	dumpreg 0x0f51
-	dumpreg 0x101e
-	dumpreg 0x116b
-	dumpreg 0x116d
-	dumpreg 0x116e
-	dumpreg 0x1171
-	dumpreg 0x1173
-	dumpreg 0x1176
-	dumpreg 0x117a
-	dumpreg 0x117f
-	dumpreg 0x1181
-	dumpreg 0x1184
-	dumpreg 0x1186
-	dumpreg 0x15c9
-	dumpreg 0x15ca
-	dumpreg 0x15cb
-	dumpreg 0x15cc
-	dumpreg 0x15cd
-	dumpreg 0x15ce
-	dumpreg 0x15cf
-	dumpreg 0x15d0
-	dumpreg 0x15d1
-	dumpreg 0x15d2
-	dumpreg 0x15d3
-	dumpreg 0x15d4
-	dumpreg 0x15d5
-	dumpreg 0x15d6
-	dumpreg 0x15d7
-	dumpreg 0x15d8
-	dumpreg 0x15d9
-	dumpreg 0x15da
-	dumpreg 0x15db
-	dumpreg 0x15dc
-	dumpreg 0x15e3
-	dumpreg 0x15e4
-	dumpreg 0x117b
-	dumpreg 0x117c
-	dumpreg 0x117d
+	cx_dumpreg 0x0f51
+	cx_dumpreg 0x101e
+	cx_dumpreg 0x116b
+	cx_dumpreg 0x116d
+	cx_dumpreg 0x116e
+	cx_dumpreg 0x1171
+	cx_dumpreg 0x1173
+	cx_dumpreg 0x1176
+	cx_dumpreg 0x117a
+	cx_dumpreg 0x117f
+	cx_dumpreg 0x1181
+	cx_dumpreg 0x1184
+	cx_dumpreg 0x1186
+	cx_dumpreg 0x15c9
+	cx_dumpreg 0x15ca
+	cx_dumpreg 0x15cb
+	cx_dumpreg 0x15cc
+	cx_dumpreg 0x15cd
+	cx_dumpreg 0x15ce
+	cx_dumpreg 0x15cf
+	cx_dumpreg 0x15d0
+	cx_dumpreg 0x15d1
+	cx_dumpreg 0x15d2
+	cx_dumpreg 0x15d3
+	cx_dumpreg 0x15d4
+	cx_dumpreg 0x15d5
+	cx_dumpreg 0x15d6
+	cx_dumpreg 0x15d7
+	cx_dumpreg 0x15d8
+	cx_dumpreg 0x15d9
+	cx_dumpreg 0x15da
+	cx_dumpreg 0x15db
+	cx_dumpreg 0x15dc
+	cx_dumpreg 0x15e3
+	cx_dumpreg 0x15e4
+	cx_dumpreg 0x117b
+	cx_dumpreg 0x117c
+	cx_dumpreg 0x117d
 	echo '===================' >> /tmp/cxregs
 }
 
-patch_aec() {
+patch_lm48511_amp() {
+	cd /sys/class/lm48511/lm485110
+	echo 1 > access
+	echo 1 > sd_boost
+	echo 1 > fb_sel
+}
+
+patch_cx_aec() {
 	cd /sys/class/cx20704/cx20704_controls
 
 	echo 0x0f51 0xb0 > regwrite
@@ -156,26 +175,48 @@ patch_aec() {
 
 	echo 1 > newc
 
-	cd /sys/class/lm48511/lm485110
-	echo 1 > sd_boost
-	echo 1 > fb_sel
+	patch_lm48511_amp
 }
+
+init_wallsly() {
+	initall_withoutcx
+	sleep 1
+	modprobe snd_soc_zl380tw
+	modprobe snd_soc_imx_zl380tw
+	patch_lm48511_amp
+	# FIXME: wallsly    gsm030x equivalent needed
+}
+
+init_slimline() {
+	initall_withcx
+	sleep 1
+	modprobe snd_soc_cx20704
+	modprobe snd_soc_imx_cx20704
+	amixer sset 'I2S TX Source' 'Stream2: mic ADC'
+	amixer sset 'DAC Source' 'Stream3: I2S in'
+	sleep 1
+	cx_dumpregs before
+	patch_cx_aec
+	cx_dumpregs after
+	grep -q sly /proc/device-tree/compatible && {
+		modprobe snd_soc_gsm030x
+		modprobe snd_soc_imx_gsm030x
+	}
+}
+
 
 rmmods
-initall
-sleep 1
-modprobe snd_soc_cx20704
-modprobe snd_soc_imx_cx20704
-amixer sset 'I2S TX Source' 'Stream2: mic ADC'
-amixer sset 'DAC Source' 'Stream3: I2S in'
-sleep 1
-dumpregs before
-patch_aec
-dumpregs after
 
-# FIXME: wallsly
-grep -q sly /proc/device-tree/compatible && {
-	modprobe snd_soc_gsm030x
-	modprobe snd_soc_imx_gsm030x
-}
+platform=$(strings /proc/device-tree/compatible |
+        grep vivint |
+        sed s/^vivint,//)
+	echo $platform " reported to audio.sh"
 
+if [ "$platform" == "wallsly" ]; then
+	init_wallsly
+elif [ "$platform" == "sly" ]; then
+	init_slimline
+else
+#slimline
+	init_slimline
+fi
