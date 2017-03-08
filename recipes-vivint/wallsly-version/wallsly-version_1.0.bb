@@ -5,7 +5,7 @@ SECTION = "wallsly"
 LICENSE = "CLOSED"
 DEPENDS = ""
 PV = "${DISTRO_VERSION}"
-PR = "r0"
+PR = "r1"
 
 SRC_URI =	"file://lsb_release_wallsly \
 		 file://issue_wallsly \
@@ -20,7 +20,6 @@ RPROVIDES_${PN} = "wallsly-version"
 do_install() {
 	# version
 	install -d ${D}${sysconfdir}
-	echo "${WALLSLY_NAME} ${DISTRO_VERSION}" > ${D}${sysconfdir}/version
 	echo "${WALLSLY_NAME} ${DISTRO_VERSION}" > ${D}${sysconfdir}/wallsly_version
 	echo "$(date '+Build Date: %m/%d/%Y')" >> ${D}${sysconfdir}/wallsly_version
 	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/wallsly_version
