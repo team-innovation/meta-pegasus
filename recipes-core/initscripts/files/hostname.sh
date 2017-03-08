@@ -10,8 +10,11 @@
 HOSTNAME=$(/bin/hostname)
 
 # change hostname base on device
-# FIXME: do something different for wallsly
-if grep -q sly /proc/device-tree/compatible; then
+if grep -q wallsly /proc/device-tree/compatible; then
+	if ! grep -q wallsly /etc/hostname; then
+		echo "imx6dl-wallsly" > /etc/hostname
+	fi
+elif grep -q sly /proc/device-tree/compatible; then
 	if ! grep -q skyhub /etc/hostname; then
         	echo "imx6dl-skyhub" > /etc/hostname
 	fi
