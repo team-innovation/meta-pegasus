@@ -31,6 +31,8 @@ class IodHelper(EventLoop):
             f.write('7660')
         with open('/var/tmp/temp_raw', 'w') as f:
             f.write('300')
+        with open('/var/tmp/temp1_input', 'w') as f:
+            f.write('25000')
 
         if len(sys.argv) == 1:
             enable = True
