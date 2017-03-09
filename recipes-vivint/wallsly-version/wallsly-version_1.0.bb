@@ -5,7 +5,7 @@ SECTION = "wallsly"
 LICENSE = "CLOSED"
 DEPENDS = ""
 PV = "${DISTRO_VERSION}"
-PR = "r1"
+PR = "r2"
 
 SRC_URI =	"file://lsb_release_wallsly \
 		 file://issue_wallsly \
@@ -20,13 +20,13 @@ RPROVIDES_${PN} = "wallsly-version"
 do_install() {
 	# version
 	install -d ${D}${sysconfdir}
-	echo "${WALLSLY_NAME} ${DISTRO_VERSION}" > ${D}${sysconfdir}/wallsly_version
-	echo "$(date '+Build Date: %m/%d/%Y')" >> ${D}${sysconfdir}/wallsly_version
-	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/wallsly_version
-	echo "OE branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/wallsly_version
-	echo "OERev: ${METADATA_REVISION}" >> ${D}${sysconfdir}/wallsly_version
-	echo "AppsRev: ${HG_APPS_ID}" >> ${D}${sysconfdir}/wallsly_version
-	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/wallsly_version
+	echo "${WALLSLY_NAME} ${DISTRO_VERSION}" > ${D}${sysconfdir}/wallsly-version
+	echo "$(date '+Build Date: %m/%d/%Y')" >> ${D}${sysconfdir}/wallsly-version
+	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/wallsly-version
+	echo "OE branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/wallsly-version
+	echo "OERev: ${METADATA_REVISION}" >> ${D}${sysconfdir}/wallsly-version
+	echo "AppsRev: ${HG_APPS_ID}" >> ${D}${sysconfdir}/wallsly-version
+	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/wallsly-version
 
 	install -d ${D}${bindir}
 	install -m 0755 ${WORKDIR}/lsb_release_wallsly ${D}${bindir}/

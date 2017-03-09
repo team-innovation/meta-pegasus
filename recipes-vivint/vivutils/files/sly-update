@@ -3,9 +3,9 @@
 image=$1
 img_dir="/home/root"
 
-if [[ `uname -a |cut -d' ' -f2` != "imx6dl-skyhub" ]]
+if [[ `uname -a |cut -d' ' -f2` != "imx6dl-skyhub" ]] && [[ `uname -a |cut -d' ' -f2` != "imx6dl-wallsly" ]]
 then
-    echo "This is not SkyHub, quickie update refused!"
+	echo "This is not a SkyHub or WallSly, quickie update refused!"
 	exit 6
 fi
 
