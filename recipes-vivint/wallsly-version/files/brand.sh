@@ -28,7 +28,7 @@ check_and_set()
 			chmod 755 /usr/bin/lsb_release
 
 			rm -f /etc/init.d/multiplexerd
-			rm -f /etc/procmand/multiplexerd
+			rm -f /etc/procman.d/multiplexerd
 		fi
 	fi
 }

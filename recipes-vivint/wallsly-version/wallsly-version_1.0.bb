@@ -5,7 +5,7 @@ SECTION = "wallsly"
 LICENSE = "CLOSED"
 DEPENDS = ""
 PV = "${DISTRO_VERSION}"
-PR = "r2"
+PR = "r3"
 
 SRC_URI =	"file://lsb_release_wallsly \
 		 file://issue_wallsly \

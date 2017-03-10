@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r15"
+PR = "r16"
 
 inherit packagegroup
 
