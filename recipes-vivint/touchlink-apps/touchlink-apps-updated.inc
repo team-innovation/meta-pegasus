@@ -92,7 +92,6 @@ if [ x"$D" = "x" ]; then
     # Make sure usb_update exists
     echo 0 > /sys/block/mmcblk0boot1/force_ro
     fw_printenv usb_update 2&> /dev/null || fw_setenv usb_update no
-    fw_printenv bootnum 2&> /dev/null || fw_setenv bootnum 1
     echo 1 > /sys/block/mmcblk0boot1/force_ro
 
 	# Copy SSH identity and authorized key files
