@@ -26,5 +26,10 @@ then
    ln -sf $media_extra_wpa_supplicant_conf $etc_wpa_supplicant_conf
 fi
 
+# Fix open network connection
+if [ -f $media_extra_wpa_supplicant_conf]; then
+    grep -q -e 'disabled=1' $media_extra_wpa_supplicant_conf || sed -i "/key_mgmt=NONE/a\\\        disabled=1" $wpafile
+fi
+
 exit 0
 

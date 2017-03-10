@@ -36,7 +36,7 @@ FILES_wpa-supplicant-cli = "${sbindir}/wpa_cli"
 FILES_${PN} += "${datadir}/dbus-1/system-services/*"
 CONFFILES_${PN} += "${sysconfdir}/wpa_supplicant.conf"
 
-PR="r5"
+PR="r6"
 
 do_configure () {
 	${MAKE} -C wpa_supplicant clean
@@ -105,12 +105,5 @@ pkg_postinst_wpa-supplicant () {
 	if [ "x$D" = "x" ]; then
 	    # If we're offline, we don't need to do this.
 		killall -q -HUP dbus-daemon || true
-
-        # Fix open network connection
-        wpafile=/media/extra/conf/network/wpa_supplicant_wireless.conf
-        if [ -f $wpafile ]; then
-            grep -q -e 'disabled=1' $wpafile || sed -i "/key_mgmt=NONE/a\\\        disabled=1" $wpafile
-        fi
 	fi
-
 }
