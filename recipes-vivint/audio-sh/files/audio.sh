@@ -8,6 +8,10 @@ rmmods() {
 		rmmod snd_soc_imx_cx20704
 	lsmod | grep -q snd_soc_cx20704 &&
 		rmmod snd_soc_cx20704
+	lsmod | grep -q snd_soc_imx_gsm030x &&
+		rmmod snd_soc_imx_gsm030x
+	lsmod | grep -q snd_soc_gsm030x &&
+		rmmod snd_soc_gsm030x
 }
 
 initall_withoutcx() {
@@ -182,10 +186,6 @@ init_wallsly() {
 	modprobe snd_soc_zl380tw
 	modprobe snd_soc_imx_zl380tw
 	patch_lm48511_amp
-	grep -q sly /proc/device-tree/compatible && {
-		modprobe snd_soc_gsm030x
-		modprobe snd_soc_imx_gsm030x
-	}
 }
 
 init_slimline() {
@@ -200,10 +200,8 @@ init_slimline() {
 	patch_cx_aec
 	cx_dumpregs after
 	patch_lm48511_amp
-	grep -q sly /proc/device-tree/compatible && {
-		modprobe snd_soc_gsm030x
-		modprobe snd_soc_imx_gsm030x
-	}
+	modprobe snd_soc_gsm030x
+	modprobe snd_soc_imx_gsm030x
 }
 
 
