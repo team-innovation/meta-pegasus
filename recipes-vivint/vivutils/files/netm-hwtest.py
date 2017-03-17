@@ -9,7 +9,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Test the network module for basic functionality')
 parser.add_argument('ap', help='accesspoint name')
-parser.add_argument('-i', nargs='?', default='apcli0', dest="iface", 
+parser.add_argument('-i', nargs='?', default='wlan0', dest="iface", 
     help='interface to use, default apcli0')
 args = parser.parse_args()
 
@@ -23,76 +23,48 @@ call(["procman", "stop", "netd"], stdout=devnull, stderr=devnull)
 
 try:
     serialport = Serial("/opt/2gig/multiplexerd/helpers/network", 57600, 
-                        timeout = 10)
+                        timeout = 2)
     serialport.flushOutput()
     serialport.flushInput()
 
     # Get MAC address
+    resp = b''
+    while serialport.inWaiting() > 0:
+        resp += serialport.read()
     serialport.write("cat /sys/class/net/{}/address\n".format(args.iface).encode())
-    resp = serialport.readline() # Read command back
-    resp = serialport.readline() # Read response
-    macaddr = resp.decode().strip()
+    sleep(.1)
+    resp = serialport.readline()
+    sleep(.1)
+    resp = serialport.readline().decode('ascii')
+    macaddr = resp.strip()
+
+    serialport.write('wifi up\n'.encode())
+    sleep(1)
+    resp = serialport.readline()
+    while serialport.inWaiting() > 0:
+        resp += serialport.read()
 
     # Connect to ap
     channel = "0"
-    count = 0
-    while count < 10:
-        serialport.write("iwpriv {} set SiteSurvey=1\n".format(args.iface).encode())
-        resp = serialport.readline() # Read command back
-        serialport.write("iwpriv {} get_site_survey | grep {}\n".format(args.iface, args.ap).encode())
-        resp = serialport.readline() # Read command back
-        resp = serialport.readline().decode() # Read response
-        channel = resp.split(' ')[0]
-        if channel.isdigit() and int(channel) > 0:
-            break
+    for count in range(0,10):
+        resp = b''
+        while serialport.inWaiting() > 0:
+            resp += serialport.read()
+        serialport.write("netv iw scan | grep \"{}\"\n".format(args.ap).encode())
+        sleep(.1)
+        resp = serialport.readline()
+        sleep(.1)
+        resp = serialport.readline().decode('ascii')
+        fields = resp.split('__dl__')
+        if len(fields) > 1:
+            channel = fields[1].strip()
+            signal = fields[-1].strip()
+            ssid = fields[2].strip()
+            if channel.isdigit() and int(channel) > 0:
+                break
     else:
         print("Could not find {}".format(args.ap))
         sys.exit(1)
-
-    serialport.write("iwpriv {} set ApCliEnable=0\n".format(args.iface).encode())
-    resp = serialport.readline() # Read command back
-    serialport.write("iwpriv {} set ApCliSsid={}\n".format(args.iface, args.ap).encode())
-    resp = serialport.readline() # Read command back
-    serialport.write("iwpriv {} set Channel={}\n".format(args.iface, channel).encode())
-    resp = serialport.readline() # Read command back
-    serialport.write("iwpriv {} set ApCliAuthMode=OPEN,ApCliEncrypType=NONE\n".format(args.iface).encode())
-    resp = serialport.readline() # Read command back
-    serialport.write("iwpriv {} set ApCliEnable=1\n".format(args.iface).encode())
-    resp = serialport.readline() # Read command back
-
-    # Wait until connection is established
-    resp = ""
-    count = 500
-    while not args.ap in resp:
-        serialport.write("iwgetid {}\n".format(args.iface).encode())
-        resp = serialport.readline() # Read command back
-        resp = serialport.readline().decode() # Read response
-        count -= 1
-        if count == 0: 
-            print("Failed to connect to {}".format(args.ap))
-            sys.exit(1)
-
-    ssid = resp.strip().split(":")[-1][1:-1]
-
-    # Calculate signal strength from RSS
-    serialport.write("iwpriv {} stat | grep RSSI*\n".format(args.iface).encode())
-    resp = serialport.readline() # Read command back
-    resp = serialport.readline().decode()
-    # Check what module type this is and format response
-    if 'RSSI-A' in resp: # Old module format
-        rssia = resp.split("=")[-1].strip()
-        resp = serialport.readline().decode()
-        rssib = resp.split("=")[-1].strip()
-        resp = serialport.readline().decode()
-        rssic = resp.split("=")[-1].strip()
-        rssi = rssia + ' ' + rssib + ' ' + rssic
-    else: # New module format
-        rssi = resp.split("=")[-1].strip()
-
-    rssv = rssi.split()
-    sv = [int(i) for i in rssv[0:2]]
-
-    signal = max(min(2*(max(sv)+100),100),0)
 
     print("HWADDR:{}".format(macaddr))
     print("Signal:{}".format(signal))
