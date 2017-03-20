@@ -185,6 +185,7 @@ init_wallsly() {
 	sleep 1
 	modprobe snd_soc_zl380tw
 	modprobe snd_soc_imx_zl380tw
+	echo 0 > /sys/iodbus/codec/aud_lvl_x_oe/value
 	patch_lm48511_amp
 }
 
