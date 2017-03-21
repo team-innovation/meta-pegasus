@@ -38,6 +38,7 @@ SRC_URI = "\
   file://COPYING \
   file://pulseaudio \
   file://session \
+  file://sessionwallsly \
   file://asound.conf \
   file://procman.d \
   file://daemon.conf \
@@ -49,6 +50,7 @@ do_install() {
     install -m 0755 ${WORKDIR}/pulseaudio ${D}/${sysconfdir}/init.d/
     install -d ${D}/${sysconfdir}/pulse
     install -m 0755 ${WORKDIR}/session ${D}/${sysconfdir}/pulse/session.pulseaudio-meta-sly
+    install -m 0755 ${WORKDIR}/sessionwallsly ${D}/${sysconfdir}/pulse/session.pulseaudio-meta-wallsly
     install -m 0644 ${WORKDIR}/asound.conf ${D}/${sysconfdir}/pulse/asound.conf.pulseaudio-meta-sly
     install -m 0644 ${WORKDIR}/daemon.conf ${D}/${sysconfdir}/pulse/daemon.conf.pulseaudio-meta-sly
 
@@ -71,15 +73,21 @@ if grep audio /etc/group; then
 fi
 
 # Overwrite existing configfiles, yuck!
-cp /etc/pulse/session.pulseaudio-meta-sly /etc/pulse/session
+if grep -q wallsly /proc/device-tree/compatible; then
+	cp /etc/pulse/session.pulseaudio-meta-wallsly /etc/pulse/session
+else
+	cp /etc/pulse/session.pulseaudio-meta-sly /etc/pulse/session
+fi
 cp /etc/pulse/asound.conf.pulseaudio-meta-sly /etc/pulse/asound.conf
 cp /etc/pulse/daemon.conf.pulseaudio-meta-sly /etc/pulse/daemon.conf
+update-rc.d -r ${D} brand.sh start 04 S .
 }
 
 
 CONFFILES_${PN} = "\
   ${sysconfdir}/init.d/pulseaudio \
   ${sysconfdir}/pulse/session.pulseaudio-meta-sly \
+  ${sysconfdir}/pulse/session.pulseaudio-meta-wallsly \
   ${sysconfdir}/pulse/asound.conf.pulseaudio-meta-sly \
   ${sysconfdir}/pulse/daemon.conf.pulseaudio-meta-sly \
 "
