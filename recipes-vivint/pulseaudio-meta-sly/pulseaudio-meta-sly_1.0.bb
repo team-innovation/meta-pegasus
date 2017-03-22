@@ -2,7 +2,7 @@ DESCRIPTION = "Pulseaudio Meta package w/ initscript et. al."
 SECTION = "audio"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r11"
+PR = "r12"
 
 RDEPENDS_${PN} = "\
   pulseaudio-module-alsa-sink \
@@ -80,7 +80,6 @@ else
 fi
 cp /etc/pulse/asound.conf.pulseaudio-meta-sly /etc/pulse/asound.conf
 cp /etc/pulse/daemon.conf.pulseaudio-meta-sly /etc/pulse/daemon.conf
-update-rc.d -r ${D} brand.sh start 04 S .
 }
 
 
