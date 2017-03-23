@@ -6,7 +6,7 @@ inherit module
 SRC_URI = "git://git.vivint.com/slimline-modules;branch=wallsly"
 SRCREV = "${AUTOREV}"
 PV = "3.14.28+git${SRCPV}"
-PR = "r5"
+PR = "r6"
 
 S = "${WORKDIR}/git"
 
