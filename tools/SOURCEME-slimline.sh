@@ -7,6 +7,14 @@ _APPS_ID="default"
 
 # if already set up then we just run the setup-environment script
 test -d ${BUILD_DIR} &&
+	sed -i '/HG_APPS_TAG/d' ${BUILD_DIR}/conf/local.conf &&
+	sed -i '/HG_APPS_ID/d' ${BUILD_DIR}/conf/local.conf && 
+	sed -i '/UPDATESENG/d' ${BUILD_DIR}/conf/local.conf && 
+	echo "HG_APPS_TAG ?= \"${_APPS_TAG}\"" >> ${BUILD_DIR}/conf/local.conf &&
+	echo "HG_APPS_ID ?= \"${_APPS_ID}\"" >> ${BUILD_DIR}/conf/local.conf &&
+	echo "UPDATESENG ?= \"updateseng.vivint.com/innovation\"" >> ${BUILD_DIR}/conf/local.conf &&
+	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
+	grep -q oe-meta-go ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
 	return
 
