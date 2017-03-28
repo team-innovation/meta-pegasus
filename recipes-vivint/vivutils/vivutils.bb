@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r53"
+PR = "r54"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -75,11 +75,8 @@ do_install() {
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/netm-hwtest.py ${D}/usr/local/bin
 	install -m 0755 ${S}/zwave-hwtest.py ${D}/usr/local/bin
-	if grep -q wallsly /proc/device-tree/compatible; then
-		install -m 0755 ${S}/mfr_audio_test_wallsly.py ${D}/usr/local/bin/mfr_audio_test.py
-	else
-		install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
-	fi
+	install -m 0755 ${S}/mfr_audio_test_wallsly.py ${D}/usr/local/bin
+	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_750_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_1000_hz.wav ${D}/usr/local/bin
@@ -108,3 +105,18 @@ do_install() {
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"
 FILES_${PN} += "/home/root /usr/local/bin/* /etc/profile.d/*"
+
+
+pkg_postinst_${PN} () {
+#!/bin/sh
+if [ "x$D" != "x" ]; then
+        exit 1
+fi
+
+# Overwrite existing file.
+if grep -q wallsly /proc/device-tree/compatible; then
+	cp /usr/local/bin/mfr_audio_test_wallsly.py    /usr/local/bin/mfr_audio_test.py
+fi
+}
+
+
