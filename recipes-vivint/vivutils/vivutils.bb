@@ -21,6 +21,7 @@ SRC_URI = "\
 	   file://bootgadgets.sh \
 	   file://mfr_audio_heat_test.py \
 	   file://mfr_audio_test.py \
+	   file://mfr_audio_test_wallsly.py \
 	   file://nfctest.c \
 	   file://nfctest-sly \
 	   file://nfcslytest \
@@ -74,7 +75,11 @@ do_install() {
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/netm-hwtest.py ${D}/usr/local/bin
 	install -m 0755 ${S}/zwave-hwtest.py ${D}/usr/local/bin
-	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
+	if grep -q wallsly /proc/device-tree/compatible; then
+		install -m 0755 ${S}/mfr_audio_test_wallsly.py ${D}/usr/local/bin/mfr_audio_test.py
+	else
+		install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
+	fi
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_750_hz.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/wave_1000_hz.wav ${D}/usr/local/bin
@@ -89,11 +94,11 @@ do_install() {
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
 	update-rc.d -r ${D} firstboot start 08 S .
 
-    install -m 0755 ${S}/clips.sh ${D}/${sysconfdir}/init.d/
-    update-rc.d -r ${D} clips.sh start 34 S .
+	install -m 0755 ${S}/clips.sh ${D}/${sysconfdir}/init.d/
+	update-rc.d -r ${D} clips.sh start 34 S .
 
-    install -m 0755 ${S}/bootgadgets.sh ${D}/${sysconfdir}/init.d/bootgadgets.sh
-    update-rc.d -r ${D} bootgadgets.sh start 34 S .
+	install -m 0755 ${S}/bootgadgets.sh ${D}/${sysconfdir}/init.d/bootgadgets.sh
+	update-rc.d -r ${D} bootgadgets.sh start 34 S .
 
 	install -d ${D}/${sysconfdir}/profile.d
 	install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
