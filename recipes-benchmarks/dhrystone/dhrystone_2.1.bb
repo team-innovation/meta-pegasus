@@ -1,5 +1,5 @@
 DESCRIPTION = "DHRYSTONE Benchmark Program"
-PR = "r0"
+PR = "r1"
 PRIORITY = "optional"
 SECTION = "console/utils"
 DEPENDS = ""
@@ -11,7 +11,8 @@ AUTHOR = "Reinhold P. Weicker, Rick Richardson"
 HOMEPAGE = "http://en.wikipedia.org/wiki/Dhrystone"
 
 # Original wrapped with automake builder
-SRC_URI = "file://dhrystone-${PV}.tar.gz"
+SRC_URI = "file://dhrystone-${PV}.tar.gz \
+           file://dhryrun"
 #SRC_URI_native = "file://dhrystone-${PV}.tar.gz"
 
 inherit autotools
@@ -26,6 +27,7 @@ do_configure_prepend() {
 do_install() {
 	install -d ${D}/usr/local/bin
 	cp ${WORKDIR}/${PN}-${PV}/dhry ${D}/usr/local/bin
+	install -m 0755 ${WORKDIR}/dhryrun ${D}/usr/local/bin
 }
 
 FILES_${PN}-dbg = "/usr/src/debug/ /usr/local/bin/.debug"
