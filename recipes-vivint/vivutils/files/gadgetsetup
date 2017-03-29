@@ -30,7 +30,7 @@ if [ -e /media/bootscript/serialnumber.txt ]; then
   serno="0x$(cat /media/bootscript/serialnumber.txt)"
   val1=$( printf "%02x" $[ $serno & 0xff ] )
   # Don't allow a 255 "broadcast" address to be used in the lsb
-  if [[ $val1 -eq ff ]]; then
+  if [[ 0x$val1 -eq 0xff ]]; then
     val1=$( printf "%2x" 0xfe )
   fi
   [[ 0x$val1 -eq 0xff ]] && (( val1=0 ))
