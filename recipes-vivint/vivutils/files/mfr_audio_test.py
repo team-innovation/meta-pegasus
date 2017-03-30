@@ -32,10 +32,11 @@ except ImportError:
 
 __author__ = 'mark'
 
-frequencies = [750, 1000, 1800, 3600]
-wave_files = ['wave_750_hz.wav', 'wave_1000_hz.wav', 'wave_1800_hz.wav', 'wave_3600_hz.wav']
+frequencies = [440, 880, 1760, 3520]
+wave_files = ['wave_440_hz.wav', 'wave_880_hz.wav', 'wave_1760_hz.wav', 'wave_3520_hz.wav']
 FFT_SIZE = 4092
 FS = 8000
+FSPB = 16000
 
 class SecioIO:
 
@@ -118,7 +119,7 @@ class AudioTest:
         ss = pa_sample_spec()
         ss.format = PA_SAMPLE_S16LE
         ss.channels = 1
-        ss.rate = FS
+        ss.rate = FSPB
         self.play_stream = pa_simple_new(None, b'AudioTest', PA_STREAM_PLAYBACK, None, b'playback', ss, None, None, None)
 
     def _create_record_stream(self):

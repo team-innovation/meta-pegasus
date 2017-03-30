@@ -32,10 +32,10 @@ except ImportError:
 
 __author__ = 'bob'
 
-frequencies = [750, 1000, 1800, 3600]
-wave_files = ['wave_750_hz.wav', 'wave_1000_hz.wav', 'wave_1800_hz.wav', 'wave_3600_hz.wav']
+frequencies = [220, 440, 880, 1760, 3520, 7040]
+wave_files = ['wave_220_hz.wav', 'wave_440_hz.wav', 'wave_880_hz.wav', 'wave_1760_hz.wav', 'wave_3520_hz.wav', 'wave_7040_hz.wav']
 FFT_SIZE = 4092
-FS = 8000
+FS = 16000
 
 class SecioIO:
 
@@ -64,7 +64,7 @@ class AudioTest:
     AUDIO_AMP_SS_FF_FILE = "ss_ff"
 
     def __init__(self, audioFile, idx):
-        print('Testing at frequency {}'.format(frequencies[idx]))
+        # print('Testing at frequency {}'.format(frequencies[idx]))
 
 #FIXIT z8380 disable AEC, anti-howling, etc.        
         # force off noise reduction and echo cancellation
@@ -113,7 +113,7 @@ class AudioTest:
             SecioIO.f_write(self.AUDIO_AMP_PATH, self.AUDIO_AMP_FB_SEL_FILE, '1')
             SecioIO.f_write(self.AUDIO_AMP_PATH, self.AUDIO_AMP_ACCESS_FILE, '0')
         except Exception as why:
-            self.logger.warn('Enable battery charger failed: {}'.format(why))
+            self.logger.warn('Enable amp failed: {}'.format(why))
 
     def _create_playback_stream(self):
         ss = pa_sample_spec()
@@ -219,15 +219,17 @@ class AudioTest:
         return (sum_of_squares / base_power) * 100
 
 def setup_gains():
-#FIXIT change these and change zl380 names as well
-    call("amixer sset 'DSP Max Mic Gain' 64", shell=True)
-    call("amixer sset 'Mic Gain' 64", shell=True)
-    call("amixer sset 'Playback Gain' 65", shell=True)
+    call("amixer sset 'Sin' 16", shell=True)
+    call("amixer sset 'Sout' 8", shell=True)
+    call("amixer sset 'Mic' 4", shell=True)
+    call("amixer sset 'Master' 78", shell=True)
+    call("amixer sset 'Rout' 64", shell=True)
+    call("amixer sset 'Wave' 90", shell=True)
+#FIXIT set zl380 sampling rate to 16khz
 
 if __name__ == "__main__":
     setup_gains()
     for i in range(0, len(wave_files)):
-    #for i in range(0, 1):
         at = AudioTest(wave_files[i], i)
         time.sleep(0.5)
 
