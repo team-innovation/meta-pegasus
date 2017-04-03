@@ -30,6 +30,7 @@ SRC_URI = "\
 	   file://resize.c \
 	   file://resize.sh \
 	   file://serialnumset \
+	   file://simplesuspend \
 	   file://slimline-update \
 	   file://sly-update \
 	   file://touchtest \
@@ -70,6 +71,7 @@ do_install() {
 	install -m 0755 ${S}/nfccmd-sly ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
 	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
+	install -m 0755 ${S}/simplesuspend ${D}/usr/local/bin
 	install -m 0755 ${S}/slimline-update ${D}/usr/local/bin
 	install -m 0755 ${S}/sly-update ${D}/usr/local/bin
 	install -m 0755 ${S}/fccfixup ${D}/usr/local/bin
@@ -122,5 +124,3 @@ if grep -q wallsly /proc/device-tree/compatible; then
 	cp /usr/local/bin/mfr_audio_test_wallsly.py    /usr/local/bin/mfr_audio_test.py
 fi
 }
-
-
