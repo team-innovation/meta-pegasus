@@ -2,7 +2,7 @@ PACKAGES += " gstreamer1.0-plugins-good-pulse"
 
 RDEPENDS_gstreamer1.0-plugins-good-pulse += " tcp-wrappers"
 
-PR = "r4"
+PR = "r5"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}:"
 

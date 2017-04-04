@@ -1,6 +1,35 @@
 --- gst-plugins-good-1.4.1/gst/rtsp/gstrtspsrc.c	2014-07-21 02:24:27.000000000 -0600
-+++ gst-plugins-good-1.4.1.a/gst/rtsp/gstrtspsrc.c	2017-03-02 16:57:17.000000000 -0700
-@@ -7787,7 +7787,7 @@
++++ gst-plugins-good-1.4.1.a/gst/rtsp/gstrtspsrc.c	2017-04-03 21:28:06.000000000 -0600
+@@ -4622,7 +4622,8 @@
+ interrupt:
+   {
+     gst_rtsp_message_unset (&message);
+-    GST_DEBUG_OBJECT (src, "got interrupted");
++    GST_DEBUG_OBJECT (src, "got interrupted: stop connection flush");
++    gst_rtspsrc_connection_flush (src, FALSE);
+     return GST_FLOW_FLUSHING;
+   }
+ receive_error:
+@@ -4754,7 +4755,8 @@
+ interrupt:
+   {
+     gst_rtsp_message_unset (&message);
+-    GST_DEBUG_OBJECT (src, "got interrupted");
++    GST_DEBUG_OBJECT (src, "got interrupted: stop connection flush");
++    gst_rtspsrc_connection_flush (src, FALSE);
+     return GST_FLOW_FLUSHING;
+   }
+ connect_error:
+@@ -5067,7 +5069,7 @@
+           ("streaming task paused, reason %s (%d)", reason, ret));
+       gst_rtspsrc_push_event (src, gst_event_new_eos ());
+     }
+-    gst_rtspsrc_loop_send_cmd (src, CMD_WAIT, CMD_LOOP);
++    //gst_rtspsrc_loop_send_cmd (src, CMD_WAIT, CMD_LOOP);
+     return FALSE;
+   }
+ }
+@@ -7787,7 +7789,7 @@
    GST_OBJECT_UNLOCK (src);
  
    /* ensure synchronously all is closed and clean */
