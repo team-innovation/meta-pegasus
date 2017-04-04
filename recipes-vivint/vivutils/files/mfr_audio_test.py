@@ -66,16 +66,16 @@ class AudioTest:
 
     def __init__(self, audioFile, idx):
         #print('Testing at frequency {}'.format(frequencies[idx]))
-        
+
         # force off noise reduction and echo cancellation
         os.system("echo 0x117a 0x8 > /sys/class/cx20704/cx20704_controls/regwrite")
         os.system("echo 1 > /sys/class/cx20704/cx20704_controls/newc")
 
-	# This was put in to patch pulse 8.0. We need to figure out what's wrong with 8.0
+   # This was put in to patch pulse 8.0. We need to figure out what's wrong with 8.0
         # restart pulseaudio to get a good connection
         #os.system("/etc/init.d/pulseaudio restart  > /dev/null")
         #time.sleep(1)
-        
+
         self._enable_sly_audio_amp()
 
         self.idx = idx
@@ -160,7 +160,7 @@ class AudioTest:
         #d = unpack_from('<4000h', self.data)
         x = np.ctypeslib.as_array((ctypes.c_short * self.frames).from_address(ctypes.addressof(rec_data)))
         x = x / 32768
-        y = np.fft.rfft(x, FFT_SIZE)/self.frames        
+        y = np.fft.rfft(x, FFT_SIZE)/self.frames
 
         y = np.absolute(y)
 
