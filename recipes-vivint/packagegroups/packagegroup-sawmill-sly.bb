@@ -24,5 +24,7 @@ RDEPENDS_${PN} += " \
 	touchlink-rtc-firmware \
 	touchlink-telit-firmware-he910 \
 	touchlink-telit-firmware-ue910 \
+	touchlink-sierra-firmware-hl7588-a \
+	touchlink-sierra-firmware-hl7588-v \
 "
 
