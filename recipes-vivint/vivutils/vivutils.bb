@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r56"
+PR = "r57"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -14,6 +14,7 @@ RDPENDS_${PN} = " \
 SRC_URI = "\
 	   file://ccat \
 	   file://ctail \
+	   file://fcc_active_receive \
 	   file://fccfixup \
 	   file://firstboot \
 	   file://firstboot-setup \
@@ -56,6 +57,7 @@ do_install() {
 	install -d ${D}/usr/local/bin
 	install -m 0755 ${S}/ctail ${D}/usr/local/bin
 	install -m 0755 ${S}/ccat ${D}/usr/local/bin
+	install -m 0755 ${S}/fcc_active_receive ${D}/usr/local/bin
 	install -m 0755 ${S}/firstboot-setup ${D}/usr/local/bin
 	install -m 0755 ${S}/gadgetsetup ${D}/usr/local/bin
 	install -m 0755 ${S}/resize ${D}/usr/local/bin
