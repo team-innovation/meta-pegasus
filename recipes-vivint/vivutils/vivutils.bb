@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r55"
+PR = "r56"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -34,12 +34,6 @@ SRC_URI = "\
 	   file://slimline-update \
 	   file://sly-update \
 	   file://touchtest \
-	   file://wave_220_hz.wav \
-	   file://wave_440_hz.wav \
-	   file://wave_880_hz.wav \
-	   file://wave_1760_hz.wav \
-	   file://wave_3520_hz.wav \
-	   file://wave_7040_hz.wav \
 	   file://wave_1000_hz_half_mag.wav \
 	   file://wlan-hwtest \
 	   file://netm-hwtest.py \
@@ -82,12 +76,6 @@ do_install() {
 	install -m 0755 ${S}/mfr_audio_test_wallsly.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
-	install -m 0644 ${S}/wave_220_hz.wav ${D}/usr/local/bin
-	install -m 0644 ${S}/wave_440_hz.wav ${D}/usr/local/bin
-	install -m 0644 ${S}/wave_880_hz.wav ${D}/usr/local/bin
-	install -m 0644 ${S}/wave_1760_hz.wav ${D}/usr/local/bin
-	install -m 0644 ${S}/wave_3520_hz.wav ${D}/usr/local/bin
-	install -m 0644 ${S}/wave_7040_hz.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/genkeys ${D}/usr/local/bin
 	install -m 0755 ${S}/lockdown_panel ${D}/usr/local/bin
