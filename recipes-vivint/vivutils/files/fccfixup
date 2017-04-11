@@ -26,7 +26,7 @@ fccfixup() {
 	test -d .hidden || {
 		echo "disabling init.d scripts"
 		mkdir .hidden
-		for d in _345d bootsplash.sh iod modemd multiplexerd nfcd sundance updated
+		for d in _345d bootsplash.sh iod modemd multiplexerd netd nfcd sundance updated
 		do
 			test -f $d && mv $d .hidden
 		done
