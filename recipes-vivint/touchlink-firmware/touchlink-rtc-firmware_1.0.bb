@@ -1,9 +1,9 @@
 DESCRIPTION = "Radio Thermostat Company of America thermostat firmware"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
-PR = "r41"
+PR = "r42"
 
-FIRMWARE_PIC    = "CT200-PIC-0.29.00_0098_C801_0071_EFCB_0.29.hex"
+FIRMWARE_PIC    = "CT200-PIC-0.34.00_0098_C801_0071_D2B2_0.34.hex"
 FIRMWARE_UI     = "CT200-UI-0.10.00_0098_C801_0072_9FF5_0.10.hex"
 FIRMWARE_ZWAVE  = "CT200-ZWAVE-11.27_0098_C801_0043_683E_11.27.hex"
 
