@@ -34,6 +34,7 @@ SRC_URI = "\
 	   file://simplesuspend \
 	   file://slimline-update \
 	   file://sly-update \
+	   file://pa_info \
 	   file://touchtest \
 	   file://wave_1000_hz_half_mag.wav \
 	   file://wlan-hwtest \
@@ -71,6 +72,7 @@ do_install() {
 	install -m 0755 ${S}/simplesuspend ${D}/usr/local/bin
 	install -m 0755 ${S}/slimline-update ${D}/usr/local/bin
 	install -m 0755 ${S}/sly-update ${D}/usr/local/bin
+	install -m 0755 ${S}/pa_info ${D}/usr/local/bin
 	install -m 0755 ${S}/fccfixup ${D}/usr/local/bin
 	install -m 0755 ${S}/touchtest ${D}/usr/local/bin
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
