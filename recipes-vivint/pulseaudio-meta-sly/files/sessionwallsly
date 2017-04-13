@@ -9,8 +9,8 @@ load-module module-cli-protocol-unix
 load-module module-cli-protocol-tcp
 
 # Load the Codec source and sink given the names below
-load-module module-alsa-source device=hw:0,0 name=zl380 control='Mic'  channels=1 tsched=0 fixed_latency_range=0 deferred_volume=0
-load-module module-alsa-sink   device=hw:0,0 name=zl380 control='Wave' channels=1 tsched=0 fixed_latency_range=0 deferred_volume=0
+load-module module-alsa-source device=hw:0,0 name=zl380 control='Sout2wav'  channels=1 tsched=0 fixed_latency_range=0 deferred_volume=0
+load-module module-alsa-sink   device=hw:0,0 name=zl380 control='Master' channels=1 tsched=0 fixed_latency_range=0 deferred_volume=0
 
 # Suspend on idle
 load-module module-suspend-on-idle
