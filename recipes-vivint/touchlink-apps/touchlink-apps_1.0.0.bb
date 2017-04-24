@@ -14,6 +14,7 @@ require touchlink-apps-rtspd.inc
 require touchlink-apps-videod.inc
 
 require touchlink-apps-launcherd.inc
+require touchlink-apps-bootsplash.inc
 
 # fcc test apps
 require touchlink-apps-test-ui.inc
@@ -269,13 +270,9 @@ do_runstrip() {
 }
 
 do_install () {
-
         # Install init.d scripts
 	install -d ${D}/${sysconfdir}/init.d/
 	cp -a ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
-
-    # Put the bootsplash script in place
-    update-rc.d -r ${D} bootsplash.sh start 04 S .
 }
 
 do_install_append() {
@@ -409,5 +406,6 @@ PACKAGES = " \
 	${PN}-sound-wav-dtmf \
 	${PN}-sound-wav-pauses \
 	${PN}-sound-wav-vocab	\
+	${PN}-bootsplash	\
 	${PN} \
 "
