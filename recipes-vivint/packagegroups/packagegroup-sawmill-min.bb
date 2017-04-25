@@ -24,6 +24,7 @@ RDEPENDS_${PN} = " \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
 	psoc5-verify \
+	mighty-gecko-verify \
 	slimline-modules \
 	sly-modules \
 	strace \

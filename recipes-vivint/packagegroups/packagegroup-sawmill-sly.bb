@@ -15,6 +15,7 @@ RDEPENDS_${PN} += " \
 	psoc-fw-sly \
 	psoc-fw-sly-fcc \
 	psoc-fw-wallsly \
+	mighty-gecko-fw-wallsly \
 	sly-utils \
 	sly-version \
 	wallsly-version \
