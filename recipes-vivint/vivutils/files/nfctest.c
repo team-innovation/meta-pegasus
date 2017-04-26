@@ -29,6 +29,9 @@
 static struct termios saved_tio;
 static int ttyfd;
 
+static const char WALL_SLY_PATH[] = "/dev/ttyUSB0";
+static const char SLIMLINE_PATH[] = "/dev/ttymxc1";
+
 static void ttyraw(void)
 {
 	struct termios tio;
@@ -49,6 +52,17 @@ static void ttyraw(void)
 	cfsetispeed (&tio, (speed_t)B57600);
 
 	tcsetattr(ttyfd, TCSANOW, &tio);
+}
+
+const char *get_nfc_tty_path()
+{
+	if (access("/etc/wallsly-version", F_OK) != -1) {
+		return WALL_SLY_PATH;
+	} else if (access("/etc/slimline-version", F_OK) != -1) {
+		return SLIMLINE_PATH;
+	} else {
+		return NULL;
+	}
 }
 
 static void
@@ -73,7 +87,7 @@ int main(int argc, char **argv)
 
 	if(argc == 1 || argc > 2) {
 		usage(argv[0]);
-		return 0;
+		return 1;
 	}
 
 	/* Check args */
@@ -81,13 +95,18 @@ int main(int argc, char **argv)
 	read_test = !strcmp(argv[1], "-r");
 	if(!echo_test && !read_test) {
 		usage(argv[0]);
-		return 0;
+		return 1;
 	}
 
 	/* Open nfc tty device */
-	ttyfd = open("/dev/ttymxc1", O_RDWR | O_NOCTTY);
+	const char *tty_path = get_nfc_tty_path();
+	if (! tty_path) {
+		fprintf(stderr, "No tty device defined for this device. Goodbye.\n");
+		return 1;
+	}
+	ttyfd = open(tty_path, O_RDWR | O_NOCTTY);
 	if(ttyfd < 0) {
-		printf("Error! Cannot open /dev/ttymxc1\n");
+		printf("Error! Cannot open %s\n", tty_path);
 		return 1;
 	}
 	ttyraw();

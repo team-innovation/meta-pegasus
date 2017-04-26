@@ -4,6 +4,8 @@ dirs755_append = " /media/ram /media/card /media/extra /media/bootscript /media/
 
 PR = "r91"
 
+BB_HASH_IGNORE_MISMATCH = "1"
+
 SRC_URI += "file://vivintbuild_gpg.pub  \
             "
 

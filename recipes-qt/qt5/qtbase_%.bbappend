@@ -4,3 +4,4 @@ SRC_URI += "\
             file://qguiapplication-sync.patch \
            "
 
+PACKAGECONFIG_append = " sql-sqlite"
