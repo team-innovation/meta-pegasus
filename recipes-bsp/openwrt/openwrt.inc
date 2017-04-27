@@ -7,7 +7,7 @@ HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-PR = "r33"
+PR = "r34"
 SRCREV = "${AUTOREV}"
 MODULE = "openwrt"
 
@@ -24,12 +24,12 @@ SRC_URI = "http://${DOWNLOAD_SERVER}/RT3352_uImage;name=RT3352_uImage \
            http://${DOWNLOAD_SERVER}/MT7620_uboot.img;name=MT7620_uboot \
            file://COPYING \
            "
-SRC_URI[RT3352_uImage.md5sum] = "2d6d367a93369ce03a69fff29cb6cefc"
-SRC_URI[RT3352_uImage.sha256sum] = "bfe6740ff97f2610a1144d803c9aa263b3850b8f8920a6850515a39ec567be1f"
+SRC_URI[RT3352_uImage.md5sum] = "f15feaec0f560f69279e0acbf633d3db"
+SRC_URI[RT3352_uImage.sha256sum] = "b8377641a27259f15ef8b89702873870ef5c5f669740c456fb26b8ee15c90d5f"
 SRC_URI[RT3352_uboot.md5sum] = "d78a51f5fdb52747df72bce5989b76aa"
 SRC_URI[RT3352_uboot.sha256sum] = "bf32d459691fe2e95f6d376cd293df260d985781dc4535c4dbfdc38b9bfbc90b"
-SRC_URI[MT7620_uImage.md5sum] = "43774e087bfc4c034f6114fe2b2834a2"
-SRC_URI[MT7620_uImage.sha256sum] = "5d9eeeb88b8eada8f91447dc061f48834effbf97231ffa24cfa5979b069e0011"
+SRC_URI[MT7620_uImage.md5sum] = "81f60eb46d24f0a1408e50bb31b47d14"
+SRC_URI[MT7620_uImage.sha256sum] = "3d330b25ec35af03bb12975e49995af31ce96a6b8b1d274b1a2916ac66aec6b9"
 SRC_URI[MT7620_uboot.md5sum] = "334603321272924d610be110b769218b"
 SRC_URI[MT7620_uboot.sha256sum] = "93ade427b0f9fc53bc5b72af8873d83840aa160cac2b38a66c8a53296a28147d"
 
