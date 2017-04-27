@@ -8,11 +8,11 @@ HOMEPAGE = "http://www.vivint.com"
 
 require touchlink-vivotek-vadp.inc
 
-PR = "ml38"
+PR = "ml39"
  
-SRCREV = "adf0e0c66b11"
+SRCREV = "0af214b055c2"
  
-VADP_VERSION = "1.32"
+VADP_VERSION = "1.33"
 
 SRC_URI += "http://updateseng.vivint.com/innovation/downloads/Rossini_Toolchain.tar;name=toolchain64 \
             http://updateseng.vivint.com/innovation/downloads/vtcs_toolchain_32bit.tar.bz2;name=toolchain32 \
