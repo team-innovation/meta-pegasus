@@ -6,9 +6,9 @@ DESCRIPTION = "Voice Audio Daemon"
 SECTION = "devel"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-INC_PR = "r65"
+INC_PR = "r66"
 
-SRCREV = "e2a3b23ced74"
+SRCREV = "0b1c64e308aa"
 MODULE = "voice-audio"
 SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
    	file://COPYING \
