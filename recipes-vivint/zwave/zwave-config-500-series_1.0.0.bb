@@ -10,7 +10,7 @@ RDEPENDS_${PN} = " \
     python3-pyserial \
 "
 
-SRCREV = "${AUTOREV}"
+SRCREV = "630f3390118d35f9794569e4c3fbd011cdcfe112"
 
 SRC_URI = " \
     git://git@git.vivint.com/~/Z-Wave_SDK_06.70.01;protocol=ssh \
