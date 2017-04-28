@@ -16,6 +16,38 @@ do_install_append () {
 	chmod +x ${D}/${INSTALL_DIR}/modemd/modemd.pyo
 }
 
+pkg_postinst_${PN}-modemd () {
+#!/bin/sh -e
+# Post install to flash the modem to default carrier on WallSly
+#
+if [ x"$D" = "x" ]; then
+    if [ -f /proc/device-tree/compatible ]; then
+        exit 0
+    fi
+
+    # look for Sierra cell class on WallSly
+    if [ -d "/sys/class/cell/cell0" ]; then
+        # get the AT&T image filename (contains ".A.")
+        # when we switch to Verizon look for ".V."
+        IMAGE_FILE="$(ls /var/lib/firmware/Sierra/RHL*.A.*)"
+        if [ -z $IMAGE_FILE ]; then
+            exit 0
+        fi
+
+        echo 1 > /sys/class/cell/cell0/access
+        echo 0 > /sys/class/cell/cell0/enable
+        echo 1 > /sys/class/cell/cell0/enable
+        echo 1 > /sys/class/cell/cell0/reset
+        swdltool $IMAGE_FILE &
+        sleep 5
+        echo 1 > /sys/class/cell/cell0/onoff
+        fg 1
+    fi
+else
+    exit 1
+fi
+}
+
 FILES_${PN}-modemd = "\
 	${INSTALL_DIR}/modemd/*	\
 	${sysconfdir}/init.d/modemd		\
