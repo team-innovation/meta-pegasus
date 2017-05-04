@@ -2,12 +2,13 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r18"
+PR = "r19"
 
 inherit packagegroup
 
 RDEPENDS_${PN} += " \
 	acm-usb-v6 \
+	easy-rsa \
 	fabric-go \
 	openvpn \
 	openwrt-mt7620 \
