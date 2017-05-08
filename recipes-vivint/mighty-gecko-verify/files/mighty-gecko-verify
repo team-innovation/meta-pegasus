@@ -19,7 +19,13 @@ mighty_gecko_verify()
 		return 1
 	fi
 
-	if [ ! -e /lib/firmware/vivint/wallsly-mighty-gecko.fw ]; then
+	# if in fcc test mode use a different fw file
+	if [ -f /etc/procman.d/test_ui ]; then
+		if [ ! -e /lib/firmware/vivint/railtest_efr32.fw ]; then
+			echo "FCC firmware not found"
+			return 1
+		fi
+	elif [ ! -e /lib/firmware/vivint/wallsly-mighty-gecko.fw ]; then
 		echo "Mighty Gecko firmware not found"
 		return 1
 	fi
@@ -31,6 +37,9 @@ mighty_gecko_verify()
 	else
 		test -f /sys/class/mighty_gecko/swd0/access &&
 			echo 1 > /sys/class/mighty_gecko/swd0/access
+		if [ -f /etc/procman.d/test_ui ]; then
+			echo "railtest_efr32.fw" > /sys/class/mighty_gecko/swd0/fw_path
+		fi
 		echo 1 > /sys/class/mighty_gecko/swd0/doall &&
 			touch /tmp/mightygeckofwverified
 		test -f /sys/class/mighty_gecko/swd0/access &&
