@@ -8,6 +8,5 @@ PR = "r20"
 require packagegroup-touchlink-apps-common.inc
 
 RDEPENDS_${PN} += " \
-	touchlink-apps-roubaix-images-png \
 "
 

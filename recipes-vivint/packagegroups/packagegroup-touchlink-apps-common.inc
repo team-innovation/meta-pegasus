@@ -14,29 +14,9 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-qml-framework \
 	touchlink-apps-qml-framework-images-controls \
 	touchlink-apps-qml-framework-images-controls-shared \
-	touchlink-apps-roubaix \
-	touchlink-apps-roubaix-audio-platform \
-	touchlink-apps-roubaix-audmgr-definitions \
-	touchlink-apps-roubaix-controls \
-	touchlink-apps-roubaix-defs \
-	touchlink-apps-roubaix-demo-assets \
-	touchlink-apps-roubaix-fonts \
-	touchlink-apps-roubaix-framework \
-	touchlink-apps-roubaix-gunk \
-	touchlink-apps-roubaix-html \
-	touchlink-apps-roubaix-images-coin \
-	touchlink-apps-roubaix-images-shared \
-	touchlink-apps-roubaix-images-toolbox \
-	touchlink-apps-roubaix-images-video \
-	touchlink-apps-roubaix-images-wallpapers \
-	touchlink-apps-roubaix-mixin \
-	touchlink-apps-roubaix-models \
-	touchlink-apps-roubaix-popups \
-	touchlink-apps-roubaix-scripts \
+	touchlink-apps-pumpernickel \
+	touchlink-apps-initpumpernickel \
 	touchlink-apps-roubaix-services \
-	touchlink-apps-roubaix-style \
-	touchlink-apps-roubaix-views \
-	touchlink-apps-roubaix-widgets \
 	touchlink-apps-sound-roubaix-back \
 	touchlink-apps-sound-roubaix-chimes \
 	touchlink-apps-sound-roubaix-click \

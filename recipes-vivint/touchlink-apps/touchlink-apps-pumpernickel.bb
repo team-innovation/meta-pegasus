@@ -3,13 +3,12 @@
 DESCRIPTION = "User interface for Vivint sky panels"
 HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
-SECTION = ""
+SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects"
-PR = "r0"
+PR = "r1"
 
 HG_APPS_REV = "pumpernickel_diy"
-# SRCREV = "596c72f5bb67f4dde3cbd6ec3b4bf8be8eb4ef5e"
-SRCREV = "db050f5c6e59aecd1deee2c05742e50442605b8c"
+SRCREV = "42631bbb6888"
 
 
 SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};proto=http"
@@ -27,8 +26,16 @@ do_install() {
 FILES_${PN}-dbg += "${datadir}/${P}/.debug"
 FILES_${PN} += "${datadir}"
 
-RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins"
+RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
+    gstreamer \
+	gst-plugin-playbin \
+        gst-plugin-rtsp \
+        gst-plugin-level \
+	gst-plugin-autodetect \
+	gst-plugin-mulaw \
+	gst-plugin-alaw \
+	gst-plugin-isomp4 \
+	gst-rtsp-server \
+	"
 
-#PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-#PACKAGES = "${PN}"

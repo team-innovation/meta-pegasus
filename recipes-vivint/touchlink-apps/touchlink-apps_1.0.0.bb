@@ -7,7 +7,7 @@
 
 DESCRIPTION = "2gig Touchlink Apps"
 LICENSE = "CLOSED"
-
+require touchlink-apps-audmgrd.inc
 require touchlink-apps-sundance.inc
 
 require touchlink-apps-rtspd.inc
@@ -48,26 +48,8 @@ require touchlink-apps-smarthomed.inc
 require touchlink-apps-listenerd.inc
 
 #roubaix
-require touchlink-apps-roubaix.inc
-require touchlink-apps-roubaix-fonts.inc
-require ${PN}-roubaix-controls.inc
-require ${PN}-roubaix-audio-platform.inc
-require ${PN}-roubaix-audmgr-definitions.inc
-require ${PN}-roubaix-defs.inc
-require ${PN}-roubaix-demo-assets.inc
-require ${PN}-roubaix-mixin.inc
-require ${PN}-roubaix-framework.inc
-require ${PN}-roubaix-models.inc
-require ${PN}-roubaix-views.inc
-require ${PN}-roubaix-widgets.inc
-require ${PN}-roubaix-images.inc
-require ${PN}-roubaix-popups.inc
-require ${PN}-roubaix-scripts.inc
-require ${PN}-roubaix-style.inc
-require ${PN}-roubaix-services.inc
-require ${PN}-roubaix-html.inc
-require ${PN}-roubaix-legal.inc
-require ${PN}-roubaix-gunk.inc
+require touchlink-apps-roubaix-services.inc
+require touchlink-apps-initpumpernickel.inc
 
 # framework
 require touchlink-apps-framework.inc
@@ -75,14 +57,6 @@ require touchlink-apps-qml-framework.inc
 require touchlink-apps-qml-framework-images.inc    
 
 # Sound stuffs
-require touchlink-apps-sounds-roubaix-back.inc    
-require touchlink-apps-sounds-roubaix-locks.inc          
-require touchlink-apps-sounds-roubaix-chimes.inc  
-require touchlink-apps-sounds-roubaix-click.inc   
-require touchlink-apps-sounds-roubaix-numpad.inc         
-require touchlink-apps-sounds-roubaix-switch.inc
-require touchlink-apps-sounds-roubaix-dialog.inc  
-require touchlink-apps-sounds-roubaix-operations.inc
 
 require touchlink-apps-sounds-wav-abs.inc  
 require touchlink-apps-sounds-wav-beeps.inc  
@@ -325,35 +299,9 @@ PACKAGES = " \
 	${PN}-multiplexerd          \
 	${PN}-nfcd          \
 	${PN}-mmpd          \
-	${PN}-roubaix       \
-	${PN}-roubaix-audio-platform  \
-	${PN}-roubaix-audmgr-definitions  \
-	${PN}-roubaix-controls  \
-	${PN}-roubaix-defs  \
-	${PN}-roubaix-demo-assets  \
-	${PN}-roubaix-framework  \
-	${PN}-roubaix-mixin  \
-	${PN}-roubaix-models  \
-	${PN}-roubaix-views  \
-	${PN}-roubaix-widgets  \
-	${PN}-roubaix-fonts  \
-	${PN}-roubaix-html  \
-	${PN}-roubaix-legal  \
-	${PN}-roubaix-images-coin \
-	${PN}-roubaix-images-controls \
-	${PN}-roubaix-images-png \
-	${PN}-roubaix-images-rules \
-	${PN}-roubaix-images-shared \
-	${PN}-roubaix-images-svg \
-	${PN}-roubaix-images-toolbox \
-	${PN}-roubaix-images-video \
-	${PN}-roubaix-images-wallpapers \
-	${PN}-roubaix-images-multimedia \
-	${PN}-roubaix-popups  \
-	${PN}-roubaix-scripts  \
-	${PN}-roubaix-style  \
 	${PN}-roubaix-services  \
-	${PN}-roubaix-gunk  \
+	${PN}-pumpernickel \
+	${PN}-initpumpernickel \
 	${PN}-qml-framework     \
 	${PN}-qml-framework-images-controls 	\
 	${PN}-qml-framework-images-controls-keyboards 	\
@@ -389,17 +337,6 @@ PACKAGES = " \
 	${PN}-listenerd-proxies      \
 	${PN}-smarthomed      \
 	${PN}-listenerd      \
-	${PN}-sound-roubaix-back \
-	${PN}-sound-roubaix-chimes \
-	${PN}-sound-roubaix-click \
-	${PN}-sound-roubaix-dialog \
-	${PN}-sound-roubaix-locks \
-	${PN}-sound-roubaix-notifications \
-	${PN}-sound-roubaix-numpad \
-	${PN}-sound-roubaix-operations \
-	${PN}-sound-roubaix-security \
-	${PN}-sound-roubaix-select \
-	${PN}-sound-roubaix-switch \
 	${PN}-sound-wav-abs \
 	${PN}-sound-wav-ad \
 	${PN}-sound-wav-beeps \
