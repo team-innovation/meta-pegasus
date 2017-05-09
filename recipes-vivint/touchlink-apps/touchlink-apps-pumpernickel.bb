@@ -28,14 +28,6 @@ FILES_${PN} += "${datadir}"
 
 RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
     gstreamer \
-	gst-plugin-playbin \
-        gst-plugin-rtsp \
-        gst-plugin-level \
-	gst-plugin-autodetect \
-	gst-plugin-mulaw \
-	gst-plugin-alaw \
-	gst-plugin-isomp4 \
-	gst-rtsp-server \
 	"
 
 

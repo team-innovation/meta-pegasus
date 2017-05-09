@@ -17,14 +17,6 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-pumpernickel \
 	touchlink-apps-initpumpernickel \
 	touchlink-apps-roubaix-services \
-	touchlink-apps-sound-roubaix-back \
-	touchlink-apps-sound-roubaix-chimes \
-	touchlink-apps-sound-roubaix-click \
-	touchlink-apps-sound-roubaix-dialog \
-	touchlink-apps-sound-roubaix-locks \
-	touchlink-apps-sound-roubaix-numpad \
-	touchlink-apps-sound-roubaix-operations \
-	touchlink-apps-sound-roubaix-switch \
 	touchlink-apps-sound-wav-abs \
 	touchlink-apps-sound-wav-ad \
 	touchlink-apps-sound-wav-beeps \
