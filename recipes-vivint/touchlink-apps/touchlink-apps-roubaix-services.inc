@@ -8,16 +8,14 @@ PKGR_${PN}-roubaix-services = "${PR}${ROUBAIX_SERVICES_PREPEND}${ROUBAIX_SERVICE
 
 FILES_${PN}-roubaix-services = "\
 	${INSTALL_DIR}/roubaix/services/* \
-    ${INSTALL_DIR}/lib/libaudio.so \
+    ${INSTALL_DIR}/roubaix/proxies/* \
 	"
 
-do_compile_prepend() {
-        # compile dbc audio C code
-        make -C ${S}/code/roubaix/libaudio SYSTEM="SLIMLINE"  
-}
-
 do_install_append (){ 
-   install -d ${D}/${INSTALL_DIR}/lib
-   cp -a ${S}/code/roubaix/libaudio/libaudio.so ${D}/${INSTALL_DIR}/lib
+   install -d ${D}/${INSTALL_DIR}/roubaix/services/
+	# TL-3036 removed enphase and energy
+	# TL-3143 added enphase back
+    ${RSYNC_CMD} --exclude=font --exclude=energy --exclude=rules ${S}/code/roubaix/services/ ${D}/${INSTALL_DIR}/roubaix/services/
+    ${RSYNC_CMD} --exclude=font --exclude=energy --exclude=rules ${S}/code/roubaix/proxies/ ${D}/${INSTALL_DIR}/roubaix/proxies/
 }
 
