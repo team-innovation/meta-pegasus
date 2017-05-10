@@ -300,7 +300,6 @@ PACKAGES = " \
 	${PN}-nfcd          \
 	${PN}-mmpd          \
 	${PN}-roubaix-services  \
-	${PN}-pumpernickel \
 	${PN}-initpumpernickel \
 	${PN}-qml-framework     \
 	${PN}-qml-framework-images-controls 	\
