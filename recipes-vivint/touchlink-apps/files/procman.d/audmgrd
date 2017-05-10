@@ -1,0 +1,10 @@
+{
+    "audmgrd":
+    {
+        "priority" : 1,
+        "name" : "Audio Services",
+        "scheduler": "os.SCHED_RR",
+        "scheduler_pri": 1,
+    	"start": "/etc/init.d/audmgrd start"
+    }
+}
