@@ -299,7 +299,7 @@ PACKAGES = " \
 	${PN}-multiplexerd          \
 	${PN}-nfcd          \
 	${PN}-mmpd          \
-	${PN}-audmgrd
+	${PN}-audmgrd   \
 	${PN}-roubaix-services  \
 	${PN}-initpumpernickel \
 	${PN}-qml-framework     \
