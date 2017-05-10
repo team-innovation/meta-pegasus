@@ -1,0 +1,7 @@
+{
+    "rf915d":
+    {
+	"name" : "Sensor and Device Services",
+    	"start": "/etc/init.d/rf915d start"
+    }
+}
