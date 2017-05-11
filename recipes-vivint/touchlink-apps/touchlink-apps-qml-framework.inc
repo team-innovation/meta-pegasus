@@ -19,4 +19,5 @@ FILES_${PN}-qml-framework = "\
 	${INSTALL_DIR}/framework/qml_framework/qml_framework.qml	\
 	${INSTALL_DIR}/framework/qml_framework/style/*	\
 	${INSTALL_DIR}/framework/qml_framework/time/*	\
+    ${INSTALL_DIR}/framework/qml_framework/fonts/* \
     "
