@@ -7,9 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects"
 PR = "r1"
 
-HG_APPS_REV = "pumpernickel_diy"
-SRCREV = "42631bbb6888"
-
+SRCREV = "${HG_APPS_ID}"
 
 SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};proto=http"
 
