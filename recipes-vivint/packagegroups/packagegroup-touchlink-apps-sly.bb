@@ -19,6 +19,7 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-netd \
 	touchlink-apps-pyftpd \
 	touchlink-apps-roubaix-images-png \
+	touchlink-apps-rf915d \
 	touchlink-apps-rtspd \
 	touchlink-apps-sundance \
 	touchlink-apps-smarthomed \
