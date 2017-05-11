@@ -12,7 +12,7 @@ do_install_append () {
 	chmod +x ${D}/${INSTALL_DIR}/rf915d/rf915d.pyo
 }
 
-FILES_${PN}-345d = "\
+FILES_${PN}-rf915d = "\
 	${INSTALL_DIR}/rf915d/*	\
 	${sysconfdir}/init.d/rf915d		\
 	${sysconfdir}/procman.d/rf915d		\
