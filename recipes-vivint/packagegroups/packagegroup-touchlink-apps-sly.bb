@@ -10,6 +10,7 @@ require packagegroup-touchlink-apps-common.inc
 
 RDEPENDS_${PN} += " \
 	touchlink-apps-345d \
+	touchlink-apps-audmgrd \
 	touchlink-apps-cloudd \
 	touchlink-apps-audmgrd \
 	touchlink-apps-dbapd \

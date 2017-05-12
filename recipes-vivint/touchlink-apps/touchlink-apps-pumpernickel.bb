@@ -5,7 +5,7 @@ HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
 SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects"
-PR = "r1"
+PR = "r2"
 
 SRCREV = "${AUTOREV}"
 
