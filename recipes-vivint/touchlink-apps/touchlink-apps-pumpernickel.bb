@@ -7,9 +7,9 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects"
 PR = "r1"
 
-SRCREV = "${HG_APPS_ID}"
+SRCREV = "${AUTOREV}"
 
-SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};proto=http"
+SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};proto=http;branch=${HG_APPS_ID}"
 
 S = "${WORKDIR}/apps-hg/code/pumpernickel"
 
