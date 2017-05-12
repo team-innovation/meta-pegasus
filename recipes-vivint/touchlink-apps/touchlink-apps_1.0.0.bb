@@ -23,6 +23,7 @@ require touchlink-apps-test-daemon.inc
 require touchlink-apps-pcamd.inc
 require touchlink-apps-iod.inc
 require touchlink-apps-345d.inc
+require touchlink-apps-rf915d.inc
 require touchlink-apps-cloudd.inc
 require touchlink-apps-modemd.inc
 require touchlink-apps-multiplexerd.inc
@@ -295,6 +296,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 PACKAGES = " \
 	${PN}-345d          \
+    ${PN}-rf915d        \
 	${PN}-framework     \
 	${PN}-multiplexerd          \
 	${PN}-nfcd          \
