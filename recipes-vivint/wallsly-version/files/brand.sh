@@ -30,11 +30,6 @@ check_and_set()
 			rm -f /etc/init.d/multiplexerd
 			rm -f /etc/procman.d/multiplexerd
 		fi
-    else
-        if [ -e /etc/init.d/rf915d ]; then
-            rm -f /etc/init.d/rf915d
-            rm -f /etc/procman.d/rf915d
-        fi
 	fi
 }
 
