@@ -322,7 +322,6 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 PACKAGES = " \
 	${PN}-345d          \
-    ${PN}-rf915d        \
 	${PN}-framework     \
 	${PN}-multiplexerd          \
 	${PN}-nfcd          \
