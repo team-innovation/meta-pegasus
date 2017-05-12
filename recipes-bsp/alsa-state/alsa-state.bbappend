@@ -7,6 +7,8 @@ SRC_URI_append_mx6 = " \
         file://asound.state.sly \
 "
 
+PR = "r6"
+
 do_install_append_mx6() {
     install -m 0644 ${WORKDIR}/asound.state.sly ${D}${localstatedir}/lib/alsa/asound.state
 }
