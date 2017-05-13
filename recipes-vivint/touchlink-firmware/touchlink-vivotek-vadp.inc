@@ -9,9 +9,9 @@ HOMEPAGE = "http://www.vivint.com"
 
 inherit gettext
 
-PR = "ml42"
+PR = "ml43"
 
-SRCREV = "452f416c7a9a"
+SRCREV = "fa8bf87d4a17"
 
 SRC_URI = "hg://${HG_SERVER};module=analytics;protocol=http"
 
@@ -19,7 +19,7 @@ S = "${WORKDIR}/analytics"
 
 FIRMWARE_DIR = "/var/lib/firmware/Vivotek"
 
-VADP_VERSION = "1.42"
+VADP_VERSION = "1.43"
 
 SUPPORT_FILES = "${S}/VADP/package"
 
