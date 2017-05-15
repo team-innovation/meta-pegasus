@@ -1,7 +1,7 @@
 DESCRIPTION = "MicroSmei ZL380 firmware"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
-PR = "r1"
+PR = "r2"
 
 FIRMWARE_ZL380    = "MICROSEMI_firmware.s3"
 
