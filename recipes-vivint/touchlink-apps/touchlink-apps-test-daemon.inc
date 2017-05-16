@@ -1,7 +1,7 @@
 ###
 ### Change TEST_DAEMON_PREPEND everything you touch this script
 ###
-TEST_DAEMON_PREPEND = "-1"
+TEST_DAEMON_PREPEND = "-2"
 
 TEST_DAEMON_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-test-daemon = "${PR}${TEST_DAEMON_PREPEND}${TEST_DAEMON_REVISION}"
