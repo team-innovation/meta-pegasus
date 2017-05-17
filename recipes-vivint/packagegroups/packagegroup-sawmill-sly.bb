@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r19"
+PR = "r20"
 
 inherit packagegroup
 
@@ -22,7 +22,6 @@ RDEPENDS_${PN} += " \
 	wallsly-version \
 	swdltool \
 	touchlink-kwikset-firmware \
-	touchlink-microsemi-firmware \
 	touchlink-rtc-firmware \
 	touchlink-telit-firmware-he910 \
 	touchlink-telit-firmware-ue910 \
