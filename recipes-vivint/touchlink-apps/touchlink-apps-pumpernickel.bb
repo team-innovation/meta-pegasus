@@ -5,9 +5,9 @@ HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
 SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects"
-PR = "r2"
+PR = "r3"
 
-SRCREV = "45a83e9169705bf78dddc426b0cc9cdbac73ad9a"
+SRCREV = "${HG_APPS_ID}"
 
 SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};proto=http;branch=${HG_APPS_ID}"
 
