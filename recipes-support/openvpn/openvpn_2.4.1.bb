@@ -2,7 +2,6 @@ SUMMARY = "A full-featured SSL VPN solution via tun device."
 HOMEPAGE = "http://openvpn.sourceforge.net"
 SECTION = "console/network"
 LICENSE = "GPLv2"
-#LIC_FILES_CHKSUM = "file://COPYING;md5=5aac200199fde47501876cba7263cb0c"
 LIC_FILES_CHKSUM = "file://COPYING;md5=e9b64491ec98eb6c6493ac5e4118f107"
 DEPENDS = "lzo openssl iproute2 ${@base_contains('DISTRO_FEATURES', 'pam', 'libpam', '', d)}"
 
@@ -12,8 +11,6 @@ SRC_URI = "http://swupdate.openvpn.org/community/releases/openvpn-${PV}.tar.gz \
            file://openvpn \
            file://openvpn@.service "
 
-#SRC_URI[md5sum] = "6ca03fe0fd093e0d01601abee808835c"
-#SRC_URI[sha256sum] = "7baed2ff39c12e1a1a289ec0b46fcc49ff094ca58b8d8d5f29b36ac649ee5b26"
 SRC_URI[md5sum] = "01c2a737c464204c79b17c9ab33fe640"
 SRC_URI[sha256sum] = "831a1a05268fe3b1646d367e2559cff94d347d213ca8995cc48a4eedc452097a"
 
