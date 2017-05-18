@@ -8,7 +8,7 @@ SECTION = "libs/network"
 LICENSE = "openssl"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=f9a8f968107345e0b75aa8c2ecaa7ec8"
 
-DEPENDS = "makedepend-native hostperl-runtime-native"
+DEPENDS = "makedepend-native"
 DEPENDS_append_class-target = " openssl-native"
 
 SRC_URI = "http://www.openssl.org/source/openssl-${PV}.tar.gz \
@@ -17,6 +17,7 @@ S = "${WORKDIR}/openssl-${PV}"
 
 PACKAGECONFIG[perl] = ",,,"
 
+AR_append = " r"
 TERMIO_libc-musl = "-DTERMIOS"
 TERMIO ?= "-DTERMIO"
 # Avoid binaries being marked as requiring an executable stack since it 
@@ -27,17 +28,16 @@ CFLAG = "${@base_conditional('SITEINFO_ENDIANNESS', 'le', '-DL_ENDIAN', '-DB_END
 export DIRS = "crypto ssl apps"
 export EX_LIBS = "-lgcc -ldl"
 export AS = "${CC} -c"
+EXTRA_OEMAKE = "-e MAKEFLAGS="
 
-inherit pkgconfig siteinfo multilib_header ptest relative_symlinks
+inherit pkgconfig siteinfo multilib_header ptest
 
 PACKAGES =+ "libcrypto libssl ${PN}-misc openssl-conf"
 FILES_libcrypto = "${libdir}/libcrypto${SOLIBS}"
 FILES_libssl = "${libdir}/libssl${SOLIBS}"
 FILES_${PN} =+ " ${libdir}/ssl/*"
 FILES_${PN}-misc = "${libdir}/ssl/misc"
-RDEPENDS_${PN}-misc = "${@bb.utils.filter('PACKAGECONFIG', 'perl', d)}"
-
-PROVIDES += "openssl10"
+RDEPENDS_${PN}-misc = "${@bb.utils.contains('PACKAGECONFIG', 'perl', 'perl', '', d)}"
 
 # Add the openssl.cnf file to the openssl-conf package.  Make the libcrypto
 # package RRECOMMENDS on this package.  This will enable the configuration
@@ -84,7 +84,7 @@ do_configure () {
 		target=linux-elf-armeb
 		;;
 	linux-aarch64*)
-		target=linux-aarch64
+		target=linux-generic64
 		;;
 	linux-sh3)
 		target=debian-sh3
@@ -107,24 +107,18 @@ do_configure () {
 	linux-gnu64-x86_64)
 		target=linux-x86_64
 		;;
-	linux-gnun32-mips*el)
-		target=debian-mipsn32el
-		;;
-	linux-gnun32-mips*)
-		target=debian-mipsn32
-		;;
-	linux-mips*64*el)
-		target=debian-mips64el
-		;;
-	linux-mips*64*)
-		target=debian-mips64
-		;;
-	linux-mips*el)
-		target=debian-mipsel
-		;;
-	linux-mips*)
+	linux-mips)
 		target=debian-mips
 		;;
+	linux-mipsel)
+		target=debian-mipsel
+		;;
+        linux-*-mips64 | linux-mips64)
+               target=debian-mips64
+                ;;
+        linux-*-mips64el | linux-mips64el)
+               target=debian-mips64el
+                ;;
 	linux-microblaze*|linux-nios2*)
 		target=linux-generic32
 		;;
@@ -185,31 +179,16 @@ do_install () {
 	sed -i -e 's,/etc/openssl,${sysconfdir}/ssl,g' ${D}${bindir}/c_rehash
 
 	oe_multilib_header openssl/opensslconf.h
-	if [ "${@bb.utils.filter('PACKAGECONFIG', 'perl', d)}" ]; then
+	if [ "${@bb.utils.contains('PACKAGECONFIG', 'perl', 'perl', '', d)}" = "perl" ]; then
 		sed -i -e '1s,.*,#!${bindir}/env perl,' ${D}${libdir}/ssl/misc/CA.pl
 		sed -i -e '1s,.*,#!${bindir}/env perl,' ${D}${libdir}/ssl/misc/tsget
 	else
 		rm -f ${D}${libdir}/ssl/misc/CA.pl ${D}${libdir}/ssl/misc/tsget
 	fi
-
-	# Create SSL structure
-	install -d ${D}${sysconfdir}/ssl/
-	mv ${D}${libdir}/ssl/openssl.cnf \
-	   ${D}${libdir}/ssl/certs \
-	   ${D}${libdir}/ssl/private \
-	   \
-	   ${D}${sysconfdir}/ssl/
-	ln -sf ${sysconfdir}/ssl/certs ${D}${libdir}/ssl/certs
-	ln -sf ${sysconfdir}/ssl/private ${D}${libdir}/ssl/private
-	ln -sf ${sysconfdir}/ssl/openssl.cnf ${D}${libdir}/ssl/openssl.cnf
 }
 
 do_install_ptest () {
 	cp -r -L Makefile.org Makefile test ${D}${PTEST_PATH}
-
-        # Replace the path to native perl with the path to target perl
-        sed -i 's,^PERL=.*,PERL=${bindir}/perl,' ${D}${PTEST_PATH}/Makefile
-
 	cp Configure config e_os.h ${D}${PTEST_PATH}
 	cp -r -L include ${D}${PTEST_PATH}
 	ln -sf ${libdir}/libcrypto.a ${D}${PTEST_PATH}
