@@ -39,6 +39,8 @@ FILES_${PN} =+ " ${libdir}/ssl/*"
 FILES_${PN}-misc = "${libdir}/ssl/misc"
 RDEPENDS_${PN}-misc = "${@bb.utils.contains('PACKAGECONFIG', 'perl', 'perl', '', d)}"
 
+PROVIDES += "openssl10"
+
 # Add the openssl.cnf file to the openssl-conf package.  Make the libcrypto
 # package RRECOMMENDS on this package.  This will enable the configuration
 # file to be installed for both the base openssl package and the libcrypto
@@ -84,7 +86,7 @@ do_configure () {
 		target=linux-elf-armeb
 		;;
 	linux-aarch64*)
-		target=linux-generic64
+		target=linux-aarch64
 		;;
 	linux-sh3)
 		target=debian-sh3
@@ -107,18 +109,24 @@ do_configure () {
 	linux-gnu64-x86_64)
 		target=linux-x86_64
 		;;
-	linux-mips)
-		target=debian-mips
+	linux-gnun32-mips*el)
+		target=debian-mipsn32el
 		;;
-	linux-mipsel)
+	linux-gnun32-mips*)
+		target=debian-mipsn32
+		;;
+	linux-mips*64*el)
+		target=debian-mips64el
+		;;
+	linux-mips*64*)
+		target=debian-mips64
+		;;
+	linux-mips*el)
 		target=debian-mipsel
 		;;
-        linux-*-mips64 | linux-mips64)
-               target=debian-mips64
-                ;;
-        linux-*-mips64el | linux-mips64el)
-               target=debian-mips64el
-                ;;
+	linux-mips*)
+		target=debian-mips
+		;;
 	linux-microblaze*|linux-nios2*)
 		target=linux-generic32
 		;;
@@ -185,10 +193,25 @@ do_install () {
 	else
 		rm -f ${D}${libdir}/ssl/misc/CA.pl ${D}${libdir}/ssl/misc/tsget
 	fi
+
+	# Create SSL structure
+	install -d ${D}${sysconfdir}/ssl/
+	mv ${D}${libdir}/ssl/openssl.cnf \
+	   ${D}${libdir}/ssl/certs \
+	   ${D}${libdir}/ssl/private \
+	   \
+	   ${D}${sysconfdir}/ssl/
+	ln -sf ${sysconfdir}/ssl/certs ${D}${libdir}/ssl/certs
+	ln -sf ${sysconfdir}/ssl/private ${D}${libdir}/ssl/private
+	ln -sf ${sysconfdir}/ssl/openssl.cnf ${D}${libdir}/ssl/openssl.cnf
 }
 
 do_install_ptest () {
 	cp -r -L Makefile.org Makefile test ${D}${PTEST_PATH}
+
+        # Replace the path to native perl with the path to target perl
+        sed -i 's,^PERL=.*,PERL=${bindir}/perl,' ${D}${PTEST_PATH}/Makefile
+
 	cp Configure config e_os.h ${D}${PTEST_PATH}
 	cp -r -L include ${D}${PTEST_PATH}
 	ln -sf ${libdir}/libcrypto.a ${D}${PTEST_PATH}
