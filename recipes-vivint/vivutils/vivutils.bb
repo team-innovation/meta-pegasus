@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r58"
+PR = "r59"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -24,9 +24,6 @@ SRC_URI = "\
 	   file://mfr_audio_test.py \
 	   file://mfr_audio_test_wallsly.py \
 	   file://nfctest.c \
-	   file://nfctest-sly \
-	   file://nfcslytest \
-	   file://nfccmd-sly \
 	   file://pcamtest \
 	   file://resize.c \
 	   file://resize.sh \
@@ -64,9 +61,6 @@ do_install() {
 	install -m 0755 ${S}/gadgetsetup ${D}/usr/local/bin
 	install -m 0755 ${S}/resize ${D}/usr/local/bin
 	install -m 0755 ${S}/nfctest ${D}/usr/local/bin
-	install -m 0755 ${S}/nfctest-sly ${D}/usr/local/bin
-	install -m 0755 ${S}/nfcslytest ${D}/usr/local/bin
-	install -m 0755 ${S}/nfccmd-sly ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
 	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
 	install -m 0755 ${S}/simplesuspend ${D}/usr/local/bin
@@ -117,4 +111,9 @@ fi
 if grep -q wallsly /proc/device-tree/compatible; then
 	cp /usr/local/bin/mfr_audio_test_wallsly.py    /usr/local/bin/mfr_audio_test.py
 fi
+
+# Maintain compatiblity with old locations:
+ln -sf /opt/2gig/iod/scripts/nfctest-sly /usr/local/bin/
+ln -sf /opt/2gig/iod/scripts/nfcslytest /usr/local/bin/
+ln -sf /opt/2gig/iod/scripts/nfccmd /usr/local/bin/
 }

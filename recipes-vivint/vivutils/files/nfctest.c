@@ -106,7 +106,11 @@ int main(int argc, char **argv)
 	}
 	ttyfd = open(tty_path, O_RDWR | O_NOCTTY);
 	if(ttyfd < 0) {
-		printf("Error! Cannot open %s\n", tty_path);
+		fprintf(stderr, "Error! Cannot open %s\n", tty_path);
+		return 1;
+	}
+	if (0 != lockf(ttyfd, F_TLOCK, 0)) {
+		fprintf(stderr, "Error! Can't lock %s\n: %s. Does another process have it locked? Try running 'lslocks'.", tty_path, strerror(errno));
 		return 1;
 	}
 	ttyraw();

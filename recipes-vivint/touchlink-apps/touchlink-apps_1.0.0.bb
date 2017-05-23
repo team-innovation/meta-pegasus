@@ -27,7 +27,6 @@ require touchlink-apps-rf915d.inc
 require touchlink-apps-cloudd.inc
 require touchlink-apps-modemd.inc
 require touchlink-apps-multiplexerd.inc
-require touchlink-apps-nfcd.inc
 
 # adtd is touchlink dependent
 #require touchlink-apps-adtd.inc
@@ -99,7 +98,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml105"
+PR = "ml106"
 
 #SRCREV = "0914ecee01d8"
 SRCREV = "${HG_APPS_ID}"
@@ -325,7 +324,6 @@ PACKAGES = " \
     ${PN}-rf915d        \
 	${PN}-framework     \
 	${PN}-multiplexerd          \
-	${PN}-nfcd          \
 	${PN}-mmpd          \
 	${PN}-roubaix       \
 	${PN}-roubaix-audio-platform  \
