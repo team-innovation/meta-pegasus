@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "30"
+PR = "31"
 
 inherit packagegroup
 
@@ -18,6 +18,7 @@ RDEPENDS_${PN} = " \
 	kernel-module-mt7603 \
 	libsodium18 \
 	logrotate \
+	lookbusy \
 	packagegroup-sawmill-debugtools \
 	packagegroup-sawmill-min \
 	procps \
