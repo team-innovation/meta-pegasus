@@ -1,9 +1,5 @@
 #!/bin/bash
 rmmods() {
-        lsmod | grep -q snd_soc_imx_zl380tw &&
-                rmmod snd_soc_imx_zl380tw
-        lsmod | grep -q snd_soc_zl380tw &&
-                rmmod snd_soc_zl380tw
 	lsmod | grep -q snd_soc_imx_cx20704 &&
 		rmmod snd_soc_imx_cx20704
 	lsmod | grep -q snd_soc_cx20704 &&
@@ -183,8 +179,6 @@ patch_cx_aec() {
 init_wallsly() {
 	initall_withoutcx
 	sleep 1
-	modprobe snd_soc_zl380tw
-	modprobe snd_soc_imx_zl380tw
 	echo 0 > /sys/iodbus/codec/aud_lvl_x_oe/value
 	patch_lm48511_amp
 }

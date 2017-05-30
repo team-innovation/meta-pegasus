@@ -20,7 +20,7 @@ SYSTEMD_AUTO_ENABLE = "disable"
 CFLAGS += "-fno-inline"
 
 # I want openvpn to be able to read password from file (hrw)
-EXTRA_OECONF += "--enable-password-save --enable-iproute2"
+EXTRA_OECONF += "--enable-iproute2"
 EXTRA_OECONF += "${@base_contains('DISTRO_FEATURES', 'pam', '', '--disable-plugin-auth-pam', d)}"
 
 # Explicitly specify IPROUTE to bypass the configure-time check for /sbin/ip on the host.
