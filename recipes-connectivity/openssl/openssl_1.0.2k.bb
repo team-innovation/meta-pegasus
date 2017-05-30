@@ -48,11 +48,8 @@ SRC_URI += "file://find.pl;subdir=${BP}/util/ \
 SRC_URI[md5sum] = "f965fc0bf01bf882b31314b61391ae65"
 SRC_URI[sha256sum] = "6b3977c61f2aedf0f96367dcfb5c6e578cf37e7b8d913b4ecb6643c3cb88d8c0"
 
-PACKAGES =+ "${PN}-engines \
-             ${PN}-engines-dbg \
-             "
+PACKAGES =+ "${PN}-engines"
 FILES_${PN}-engines = "${libdir}/ssl/engines/*.so ${libdir}/engines"
-FILES_${PN}-engines-dbg = "${libdir}/ssl/engines/.debug"
 
 # The crypto_use_bigint patch means that perl's bignum module needs to be
 # installed, but some distributions (for example Fedora 23) don't ship it by
