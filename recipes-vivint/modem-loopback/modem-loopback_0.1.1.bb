@@ -2,7 +2,7 @@ DESCRIPTION = "User modem loopback test for Wallsly"
 SECTION = "utils"
 LICENSE = "BSD-2-Clause"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d73bd2cc27d46d711cf1ba1d489eaa43"
-PR = "r0"
+PR = "r1"
 
 SRCREV = "${AUTOREV}"
 SRC_URI = "git://git.vivint.com/modem-loopback;protocol=git;branch=master"
