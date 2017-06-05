@@ -15,10 +15,10 @@ do_compile() {
    oe_runmake
 }
 
-do_install() {
-    install -d ${D}${bindir}
-    cp -a ${S}/modem-loopback ${D}${bindir}
+do_install_append() {
+        install -d ${D}/usr/local/bin
+        install -m 0755 ${WORKDIR}/${MODULE}/modem-loopback ${D}/usr/local/bin
 }
 
-FILES_${PN} = "${bindir}/modem-loopback"
-
+FILES_${PN}-dbg += "/usr/local/bin/.debug"
+FILES_${PN} = "/usr/local/bin/*"

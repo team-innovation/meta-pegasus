@@ -14,9 +14,10 @@ do_compile() {
    oe_runmake
 }
 
-do_install() {
-    install -d ${D}${bindir}
-    cp -a ${S}/asr-parse ${D}${bindir}
+do_install_append() {
+        install -d ${D}/usr/local/bin
+        install -m 0755 ${WORKDIR}/${MODULE}/asr-parse ${D}/usr/local/bin
 }
 
-FILES_${PN} = "${bindir}/asr-parse"
+FILES_${PN}-dbg += "/usr/local/bin/.debug"
+FILES_${PN} = "/usr/local/bin/*"
