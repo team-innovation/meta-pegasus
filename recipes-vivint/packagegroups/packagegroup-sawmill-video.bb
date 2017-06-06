@@ -43,7 +43,6 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-good-rtpmanager \
 	gstreamer1.0-plugins-good-rtsp \
 	gstreamer1.0-plugins-good-udp \
-	gstreamer1.0-plugins-good-video4linux2 \
 	gstreamer1.0-rtsp-server \
 	gstreamer-imx \
 	gstreamer-imx-imxaudio \
