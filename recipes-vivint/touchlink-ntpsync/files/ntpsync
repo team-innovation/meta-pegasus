@@ -46,7 +46,7 @@ if [ -e /usr/bin/chronyc ]; then
                 present=$?
                 chronyc burst 4/6 $ip > /dev/null
                 sleep 10
-                chronyc makestep > /dev/null
+                chronyc makestep 1 -1 > /dev/null
                 chronyc waitsync 1 1 > /dev/null
                 ret=$?
                 if ((! $present)); then
@@ -59,7 +59,7 @@ if [ -e /usr/bin/chronyc ]; then
                                 chronyc add server $ip offline > /dev/null
                                 chronyc burst 4/6 $ip > /dev/null
                                 sleep 10
-                                chronyc makestep > /dev/null
+                                chronyc makestep 1 -1 > /dev/null
                                 chronyc waitsync 1 1 > /dev/null
                                 ret=$?
                                 chronyc delete $ip > /dev/null
@@ -72,7 +72,7 @@ if [ -e /usr/bin/chronyc ]; then
         else
                 chronyc burst 4/6 > /dev/null
                 sleep 10
-                chronyc makestep > /dev/null
+                chronyc makestep 1 -1 > /dev/null
                 chronyc waitsync 1 1 > /dev/null
                 ret=$?
         fi
