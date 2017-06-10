@@ -6,9 +6,9 @@ DESCRIPTION = "Voice Audio Daemon"
 SECTION = "devel"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-INC_PR = "r71"
+INC_PR = "r73"
 
-SRCREV = "13e6ffb58bc4"
+SRCREV = "5e5880a85184"
 MODULE = "voice-audio"
 SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
    	file://COPYING \
@@ -22,7 +22,7 @@ S = "${WORKDIR}/${MODULE}"
 TARGET_CC_ARCH += "${LDFLAGS}"
 
 DEPENDS = "pulseaudio"
-RDEPENDS_${PN} = "pulseaudio"
+RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
 #	libvocal"
 
 do_configure() {

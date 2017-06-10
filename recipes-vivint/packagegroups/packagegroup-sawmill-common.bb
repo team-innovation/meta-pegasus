@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "31"
+PR = "32"
 
 inherit packagegroup
 
@@ -15,7 +15,6 @@ RDEPENDS_${PN} = " \
 	busybox-httpd \
 	ca-certificates \
 	cronie \
-	kernel-module-mt7603 \
 	libsodium18 \
 	logrotate \
 	lookbusy \

@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r20"
+PR = "r21"
 
 inherit packagegroup
 
@@ -27,5 +27,7 @@ RDEPENDS_${PN} += " \
 	touchlink-telit-firmware-ue910 \
 	touchlink-sierra-firmware-hl7588-a \
 	touchlink-sierra-firmware-hl7588-v \
+	modem-loopback \
+	asr-parse \
 "
 
