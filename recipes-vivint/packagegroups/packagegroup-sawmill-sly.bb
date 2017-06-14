@@ -27,6 +27,7 @@ RDEPENDS_${PN} += " \
 	touchlink-telit-firmware-ue910 \
 	touchlink-sierra-firmware-hl7588-a \
 	touchlink-sierra-firmware-hl7588-v \
+	mfr_audio_test_wallsly \
 	modem-loopback \
 	asr-parse \
 "

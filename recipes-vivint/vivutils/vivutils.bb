@@ -22,7 +22,6 @@ SRC_URI = "\
 	   file://bootgadgets.sh \
 	   file://mfr_audio_heat_test.py \
 	   file://mfr_audio_test.py \
-	   file://mfr_audio_test_wallsly.py \
 	   file://nfctest.c \
 	   file://pcamtest \
 	   file://resize.c \
@@ -72,7 +71,6 @@ do_install() {
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/netm-hwtest.py ${D}/usr/local/bin
 	install -m 0755 ${S}/zwave-hwtest.py ${D}/usr/local/bin
-	install -m 0755 ${S}/mfr_audio_test_wallsly.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
 	install -m 0644 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
@@ -109,7 +107,8 @@ fi
 
 # Overwrite existing file.
 if grep -q wallsly /proc/device-tree/compatible; then
-	cp /usr/local/bin/mfr_audio_test_wallsly.py    /usr/local/bin/mfr_audio_test.py
+	rm /usr/local/bin/mfr_audio_test.py 
+	cp /usr/local/bin/mfr_audio_test_wallsly    /usr/local/bin/mfr_audio_test
 fi
 
 # Maintain compatiblity with old locations:
