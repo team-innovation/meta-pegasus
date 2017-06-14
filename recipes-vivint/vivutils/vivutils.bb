@@ -9,6 +9,9 @@ PACKAGES = "${PN} ${PN}-dbg"
 
 RDEPENDS_${PN} = " \
     python3-pysodium \
+    libpulse-simple \
+    libpulse \
+    libasound \
 "
 
 SRC_URI = "\
