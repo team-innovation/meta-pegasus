@@ -108,7 +108,7 @@ fi
 # Overwrite existing file.
 if grep -q wallsly /proc/device-tree/compatible; then
 	rm /usr/local/bin/mfr_audio_test.py 
-	cp /usr/local/bin/mfr_audio_test_wallsly    /usr/local/bin/mfr_audio_test
+	cp /usr/local/bin/mfr-audio-test-wallsly    /usr/local/bin/mfr-audio-test
 fi
 
 # Maintain compatiblity with old locations:
