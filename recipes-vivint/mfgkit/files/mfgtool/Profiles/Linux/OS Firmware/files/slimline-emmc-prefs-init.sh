@@ -146,11 +146,11 @@ EOF
 
 # create filesystems
 echo "Making filesystems, please wait..."
-mkfs.ext4 -qL BOOT    "$DRIVE"p1 > /dev/null 2>&1
-mkfs.ext4 -qL BOOTSCR "$DRIVE"p3 > /dev/null 2>&1
-mkfs.ext4 -qL ROOTFS1 "$DRIVE"p5 > /dev/null 2>&1
-mkfs.ext4 -qL ROOTFS2 "$DRIVE"p6 > /dev/null 2>&1
-mkfs.ext4 -qL DATA    "$DRIVE"p7 > /dev/null 2>&1
+mkfs.ext4 -qL BOOT    -E nodiscard "$DRIVE"p1 > /dev/null 2>&1
+mkfs.ext4 -qL BOOTSCR -E nodiscard "$DRIVE"p3 > /dev/null 2>&1
+mkfs.ext4 -qL ROOTFS1 -E nodiscard "$DRIVE"p5 > /dev/null 2>&1
+mkfs.ext4 -qL ROOTFS2 -E nodiscard "$DRIVE"p6 > /dev/null 2>&1
+mkfs.ext4 -qL DATA    -E nodiscard "$DRIVE"p7 > /dev/null 2>&1
 sync
 
 exit 0
