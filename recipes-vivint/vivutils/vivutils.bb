@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r61"
+PR = "r63"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -108,10 +108,11 @@ if [ "x$D" != "x" ]; then
         exit 1
 fi
 
-# Overwrite existing file.
+# Overwrite existing files.
 if grep -q wallsly /proc/device-tree/compatible; then
 	rm /usr/local/bin/mfr_audio_test.py 
 	cp /usr/local/bin/mfr-audio-test-wallsly    /usr/local/bin/mfr-audio-test
+	cp /usr/local/bin/vaudio-wallsly    /usr/local/bin/vaudio
 fi
 
 # Maintain compatiblity with old locations:
