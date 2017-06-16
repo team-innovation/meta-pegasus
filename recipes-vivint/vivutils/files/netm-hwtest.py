@@ -7,22 +7,29 @@ import os
 import sys
 import argparse 
 
+
+if os.uname().nodename == 'imx6dl-skyhub':
+    serialdevice = "/opt/2gig/multiplexerd/helpers/network"
+    defaultiface = 'wlan0'
+    if not os.path.exists("/opt/2gig/multiplexerd/helpers/network"):
+        print("System not ready for testing, wait for multiplexerd to start") 
+        sys.exit(1)
+else:
+    serialdevice = "/dev/ttymxc1"
+    defaultiface = 'wlan2'
+
 parser = argparse.ArgumentParser(description='Test the network module for basic functionality')
 parser.add_argument('ap', help='accesspoint name')
-parser.add_argument('-i', nargs='?', default='wlan0', dest="iface", 
+parser.add_argument('-i', nargs='?', default=defaultiface, dest="iface", 
     help='interface to use, default apcli0')
 args = parser.parse_args()
-
-if not os.path.exists("/opt/2gig/multiplexerd/helpers/network"):
-    print("System not ready for testing, wait for multiplexerd to start")
-    sys.exit(1)
 
 # We need to stop netd or it messes with the network module
 devnull = open(os.devnull, 'w')
 call(["procman", "stop", "netd"], stdout=devnull, stderr=devnull)
 
 try:
-    serialport = Serial("/opt/2gig/multiplexerd/helpers/network", 57600, 
+    serialport = Serial(serialdevice, 57600, 
                         timeout = 2)
     serialport.flushOutput()
     serialport.flushInput()
