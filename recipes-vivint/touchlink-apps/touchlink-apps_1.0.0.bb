@@ -98,7 +98,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml106"
+PR = "ml107"
 
 #SRCREV = "0914ecee01d8"
 SRCREV = "${HG_APPS_ID}"
@@ -344,6 +344,7 @@ PACKAGES = " \
 	${PN}-roubaix-images-png \
 	${PN}-roubaix-images-rules \
 	${PN}-roubaix-images-shared \
+	${PN}-roubaix-images-solar \
 	${PN}-roubaix-images-svg \
 	${PN}-roubaix-images-toolbox \
 	${PN}-roubaix-images-video \
