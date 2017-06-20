@@ -8,7 +8,7 @@ LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
 INC_PR = "r74"
 
-SRCREV = "69d1aae0b5b1"
+SRCREV = "2b1786ee38ac"
 MODULE = "voice-audio"
 SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
    	file://COPYING \
@@ -22,8 +22,7 @@ S = "${WORKDIR}/${MODULE}"
 TARGET_CC_ARCH += "${LDFLAGS}"
 
 DEPENDS = "pulseaudio"
-RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
-#	libvocal"
+RDEPENDS_${PN} = "libpulse-simple libpulse libasound libvocal"
 
 do_configure() {
 	cp ${WORKDIR}/libvocal.a ${STAGING_LIBDIR}
