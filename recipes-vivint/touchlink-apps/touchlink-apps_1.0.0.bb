@@ -279,6 +279,8 @@ do_install_append() {
 	# remove all .py file
 	find ${D}/${INSTALL_DIR} -name proxies -prune -o -name *.py -print | xargs rm -f
 	find ${D}/${INSTALL_DIR} -name *.py | xargs rm -f
+	# remove yaml_definitions
+	find ${D}/${INSTALL_DIR} -name yaml_definitions | xargs rm -rf
 }
 
 pkg_postinst_${PN} () {
