@@ -57,7 +57,7 @@ fi
 
 echo "Creating ext4 filesystem on $dev_partition"
 umount $dev_partition
-mkfs.ext4 $dev_partition
+mkfs.ext4 -E nodiscard $dev_partition
 
 echo "Mounting $dev_partition..."
 mount $dev_partition $n_partition
