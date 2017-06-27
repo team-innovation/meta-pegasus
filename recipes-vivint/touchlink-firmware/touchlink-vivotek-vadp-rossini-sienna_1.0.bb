@@ -5,9 +5,11 @@ DESCRIPTION = "Vivotek VADP module - sienna"
 # changes in analytics source you want to be build
 #
 
+PR = "r2"
+
 require touchlink-vivotek-vadp-rossini.inc
 
-VADP_VERSION = "1.0"
+VADP_VERSION = "1.1"
 CODE_NAME = "sienna"
 
 SRC_URI = "http://${DOWNLOAD_SERVER}/rossini-${CODE_NAME}-vadp_${VADP_VERSION}.tar.gz"
