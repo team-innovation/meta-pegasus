@@ -1,6 +1,6 @@
 DESCRIPTION = "Build spacemonkey fabric for arm"
 
-PR = "r8"
+PR = "r9"
 
 DEPENDS = "go-cross sqlite3"
 
@@ -8,15 +8,15 @@ inherit go
 
 SRCREV = "${AUTOREV}"
 SRC_URI += " \
-    http://updateseng.vivint.com/innovation/downloads/fabric-go-${PV}.tar.gz \        
+    http://updateseng.vivint.com/innovation/downloads/fabric-go-${PV}.tar.bz2 \        
     file://init \
     file://schooner.config \
     file://schooner.procman \
     file://schooner.logrotate \
 "
 
-SRC_URI[md5sum] = "a87a3d6de457df4250af35f395d9b307"
-SRC_URI[sha256sum] = "b02b05b8137d93e961d939a49eb5a8643426ccbf9d7b938b625d9670efcaf929"
+SRC_URI[md5sum] = "324eadf63d7e2f6738dd4b4696663a4a"
+SRC_URI[sha256sum] = "7016c56c1be803b041e48b50a98631ad2cf60313e386817028978a4a44718c3e"
 
 LICENSE = "CLOSED"
 
