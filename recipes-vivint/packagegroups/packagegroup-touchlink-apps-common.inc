@@ -25,6 +25,7 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-roubaix-html \
 	touchlink-apps-roubaix-images-coin \
 	touchlink-apps-roubaix-images-shared \
+	touchlink-apps-roubaix-images-solar \
 	touchlink-apps-roubaix-images-toolbox \
 	touchlink-apps-roubaix-images-video \
 	touchlink-apps-roubaix-images-wallpapers \
