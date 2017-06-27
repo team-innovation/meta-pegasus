@@ -14,9 +14,8 @@ CODE_NAME = "sienna"
 
 SRC_URI = "http://${DOWNLOAD_SERVER}/rossini-${CODE_NAME}-vadp_${VADP_VERSION}.tar.gz"
 
-
-SRC_URI[md5sum] = "a5239b2188bbeba72e7accd7aca20731"
-SRC_URI[sha256sum] = "89e70ae4068574d9c70f5fd7043c59a5920bd524f6fb3879559234606a24d0f9"
+SRC_URI[md5sum] = "9ff541cc57a2e3dfae0a957d4f9be289"
+SRC_URI[sha256sum] = "3feaec7d3de69042ed7a58b4bf03947bcff45e8ffb480891c73f15719e5f5844"
 
 VADP_MODULE_NAME = "rossini-${CODE_NAME}-vadp_${VADP_VERSION}.tar.gz"
 
