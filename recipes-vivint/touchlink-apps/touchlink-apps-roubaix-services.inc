@@ -1,7 +1,7 @@
 ###
 ### Change ROUBAIX_SERVICES_PREPEND everytime you touch this script
 ###
-ROUBAIX_SERVICES_PREPEND = "-4"
+ROUBAIX_SERVICES_PREPEND = "-3"
 
 ROUBAIX_SERVICES_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix-services = "${PR}${ROUBAIX_SERVICES_PREPEND}${ROUBAIX_SERVICES_REVISION}"
@@ -19,6 +19,3 @@ do_install_append (){
     ${RSYNC_CMD} --exclude=font --exclude=energy --exclude=rules ${S}/code/roubaix/proxies/ ${D}/${INSTALL_DIR}/roubaix/proxies/
 }
 
-RREPLACES_${PN}-roubaix-services = ${PN}-roubaix
-RCONFLICTS_${PN}-roubaix-services = ${PN}-roubaix
- 
