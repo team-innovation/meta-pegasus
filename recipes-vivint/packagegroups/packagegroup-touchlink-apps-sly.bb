@@ -12,7 +12,6 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-345d \
 	touchlink-apps-audmgrd \
 	touchlink-apps-cloudd \
-	touchlink-apps-audmgrd \
 	touchlink-apps-dbapd \
 	touchlink-apps-httpd \
 	touchlink-apps-mmpd \
