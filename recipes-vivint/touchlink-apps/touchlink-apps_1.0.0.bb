@@ -72,7 +72,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml106"
+PR = "ml107"
 
 #SRCREV = "0914ecee01d8"
 SRCREV = "${HG_APPS_ID}"
@@ -253,6 +253,8 @@ do_install_append() {
 	# remove all .py file
 	find ${D}/${INSTALL_DIR} -name proxies -prune -o -name *.py -print | xargs rm -f
 	find ${D}/${INSTALL_DIR} -name *.py | xargs rm -f
+	# remove yaml_definitions
+	find ${D}/${INSTALL_DIR} -name yaml_definitions | xargs rm -rf
 }
 
 pkg_postinst_${PN} () {

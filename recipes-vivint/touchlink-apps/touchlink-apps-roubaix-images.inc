@@ -6,6 +6,7 @@ ROUBAIX_IMG_CTRL_PREPEND = "-1"
 ROUBAIX_IMG_PNG_PREPEND = "-1"
 ROUBAIX_IMG_RULES_PREPEND = "-1"
 ROUBAIX_IMG_SHARED_PREPEND = "-1"
+ROUBAIX_IMG_SOLAR_PREPEND = "-1"
 ROUBAIX_IMG_SVG_PREPEND = "-1"
 ROUBAIX_IMG_TOOLBOX_PREPEND = "-1"
 ROUBAIX_IMG_VIDEO_PREPEND = "-1"
@@ -42,6 +43,10 @@ PKGR_${PN}-roubaix-images-wallpapers = "${PR}${ROUBAIX_IMG_WP_PREPEND}${ROUBAIX_
 ROUBAIX_IMG_MULTIMEDIA_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-roubaix-images-multimedia = "${PR}${ROUBAIX_IMG_MULTIMEDIA_PREPEND}${ROUBAIX_IMG_MULTIMEDIA_REVISION}"
 
+ROUBAIX_IMG_SOLAR_REVISION ?= "${DISTRO_PR}"
+PKGR_${PN}-roubaix-images-solar = "${PR}${ROUBAIX_IMG_SOLAR_PREPEND}${ROUBAIX_IMG_SOLAR_REVISION}"
+
+
 FILES_${PN}-roubaix-images-coin = "\
 	${INSTALL_DIR}/roubaix/images/coin/* \
 	"
@@ -60,6 +65,10 @@ FILES_${PN}-roubaix-images-rules = "\
 
 FILES_${PN}-roubaix-images-shared = "\
 	${INSTALL_DIR}/roubaix/images/shared/* \
+	"
+
+FILES_${PN}-roubaix-images-solar = "\
+	${INSTALL_DIR}/roubaix/images/solar/* \
 	"
 
 FILES_${PN}-roubaix-images-svg= "\

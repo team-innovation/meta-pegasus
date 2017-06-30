@@ -21,10 +21,6 @@ pkg_postinst_${PN}-modemd () {
 # Post install to flash the modem to default carrier on WallSly
 #
 if [ x"$D" = "x" ]; then
-    if [ -f /proc/device-tree/compatible ]; then
-        exit 0
-    fi
-
     # look for Sierra cell class on WallSly
     if [ -d "/sys/class/cell/cell0" ]; then
         # get the AT&T image filename (contains ".A.")

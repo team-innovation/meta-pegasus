@@ -3,12 +3,15 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r59"
+PR = "r63"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
 RDEPENDS_${PN} = " \
     python3-pysodium \
+    libpulse-simple \
+    libpulse \
+    libasound \
 "
 
 SRC_URI = "\
@@ -22,7 +25,6 @@ SRC_URI = "\
 	   file://bootgadgets.sh \
 	   file://mfr_audio_heat_test.py \
 	   file://mfr_audio_test.py \
-	   file://mfr_audio_test_wallsly.py \
 	   file://nfctest.c \
 	   file://pcamtest \
 	   file://resize.c \
@@ -72,7 +74,6 @@ do_install() {
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/netm-hwtest.py ${D}/usr/local/bin
 	install -m 0755 ${S}/zwave-hwtest.py ${D}/usr/local/bin
-	install -m 0755 ${S}/mfr_audio_test_wallsly.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
 	install -m 0644 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
@@ -107,9 +108,11 @@ if [ "x$D" != "x" ]; then
         exit 1
 fi
 
-# Overwrite existing file.
+# Overwrite existing files.
 if grep -q wallsly /proc/device-tree/compatible; then
-	cp /usr/local/bin/mfr_audio_test_wallsly.py    /usr/local/bin/mfr_audio_test.py
+	rm /usr/local/bin/mfr_audio_test.py 
+	cp /usr/local/bin/mfr-audio-test-wallsly    /usr/local/bin/mfr-audio-test
+	cp /usr/local/bin/vaudio-wallsly    /usr/local/bin/vaudio
 fi
 
 # Maintain compatiblity with old locations:
