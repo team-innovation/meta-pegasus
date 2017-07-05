@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r63"
+PR = "r64"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -36,6 +36,7 @@ SRC_URI = "\
 	   file://pa_info \
 	   file://touchtest \
 	   file://wave_1000_hz_half_mag.wav \
+	   file://dtmf-sharp.wav \
 	   file://wlan-hwtest \
 	   file://netm-hwtest.py \
 	   file://zwave-hwtest.py \
@@ -77,6 +78,7 @@ do_install() {
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
 	install -m 0644 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
+	install -m 0644 ${S}/dtmf-sharp.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/genkeys ${D}/usr/local/bin
 	install -m 0755 ${S}/lockdown_panel ${D}/usr/local/bin
 	install -m 0755 ${S}/user_battery_test.py ${D}/usr/local/bin
