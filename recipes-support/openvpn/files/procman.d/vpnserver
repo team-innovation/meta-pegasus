@@ -1,0 +1,10 @@
+{
+    "vpnserver":
+    {
+		"name": "OpenVPN Server Service",
+		"priority" : -2,
+		"pid_file" : "/var/run/openvpn.server.pid",
+     	"start": "/etc/init.d/openvpn start"
+    }
+}
+

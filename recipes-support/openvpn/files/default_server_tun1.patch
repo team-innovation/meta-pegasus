@@ -1,0 +1,19 @@
+# HG changeset patch
+# User Johny Bui <jbui@vivint.com>
+# Date 1396589847 21600
+# Node ID 578db0490e3a0432244ace2900144f76492f5f9d
+# Parent  bd9233e2cf32fb052e04822db180c5825aec8b5f
+default to tun1
+
+diff --git a/sample/sample-config-files/server.conf b/sample/sample-config-files/server.conf
+--- a/sample/sample-config-files/server.conf
++++ b/sample/sample-config-files/server.conf
+@@ -50,7 +50,7 @@
+ # unless you partially or fully disable
+ # the firewall for the TUN/TAP interface.
+ ;dev tap
+-dev tun
++dev tun1
+ 
+ # Windows needs the TAP-Win32 adapter name
+ # from the Network Connections panel if you

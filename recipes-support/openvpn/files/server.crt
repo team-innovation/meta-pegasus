@@ -1,0 +1,73 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 1 (0x1)
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=US, ST=UT, L=Lehi, O=Vivint, OU=Innovation, CN=Vivint CA/name=EasyRSA
+        Validity
+            Not Before: Apr  3 05:48:17 2014 GMT
+            Not After : Mar 10 05:48:17 2114 GMT
+        Subject: C=US, ST=UT, L=Lehi, O=Vivint, OU=Innovation, CN=server/name=EasyRSA
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (1024 bit)
+                Modulus:
+                    00:b4:fd:71:66:f9:61:b5:c1:56:12:e3:58:e4:d9:
+                    6f:1a:dd:ea:69:bf:c7:f9:51:ed:4d:1c:15:86:ea:
+                    a5:33:cf:be:49:d0:4f:cf:09:7e:0c:36:18:21:df:
+                    54:9c:7d:c4:a2:68:98:f2:36:b1:84:51:5c:28:2c:
+                    c2:f3:fb:41:d5:80:67:17:06:2b:3e:a2:80:5e:cf:
+                    43:d3:05:4a:b7:78:72:d9:89:61:a4:06:b6:08:e1:
+                    59:12:ab:e6:f3:68:fe:4d:6e:d5:a8:67:d9:ae:22:
+                    c9:55:80:3b:09:39:a4:ff:7d:89:c8:15:75:5e:1b:
+                    27:2e:a3:02:fa:bc:f8:7d:6b
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Cert Type: 
+                SSL Server
+            Netscape Comment: 
+                Easy-RSA Generated Server Certificate
+            X509v3 Subject Key Identifier: 
+                3C:16:B3:28:26:2B:30:8D:AD:12:04:76:4C:9F:41:32:BE:20:35:E5
+            X509v3 Authority Key Identifier: 
+                keyid:42:C1:0E:22:82:03:C6:E7:CB:55:7C:1D:88:E7:6E:BB:F1:30:B5:BA
+                DirName:/C=US/ST=UT/L=Lehi/O=Vivint/OU=Innovation/CN=Vivint CA/name=EasyRSA
+                serial:EE:F7:D6:2A:80:EB:ED:7A
+
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication
+            X509v3 Key Usage: 
+                Digital Signature, Key Encipherment
+    Signature Algorithm: sha256WithRSAEncryption
+        89:fe:0d:f5:07:11:db:94:dc:47:18:22:ce:fa:75:b0:85:e5:
+        01:eb:8c:ad:3a:89:d1:98:15:86:4b:f3:df:3c:87:08:be:38:
+        50:3e:d7:d3:a0:9c:99:3f:b1:99:d6:8b:4d:6a:08:9c:b9:bf:
+        b1:7a:2c:bf:d7:b4:27:b2:7a:ab:2e:fc:85:68:a2:57:1a:24:
+        6b:7c:5b:f3:5f:6f:19:60:69:0d:ab:b6:af:13:56:0e:d1:97:
+        da:40:63:23:68:82:bc:5b:30:d5:d6:02:a0:f3:ff:38:83:d2:
+        55:2d:e0:96:4e:c2:e2:90:4e:db:e9:bf:55:fc:cf:72:ce:de:
+        8e:93
+-----BEGIN CERTIFICATE-----
+MIIDpDCCAw2gAwIBAgIBATANBgkqhkiG9w0BAQsFADB1MQswCQYDVQQGEwJVUzEL
+MAkGA1UECBMCVVQxDTALBgNVBAcTBExlaGkxDzANBgNVBAoTBlZpdmludDETMBEG
+A1UECxMKSW5ub3ZhdGlvbjESMBAGA1UEAxMJVml2aW50IENBMRAwDgYDVQQpEwdF
+YXN5UlNBMCAXDTE0MDQwMzA1NDgxN1oYDzIxMTQwMzEwMDU0ODE3WjByMQswCQYD
+VQQGEwJVUzELMAkGA1UECBMCVVQxDTALBgNVBAcTBExlaGkxDzANBgNVBAoTBlZp
+dmludDETMBEGA1UECxMKSW5ub3ZhdGlvbjEPMA0GA1UEAxMGc2VydmVyMRAwDgYD
+VQQpEwdFYXN5UlNBMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC0/XFm+WG1
+wVYS41jk2W8a3eppv8f5Ue1NHBWG6qUzz75J0E/PCX4MNhgh31ScfcSiaJjyNrGE
+UVwoLMLz+0HVgGcXBis+ooBez0PTBUq3eHLZiWGkBrYI4VkSq+bzaP5NbtWoZ9mu
+IslVgDsJOaT/fYnIFXVeGycuowL6vPh9awIDAQABo4IBQzCCAT8wCQYDVR0TBAIw
+ADARBglghkgBhvhCAQEEBAMCBkAwNAYJYIZIAYb4QgENBCcWJUVhc3ktUlNBIEdl
+bmVyYXRlZCBTZXJ2ZXIgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFDwWsygmKzCNrRIE
+dkyfQTK+IDXlMIGnBgNVHSMEgZ8wgZyAFELBDiKCA8bny1V8HYjnbrvxMLW6oXmk
+dzB1MQswCQYDVQQGEwJVUzELMAkGA1UECBMCVVQxDTALBgNVBAcTBExlaGkxDzAN
+BgNVBAoTBlZpdmludDETMBEGA1UECxMKSW5ub3ZhdGlvbjESMBAGA1UEAxMJVml2
+aW50IENBMRAwDgYDVQQpEwdFYXN5UlNBggkA7vfWKoDr7XowEwYDVR0lBAwwCgYI
+KwYBBQUHAwEwCwYDVR0PBAQDAgWgMA0GCSqGSIb3DQEBCwUAA4GBAIn+DfUHEduU
+3EcYIs76dbCF5QHrjK06idGYFYZL8988hwi+OFA+19OgnJk/sZnWi01qCJy5v7F6
+LL/XtCeyeqsu/IVoolcaJGt8W/NfbxlgaQ2rtq8TVg7Rl9pAYyNogrxbMNXWAqDz
+/ziD0lUt4JZOwuKQTtvpv1X8z3LO3o6T
+-----END CERTIFICATE-----
