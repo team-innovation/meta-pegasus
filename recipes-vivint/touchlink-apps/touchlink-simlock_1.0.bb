@@ -11,7 +11,7 @@ MODULE = "lock"
 2GIG_DIR = "opt/2gig"
 S = "${WORKDIR}/git/code/SimLock"
 
-GIT_SIMLOCK_ID ?= "${AUTOREV}"
+GIT_SIMLOCK_REV ?= "${AUTOREV}"
 SRCREV = "${GIT_SIMLOCK_REV}"
 SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh"
 
