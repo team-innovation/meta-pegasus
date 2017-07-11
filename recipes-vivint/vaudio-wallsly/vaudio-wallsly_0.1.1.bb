@@ -15,7 +15,7 @@ do_compile() {
 
 do_install_append() {
         install -d ${D}/usr/local/bin
-        install -m 0755 ${S}/git/vaudio-wallsly ${D}/usr/local/bin
+        install -m 0755 ${S}/vaudio-wallsly ${D}/usr/local/bin
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug"
