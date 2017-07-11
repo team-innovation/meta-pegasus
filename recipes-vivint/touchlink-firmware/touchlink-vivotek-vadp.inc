@@ -11,7 +11,7 @@ inherit gettext
 
 PR = "ml46"
 
-SRCREV = "06fe974df68"
+SRCREV = "06fe974df68d1316f75f29124f68fbab9086362c"
 
 SRC_URI = "git://git@${GIT_SERVER}/analytics.git;protocol=ssh"
 
