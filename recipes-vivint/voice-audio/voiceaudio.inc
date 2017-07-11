@@ -8,7 +8,7 @@ LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
 INC_PR = "r75"
 
-SRCREV = "9573ece8aea39370be099d3d60bf5d5a1fab1f1f"
+SRCREV = "f093bc1fe4c7aeab064a214a90e68216d9d54195"
 MODULE = "voice-audio"
 SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh \
    	file://COPYING \
