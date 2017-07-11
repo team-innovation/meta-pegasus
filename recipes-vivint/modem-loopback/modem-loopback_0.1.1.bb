@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b022f53d2c5f4c04151c3eb748ef18a8"
 PR = "r6"
 
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://${GIT_SERVER}/audio.git;protocol=ssh;branch=master"
+SRC_URI = "git://${GIT_SERVER}/audio.git;protocol=ssh;branch=develop"
 
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
 

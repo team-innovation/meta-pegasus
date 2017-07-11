@@ -1,4 +1,4 @@
-SRCBRANCH = "master"
+SRCBRANCH = "develop"
 LOCALVERSION = "-1.0.0_slimline"
 SRCREV = "${AUTOREV}"
 KERNEL_SRC = "git://${GIT_SERVER}/linux-imx.git;protocol=ssh"

@@ -6,7 +6,7 @@ PR = "r3"
 PV = "${SRCPV}"
 
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://${GIT_SERVER}/audio.git;protocol=ssh;branch=master"
+SRC_URI = "git://${GIT_SERVER}/audio.git;protocol=ssh;branch=develop"
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
 S = "${WORKDIR}/git/vaudio-wallsly"
 do_compile() {
