@@ -10,7 +10,7 @@ DEPENDS += "python3 live555"
 RDEPENDS_${PN} = "live555-libusageenvironment live555-libbasicusageenvironment live555-libgroupsock live555-liblivemedia"
 DEPENDS_virtclass-native += "python3-native"
 
-SRCREV = "bcb4d1391c4"
+SRCREV = "6b8eb1b04dc6cd2c9df61bd59afc23ed4fee96e6"
 MODULE = "live555-proxy-server"
 SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh"
 
