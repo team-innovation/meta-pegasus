@@ -1,7 +1,7 @@
-SRCBRANCH = "slimline-dizzy"
+SRCBRANCH = "master"
 LOCALVERSION = "-1.0.0_slimline"
 SRCREV = "${AUTOREV}"
-KERNEL_SRC = "git://git.vivint.com/linux-imx.git;protocol=git"
+KERNEL_SRC = "git://${GIT_SERVER}/linux-imx.git;protocol=ssh"
 SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
 PV = "3.14.28+git${SRCPV}"
 

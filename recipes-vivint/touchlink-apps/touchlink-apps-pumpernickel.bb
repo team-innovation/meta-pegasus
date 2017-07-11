@@ -5,13 +5,14 @@ HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
 SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects"
-PR = "r3"
+PR = "r5"
 
-SRCREV = "${HG_APPS_ID}"
+SRCREV = "${GIT_APPS_REV}"
+SRCBRANCH = "${GIT_APPS_BRANCH}"
 
-SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};proto=http;branch=${HG_APPS_ID}"
+SRC_URI = "git://git@${GIT_SERVER}/${GIT_APPS_TAG}.git;proto=ssh;branch=${SRCBRANCH}"
 
-S = "${WORKDIR}/apps-hg/code/pumpernickel"
+S = "${WORKDIR}/git/code/pumpernickel"
 
 require recipes-qt/qt5/qt5.inc
 

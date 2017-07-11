@@ -72,19 +72,18 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml107"
+PR = "ml108"
 
-#SRCREV = "0914ecee01d8"
-SRCREV = "${HG_APPS_ID}"
-#SRCREV = "default"
+SRCREV = "${GIT_APPS_REV}"
+SRCBRANCH = "${GIT_APPS_BRANCH}"
 
-SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};protocol=http \
+SRC_URI = "git://git@${GIT_SERVER}/${GIT_APPS_TAG}.git;protocol=ssh;branch=${SRCBRANCH} \
     file://procman.d \
     file://procman.d-fcc \
     file://favicon.ico \
     "
 
-S = "${WORKDIR}/apps-hg"
+S = "${WORKDIR}/git"
 
 PYTHON_BASEVERSION = "3.3"
 PREFERRED_VERSION_python3 = "3.3.3"
@@ -157,11 +156,11 @@ do_compile() {
 	# generate proxies
 	if [ ${BUILD_BOT_BUILD} ] ; then
 			bbnote "This is a buildbot build"
-			if [ -e ${HOME}/CodeHG/strings/string_table.py ]; then
+			if [ -e ${HOME}/CodeBitBucket/strings/string_table.py ]; then
 				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
 				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
-				cp ${HOME}/CodeHG/strings/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
-				cp ${HOME}/CodeHG/strings/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
+				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
+				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
 			fi
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table
 			if [ ${LOCK_PORTS} ] ; then
@@ -172,11 +171,11 @@ do_compile() {
 			fi
 	else
 	        bbnote "This is NOT a buildbot build"
-			if [ -e ${HOME}/CodeHG/strings/string_table.py ]; then
+			if [ -e ${HOME}/CodeBitBucket/strings/string_table.py ]; then
 				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
 				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
-				cp ${HOME}/CodeHG/strings/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
-				cp ${HOME}/CodeHG/strings/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
+				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
+				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
 			fi
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table --verbose
 	fi

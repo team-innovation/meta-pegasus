@@ -9,11 +9,11 @@ PKGR_${PN} = "${PR}${SIMLOCK_REVISION}"
 
 MODULE = "lock"
 2GIG_DIR = "opt/2gig"
-S = "${WORKDIR}/${MODULE}/code/SimLock"
+S = "${WORKDIR}/git/code/SimLock"
 
-HG_SIMLOCK_ID ?= "default"
-SRCREV = "${HG_SIMLOCK_ID}"
-SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http"
+GIT_SIMLOCK_ID ?= "${AUTOREV}"
+SRCREV = "${GIT_SIMLOCK_REV}"
+SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh"
 
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"

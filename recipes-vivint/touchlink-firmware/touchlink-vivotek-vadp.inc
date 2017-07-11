@@ -11,11 +11,11 @@ inherit gettext
 
 PR = "ml46"
 
-SRCREV = "5d0f48239c35"
+SRCREV = "06fe974df68"
 
-SRC_URI = "hg://${HG_SERVER};module=analytics;protocol=http"
+SRC_URI = "git://git@${GIT_SERVER}/analytics.git;protocol=ssh"
 
-S = "${WORKDIR}/analytics"
+S = "${WORKDIR}/git"
 
 FIRMWARE_DIR = "/var/lib/firmware/Vivotek"
 

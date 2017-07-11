@@ -1,6 +1,6 @@
 SUMMARY = "Slimline PSOC5 Verify Script"
 DESCRIPTION = "This package provides s script to verify and reprogram a Slimline PSOC5 device"
-HOMEPAGE = "http://git.vivint.com"
+HOMEPAGE = "http://source.vivint.com"
 SECTION = "base"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=a6d576eb292a14a25860bf932896ef51"

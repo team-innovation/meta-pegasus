@@ -8,9 +8,9 @@ LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
 INC_PR = "r75"
 
-SRCREV = "2b1786ee38ac"
+SRCREV = "9573ece8aea"
 MODULE = "voice-audio"
-SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
+SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh \
    	file://COPYING \
 	file://libvocal.a"
 
@@ -18,7 +18,7 @@ SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
 #	       file://config.linux-cross-shared-libraries"
 
 
-S = "${WORKDIR}/${MODULE}"
+S = "${WORKDIR}/git"
 TARGET_CC_ARCH += "${LDFLAGS}"
 
 DEPENDS = "pulseaudio"
@@ -31,7 +31,7 @@ do_configure() {
 
 do_install_append() {
 	install -d ${D}/usr/local/bin
-	install -m 0755 ${WORKDIR}/${MODULE}/vaudio ${D}/usr/local/bin
+	install -m 0755 ${S}/vaudio ${D}/usr/local/bin
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug"

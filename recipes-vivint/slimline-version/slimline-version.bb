@@ -25,7 +25,7 @@ do_install() {
 	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/slimline-version
 	echo "OE branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/slimline-version
 	echo "OERev: ${METADATA_REVISION}" >> ${D}${sysconfdir}/slimline-version
-	echo "AppsRev: ${HG_APPS_ID}" >> ${D}${sysconfdir}/slimline-version
+	echo "AppsRev: ${GIT_APPS_REV}" >> ${D}${sysconfdir}/slimline-version
 	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/slimline-version
 
 	install -d ${D}${bindir}

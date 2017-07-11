@@ -25,7 +25,7 @@ do_install() {
 	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/sly-version
 	echo "OE branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/sly-version
 	echo "OERev: ${METADATA_REVISION}" >> ${D}${sysconfdir}/sly-version
-	echo "AppsRev: ${HG_APPS_ID}" >> ${D}${sysconfdir}/sly-version
+	echo "AppsRev: ${GIT_APPS_REV}" >> ${D}${sysconfdir}/sly-version
 	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/sly-version
 
 	install -d ${D}${bindir}

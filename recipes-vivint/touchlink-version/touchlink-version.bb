@@ -18,6 +18,6 @@ do_install() {
     echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/touchlink-version
     echo "OE branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/touchlink-version
     echo "OERev: ${METADATA_REVISION}" >> ${D}${sysconfdir}/touchlink-version
-    echo "AppsRev: ${HG_APPS_ID}" >> ${D}${sysconfdir}/touchlink-version
+    echo "AppsRev: ${GIT_APPS_ID}" >> ${D}${sysconfdir}/touchlink-version
     echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/touchlink-version
 }

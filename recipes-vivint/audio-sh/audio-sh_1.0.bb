@@ -1,6 +1,6 @@
 SUMMARY = "Audio init scripts and configuration files to support ALSA on a Slimline device"
 DESCRIPTION = "This package provides startup scripts to configure ALSA on a Slimline device"
-HOMEPAGE = "http://git.vivint.com"
+HOMEPAGE = "http://source.vivint.com"
 SECTION = "base"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"

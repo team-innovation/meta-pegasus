@@ -6,21 +6,16 @@ PR = "r3"
 PV = "${SRCPV}"
 
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://git.vivint.com/vaudio-wallsly;protocol=git;branch=master"
+SRC_URI = "git://${GIT_SERVER}/audio.git;protocol=ssh;branch=master"
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
-S = "${WORKDIR}/git"
+S = "${WORKDIR}/git/vaudio-wallsly"
 do_compile() {
    oe_runmake
 }
-#do_install() {
-#    install -d ${D}${bindir}
-#    cp -a ${S}/vaudio-wallsly ${D}${bindir}
-#}
-#FILES_${PN} = "${bindir}/vaudio-wallsly"
 
 do_install_append() {
         install -d ${D}/usr/local/bin
-        install -m 0755 ${WORKDIR}/${MODULE}/git/vaudio-wallsly ${D}/usr/local/bin
+        install -m 0755 ${S}/git/vaudio-wallsly ${D}/usr/local/bin
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug"

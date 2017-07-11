@@ -10,12 +10,12 @@ SECTION = "devel"
 INC_PR = "r55"
 
 # IF UPDATING THE LIVE555 MAKE SURE TO UPDATE SKYCONTROL RECIPES AS WELL
-SRCREV = "a02296139834"
+SRCREV = "386d9ccb066"
 MODULE = "live555"
-SRC_URI = "hg://${HG_SERVER};module=${MODULE};protocol=http \
+SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh \
 "
 
-S = "${WORKDIR}/${MODULE}"
+S = "${WORKDIR}/git"
 TARGET_CC_ARCH += "${LDFLAGS}"
 
 do_configure() {

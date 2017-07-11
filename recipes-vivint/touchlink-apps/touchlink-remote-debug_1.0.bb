@@ -3,12 +3,13 @@ SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "PSF"
 SRCNAME = "debug/debug_files"
-PR = "ml1"
+PR = "ml2"
 
-SRCREV = "${HG_APPS_ID}"
-SRC_URI = "hg://${HG_SERVER};module=${HG_APPS_TAG};proto=http"
+SRCREV = "${GIT_APPS_REV}"
+SRCBRANCH = "${GIT_APPS_BRANCH}"
+SRC_URI = "git://git@${GIT_SERVER}/${GIT_APPS_TAG}.git;proto=ssh;branch=${SRCBRANCH}"
 
-S = "${WORKDIR}/apps-hg/${SRCNAME}"
+S = "${WORKDIR}/git/${SRCNAME}"
 
 RSYNC_CMD = "rsync -azv --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage --exclude=tools --exclude=_user_conf"
 
@@ -30,8 +31,8 @@ do_install_prepend() {
 }
 
 do_install() {
-     ${RSYNC_CMD} ${WORKDIR}/apps-hg/debug/debug.py ${D}/opt/2gig/debug/
-     ${RSYNC_CMD} ${WORKDIR}/apps-hg/debug/README ${D}/opt/2gig/debug/
+     ${RSYNC_CMD} ${WORKDIR}/git/debug/debug.py ${D}/opt/2gig/debug/
+     ${RSYNC_CMD} ${WORKDIR}/git/debug/README ${D}/opt/2gig/debug/
      ${RSYNC_CMD} ${S}/pydev.pth ${D}/${libdir}/${PYTHON_DIR}/site-packages/
      ${RSYNC_CMD} ${S}/pydev ${D}/${libdir}/${PYTHON_DIR}/site-packages/
 }

@@ -1,6 +1,6 @@
 SUMMARY = "Networking init scripts and configuration files to support wps"
 DESCRIPTION = "This package provides high level tools to connect wlan0 network interfaces"
-HOMEPAGE = "http://git.vivint.com"
+HOMEPAGE = "http://source.vivint.com"
 SECTION = "base"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
