@@ -11,7 +11,7 @@ SCR_MNT = "/media/bootscript"
 
 COMPATIBLE_MACHINE = "imx6dl-slimline"
 
-SRC_URI = "git://${GIT_SERVER}/uboot-imx.git;protocol=ssh;branch=develop"
+SRC_URI = "git://git@${GIT_SERVER}/uboot-imx.git;protocol=ssh;branch=develop"
 SRCREV = "${AUTOREV}"
 
 inherit deploy

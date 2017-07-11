@@ -3,7 +3,7 @@ export BUILD_DIR=$1
 : ${BUILD_DIR:=build}
 
 _APPS_TAG="embedded-apps"
-_APPS_REV="${AUTOREV}"
+_APPS_REV='${AUTOREV}'
 _APPS_BRANCH="develop"
 _OPENWRT_BRANCH="check"
 
