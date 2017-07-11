@@ -17,7 +17,7 @@ do_compile() {
 
 do_install_append() {
         install -d ${D}/usr/local/bin
-        install -m 0755 ${S}/git/modem-loopback ${D}/usr/local/bin
+        install -m 0755 ${S}/modem-loopback ${D}/usr/local/bin
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug"
