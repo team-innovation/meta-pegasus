@@ -49,4 +49,4 @@ grep -q DIST_FEATURES_remove ./conf/local.conf ||
 		>> ./conf/local.conf
 
 grep -q GIT_SERVER ./conf/local.conf || 
-	echo -e "GIT_SERVER = \"git@source.vivint.com:7999/em\"\nGIT_APPS_TAG ?= \"${_APPS_TAG}\"\nGIT_APPS_REV ?= \"${_APPS_REV}\"\nGIT_APPS_BRANCH ?= \"${_APPS_BRANCH}\"\nOPENWRT_BRANCH ?= \"${_OPENWRT_BRANCH}\"\nUPDATESENG = \"updateseng.vivint.com/innovation\"" >> ./conf/local.conf
+	echo -e "GIT_SERVER = \"source.vivint.com:7999/em\"\nGIT_APPS_TAG ?= \"${_APPS_TAG}\"\nGIT_APPS_REV ?= \"${_APPS_REV}\"\nGIT_APPS_BRANCH ?= \"${_APPS_BRANCH}\"\nOPENWRT_BRANCH ?= \"${_OPENWRT_BRANCH}\"\nUPDATESENG = \"updateseng.vivint.com/innovation\"" >> ./conf/local.conf
