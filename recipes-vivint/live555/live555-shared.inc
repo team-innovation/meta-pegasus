@@ -12,7 +12,7 @@ INC_PR = "r55"
 # IF UPDATING THE LIVE555 MAKE SURE TO UPDATE SKYCONTROL RECIPES AS WELL
 SRCREV = "0b8617dfa52"
 MODULE = "live555"
-SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh \
+SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh;branch=master \
 "
 
 S = "${WORKDIR}/git"
