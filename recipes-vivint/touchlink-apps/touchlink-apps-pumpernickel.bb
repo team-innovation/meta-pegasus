@@ -10,7 +10,7 @@ PR = "r5"
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
 
-SRC_URI = "git://git@${GIT_SERVER}/${GIT_APPS_TAG}.git;proto=ssh;branch=${SRCBRANCH}"
+SRC_URI = "git://git@${GIT_SERVER}/${GIT_APPS_TAG}.git;protocol=ssh;branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git/code/pumpernickel"
 
