@@ -25,7 +25,7 @@ do_install() {
 	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/wallsly-version
 	echo "OE branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/wallsly-version
 	echo "OERev: ${METADATA_REVISION}" >> ${D}${sysconfdir}/wallsly-version
-	echo "AppsRev: ${GIT_APPS_ID}" >> ${D}${sysconfdir}/wallsly-version
+	echo "AppsRev: ${GIT_APPS_REV}" >> ${D}${sysconfdir}/wallsly-version
 	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/wallsly-version
 
 	install -d ${D}${bindir}
