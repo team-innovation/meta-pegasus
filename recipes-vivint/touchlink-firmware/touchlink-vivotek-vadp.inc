@@ -11,9 +11,9 @@ inherit gettext
 
 PR = "ml46"
 
-SRCREV = "06fe974df68d1316f75f29124f68fbab9086362c"
+SRCREV = "23679ef276656c98cd8811fc0076f41a69ca713f"
 
-SRC_URI = "git://git@${GIT_SERVER}/analytics.git;protocol=ssh;branch=master"
+SRC_URI = "git://git@${GIT_SERVER}/analytics.git;protocol=ssh;branch=feature/threaded_worker"
 
 S = "${WORKDIR}/git"
 
