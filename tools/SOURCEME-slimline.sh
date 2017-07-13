@@ -11,7 +11,7 @@ _OPENWRT_BRANCH="check"
 test -d ${BUILD_DIR} &&
 	sed -i '/GIT_APPS_TAG/d' ${BUILD_DIR}/conf/local.conf &&
 	sed -i '/GIT_APPS_REV/d' ${BUILD_DIR}/conf/local.conf && 
-	sed -i '/GIT_APPS_BRANCH/d' ${BUILD_DIR}/conf/local.conf && 
+    sed -i '/GIT_APPS_BRANCH/d' ${BUILD_DIR}/conf/local.conf && 
 	sed -i '/OPENWRT_BRANCH/d' ${BUILD_DIR}/conf/local.conf &&
 	sed -i '/UPDATESENG/d' ${BUILD_DIR}/conf/local.conf && 
 	echo "GIT_APPS_TAG ?= \"${_APPS_TAG}\"" >> ${BUILD_DIR}/conf/local.conf &&
