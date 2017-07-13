@@ -3,6 +3,7 @@ SECTION = "utils"
 LICENSE = "BSD-2-Clause"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b022f53d2c5f4c04151c3eb748ef18a8"
 PR = "r6"
+PV = "0.1.1+git${SRCPV}"
 
 SRCREV = "${AUTOREV}"
 SRC_URI = "git://${GIT_SERVER}/audio.git;protocol=ssh;branch=develop"
