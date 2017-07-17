@@ -1,0 +1,47 @@
+#!/bin/sh
+
+arg=$1
+
+if [[ `uname -a | cut -d' ' -f2` == "imx6dl-slimline" ]]
+then
+	echo "This is Glance!"
+fi
+
+if [[ `uname -a | cut -d' ' -f2` == "imx6dl-skyhub" ]]
+then
+	echo "This is Smart Hub!"
+fi
+
+if [[ `uname -a | cut -d' ' -f2` == "imx6dl-wallsly" ]]
+then
+	echo "This is Smart Hub V2!"
+fi
+
+usage()
+{
+	echo "Usage:"
+	echo "   'set_u-boot_partition.sh rw' to make the u-boot partition writable" 
+	echo "   'set_u-boot_partition.sh ro' to make the u-boot partition read only" 
+}
+
+if [[ -z $arg ]]
+then
+	usage
+	exit 1
+fi
+
+if [[ $arg == "rw" ]]
+then
+	echo "now setting the u-boot partition writable"
+	echo 0 > /sys/block/mmcblk0boot1/force_ro
+	exit 0
+fi
+
+if [[ $arg == "ro" ]]
+then
+	echo "now setting the u-boot partition read only"
+	echo 1 > /sys/block/mmcblk0boot1/force_ro
+	exit 0
+fi
+
+usage
