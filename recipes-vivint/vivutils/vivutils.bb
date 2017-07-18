@@ -88,7 +88,7 @@ do_install() {
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
-	update-rc.d -r ${D} firstboot start 08 S .
+	update-rc.d -r ${D} firstboot start 09 S .
 
 	install -m 0755 ${S}/clips.sh ${D}/${sysconfdir}/init.d/
 	update-rc.d -r ${D} clips.sh start 34 S .

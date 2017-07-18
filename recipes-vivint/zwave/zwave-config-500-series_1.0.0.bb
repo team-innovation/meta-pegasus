@@ -41,7 +41,7 @@ do_install () {
     install -m 0755 ${WORKDIR}/zwave-program ${D}${sysconfdir}/init.d
 
     # Create runlevel links
-    update-rc.d -r ${D} zwave-program start 07 S .
+    update-rc.d -r ${D} zwave-program start 08 S .
 }
 
 FILES_${PN} = "\

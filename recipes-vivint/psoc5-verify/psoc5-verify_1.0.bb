@@ -14,5 +14,5 @@ do_install () {
 	install -m 0755 ${WORKDIR}/psoc5-verify ${D}${sysconfdir}/init.d
 
 	# Create run level links
-	update-rc.d -r ${D} psoc5-verify start 07 S .
+	update-rc.d -r ${D} psoc5-verify start 08 S .
 }
