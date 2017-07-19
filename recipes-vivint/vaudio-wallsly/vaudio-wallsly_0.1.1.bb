@@ -2,7 +2,7 @@ CRIPTION = "User vaudio-wallsly for Wallsly Microsemi"
 SECTION = "utils"
 LICENSE = "BSD-2-Clause"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b022f53d2c5f4c04151c3eb748ef18a8"
-PR = "r3"
+PR = "r5"
 PV = "0.1.1+git${SRCPV}"
 
 SRCREV = "${AUTOREV}"
