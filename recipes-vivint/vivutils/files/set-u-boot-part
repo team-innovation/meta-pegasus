@@ -1,27 +1,36 @@
 #!/bin/sh
 
 arg=$1
+device=''
 
 if [[ `uname -a | cut -d' ' -f2` == "imx6dl-slimline" ]]
 then
-	echo "This is Glance!"
+	device="This is Glance!"
 fi
 
 if [[ `uname -a | cut -d' ' -f2` == "imx6dl-skyhub" ]]
 then
-	echo "This is Smart Hub!"
+	device="This is Smart Hub!"
 fi
 
 if [[ `uname -a | cut -d' ' -f2` == "imx6dl-wallsly" ]]
 then
-	echo "This is Smart Hub V2!"
+	device="This is Smart Hub V2!"
 fi
+
+if [[ $device == '' ]]
+then
+	echo "Panel type unknown. Now exiting..."
+	exit 2
+fi
+
+echo $device
 
 usage()
 {
 	echo "Usage:"
-	echo "   'set_u-boot_partition.sh rw' to make the u-boot partition writable" 
-	echo "   'set_u-boot_partition.sh ro' to make the u-boot partition read only" 
+	echo "   'set-u-boot-part rw' to make the u-boot partition writable" 
+	echo "   'set-u-boot-part ro' to make the u-boot partition read only" 
 }
 
 if [[ -z $arg ]]
