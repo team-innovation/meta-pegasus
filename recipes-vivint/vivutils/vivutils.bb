@@ -85,6 +85,10 @@ do_install() {
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
 	install -m 0644 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/dtmf-sharp.wav ${D}/usr/local/bin
+	install -m 0644 ${S}/dtmf-one.wav ${D}/usr/local/bin
+	install -m 0644 ${S}/dtmf-two.wav ${D}/usr/local/bin
+	install -m 0644 ${S}/dtmf-three.wav ${D}/usr/local/bin
+	install -m 0644 ${S}/dtmf-nine.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/genkeys ${D}/usr/local/bin
 	install -m 0755 ${S}/lockdown_panel ${D}/usr/local/bin
 	install -m 0755 ${S}/user_battery_test.py ${D}/usr/local/bin
