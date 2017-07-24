@@ -4,7 +4,7 @@ export BUILD_DIR=$1
 
 _APPS_TAG="embedded-apps"
 _APPS_REV='${AUTOREV}'
-_APPS_BRANCH="release/3.10.1"
+_APPS_BRANCH="release/3.10.2"
 _OPENWRT_BRANCH="check"
 
 # if already set up then we just run the setup-environment script
