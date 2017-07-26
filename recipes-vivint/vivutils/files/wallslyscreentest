@@ -17,6 +17,7 @@ gensolids() {
         convert -size 1024x600 -depth 8 xc:#ffffff -fill '#ff0000' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/red.rgba
         convert -size 1024x600 -depth 8 xc:#ffffff -fill '#00ff00' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/green.rgba
         convert -size 1024x600 -depth 8 xc:#ffffff -fill '#0000ff' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/blue.rgba
+        convert -size 1024x600 -depth 8 xc:#ffffff -fill '#ffffff' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/white.rgba
 }
 
 gengrad() {
@@ -26,7 +27,7 @@ gengrad() {
 }
 
 dispall() {
-        for g in red green blue top-bottom bottom-top
+        for g in red green blue white top-bottom bottom-top
         do
                 cat /tmp/scrtest/$g.rgba /tmp/scrtest/$g.rgba > /dev/fb0
                 read -t 10 foo
@@ -46,7 +47,7 @@ gengrad
 prep
 echo arg is $1
 case "$1" in
-        "red" | "green" | "blue" | "top" | "bottom" )
+        "red" | "green" | "blue" | "white" | "top" | "bottom" )
                 dispone $1
                 ;;
         "gray")
