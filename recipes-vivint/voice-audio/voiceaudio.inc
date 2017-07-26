@@ -10,7 +10,7 @@ INC_PR = "r75"
 
 SRCREV = "f093bc1fe4c7aeab064a214a90e68216d9d54195"
 MODULE = "voice-audio"
-SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh;branch=sly-master \
+SRC_URI = "git://${GIT_SERVER}/${MODULE};protocol=ssh;branch=sly-master \
    	file://COPYING \
 	file://libvocal.a"
 

@@ -13,7 +13,7 @@ S = "${WORKDIR}/git/code/SimLock"
 
 GIT_SIMLOCK_REV ?= "${AUTOREV}"
 SRCREV = "${GIT_SIMLOCK_REV}"
-SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh"
+SRC_URI = "git://git@${GIT_SERVER}/${MODULE};protocol=ssh"
 
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"

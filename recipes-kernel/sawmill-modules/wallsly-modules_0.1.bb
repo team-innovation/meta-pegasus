@@ -3,7 +3,10 @@ LICENSE = "CLOSED"
 
 inherit module
 
-SRC_URI = "git://${GIT_SERVER}/slimline-modules.git;protocol=ssh;branch=wallsly-develop"
+GIT_SERVER_MONPWR ?= "${GIT_SERVER}"
+GIT_MONPWR_BRANCH ?= "develop"
+
+SRC_URI = "git://${GIT_SERVER_MONPWR}/slimline-modules;protocol=ssh;branch=wallsly-${GIT_MONPWR_BRANCH}"
 SRCREV = "${AUTOREV}"
 PV = "3.14.28+git${SRCPV}"
 PR = "r13"

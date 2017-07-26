@@ -1,8 +1,9 @@
-SRCBRANCH = "develop"
+GIT_KERNEL_BRANCH ?= "develop"
 LOCALVERSION = "-1.0.0_slimline"
 SRCREV = "${AUTOREV}"
-KERNEL_SRC = "git://${GIT_SERVER}/linux-imx.git;protocol=ssh"
-SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH}"
+GIT_SERVER_KERNEL ?= "${GIT_SERVER}"
+KERNEL_SRC = "git://${GIT_SERVER_KERNEL}/linux-imx;protocol=ssh"
+SRC_URI = "${KERNEL_SRC};branch=${GIT_KERNEL_BRANCH}"
 PV = "3.14.28+git${SRCPV}"
 
 PR = "r21"

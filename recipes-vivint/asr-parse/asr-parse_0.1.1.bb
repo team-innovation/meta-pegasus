@@ -5,8 +5,11 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b022f53d2c5f4c04151c3eb748ef18a8"
 PR = "r5"
 PV = "0.1.1-git${SRCPV}"
 
+GIT_SERVER_AUDIO ?= "${GIT_SERVER}"
+GIT_AUDIO_BRANCH ?= "develop"
+
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://${GIT_SERVER}/audio.git;protocol=ssh;branch=develop"
+SRC_URI = "git://${GIT_SERVER_AUDIO}/audio;protocol=ssh;branch=${GIT_AUDIO_BRANCH}"
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
 
 S = "${WORKDIR}/git/asr-parse"

@@ -12,7 +12,7 @@ DEPENDS_virtclass-native += "python3-native"
 
 SRCREV = "6b8eb1b04dc6cd2c9df61bd59afc23ed4fee96e6"
 MODULE = "live555-proxy-server"
-SRC_URI = "git://git@${GIT_SERVER}/${MODULE}.git;protocol=ssh;branch=master"
+SRC_URI = "git://${GIT_SERVER}/${MODULE};protocol=ssh;branch=master"
 
 S = "${WORKDIR}/git"
 

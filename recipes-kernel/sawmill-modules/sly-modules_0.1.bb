@@ -2,8 +2,10 @@ DESCRIPTION = "Out of kernel modules for slimline."
 LICENSE = "CLOSED"
 
 inherit module
+GIT_SERVER_MONPWR ?= "${GIT_SERVER}"
+GIT_MONPWR_BRANCH ?= "develop"
 
-SRC_URI = "git://${GIT_SERVER}/slimline-modules.git;protocol=ssh;branch=skyhub-develop"
+SRC_URI = "git://${GIT_SERVER_MONPWR}/slimline-modules;protocol=ssh;branch=skyhub-${GIT_MONPWR_BRANCH}"
 SRCREV = "${AUTOREV}"
 PV = "3.14.28+git${SRCPV}"
 PR = "r3"
