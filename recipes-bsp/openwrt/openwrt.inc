@@ -22,10 +22,15 @@ OPENWRT_BRANCH ?= "check"
 DOWNLOAD_SERVER="updateseng.vivint.com/innovation/openwrt/${OPENWRT_BRANCH}"
 LEDE_DOWNLOAD_SERVER="updateseng.vivint.com/innovation/lede/${OPENWRT_BRANCH}"
 
-SRC_URI = "http://${DOWNLOAD_SERVER}/RT3352_uImage_7094b115;name=RT3352_uImage \
-           http://${DOWNLOAD_SERVER}/RT3352_uboot.img_d78a51f5;name=RT3352_uboot \
-           http://${LEDE_DOWNLOAD_SERVER}/MT7620_uImage_c9ce3518;name=MT7620_uImage \
-           http://${LEDE_DOWNLOAD_SERVER}/MT7620_uboot.img_a1b5c2cd;name=MT7620_uboot \
+RT3352_uImage = "RT3352_uImage_7094b115"
+RT3352_uboot = "RT3352_uboot.img_d78a51f5"
+MT7620_uImage = "MT7620_uImage_c9ce3518"
+MT7620_uboot = "MT7620_uboot.img_a1b5c2cd"
+
+SRC_URI = "http://${DOWNLOAD_SERVER}/${RT3352_uImage};name=RT3352_uImage \
+           http://${DOWNLOAD_SERVER}/${RT3352_uboot};name=RT3352_uboot \
+           http://${LEDE_DOWNLOAD_SERVER}/${MT7620_uImage};name=MT7620_uImage \
+           http://${LEDE_DOWNLOAD_SERVER}/${MT7620_uboot};name=MT7620_uboot \
            file://COPYING \
            "
 
@@ -58,19 +63,19 @@ do_install() {
     install -d ${D}${FW_DIR}
 
     #RT3352 u-boot
-    install ${WORKDIR}/RT3352_uboot.img ${D}${FW_DIR}/RT3352_uboot.img
+    install ${WORKDIR}/${RT3352_uboot} ${D}${FW_DIR}/RT3352_uboot.img
     md5sum ${D}${FW_DIR}/RT3352_uboot.img | awk '{ print $1 }' > ${D}${FW_DIR}/RT3352_uboot.img.md5sum
 
     #RT3352 sysrootfs
-    install ${WORKDIR}/RT3352_uImage ${D}${FW_DIR}/RT3352_uImage
+    install ${WORKDIR}/${RT3352_uImage} ${D}${FW_DIR}/RT3352_uImage
     md5sum ${D}${FW_DIR}/RT3352_uImage | awk '{ print $1 }' > ${D}${FW_DIR}/RT3352_uImage.md5sum
     
     #MT7620 u-boot
-    install ${WORKDIR}/MT7620_uboot.img ${D}${FW_DIR}/MT7620_uboot.img
+    install ${WORKDIR}/${MT7620_uboot} ${D}${FW_DIR}/MT7620_uboot.img
     md5sum ${D}${FW_DIR}/MT7620_uboot.img | awk '{ print $1 }' > ${D}${FW_DIR}/MT7620_uboot.img.md5sum
 
     #MT7620 sysrootfs
-    install ${WORKDIR}/MT7620_uImage ${D}${FW_DIR}/MT7620_uImage
+    install ${WORKDIR}/${MT7620_uImage} ${D}${FW_DIR}/MT7620_uImage
     md5sum ${D}${FW_DIR}/MT7620_uImage | awk '{ print $1 }' > ${D}${FW_DIR}/MT7620_uImage.md5sum
 }
 
