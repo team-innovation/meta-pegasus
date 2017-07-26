@@ -6,6 +6,7 @@ LICENSE = "CLOSED"
 SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects"
 PR = "r5"
+PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"

@@ -4,6 +4,7 @@ PRIORITY = "optional"
 LICENSE = "PSF"
 SRCNAME = "debug/debug_files"
 PR = "ml2"
+PV = "1.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
