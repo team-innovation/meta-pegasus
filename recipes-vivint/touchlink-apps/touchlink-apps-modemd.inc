@@ -33,11 +33,30 @@ if [ x"$D" = "x" ]; then
         echo 1 > /sys/class/cell/cell0/access
         echo 0 > /sys/class/cell/cell0/enable
         echo 1 > /sys/class/cell/cell0/enable
-        echo 1 > /sys/class/cell/cell0/reset
+
+        # let the modem turn on and finish any NVRAM initialization before we reflash it
+        # otherwise we may catch the NVRAM backup at a bad time
+        sleep 10
         swdltool $IMAGE_FILE &
+
+        # sleep to let the image file load, then reset to begin flashing
         sleep 5
-        echo 1 > /sys/class/cell/cell0/onoff
-        fg 1
+        echo 1 > /sys/class/cell/cell0/reset
+
+        # wait until flash is done
+        end=$((SECONDS+60))
+        while [ $SECONDS -lt $end ]; do
+            if pgrep -x "swdltool" > dev/null
+            then
+                # flash program still running - wait before checking again
+                sleep 1
+            else
+                echo "Sierra HL7588 flash programming completed"
+                exit 0
+            fi
+        done
+        echo "Timed out flashing Sierra HL7588 modem"
+        exit 1
     fi
 else
     exit 1
