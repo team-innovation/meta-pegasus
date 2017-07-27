@@ -7,7 +7,7 @@ PKGR_${PN}-hl7588-a = "${PR}.1"
 PKGR_${PN}-hl7588-v = "${PR}.1"
 
 FIRMWARE_hl7588_a = "RHL75xx.A.2.10.151600.201604151852.x7160_1_signed.fls"
-FIRMWARE_hl7588_v = "RHL75xx.V.3.7.151600.201702071034.x7160_1_signed.fls"
+FIRMWARE_hl7588_v = "SWIMCB71XX-VC4.12.00.171701.201705192050.01_signed.fls"
 
 FIRMWARE_DIR = "/var/lib/firmware/Sierra"
 
