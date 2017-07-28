@@ -30,17 +30,24 @@ if [ x"$D" = "x" ]; then
             exit 0
         fi
 
-        echo 1 > /sys/class/cell/cell0/access
-        echo 0 > /sys/class/cell/cell0/enable
-        echo 1 > /sys/class/cell/cell0/enable
+        # Check to see if the modem is already turned on, if so we don't have to cycle it
+        MODEM_ENABLED=`cat $CLASS/enable | grep 1`
+        if [ -z $MODEM_ENABLED ]
+            # turn modem on
+            echo "Turning modem on..."
+            echo 1 > /sys/class/cell/cell0/access
+            echo 0 > /sys/class/cell/cell0/enable
+            echo 1 > /sys/class/cell/cell0/enable
+            # let the modem turn on and finish any NVRAM initialization before we reflash it
+            # otherwise we may catch the NVRAM backup at a bad time
+            sleep 5
+        fi
 
-        # let the modem turn on and finish any NVRAM initialization before we reflash it
-        # otherwise we may catch the NVRAM backup at a bad time
-        sleep 10
         swdltool $IMAGE_FILE &
 
         # sleep to let the image file load, then reset to begin flashing
         sleep 5
+        echo 1 > /sys/class/cell/cell0/access
         echo 1 > /sys/class/cell/cell0/reset
 
         # wait until flash is done
