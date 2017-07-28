@@ -31,8 +31,9 @@ if [ x"$D" = "x" ]; then
         fi
 
         # Check to see if the modem is already turned on, if so we don't have to cycle it
-        MODEM_ENABLED=`cat $CLASS/enable | grep 1`
+        MODEM_ENABLED=`cat /sys/class/cell/cell0/enable | grep 1`
         if [ -z $MODEM_ENABLED ]
+        then
             # turn modem on
             echo "Turning modem on..."
             echo 1 > /sys/class/cell/cell0/access
