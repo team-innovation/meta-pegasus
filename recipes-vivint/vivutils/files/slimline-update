@@ -10,34 +10,29 @@ fi
 
 if [[ $image == "help" ]]
 then
-   echo "Usage: $0 help|image_file"
-   echo -e "\tIf no image file specify it will download one from the server"
-   exit 1
+	echo "Usage: $0 help|path_to_image_file"
+	exit 1
 fi
 
 if [[ -z $image ]]
 then
-    img_dir="/home/root"
-    echo "Downloading image from server..."
-    image="$img_dir/slimline-qt5-image-imx6dl-slimline.tar.bz2"
-    wget -P $img_dir http://updateseng.vivint.com/innovation/openembed/slimline/slimline-qt5-image-imx6dl-slimline.tar.bz2
-
-	exit_status=$?
-
-    if [[ $exit_status -ne 0 ]]
-    then 
-		echo "wget: result is" $exit_status
-        echo "FAILED to download rootfs image. ABORT..."
-        exit $exit_status
-    fi
+    echo "No image was specified. Please get an image from the update server and copy it to your panel."
+    echo "    http://updateseng.vivint.com/innovation/packages/branches/<version>/<build>/slimline-qt5-image-imx6dl-slimline-<version>.<build>.rootfs.tar.bz2 "
+    echo "Usage: $0 help|path_to_image_file"
+    exit 2
+else
+	imagepath=`readlink -f $image`
 fi
 
-if [[ ! -e $image ]]
+if [[ ! -e $imagepath ]]
 then
-	echo "Image $image not found..."
-	exit 2
+	echo "Image $imagepath not found..."
+	exit 3
 fi
 
+echo "Installing..."
+
+# install and switch to new installation
 c_partition=$(cat /proc/cmdline | cut -d= -f3 | cut -d' ' -f1)
 
 if [[ $c_partition == '/dev/mmcblk0p6' ]] 
