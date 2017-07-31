@@ -11,9 +11,9 @@ PV = "1.0.0+git${SRCPV}"
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
 
-GIT_SERVER_APPS ?= "${GIT_SERVER}"
+GIT_APPS_SERVER ?= "${GIT_SERVER}"
 
-SRC_URI = "git://${GIT_SERVER_APPS}/${GIT_APPS_TAG};protocol=ssh;branch=${SRCBRANCH}"
+SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=ssh;branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git/code/pumpernickel"
 
