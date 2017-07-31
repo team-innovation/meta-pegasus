@@ -19,7 +19,7 @@ PROVIDES = "${PN}"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://COPYING;md5=1707d6db1d42237583f50183a5651ecb"
 
-GIT_SERVER_UBOOT ?= "${GIT_SERVER}"
+GIT_UBOOT_SERVER ?= "${GIT_SERVER}"
 GIT_UBOOT_BRANCH ?= "develop"
 SRC_URI = "git://${GIT_SERVER}/uboot-imx;protocol=ssh;branch=wallsly-${GIT_UBOOT_BRANCH}"
 
