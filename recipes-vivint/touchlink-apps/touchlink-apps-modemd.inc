@@ -21,26 +21,26 @@ pkg_postinst_${PN}-modemd () {
 # Post install to flash the modem to default carrier on WallSly
 #
 if [ x"$D" = "x" ]; then
+    CLASS="/sys/class/cell/cell0"
     # look for Sierra cell class on WallSly
-    if [ -d "/sys/class/cell/cell0" ]; then
+    if [ -d "$CLASS" ]; then
         # get the AT&T image filename (contains ".A.")
         # when we switch to Verizon look for ".V."
         IMAGE_FILE="$(ls /var/lib/firmware/Sierra/RHL*.A.*)"
         if [ -z $IMAGE_FILE ]; then
-            exit 0
+            echo "ERROR: AT&T firmware image not found in /var/lib/firmware/Sierra"
+            exit 1
         fi
 
         # Check to see if the modem is already turned on, if so we don't have to cycle it
-        MODEM_ENABLED=`cat /sys/class/cell/cell0/enable | grep 1`
+        echo 1 > $CLASS/access
+        MODEM_ENABLED=`cat $CLASS/enable | grep 1`
         if [ -z $MODEM_ENABLED ]
         then
             # turn modem on
             echo "Turning modem on..."
-            echo 1 > /sys/class/cell/cell0/access
-            echo 0 > /sys/class/cell/cell0/enable
-            echo 1 > /sys/class/cell/cell0/enable
-            # let the modem turn on and finish any NVRAM initialization before we reflash it
-            # otherwise we may catch the NVRAM backup at a bad time
+            echo 0 > $CLASS/enable
+            echo 1 > $CLASS/enable
             sleep 5
         fi
 
@@ -48,8 +48,9 @@ if [ x"$D" = "x" ]; then
 
         # sleep to let the image file load, then reset to begin flashing
         sleep 5
-        echo 1 > /sys/class/cell/cell0/access
-        echo 1 > /sys/class/cell/cell0/reset
+        echo 0 > $CLASS/reset
+        sleep 2
+        echo 1 > $CLASS/reset
 
         # wait until flash is done
         end=$((SECONDS+60))
@@ -67,6 +68,7 @@ if [ x"$D" = "x" ]; then
         exit 1
     fi
 else
+    echo "Not flashing modem"
     exit 1
 fi
 }
