@@ -4,7 +4,7 @@ DESCRIPTION = "touchlink video packages, imx firmware, gst plugins, etc"
 LICENSE = "MIT"
 LICENSE_FLAGS_WHITELIST = "commercial license"
 
-PR = "r13"
+PR = "r16"
 
 inherit packagegroup
 
@@ -16,18 +16,21 @@ RPROVIDES_${PN} = " \
 	libgstpbutils-1.0 \
 	libgstvideo-1.0 \
 	libgudev-1.0-0 \
+	libopus0 \
 "
 
 RDEPENDS_${PN} = " \
 	firmware-imx \
 	gst-fsl-plugin \
 	gstreamer1.0-plugins-bad \
+	gstreamer1.0-plugins-bad-opus \
 	gstreamer1.0-plugins-bad-videoparsersbad \
 	gstreamer1.0-plugins-base \
 	gstreamer1.0-plugins-base-audioconvert \
 	gstreamer1.0-plugins-base-audioresample \
 	gstreamer1.0-plugins-base-playback \
 	gstreamer1.0-plugins-base-tcp \
+	gstreamer1.0-plugins-base-ogg \
 	gstreamer1.0-plugins-base-typefindfunctions \
 	gstreamer1.0-plugins-base-videoconvert \
 	gstreamer1.0-plugins-base-videotestsrc \
@@ -69,4 +72,5 @@ RDEPENDS_${PN} = " \
 	libgstrtspserver-1.0-0 \
 	libgstsdp-1.0-0 \
 	libgsturidownloader-1.0-0 \
+	libopus0 \
 "
