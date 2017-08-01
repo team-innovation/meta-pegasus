@@ -20,10 +20,12 @@ pkg_postinst_${PN}-modemd () {
 #!/bin/sh -e
 # Post install to flash the modem to default carrier on WallSly
 #
-if [ x"$D" = "x" ]; then
+if [ x"$D" = "x" ]
+then
     CLASS="/sys/class/cell/cell0"
     # look for Sierra cell class on WallSly
-    if [ -d "$CLASS" ]; then
+    if [ -d "$CLASS" ]
+    then
         # get the AT&T image filename (contains ".A.")
         # when we switch to Verizon look for ".V."
         IMAGE_FILE="$(ls /var/lib/firmware/Sierra/RHL*.A.*)"
@@ -65,6 +67,9 @@ if [ x"$D" = "x" ]; then
             fi
         done
         echo "Timed out flashing Sierra HL7588 modem"
+        exit 1
+    else
+        echo "Sierra firmware directory not found"
         exit 1
     fi
 else
