@@ -42,25 +42,25 @@ license_create_manifest_append() {
 IMAGE_FSTYPES_append = " emmc"
 
 do_image_complete() {
-	echo "*******"
-	echo "APPS"
-	echo "SERVER: ${GIT_APPS_SERVER}"
-	echo "BRANCH: ${GIT_APPS_BRANCH}"
-	echo "PROTOCOL: ${GIT_APPS_PROTOCOL}"
-	echo "*******"
-	echo "KERNEL"
-	echo "SERVER: ${GIT_KERNEL_SERVER}"
-	echo "BRANCH: ${GIT_KERNEL_BRANCH}"
-	echo "PROTOCOL: ${GIT_KERNEL_PROTOCOL}"
-	echo "*******"
-	echo "AUDIO"
-	echo "SERVER: ${GIT_AUDIO_SERVER}"
-	echo "BRANCH: ${GIT_AUDIO_BRANCH}"
-	echo "PROTOCOL: ${GIT_AUDIO_PROTOCOL}"
-	echo "*******"
-	echo "UBOOT"
-	echo "SERVER: ${GIT_UBOOT_SERVER}"
-	echo "BRANCH: ${GIT_UBOOT_BRANCH}"
-	echo "PROTOCOL: ${GIT_UBOOT_PROTOCOL}"
-	echo "*******"
+	bb_info_msg("*******");
+	bb_info_msg("APPS");
+	bb_info_msg("SERVER: ${GIT_APPS_SERVER}");
+	bb_info_msg("BRANCH: ${GIT_APPS_BRANCH}");
+	bb_info_msg("PROTOCOL: ${GIT_APPS_PROTOCOL}");
+	bb_info_msg("*******");
+	bb_info_msg("KERNEL");
+	bb_info_msg("SERVER: ${GIT_KERNEL_SERVER}");
+	bb_info_msg("BRANCH: ${GIT_KERNEL_BRANCH}");
+	bb_info_msg("PROTOCOL: ${GIT_KERNEL_PROTOCOL}");
+	bb_info_msg("*******");
+	bb_info_msg("AUDIO");
+	bb_info_msg("SERVER: ${GIT_AUDIO_SERVER}");
+	bb_info_msg("BRANCH: ${GIT_AUDIO_BRANCH}");
+	bb_info_msg("PROTOCOL: ${GIT_AUDIO_PROTOCOL}");
+	bb_info_msg("*******");
+	bb_info_msg("UBOOT");
+	bb_info_msg("SERVER: ${GIT_UBOOT_SERVER}");
+	bb_info_msg("BRANCH: ${GIT_UBOOT_BRANCH}");
+	bb_info_msg("PROTOCOL: ${GIT_UBOOT_PROTOCOL}");
+	bb_info_msg("*******");
 }
