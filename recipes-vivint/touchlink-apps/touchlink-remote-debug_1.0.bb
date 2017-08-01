@@ -9,7 +9,8 @@ PV = "1.0+git${SRCPV}"
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
 GIT_APPS_SERVER ?= "${GIT_SERVER}"
-SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=ssh;branch=${SRCBRANCH}"
+GIT_APPS_PROTOCOL ?= "ssh"
+SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL};branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git/${SRCNAME}"
 

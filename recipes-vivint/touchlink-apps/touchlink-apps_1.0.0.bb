@@ -79,8 +79,9 @@ SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
 
 GIT_APPS_SERVER ?= "${GIT_SERVER}"
+GIT_APPS_PROTOCOL ?= "ssh"
 
-SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=ssh;branch=${SRCBRANCH} \
+SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL};branch=${SRCBRANCH} \
     file://procman.d \
     file://procman.d-fcc \
     file://favicon.ico \
