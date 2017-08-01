@@ -40,3 +40,27 @@ license_create_manifest_append() {
 }
 
 IMAGE_FSTYPES_append = " emmc"
+
+do_image_complete() {
+	echo "*******"
+	echo "APPS"
+	echo "SERVER: ${GIT_APPS_SERVER}"
+	echo "BRANCH: ${GIT_APPS_BRANCH}"
+	echo "PROTOCOL: ${GIT_APPS_PROTOCOL}"
+	echo "*******"
+	echo "KERNEL"
+	echo "SERVER: ${GIT_KERNEL_SERVER}"
+	echo "BRANCH: ${GIT_KERNEL_BRANCH}"
+	echo "PROTOCOL: ${GIT_KERNEL_PROTOCOL}"
+	echo "*******"
+	echo "AUDIO"
+	echo "SERVER: ${GIT_AUDIO_SERVER}"
+	echo "BRANCH: ${GIT_AUDIO_BRANCH}"
+	echo "PROTOCOL: ${GIT_AUDIO_PROTOCOL}"
+	echo "*******"
+	echo "UBOOT"
+	echo "SERVER: ${GIT_UBOOT_SERVER}"
+	echo "BRANCH: ${GIT_UBOOT_BRANCH}"
+	echo "PROTOCOL: ${GIT_UBOOT_PROTOCOL}"
+	echo "*******"
+}
