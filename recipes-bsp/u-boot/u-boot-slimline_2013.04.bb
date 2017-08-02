@@ -11,7 +11,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=1707d6db1d42237583f50183a5651ecb"
 
 GIT_UBOOT_SERVER ?= "${GIT_SERVER}"
 GIT_UBOOT_BRANCH ?= "develop"
-SRC_URI = "git://${GIT_UBOOT_SERVER}/uboot-imx;protocol=ssh;branch=${GIT_UBOOT_BRANCH} \
+GIT_UBOOT_PROTOCOL ?= "ssh"
+
+SRC_URI = "git://${GIT_UBOOT_SERVER}/uboot-imx;protocol=${GIT_UBOOT_PROTOCOL};branch=${GIT_UBOOT_BRANCH} \
 	   file://fw_env.config \
 "
 

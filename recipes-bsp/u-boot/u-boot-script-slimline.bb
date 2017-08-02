@@ -13,7 +13,9 @@ COMPATIBLE_MACHINE = "imx6dl-slimline"
 
 GIT_UBOOT_SERVER ?= "${GIT_SERVER}"
 GIT_UBOOT_BRANCH ?= "develop"
-SRC_URI = "git://${GIT_UBOOT_SERVER}/uboot-imx;protocol=ssh;branch=${GIT_UBOOT_BRANCH}"
+GIT_UBOOT_PROTOCOL ?= "ssh"
+
+SRC_URI = "git://${GIT_UBOOT_SERVER}/uboot-imx;protocol=${GIT_UBOOT_PROTOCOL};branch=${GIT_UBOOT_BRANCH}"
 SRCREV = "${AUTOREV}"
 
 inherit deploy

@@ -8,7 +8,9 @@ SRCREV = "${AUTOREV}"
 
 GIT_AUDIO_SERVER ?= "${GIT_SERVER}"
 GIT_AUDIO_BRANCH ?= "develop"
-SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=ssh;branch=${GIT_AUDIO_BRANCH}"
+GIT_AUDIO_PROTOCOL ?= "ssh"
+
+SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH}"
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
 S = "${WORKDIR}/git/mfr-piezo-test"
 do_compile() {
