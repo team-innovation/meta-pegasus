@@ -22,7 +22,7 @@ test -d ${BUILD_DIR} &&
 	echo "GIT_APPS_BRANCH ?= \"${_APPS_BRANCH}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "OPENWRT_BRANCH ?= \"${_OPENWRT_BRANCH}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "UPDATESENG ?= \"updateseng.vivint.com/innovation\"" >> ${BUILD_DIR}/conf/local.conf &&
-    echo "PRSERV_HOST = \"localhost:0\""
+    echo "PRSERV_HOST = \"localhost:0\"" >> ${BUILD_DIR}/conf/local.conf &&
 	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
 	grep -q oe-meta-go ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
