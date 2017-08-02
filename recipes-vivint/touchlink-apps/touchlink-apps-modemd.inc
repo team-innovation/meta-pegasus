@@ -22,6 +22,7 @@ pkg_postinst_${PN}-modemd () {
 #
 if [ x"$D" = "x" ]
 then
+    exec > /dev/tty
     CLASS="/sys/class/cell/cell0"
     # look for Sierra cell class on WallSly
     if [ -d "$CLASS" ]
