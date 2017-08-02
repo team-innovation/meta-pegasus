@@ -20,9 +20,9 @@ pkg_postinst_${PN}-modemd () {
 #!/bin/sh -e
 # Post install to flash the modem to default carrier on WallSly
 #
+exec > /tmp/modem_postinst.log
 if [ x"$D" = "x" ]
 then
-    exec > /dev/tty
     CLASS="/sys/class/cell/cell0"
     # look for Sierra cell class on WallSly
     if [ -d "$CLASS" ]
@@ -70,7 +70,7 @@ then
         echo "Timed out flashing Sierra HL7588 modem"
         exit 1
     else
-        echo "Sierra firmware directory not found"
+        echo "Sierra modem class not found"
         exit 1
     fi
 else
