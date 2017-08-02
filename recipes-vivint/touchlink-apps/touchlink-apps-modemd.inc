@@ -47,6 +47,7 @@ then
             sleep 5
         fi
 
+        echo "Flashing Sierra HL7588 modem with: "$IMAGE_FILE
         swdltool $IMAGE_FILE &
 
         # sleep to let the image file load, then reset to begin flashing
