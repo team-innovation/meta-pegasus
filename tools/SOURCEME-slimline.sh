@@ -15,12 +15,14 @@ test -d ${BUILD_DIR} &&
     sed -i '/GIT_APPS_BRANCH/d' ${BUILD_DIR}/conf/local.conf && 
 	sed -i '/OPENWRT_BRANCH/d' ${BUILD_DIR}/conf/local.conf &&
 	sed -i '/UPDATESENG/d' ${BUILD_DIR}/conf/local.conf && 
+    sed -i '/PRSERV_HOST/d'  ${BUILD_DIR}/conf/local.conf && 
 	echo "GIT_SERVER ?= \"git@source.vivint.com:7999/em\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_APPS_TAG ?= \"${_APPS_TAG}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_APPS_REV ?= \"${_APPS_REV}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_APPS_BRANCH ?= \"${_APPS_BRANCH}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "OPENWRT_BRANCH ?= \"${_OPENWRT_BRANCH}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "UPDATESENG ?= \"updateseng.vivint.com/innovation\"" >> ${BUILD_DIR}/conf/local.conf &&
+    echo "PRSERV_HOST = \"localhost:0\""
 	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
 	grep -q oe-meta-go ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
@@ -52,4 +54,4 @@ grep -q DIST_FEATURES_remove ./conf/local.conf ||
 		>> ./conf/local.conf
 
 grep -q GIT_SERVER ./conf/local.conf || 
-	echo -e "GIT_SERVER ?= \"git@source.vivint.com:7999/em\"\nGIT_APPS_TAG ?= \"${_APPS_TAG}\"\nGIT_APPS_REV ?= \"${_APPS_REV}\"\nGIT_APPS_BRANCH ?= \"${_APPS_BRANCH}\"\nOPENWRT_BRANCH ?= \"${_OPENWRT_BRANCH}\"\nUPDATESENG = \"updateseng.vivint.com/innovation\"" >> ./conf/local.conf
+	echo -e "GIT_SERVER ?= \"git@source.vivint.com:7999/em\"\nGIT_APPS_TAG ?= \"${_APPS_TAG}\"\nGIT_APPS_REV ?=\"${_APPS_REV}\"\nGIT_APPS_BRANCH ?= \"${_APPS_BRANCH}\"\nOPENWRT_BRANCH ?= \"${_OPENWRT_BRANCH}\"\nUPDATESENG = \"updateseng.vivint.com/innovation\"\nPRSERV_HOST = \"localhost:0\"" >> ./conf/local.conf
