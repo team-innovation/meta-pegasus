@@ -8,7 +8,7 @@ HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-PR = "r53"
+PR = "r57"
 SRCREV = "${AUTOREV}"
 MODULE = "openwrt"
 
@@ -17,21 +17,30 @@ RPROVIDES_${PN} = "openwrt"
 RREPLACES_${PN} = "bsp-rt288x-hg"
 RCONFLICTS_${PN} = "bsp-rt288x-hg"
 
-DOWNLOAD_SERVER="updateseng.vivint.com/innovation/openwrt/${OPENWRT_BRANCH}"
+OPENWRT_BRANCH ?= "check"
 
-SRC_URI = "http://${DOWNLOAD_SERVER}/RT3352_uImage;name=RT3352_uImage \
-           http://${DOWNLOAD_SERVER}/RT3352_uboot.img;name=RT3352_uboot \
-           http://${DOWNLOAD_SERVER}/MT7620_uImage;name=MT7620_uImage \
-           http://${DOWNLOAD_SERVER}/MT7620_uboot.img;name=MT7620_uboot \
+DOWNLOAD_SERVER="updateseng.vivint.com/innovation/openwrt/${OPENWRT_BRANCH}"
+LEDE_DOWNLOAD_SERVER="updateseng.vivint.com/innovation/lede/${OPENWRT_BRANCH}"
+
+RT3352_uImage = "RT3352_uImage_201708031340"
+RT3352_uboot = "RT3352_uboot.img_201708031340"
+MT7620_uImage = "MT7620_uImage_201708031340"
+MT7620_uboot = "MT7620_uboot.img_201708031340"
+
+SRC_URI = "http://${DOWNLOAD_SERVER}/${RT3352_uImage};name=RT3352_uImage \
+           http://${DOWNLOAD_SERVER}/${RT3352_uboot};name=RT3352_uboot \
+           http://${LEDE_DOWNLOAD_SERVER}/${MT7620_uImage};name=MT7620_uImage \
+           http://${LEDE_DOWNLOAD_SERVER}/${MT7620_uboot};name=MT7620_uboot \
            file://COPYING \
            "
 
-SRC_URI[RT3352_uImage.md5sum] = "7094b115e81449cf471ed0e3f599e3a3"
-SRC_URI[RT3352_uImage.sha256sum] = "1ae92c43d71d49eab2ab628c402cbef1d0c8fd17a933b97ac913d50b85d9af7b"
+SRC_URI[RT3352_uImage.md5sum] = "8a7af9986cb15cce69c1a6aa3c124758"
+SRC_URI[RT3352_uImage.sha256sum] = "7460066e3243f4070b8ad56f4f44d89e099189c6d2c5a504f84b0cbce4d0e030"
 SRC_URI[RT3352_uboot.md5sum] = "d78a51f5fdb52747df72bce5989b76aa"
 SRC_URI[RT3352_uboot.sha256sum] = "bf32d459691fe2e95f6d376cd293df260d985781dc4535c4dbfdc38b9bfbc90b"
-SRC_URI[MT7620_uImage.md5sum] = "bf7cf3653c45be95e48af9618ccc104a"
-SRC_URI[MT7620_uImage.sha256sum] = "5178b908dd4b5212b38741958e4b6d19ae972d794d7888554a9c86bcf11278a1"
+
+SRC_URI[MT7620_uImage.md5sum] = "cec9e2167ce95ba1cdf0053c45e794bb"
+SRC_URI[MT7620_uImage.sha256sum] = "70261b714d5f8d1224032691d5368524ddaf8513c5535468431499bbc6cdecd0"
 SRC_URI[MT7620_uboot.md5sum] = "a1b5c2cd225623553f021be5d0f16edf"
 SRC_URI[MT7620_uboot.sha256sum] = "264b7673036d2b61c34bc4d62d5203f88af37dfc37143a9b7602058f5bcd8c6c"
 
@@ -54,19 +63,19 @@ do_install() {
     install -d ${D}${FW_DIR}
 
     #RT3352 u-boot
-    install ${WORKDIR}/RT3352_uboot.img ${D}${FW_DIR}/RT3352_uboot.img
+    install ${WORKDIR}/${RT3352_uboot} ${D}${FW_DIR}/RT3352_uboot.img
     md5sum ${D}${FW_DIR}/RT3352_uboot.img | awk '{ print $1 }' > ${D}${FW_DIR}/RT3352_uboot.img.md5sum
 
     #RT3352 sysrootfs
-    install ${WORKDIR}/RT3352_uImage ${D}${FW_DIR}/RT3352_uImage
+    install ${WORKDIR}/${RT3352_uImage} ${D}${FW_DIR}/RT3352_uImage
     md5sum ${D}${FW_DIR}/RT3352_uImage | awk '{ print $1 }' > ${D}${FW_DIR}/RT3352_uImage.md5sum
     
     #MT7620 u-boot
-    install ${WORKDIR}/MT7620_uboot.img ${D}${FW_DIR}/MT7620_uboot.img
+    install ${WORKDIR}/${MT7620_uboot} ${D}${FW_DIR}/MT7620_uboot.img
     md5sum ${D}${FW_DIR}/MT7620_uboot.img | awk '{ print $1 }' > ${D}${FW_DIR}/MT7620_uboot.img.md5sum
 
     #MT7620 sysrootfs
-    install ${WORKDIR}/MT7620_uImage ${D}${FW_DIR}/MT7620_uImage
+    install ${WORKDIR}/${MT7620_uImage} ${D}${FW_DIR}/MT7620_uImage
     md5sum ${D}${FW_DIR}/MT7620_uImage | awk '{ print $1 }' > ${D}${FW_DIR}/MT7620_uImage.md5sum
 }
 
