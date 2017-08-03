@@ -10,19 +10,24 @@ import argparse
 
 if os.uname().nodename == 'imx6dl-skyhub':
     serialdevice = "/opt/2gig/multiplexerd/helpers/network"
-    defaultiface = 'wlan0'
+    iface = 'wlan0'
+    defaultfreq = ""
     if not os.path.exists("/opt/2gig/multiplexerd/helpers/network"):
         print("System not ready for testing, wait for multiplexerd to start") 
         sys.exit(1)
 else:
     serialdevice = "/dev/ttymxc1"
-    defaultiface = 'wlan2'
+    iface = 'wlan1'
+    defaultfreq = 2.4
 
 parser = argparse.ArgumentParser(description='Test the network module for basic functionality')
 parser.add_argument('ap', help='accesspoint name')
-parser.add_argument('-i', nargs='?', default=defaultiface, dest="iface", 
-    help='interface to use, default apcli0')
+parser.add_argument('-f', nargs='?', default=defaultfreq, dest="freq", 
+    help='frequency to use, default 2.4')
 args = parser.parse_args()
+
+if args.freq == 5:
+    iface = 'wlan0'
 
 # We need to stop netd or it messes with the network module
 devnull = open(os.devnull, 'w')
@@ -38,7 +43,7 @@ try:
     resp = b''
     while serialport.inWaiting() > 0:
         resp += serialport.read()
-    serialport.write("cat /sys/class/net/{}/address\n".format(args.iface).encode())
+    serialport.write("cat /sys/class/net/{}/address\n".format(iface).encode())
     sleep(.1)
     resp = serialport.readline()
     sleep(.1)
@@ -57,7 +62,7 @@ try:
         resp = b''
         while serialport.inWaiting() > 0:
             resp += serialport.read()
-        serialport.write("netv iw scan | grep \"{}\"\n".format(args.ap).encode())
+        serialport.write("netv iw scan {} | grep \"{}\"\n".format(args.freq, args.ap).encode())
         sleep(.1)
         resp = serialport.readline()
         sleep(.1)
