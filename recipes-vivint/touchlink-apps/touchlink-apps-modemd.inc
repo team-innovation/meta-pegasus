@@ -20,8 +20,6 @@ pkg_postinst_${PN}-modemd () {
 #!/bin/bash -e
 # Post install to flash the modem to default carrier on WallSly
 #
-set -x
-exec > /tmp/modem_postinst.log
 if [ x"$D" = "x" ]
 then
     CLASS="/sys/class/cell/cell0"
