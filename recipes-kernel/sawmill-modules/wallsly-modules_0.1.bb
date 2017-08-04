@@ -9,7 +9,7 @@ GIT_MONPWR_BRANCH ?= "develop"
 SRC_URI = "git://${GIT_SERVER_MONPWR}/slimline-modules;protocol=ssh;branch=wallsly-${GIT_MONPWR_BRANCH}"
 SRCREV = "${AUTOREV}"
 PV = "3.14.28+git${SRCPV}"
-PR = "r13"
+PR = "r14"
 
 S = "${WORKDIR}/git"
 
