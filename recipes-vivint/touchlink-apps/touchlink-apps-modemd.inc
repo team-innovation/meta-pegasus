@@ -59,7 +59,7 @@ then
         # wait until flash is done
         end=$((SECONDS+60))
         while [ $SECONDS -lt $end ]; do
-            if pgrep -x "swdltool" > dev/null
+            if pgrep -x "swdltool" > /dev/null
             then
                 # flash program still running - wait before checking again
                 sleep 1
