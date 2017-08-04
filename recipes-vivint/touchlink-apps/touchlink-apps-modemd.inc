@@ -17,9 +17,10 @@ do_install_append () {
 }
 
 pkg_postinst_${PN}-modemd () {
-#!/bin/sh -e
+#!/bin/bash -e
 # Post install to flash the modem to default carrier on WallSly
 #
+set -x
 exec > /tmp/modem_postinst.log
 if [ x"$D" = "x" ]
 then
@@ -37,8 +38,8 @@ then
 
         # Check to see if the modem is already turned on, if so we don't have to cycle it
         echo 1 > $CLASS/access
-        MODEM_ENABLED=`cat $CLASS/enable | grep 1`
-        if [ -z $MODEM_ENABLED ]
+        MODEM_ENABLED=$(cat $CLASS/enable)
+        if [ $MODEM_ENABLED = "0" ]
         then
             # turn modem on
             echo "Turning modem on..."
@@ -51,7 +52,7 @@ then
         swdltool $IMAGE_FILE &
 
         # sleep to let the image file load, then reset to begin flashing
-        sleep 5
+        sleep 2
         echo 0 > $CLASS/reset
         sleep 2
         echo 1 > $CLASS/reset
