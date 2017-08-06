@@ -22,10 +22,10 @@ OPENWRT_BRANCH ?= "check"
 DOWNLOAD_SERVER="updateseng.vivint.com/innovation/openwrt/${OPENWRT_BRANCH}"
 LEDE_DOWNLOAD_SERVER="updateseng.vivint.com/innovation/lede/${OPENWRT_BRANCH}"
 
-RT3352_uImage = "RT3352_uImage_201708031340"
-RT3352_uboot = "RT3352_uboot.img_201708031340"
-MT7620_uImage = "MT7620_uImage_201708031356"
-MT7620_uboot = "MT7620_uboot.img_201708031356"
+RT3352_uImage = "RT3352_uImage_201708041255"
+RT3352_uboot = "RT3352_uboot.img_201708041255"
+MT7620_uImage = "MT7620_uImage_201708041246"
+MT7620_uboot = "MT7620_uboot.img_201708041246"
 
 SRC_URI = "http://${DOWNLOAD_SERVER}/${RT3352_uImage};name=RT3352_uImage \
            http://${DOWNLOAD_SERVER}/${RT3352_uboot};name=RT3352_uboot \
@@ -34,13 +34,13 @@ SRC_URI = "http://${DOWNLOAD_SERVER}/${RT3352_uImage};name=RT3352_uImage \
            file://COPYING \
            "
 
-SRC_URI[RT3352_uImage.md5sum] = "8a7af9986cb15cce69c1a6aa3c124758"
-SRC_URI[RT3352_uImage.sha256sum] = "7460066e3243f4070b8ad56f4f44d89e099189c6d2c5a504f84b0cbce4d0e030"
+SRC_URI[RT3352_uImage.md5sum] = "7d05c82e4a18bbdcba3cb7369e437a0c"
+SRC_URI[RT3352_uImage.sha256sum] = "95d889b24fc2a796d771f25531e2c206102b129748bf06f1908aeb5a5375ff57"
 SRC_URI[RT3352_uboot.md5sum] = "d78a51f5fdb52747df72bce5989b76aa"
 SRC_URI[RT3352_uboot.sha256sum] = "bf32d459691fe2e95f6d376cd293df260d985781dc4535c4dbfdc38b9bfbc90b"
 
-SRC_URI[MT7620_uImage.md5sum] = "393a392224fd62123a1e358fd724beb1"
-SRC_URI[MT7620_uImage.sha256sum] = "91cb408af832bdcba718738a15901cfb66bd98efe752a0c727743be45e5751a5"
+SRC_URI[MT7620_uImage.md5sum] = "ce9a00f5907d62cda7bf34f68ac1c862"
+SRC_URI[MT7620_uImage.sha256sum] = "ce5e3701c419d031e05a08b48edb2fd397900addc3fe47208ac8d4b983a883f2"
 SRC_URI[MT7620_uboot.md5sum] = "a1b5c2cd225623553f021be5d0f16edf"
 SRC_URI[MT7620_uboot.sha256sum] = "264b7673036d2b61c34bc4d62d5203f88af37dfc37143a9b7602058f5bcd8c6c"
 

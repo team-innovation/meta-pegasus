@@ -18,7 +18,7 @@ if os.uname().nodename == 'imx6dl-skyhub':
 else:
     serialdevice = "/dev/ttymxc1"
     iface = 'wlan1'
-    defaultfreq = 2.4
+    defaultfreq = "2.4"
 
 parser = argparse.ArgumentParser(description='Test the network module for basic functionality')
 parser.add_argument('ap', help='accesspoint name')
@@ -26,8 +26,8 @@ parser.add_argument('-f', nargs='?', default=defaultfreq, dest="freq",
     help='frequency to use, default 2.4')
 args = parser.parse_args()
 
-if args.freq == 5:
-    iface = 'wlan0'
+if args.freq == "5":
+    iface = 'wlan2'
 
 # We need to stop netd or it messes with the network module
 devnull = open(os.devnull, 'w')
@@ -40,21 +40,19 @@ try:
     serialport.flushInput()
 
     # Get MAC address
-    resp = b''
-    while serialport.inWaiting() > 0:
-        resp += serialport.read()
-    serialport.write("cat /sys/class/net/{}/address\n".format(iface).encode())
-    sleep(.1)
-    resp = serialport.readline()
-    sleep(.1)
-    resp = serialport.readline().decode('ascii')
-    macaddr = resp.strip()
-
-    serialport.write('wifi up\n'.encode())
-    sleep(1)
-    resp = serialport.readline()
-    while serialport.inWaiting() > 0:
-        resp += serialport.read()
+    macaddr = ""
+    for count in range(0,2):
+        resp = b''
+        while serialport.inWaiting() > 0:
+            resp += serialport.read()
+        serialport.write("cat /sys/class/net/{}/address\n".format(iface).encode())
+        sleep(.5)
+        resp = serialport.readline()
+        sleep(.5)
+        resp = serialport.readline().decode('ascii')
+        macaddr = resp.strip()
+        if macaddr and macaddr[0].isdigit():
+            break
 
     # Connect to ap
     channel = "0"
