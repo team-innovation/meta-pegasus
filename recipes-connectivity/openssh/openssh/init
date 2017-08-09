@@ -46,19 +46,31 @@ check_config() {
 
 check_keys() {
 	# create keys if necessary
-	if [ ! -f $HOST_KEY_RSA ]; then
+	if [ ! -s $HOST_KEY_RSA ]; then
+		# key may be invalid if it exist so remove it
+		rm -f $HOST_KEY_RSA
+
 		echo "  generating ssh RSA key..."
 		ssh-keygen -q -f $HOST_KEY_RSA -N '' -t rsa
 	fi
-	if [ ! -f $HOST_KEY_ECDSA ]; then
+	if [ ! -s $HOST_KEY_ECDSA ]; then
+		# key may be invalid if it exist so remove it
+		rm -f $HOST_KEY_ECDSA
+
 		echo "  generating ssh ECDSA key..."
 		ssh-keygen -q -f $HOST_KEY_ECDSA -N '' -t ecdsa
 	fi
-	if [ ! -f $HOST_KEY_DSA ]; then
+	if [ ! -s $HOST_KEY_DSA ]; then
+		# key may be invalid if it exist so remove it
+		rm -f $HOST_KEY_DSA
+
 		echo "  generating ssh DSA key..."
 		ssh-keygen -q -f $HOST_KEY_DSA -N '' -t dsa
 	fi
-	if [ ! -f $HOST_KEY_ED25519 ]; then
+	if [ ! -s $HOST_KEY_ED25519 ]; then
+		# key may be invalid if it exist so remove it
+		rm -f $HOST_KEY_ED25519
+
 		echo "  generating ssh ED25519 key..."
 		ssh-keygen -q -f $HOST_KEY_ED25519 -N '' -t ed25519
 	fi
