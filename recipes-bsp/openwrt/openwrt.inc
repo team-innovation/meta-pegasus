@@ -24,8 +24,8 @@ LEDE_DOWNLOAD_SERVER="updateseng.vivint.com/innovation/lede/${OPENWRT_BRANCH}"
 
 RT3352_uImage = "RT3352_uImage_201708041255"
 RT3352_uboot = "RT3352_uboot.img_201708041255"
-MT7620_uImage = "MT7620_uImage_201708041246"
-MT7620_uboot = "MT7620_uboot.img_201708041246"
+MT7620_uImage = "MT7620_uImage_201708091630"
+MT7620_uboot = "MT7620_uboot.img_201708091630"
 
 SRC_URI = "http://${DOWNLOAD_SERVER}/${RT3352_uImage};name=RT3352_uImage \
            http://${DOWNLOAD_SERVER}/${RT3352_uboot};name=RT3352_uboot \
@@ -39,8 +39,8 @@ SRC_URI[RT3352_uImage.sha256sum] = "95d889b24fc2a796d771f25531e2c206102b129748bf
 SRC_URI[RT3352_uboot.md5sum] = "d78a51f5fdb52747df72bce5989b76aa"
 SRC_URI[RT3352_uboot.sha256sum] = "bf32d459691fe2e95f6d376cd293df260d985781dc4535c4dbfdc38b9bfbc90b"
 
-SRC_URI[MT7620_uImage.md5sum] = "ce9a00f5907d62cda7bf34f68ac1c862"
-SRC_URI[MT7620_uImage.sha256sum] = "ce5e3701c419d031e05a08b48edb2fd397900addc3fe47208ac8d4b983a883f2"
+SRC_URI[MT7620_uImage.md5sum] = "0a76c10ffd6decb905ca94c26c35f399"
+SRC_URI[MT7620_uImage.sha256sum] = "57b2a2113c282bbff1f40d32058b319328a0841b9d23094cc87d2e7253b7396f"
 SRC_URI[MT7620_uboot.md5sum] = "a1b5c2cd225623553f021be5d0f16edf"
 SRC_URI[MT7620_uboot.sha256sum] = "264b7673036d2b61c34bc4d62d5203f88af37dfc37143a9b7602058f5bcd8c6c"
 
