@@ -10,7 +10,8 @@ PR = "ml1"
 DEPENDS += "python3"
 DEPENDS_virtclass-native += "python3-native"
 
-SRC_URI = "http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-${PV}.tar.gz"
+#SRC_URI = "http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-${PV}.tar.gz"
+SRC_URI = "http://${UPDATESENG}/downloads/pycrypto-${PV}.tar.gz"
 S = "${WORKDIR}/pycrypto-2.5"
 
 inherit distutils3
