@@ -7,6 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects"
 
 PV = "1.0.0+git${SRCPV}"
+PR = "r6"
 
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
