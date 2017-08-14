@@ -59,7 +59,8 @@ require touchlink-apps-qml-framework-images.inc
 # Sound stuffs
 
 require touchlink-apps-sounds-wav-abs.inc  
-require touchlink-apps-sounds-wav-beeps.inc  
+require touchlink-apps-sounds-wav-beeps.inc
+require touchlink-apps-sounds-wav-chimes.inc
 require touchlink-apps-sounds-wav-pauses.inc
 require touchlink-apps-sounds-wav-ad.inc   
 require touchlink-apps-sounds-wav-dtmf.inc   
