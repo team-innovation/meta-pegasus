@@ -1,10 +1,10 @@
 ###
 ### Change SOUND_WAV_CHIMES_PREPEND everytime you touch this script
 ###
-SOUND_WAV_ABS_PREPEND = "-1"
+SOUND_WAV_CHIMES_PREPEND = "-2"
 
-SOUND_WAV_ABS_REVISION ?= "${DISTRO_PR}"
-PKGR_${PN}-sound-wav-chimes = "${PR}${SOUND_WAV_ABS_PREPEND}${SOUND_WAV_ABS_REVISION}"
+SOUND_WAV_CHIMES_PREPEND ?= "${DISTRO_PR}"
+PKGR_${PN}-sound-wav-chimes = "${PR}${SOUND_WAV_CHIMES_PREPEND}${SOUND_WAV_CHIMES_PREPEND}"
 
 do_install_append() {
 	install -d ${D}/${INSTALL_DIR}/sounds/wav/chimes
