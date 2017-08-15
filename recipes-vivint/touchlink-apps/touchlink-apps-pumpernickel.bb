@@ -4,7 +4,7 @@ DESCRIPTION = "User interface for Vivint sky panels"
 HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
 SECTION = "SOMETHING"
-DEPENDS = "qtdeclarative qtgraphicaleffects"
+DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia"
 
 PV = "1.0.0+git${SRCPV}"
 PR = "r6"
