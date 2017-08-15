@@ -346,6 +346,7 @@ PACKAGES = " \
 	${PN}-sound-wav-abs \
 	${PN}-sound-wav-ad \
 	${PN}-sound-wav-beeps \
+	${PN}-sound-wav-chimes \
 	${PN}-sound-wav-dtmf \
 	${PN}-sound-wav-pauses \
 	${PN}-sound-wav-vocab	\
