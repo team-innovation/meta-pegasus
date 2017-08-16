@@ -7,7 +7,7 @@ KERNEL_SRC = "git://${GIT_KERNEL_SERVER}/linux-imx;protocol=${GIT_KERNEL_PROTOCO
 SRC_URI = "${KERNEL_SRC};branch=${GIT_KERNEL_BRANCH}"
 PV = "3.14.28+git${SRCPV}"
 
-PR = "r50"
+PR = "r51"
 
 DEFAULT_PREFERENCE = "1"
 
@@ -32,5 +32,4 @@ module_conf_snd-soc-cx20704 = "blacklist snd-soc-cx20704"
 module_conf_snd-soc-imx-cx20704 = "blacklist snd-soc-imx-cx20704"
 module_conf_snd-soc-gsm030x = "blacklist snd-soc-gsm030x"
 module_conf_snd-soc-imx-gsm030x = "blacklist snd-soc-imx-gsm030x"
-module_conf_ath9k = "options ath9k nohwcrypt=1"
 module_conf_cfg80211 = "options cfg80211 ieee80211_regdom=US"
