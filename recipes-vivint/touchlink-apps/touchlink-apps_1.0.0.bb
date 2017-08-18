@@ -169,10 +169,16 @@ do_compile() {
 			fi
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table
 			if [ ${LOCK_PORTS} ] ; then
-				bbnote "Found ${LOCK_PORTS} - locking daemon servers"
+				bbnote "Found setting to LOCK_PORTS - locking daemon servers"
 				python3 ${S}/code/utils/lock_daemon_servers.py lock ${S}/code
 			else
-			    bbnote "Found ${LOCK_PORTS} - daemon servers remain unlocked"
+			    bbnote "daemon servers remain unlocked"
+			fi
+			if [ ${REDUCE_LOGS} ] ; then
+				bbnote "Found setting to REDUCE_LOGS - seting log level to INFO"
+				python3 ${S}/code/utils/tune_logging_for_release.py INFO ${S}/code
+			else
+			    bbnote "logging remains verbose"
 			fi
 	else
 	        bbnote "This is NOT a buildbot build"
