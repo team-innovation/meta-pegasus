@@ -22,7 +22,7 @@ SRC_URI = "file://${FIRMWARE_sly} \
 inherit update-rc.d
 
 INITSCRIPT_NAME = "${MAXTOUCH_INIT}"
-INITSCRIPT_PARAMS = "start 07 S ."
+INITSCRIPT_PARAMS = "start 06 S ."
 
 do_compile() {
      :
