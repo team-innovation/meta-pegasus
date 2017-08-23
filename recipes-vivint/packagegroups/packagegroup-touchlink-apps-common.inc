@@ -20,6 +20,7 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-sound-wav-abs \
 	touchlink-apps-sound-wav-ad \
 	touchlink-apps-sound-wav-beeps \
+	touchlink-apps-sound-wav-chimes \
 	touchlink-apps-sound-wav-dtmf \
 	touchlink-apps-sound-wav-pauses \
 	touchlink-apps-sound-wav-vocab \
