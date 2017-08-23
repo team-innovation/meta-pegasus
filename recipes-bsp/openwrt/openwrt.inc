@@ -22,10 +22,10 @@ OPENWRT_BRANCH ?= "check"
 DOWNLOAD_SERVER="updateseng.vivint.com/innovation/openwrt/${OPENWRT_BRANCH}"
 LEDE_DOWNLOAD_SERVER="updateseng.vivint.com/innovation/lede/${OPENWRT_BRANCH}"
 
-RT3352_uImage = "RT3352_uImage_201708101852"
-RT3352_uboot = "RT3352_uboot.img_201708101852"
-MT7620_uImage = "MT7620_uImage_201708101715"
-MT7620_uboot = "MT7620_uboot.img_201708101715"
+RT3352_uImage = "RT3352_uImage_201708231614"
+RT3352_uboot = "RT3352_uboot.img_201708231614"
+MT7620_uImage = "MT7620_uImage_201708231542"
+MT7620_uboot = "MT7620_uboot.img_201708231542"
 
 SRC_URI = "http://${DOWNLOAD_SERVER}/${RT3352_uImage};name=RT3352_uImage \
            http://${DOWNLOAD_SERVER}/${RT3352_uboot};name=RT3352_uboot \
