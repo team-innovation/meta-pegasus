@@ -292,6 +292,8 @@ if [ x"$D" = "x" ]; then
         logging "Removing all error log in /media/extra/log..."
         rm -f /media/extra/log/*error.log*
     fi
+
+    ln -sf /opt/2gig/sounds/wav /opt/2gig/sounds/roubaix
 else
     exit 1
 fi
