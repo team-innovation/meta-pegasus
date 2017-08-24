@@ -251,6 +251,7 @@ do_install () {
         # Install init.d scripts
 	install -d ${D}/${sysconfdir}/init.d/
 	cp -a ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
+    ln -s ${D}/${INSTALL_DIR}/sounds/wav ${D}/${INSTALL_DIR}/sounds/roubaix/ 
 }
 
 do_install_append() {
