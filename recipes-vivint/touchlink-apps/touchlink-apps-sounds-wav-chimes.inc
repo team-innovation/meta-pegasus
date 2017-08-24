@@ -13,6 +13,7 @@ do_install_append() {
 }
 
 FILES_${PN}-sound-wav-chimes = "\
-       ${INSTALL_DIR}/sounds/wav/chimes/*"
+       ${INSTALL_DIR}/sounds/wav/chimes/*\
+       ${INSTALL_DIR}/sounds/roubaix"
 
              
