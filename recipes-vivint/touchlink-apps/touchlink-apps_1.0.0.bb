@@ -251,7 +251,6 @@ do_install () {
         # Install init.d scripts
 	install -d ${D}/${sysconfdir}/init.d/
 	cp -a ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
-    ln -s ${D}/${INSTALL_DIR}/sounds/wav ${D}/${INSTALL_DIR}/sounds/roubaix/ 
 }
 
 do_install_append() {
@@ -260,6 +259,8 @@ do_install_append() {
 	find ${D}/${INSTALL_DIR} -name *.py | xargs rm -f
 	# remove yaml_definitions
 	find ${D}/${INSTALL_DIR} -name yaml_definitions | xargs rm -rf
+
+    ln -s ${D}/${INSTALL_DIR}/sounds/wav ${D}/${INSTALL_DIR}/sounds/roubaix/ 
 }
 
 pkg_postinst_${PN} () {
