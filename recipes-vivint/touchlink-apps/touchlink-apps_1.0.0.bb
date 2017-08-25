@@ -259,6 +259,9 @@ do_install_append() {
 	find ${D}/${INSTALL_DIR} -name *.py | xargs rm -f
 	# remove yaml_definitions
 	find ${D}/${INSTALL_DIR} -name yaml_definitions | xargs rm -rf
+
+    install -d ${D}/${INSTALL_DIR}/sounds
+    ln -rsf ${D}/${INSTALL_DIR}/sounds/wav ${D}/${INSTALL_DIR}/sounds/roubaix
 }
 
 pkg_postinst_${PN} () {
@@ -293,7 +296,6 @@ if [ x"$D" = "x" ]; then
         rm -f /media/extra/log/*error.log*
     fi
 
-    ln -sf /opt/2gig/sounds/wav /opt/2gig/sounds/roubaix
 else
     exit 1
 fi
