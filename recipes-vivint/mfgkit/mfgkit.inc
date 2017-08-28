@@ -42,7 +42,7 @@ do_compile() {
 	#   u-boot
 	#   nofec version of slimline dtb
 	#   sly dtb's
-	#   special reflash u-boot boot script
+	#   normal and special reflash u-boot boot scripts
 	#   
 	# all the files we need are relative symlinks so cp with -L will convert
 	# the links to files
@@ -51,6 +51,7 @@ do_compile() {
 	cp -L ${tmpdir}/boot/imx6dl-slimline-ldo-nofec.dtb  ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/imx6dl-sly*.dtb  ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/imx6dl-wallsly*.dtb  ${tmpdir}/staging/
+	cp -L ${tmpdir}/boot/boot.scr ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/usb-reflash-boot.scr ${tmpdir}/staging/
 
 	# copy from staging area to files directory in mfgtool tree

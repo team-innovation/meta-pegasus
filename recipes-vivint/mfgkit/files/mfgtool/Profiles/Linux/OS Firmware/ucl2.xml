@@ -340,4 +340,14 @@
 
     <CMD state="Updater" type="push" body="$ /mnt/mmcblk0p5/usr/local/bin/serialnumset">Prompting for serialnumber</CMD>
   </LIST>
+
+  <LIST name="Wallsly-Preflashed-eMMC" desc="Boot from preflashed eMMC">
+    <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot-Wallsly.imx">Loading U-boot</CMD>
+
+    <CMD state="BootStrap" type="load" file="files/boot.scr" address="0x11000000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Bootscript.</CMD>
+
+    <CMD state="BootStrap" type="jump" > Jumping to OS image. </CMD>
+  </LIST>
+
 </UCL>
