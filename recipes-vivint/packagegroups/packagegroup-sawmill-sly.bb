@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r26"
+PR = "r27"
 
 inherit packagegroup
 
@@ -32,5 +32,7 @@ RDEPENDS_${PN} += " \
 	mfr-piezo-test \
 	modem-loopback \
 	asr-parse \
+    mosquitto \
+    python3-paho-mqtt \
 "
 

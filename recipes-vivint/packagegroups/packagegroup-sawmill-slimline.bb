@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for slimline"
 LICENSE = "MIT"
 
-PR = "r5"
+PR = "r6"
 
 inherit packagegroup
 
@@ -12,5 +12,6 @@ RDEPENDS_${PN} += " \
 	psoc-fw-slimline \
 	slimline-utils \
 	slimline-version \
+    mosquitto-clients \
 "
 
