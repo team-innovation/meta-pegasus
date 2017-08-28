@@ -24,8 +24,6 @@ do_install() {
     oe_runmake install DESTDIR=${D}
     install -d ${D}${libdir}
     install -m 0644 lib/libmosquitto.a ${D}${libdir}/
-
-    install -d ${D}${systemd_unitdir}/system/
 }
 
 PACKAGES += "libmosquitto1 libmosquittopp1 ${PN}-clients ${PN}-python"
