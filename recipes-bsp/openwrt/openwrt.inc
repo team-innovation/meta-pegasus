@@ -8,7 +8,7 @@ HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-PR = "r59"
+PR = "r60"
 SRCREV = "${AUTOREV}"
 MODULE = "openwrt"
 
@@ -24,8 +24,8 @@ LEDE_DOWNLOAD_SERVER="updateseng.vivint.com/innovation/lede/${OPENWRT_BRANCH}"
 
 RT3352_uImage = "RT3352_uImage_201708101852"
 RT3352_uboot = "RT3352_uboot.img_201708101852"
-MT7620_uImage = "MT7620_uImage_201708281840"
-MT7620_uboot = "MT7620_uboot.img_201708281840"
+MT7620_uImage = "MT7620_uImage_201708282153"
+MT7620_uboot = "MT7620_uboot.img_201708282153"
 
 SRC_URI = "http://${DOWNLOAD_SERVER}/${RT3352_uImage};name=RT3352_uImage \
            http://${DOWNLOAD_SERVER}/${RT3352_uboot};name=RT3352_uboot \
@@ -39,8 +39,8 @@ SRC_URI[RT3352_uImage.sha256sum] = "c634b108540ddeff87a0e6f9b6c83522cbdfcb07f26c
 SRC_URI[RT3352_uboot.md5sum] = "d78a51f5fdb52747df72bce5989b76aa"
 SRC_URI[RT3352_uboot.sha256sum] = "bf32d459691fe2e95f6d376cd293df260d985781dc4535c4dbfdc38b9bfbc90b"
 
-SRC_URI[MT7620_uImage.md5sum] = "7f0f5f7d4ac57740e38e2563a5db0fe2"
-SRC_URI[MT7620_uImage.sha256sum] = "e500296659c247a27728d38af5728601d64e8b4b14137e6f32b155d028126f33"
+SRC_URI[MT7620_uImage.md5sum] = "ede95c325d9d68ecb7ac3c53e43a48c4"
+SRC_URI[MT7620_uImage.sha256sum] = "e23b331ea4a8fa82b3406b2191a1b2e73ca19bc1823f35b9a325562f0cd0eddd"
 SRC_URI[MT7620_uboot.md5sum] = "a1b5c2cd225623553f021be5d0f16edf"
 SRC_URI[MT7620_uboot.sha256sum] = "264b7673036d2b61c34bc4d62d5203f88af37dfc37143a9b7602058f5bcd8c6c"
 
