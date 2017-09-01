@@ -8,7 +8,7 @@ HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://../COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-PR = "r60"
+PR = "r61"
 SRCREV = "${AUTOREV}"
 MODULE = "openwrt"
 
@@ -22,10 +22,10 @@ OPENWRT_BRANCH ?= "check"
 DOWNLOAD_SERVER="updateseng.vivint.com/innovation/openwrt/${OPENWRT_BRANCH}"
 LEDE_DOWNLOAD_SERVER="updateseng.vivint.com/innovation/lede/${OPENWRT_BRANCH}"
 
-RT3352_uImage = "RT3352_uImage_201708231614"
-RT3352_uboot = "RT3352_uboot.img_201708231614"
-MT7620_uImage = "MT7620_uImage_201708282153"
-MT7620_uboot = "MT7620_uboot.img_201708282153"
+RT3352_uImage = "RT3352_uImage_201708311821"
+RT3352_uboot = "RT3352_uboot.img_201708311821"
+MT7620_uImage = "MT7620_uImage_201708311922"
+MT7620_uboot = "MT7620_uboot.img_201708311922"
 
 SRC_URI = "http://${DOWNLOAD_SERVER}/${RT3352_uImage};name=RT3352_uImage \
            http://${DOWNLOAD_SERVER}/${RT3352_uboot};name=RT3352_uboot \
@@ -34,13 +34,13 @@ SRC_URI = "http://${DOWNLOAD_SERVER}/${RT3352_uImage};name=RT3352_uImage \
            file://COPYING \
            "
 
-SRC_URI[RT3352_uImage.md5sum] = "1aa265e1f611fc620e84da2596081e3f"
-SRC_URI[RT3352_uImage.sha256sum] = "b3850d6669a185a410c90a768eb159046c477b9dae636d7113d89560ec7600c6"
+SRC_URI[RT3352_uImage.md5sum] = "b4180ace80bc55827753803fd6a50a2a"
+SRC_URI[RT3352_uImage.sha256sum] = "34431227b578353029f90a3995ffded86f516ccba568818c5b3c1617bbb08ddb"
 SRC_URI[RT3352_uboot.md5sum] = "d78a51f5fdb52747df72bce5989b76aa"
 SRC_URI[RT3352_uboot.sha256sum] = "bf32d459691fe2e95f6d376cd293df260d985781dc4535c4dbfdc38b9bfbc90b"
 
-SRC_URI[MT7620_uImage.md5sum] = "ede95c325d9d68ecb7ac3c53e43a48c4"
-SRC_URI[MT7620_uImage.sha256sum] = "e23b331ea4a8fa82b3406b2191a1b2e73ca19bc1823f35b9a325562f0cd0eddd"
+SRC_URI[MT7620_uImage.md5sum] = "3d6f7b45584dd045e299e2ad09c40630"
+SRC_URI[MT7620_uImage.sha256sum] = "2a5ab3eb23102bcbaa9c33f1c381d59794e8660c5a462e3dc4e1a76bce7e770d"
 SRC_URI[MT7620_uboot.md5sum] = "a1b5c2cd225623553f021be5d0f16edf"
 SRC_URI[MT7620_uboot.sha256sum] = "264b7673036d2b61c34bc4d62d5203f88af37dfc37143a9b7602058f5bcd8c6c"
 
