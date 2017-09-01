@@ -58,5 +58,6 @@ RDEPENDS_${PN} = " \
 	vim \
 	webrtc-audio-processing \
 	wps-sh \
+	xdelta3 \
     touchlink-maxtouch-config \
 "
