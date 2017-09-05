@@ -298,6 +298,7 @@ if [ x"$D" = "x" ]; then
         logging "Removing all error log in /media/extra/log..."
         rm -f /media/extra/log/*error.log*
     fi
+
 else
     exit 1
 fi
