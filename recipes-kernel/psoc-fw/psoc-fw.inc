@@ -4,7 +4,7 @@ LICENSE = "CLOSED"
 #inherit module
 
 PR = "r69"
-PV = "${SRCREV}"
+PV = "${SRCPV}"
 
 SRC_URI = "file://ihex2fw.c "
 
