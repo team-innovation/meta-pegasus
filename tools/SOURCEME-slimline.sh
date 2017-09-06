@@ -16,6 +16,10 @@ test -d ${BUILD_DIR} &&
 	sed -i '/OPENWRT_BRANCH/d' ${BUILD_DIR}/conf/local.conf &&
 	sed -i '/UPDATESENG/d' ${BUILD_DIR}/conf/local.conf && 
     sed -i '/PRSERV_HOST/d'  ${BUILD_DIR}/conf/local.conf && 
+    sed -i '/DISTRO_FEATURES_remove/d' ${BUILD_DIR}/conf/local.conf && 
+    sed -i '/IMAGE_INSTALL_remove/d' ${BUILD_DIR}/conf/local.conf && 
+	echo "DISTRO_FEATURES_remove = \"x11 wayland directfb bluetooth\"" >> ${BUILD_DIR}/conf/local.conf &&
+	echo "IMAGE_INSTALL_remove = \" packagegroup-fsl-bluez5-tools\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_SERVER ?= \"git@source.vivint.com:7999/em\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_APPS_TAG ?= \"${_APPS_TAG}\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_APPS_REV ?= \"${_APPS_REV}\"" >> ${BUILD_DIR}/conf/local.conf &&
@@ -49,9 +53,13 @@ ln -s ../sstate-cache . || true
 grep -q package_rpm ./conf/local.conf &&
 	sed -i -e s/package_rpm/package_ipk/ ./conf/local.conf
 
-grep -q DIST_FEATURES_remove ./conf/local.conf ||
+grep -q DISTRO_FEATURES_remove ./conf/local.conf ||
 	echo "DISTRO_FEATURES_remove=\"x11 wayland directfb bluetooth\"" \
 		>> ./conf/local.conf
+
+grep -q IMAGE_INSTALL_remove ./conf/local.conf ||
+    echo "IMAGE_INSTALL_remove=\" packagegroup-fsl-bluez5-tools" \
+        >> ./conf/local.conf
 
 grep -q GIT_SERVER ./conf/local.conf || 
 	echo -e "GIT_SERVER ?= \"git@source.vivint.com:7999/em\"\nGIT_APPS_TAG ?= \"${_APPS_TAG}\"\nGIT_APPS_REV ?=\"${_APPS_REV}\"\nGIT_APPS_BRANCH ?= \"${_APPS_BRANCH}\"\nOPENWRT_BRANCH ?= \"${_OPENWRT_BRANCH}\"\nUPDATESENG = \"updateseng.vivint.com/innovation\"\nPRSERV_HOST = \"localhost:0\"" >> ./conf/local.conf
