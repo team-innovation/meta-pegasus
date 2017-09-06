@@ -50,7 +50,7 @@ grep -q package_rpm ./conf/local.conf &&
 	sed -i -e s/package_rpm/package_ipk/ ./conf/local.conf
 
 grep -q DIST_FEATURES_remove ./conf/local.conf ||
-	echo "DISTRO_FEATURES_remove=\"x11 wayland directfb \"" \
+	echo "DISTRO_FEATURES_remove=\"x11 wayland directfb bluetooth\"" \
 		>> ./conf/local.conf
 
 grep -q GIT_SERVER ./conf/local.conf || 
