@@ -1,6 +1,15 @@
 require qt5.inc
 
-DEPENDS += "qtscript qtsvg qtxmlpatterns qtwebkit"
+DEPENDS += "qtscript qtsvg qtxmlpatterns"
+
+PACKAGECONFIG ??= "webkit"
+PACKAGECONFIG[webkit] = ",,qtwebkit"
+
+EXTRA_QMAKEVARS_PRE += "${@bb.utils.contains('PACKAGECONFIG', 'webkit', '', 'CONFIG+=noqtwebkit', d)}"
+
+do_configure_prepend() {
+    sed -i 's#^qtHaveModule(webkitwidgets):#qtHaveModule(webkitwidgets):!contains(CONFIG, noqtwebkit):#g' ${S}/src/imports/imports.pro
+}
 # qttools
 
 # There are no LGPLv3-only licensed files in this component.
