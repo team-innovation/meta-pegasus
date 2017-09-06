@@ -9,6 +9,7 @@ PKGR_${PN}-audmgrd = "${PR}${AUDMGRD_PREPEND}${AUDIO_REVISION}"
 RDEPENDS_${PN}-audmgrd = "\
 	python3-audio \
 	python3-pyalsaaudio \
+    gstreamer1.0 \
 "
 do_compile_prepend() {
         # compile dbc audio C code
