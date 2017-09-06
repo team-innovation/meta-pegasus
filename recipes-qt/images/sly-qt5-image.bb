@@ -11,7 +11,6 @@ IMAGE_INSTALL_append = "\
 	packagegroup-sawmill-video \
 	alsa-utils-aplay \
 	pulseaudio-meta-sly \
-	python3-pyqt5 \
 	audio-sh \
 	mtd-utils \
 	packagegroup-camera-firmware \
