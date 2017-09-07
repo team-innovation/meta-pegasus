@@ -129,6 +129,7 @@ DEPENDS = " \
 	python3-pycrypto-native \
 	python3-pyftpdlib-native \
 	python3-pyinotify-native \
+	python3-pyqt5-native \
 	python3-pyserial-native \
 	python3-pytz-native \
 	python3-requests-native \
