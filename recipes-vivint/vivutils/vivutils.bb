@@ -19,6 +19,7 @@ SRC_URI = "\
 	   file://ctail \
 	   file://fcc_active_receive \
 	   file://fccfixup \
+	   file://labmodem \
 	   file://firstboot \
 	   file://firstboot-setup \
 	   file://gadgetsetup \
@@ -78,6 +79,7 @@ do_install() {
 	install -m 0755 ${S}/sly-update ${D}/usr/local/bin
 	install -m 0755 ${S}/pa_info ${D}/usr/local/bin
 	install -m 0755 ${S}/fccfixup ${D}/usr/local/bin
+	install -m 0755 ${S}/labmodem ${D}/usr/local/bin
 	install -m 0755 ${S}/touchtest ${D}/usr/local/bin
 	install -m 0755 ${S}/wlan-hwtest ${D}/usr/local/bin
 	install -m 0755 ${S}/netm-hwtest.py ${D}/usr/local/bin

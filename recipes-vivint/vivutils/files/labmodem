@@ -1,0 +1,15 @@
+#!/bin/bash
+#set -x
+
+labfixup() {
+	sed -i "s/310410/310410,*/g" /opt/2gig/modemd/modemd_conf.json
+    sed -i "s/310012/310012,*/g" /opt/2gig/modemd/modemd_conf.json
+}
+
+labundo() {
+    cp /media/mmcblk0p5/opt/2gig/modemd/modemd_conf.json /opt/2gig/modemd/.
+}
+
+test -z "$1" && labfixup
+test "$1" = "undo" && labundo
+exit 0
