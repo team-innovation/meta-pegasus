@@ -12,17 +12,17 @@ SRC_URI = "\
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit distutils
+inherit distutils3
 
 SRC_URI[md5sum] = "b9338236e2836e8579ef140956189cc4"
 SRC_URI[sha256sum] = "2c9ef5494cfc1e41a9fff6544c5a2cd59ea5d401d9119a06ecf7fad6a2ffeb93"
 
 DEPENDS_${PN} = "\
-        python-distutils \
+        python3-distutils \
 "
 
 RDEPENDS_${PN} = "\
-               python-math \
-               python-io \
-               python-threading \
+               python3-math \
+               python3-io \
+               python3-threading \
 "
