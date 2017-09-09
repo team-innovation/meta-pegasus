@@ -452,14 +452,16 @@ succeed_or bootscrcheck bootscrupdate
 succeed_or ubootcheck ubootupdate
 succeed_or mmcbootbitscheck mmcbootbitsset
 succeed_or fusecheck fuseset
-succeed_or serialnumcheck serialnumwarn
-succeed_or panelinfoboardmodelcheck panelinfoboardmodelupdate
-succeed_or panelinfoboardrevcheck panelinfoboardrevupdate
 
 test "${FACTORYFIRSTBOOT}" = "true" && {
 	info "Initial factory board setup complete -- halting!"
-	halt
+	sync
+	halt -f
 }
+
+succeed_or serialnumcheck serialnumwarn
+succeed_or panelinfoboardmodelcheck panelinfoboardmodelupdate
+succeed_or panelinfoboardrevcheck panelinfoboardrevupdate
 
 info "board re-setup complete, not first time, continuing normal boot..."
 
