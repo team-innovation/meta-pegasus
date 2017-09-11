@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=eb48c6ee2cb9f5b8b9fe75e6f817bdfc \
 SRCNAME = "paho-mqtt"
 SRC_URI = "\
             https://files.pythonhosted.org/packages/source/p/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
-            fixed_setup.patch \
+            file://fixed_setup.patch \
            "
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
