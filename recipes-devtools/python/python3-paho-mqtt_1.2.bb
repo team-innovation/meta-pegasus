@@ -6,16 +6,15 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=eb48c6ee2cb9f5b8b9fe75e6f817bdfc \
 "
 SRCNAME = "paho-mqtt"
 SRC_URI = "\
-           http://pypi.python.org/packages/source/p/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
-           file://fixed_setup.patch \
+            https://files.pythonhosted.org/packages/source/p/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
            "
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 inherit distutils3
 
-SRC_URI[md5sum] = "b9338236e2836e8579ef140956189cc4"
-SRC_URI[sha256sum] = "2c9ef5494cfc1e41a9fff6544c5a2cd59ea5d401d9119a06ecf7fad6a2ffeb93"
+SRC_URI[md5sum] = "241150b3fcb920ddca4d33181f3238b1"
+SRC_URI[sha256sum] = "9100a6aa706ab699d414ec02705a21eb66f436184691d0bf1f2a85a6213c6c1f"
 
 DEPENDS_${PN} = "\
         python3-distutils \
