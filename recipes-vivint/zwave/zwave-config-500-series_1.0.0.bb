@@ -21,7 +21,7 @@ FW_NAME = "serialapi_controller_static_ZW050x_US.hex"
 FW_NAME_FCC = "micro_rf_linkX_ZW050x_ALL.hex"
 FW_DIR = "/lib/firmware/vivint"
 
-S = "${WORKDIR}/git/SDK_v6_70_01/ProductPlus/SerialAPIPlus/build_prj/serialapi_controller_static_ZW050x_US"
+S = "${WORKDIR}/git/SDK_v6_70_01/ProductPlus/SerialAPIPlus/build_prj/serialapi_controller_bridge_ZW050x_US"
 S_FCC = "${WORKDIR}/git/SDK_v6_70_01/ProductPlus/SerialAPIPlus/micro_rf_linkx_v1.19/Micro_RF_LinkX"
 
 
