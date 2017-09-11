@@ -17,8 +17,7 @@ SRC_URI = " \
     file://zwave-program \
     "
 
-FW_NAME = "serialapi_controller_static_ZW050x_US.hex"
-FW_NAME_FCC = "micro_rf_linkX_ZW050x_ALL.hex"
+FW_NAME = "serialapi_controller_bridge_ZW050x_US.hex"
 FW_DIR = "/lib/firmware/vivint"
 
 S = "${WORKDIR}/git/SDK_v6_70_01/ProductPlus/SerialAPIPlus/build_prj/serialapi_controller_bridge_ZW050x_US"
@@ -36,7 +35,6 @@ do_runstrip() {
 do_install () {
     install -d ${D}${FW_DIR}
     install -m 644 ${S}/${FW_NAME} ${D}${FW_DIR}
-    install -m 644 ${S_FCC}/${FW_NAME_FCC} ${D}${FW_DIR}
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwave-program ${D}${sysconfdir}/init.d
 
@@ -46,7 +44,6 @@ do_install () {
 
 FILES_${PN} = "\
     ${FW_DIR}/${FW_NAME} \
-    ${FW_DIR}/${FW_NAME_FCC} \
     ${sysconfdir}/init.d/zwave-program \
     ${sysconfdir}/rcS.d/*zwave-program \
     "
