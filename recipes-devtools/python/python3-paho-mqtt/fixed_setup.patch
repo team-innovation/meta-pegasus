@@ -1,0 +1,22 @@
+diff -rupN paho-mqtt-1.3.0/setup.py paho-mqtt-1.3.0-fixed/setup.py
+--- paho-mqtt-1.3.0/setup.py	2017-06-20 05:37:10.000000000 -0600
++++ paho-mqtt-1.3.0-fixed/setup.py	2017-08-28 08:47:58.447515634 -0600
+@@ -1,7 +1,7 @@
+ #!/usr/bin/env python
+ # -*- coding: utf-8 -*-
+ 
+-from setuptools import setup, find_packages
++from distutils.core import setup
+ 
+ import sys
+ sys.path.insert(0, 'src')
+@@ -21,7 +21,7 @@
+     author='Roger Light',
+     author_email='roger@atchoo.org',
+     url='http://eclipse.org/paho',
+-    packages=find_packages('src'),
++    packages=['paho'],
+     package_dir={'': 'src'},
+     include_package_data=True,
+     install_requires=requirements,
+
