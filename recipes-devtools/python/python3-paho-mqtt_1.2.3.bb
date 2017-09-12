@@ -11,6 +11,7 @@ SRC_URI = "\
            "
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
+PR = "r1"
 
 inherit distutils3
 
