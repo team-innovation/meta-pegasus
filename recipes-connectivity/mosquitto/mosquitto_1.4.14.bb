@@ -18,8 +18,8 @@ SRC_URI = "http://mosquitto.org/files/source/mosquitto-${PV}.tar.gz \
 SRC_URI[md5sum] = "6b0966e93f118bc71ad7b61600a6c2d3"
 SRC_URI[sha256sum] = "156b1fa731d12baad4b8b22f7b6a8af50ba881fc711b81e9919ec103cf2942d1"
 
-INITSCRIPT_NAME_${PN} = "mosquitto.init"
-INITSCRIPT_PARAMS_${PN} = "defaults 87"
+INITSCRIPT_NAME = "mosquitto.init"
+INITSCRIPT_PARAMS = "defaults 87"
 
 inherit update-rc.d
 
