@@ -60,7 +60,8 @@ do_install() {
     install -m 755 ${WORKDIR}/procman.d/* ${D}/${sysconfdir}/procman.d
 
     # Symlink this until we get pulse fixed correctly
-    ln -s /.config ${D}/home/root/.config
+    install -d ${D}/home/root
+    ln -sf /.config ${D}/home/root/.config
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -93,6 +94,8 @@ CONFFILES_${PN} = "\
   ${sysconfdir}/pulse/asound.conf.pulseaudio-meta-sly \
   ${sysconfdir}/pulse/daemon.conf.pulseaudio-meta-sly \
 "
+
+FILES_${PN} += " /home/root/.config"
 
 # At the time the postinst runs, dbus might not be setup so only restart if running
 pkg_postinst_hal () {
