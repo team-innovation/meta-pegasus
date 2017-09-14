@@ -7,10 +7,12 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=62ddc846179e908dc0c8efec4a42ef20"
 
 DEPENDS = "openssl util-linux c-ares"
 
-PR = "r0"
+PR = "r1"
 
 SRC_URI = "http://mosquitto.org/files/source/mosquitto-${PV}.tar.gz \
            file://build.patch \
+           file://mosquitto.init \
+           file://mosquitto.conf \
 "
 
 SRC_URI[md5sum] = "6b0966e93f118bc71ad7b61600a6c2d3"
@@ -24,6 +26,13 @@ do_install() {
     oe_runmake install DESTDIR=${D}
     install -d ${D}${libdir}
     install -m 0644 lib/libmosquitto.a ${D}${libdir}/
+
+    install -d ${D}${sysconfdir}
+    install -m 0644 ${WORKDIR}/mosquitto.conf ${D}/${sysconfdir}
+
+    install -d ${D}${sysconfdir}/init.d
+    install -m 0755 ${WORKDIR}/mosquitto.init ${D}/${sysconfdir}/init.d
+
 }
 
 PACKAGES += "libmosquitto1 libmosquittopp1 ${PN}-clients ${PN}-python"
@@ -31,6 +40,7 @@ PACKAGES += "libmosquitto1 libmosquittopp1 ${PN}-clients ${PN}-python"
 FILES_${PN} = "${sbindir}/mosquitto \
                ${bindir}/mosquitto_passwd \
                ${sysconfdir}/mosquitto \
+               ${sysconfdir}/init.d/mosquitto.init \
 "
 
 FILES_libmosquitto1 = "${libdir}/libmosquitto.so.1"
