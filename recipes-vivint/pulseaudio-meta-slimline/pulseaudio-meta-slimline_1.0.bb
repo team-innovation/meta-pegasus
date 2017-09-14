@@ -58,7 +58,7 @@ do_install() {
 
     # Symlink this until we get pulse fixed correctly
     install -d ${D}/home/root
-    ln -sf /.config /home/root/.config
+    ln -sf /.config ${D}/home/root/.config
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
