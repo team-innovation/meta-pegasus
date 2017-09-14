@@ -21,6 +21,7 @@ do_install() {
 	# version
 	install -d ${D}${sysconfdir}
 	echo "${WALLSLY_NAME} ${DISTRO_VERSION}" > ${D}${sysconfdir}/wallsly-version
+    echo "Cellular: A.01" >> ${D}${sysconfdir}/wallsly-version
 	echo "$(date '+Build Date: %m/%d/%Y')" >> ${D}${sysconfdir}/wallsly-version
 	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/wallsly-version
 	echo "OE branch: ${METADATA_BRANCH}" >> ${D}${sysconfdir}/wallsly-version
