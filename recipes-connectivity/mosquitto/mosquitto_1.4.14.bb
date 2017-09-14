@@ -27,11 +27,11 @@ do_install() {
     install -d ${D}${libdir}
     install -m 0644 lib/libmosquitto.a ${D}${libdir}/
 
-    install -d ${D}${sysconfdir}
-    install -m 0644 ${WORKDIR}/mosquitto.conf ${D}/${sysconfdir}
+    install -d ${D}${sysconfdir}/mosquitto
+    install -m 0644 ${WORKDIR}/mosquitto.conf ${D}/${sysconfdir}/mosquitto/
 
     install -d ${D}${sysconfdir}/init.d
-    install -m 0755 ${WORKDIR}/mosquitto.init ${D}/${sysconfdir}/init.d
+    install -m 0755 ${WORKDIR}/mosquitto.init ${D}/${sysconfdir}/init.d/
 
 }
 
