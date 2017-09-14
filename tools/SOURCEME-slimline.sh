@@ -58,7 +58,7 @@ grep -q DISTRO_FEATURES_remove ./conf/local.conf ||
 		>> ./conf/local.conf
 
 grep -q IMAGE_INSTALL_remove ./conf/local.conf ||
-    echo "IMAGE_INSTALL_remove=\" packagegroup-fsl-bluez5-tools" \
+    echo "IMAGE_INSTALL_remove=\" packagegroup-fsl-bluez5-tools\" \
         >> ./conf/local.conf
 
 grep -q GIT_SERVER ./conf/local.conf || 
