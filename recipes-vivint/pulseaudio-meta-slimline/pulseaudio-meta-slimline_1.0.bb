@@ -55,6 +55,9 @@ do_install() {
          sed -i -e s:resample-method=sinc-fastest:resample-method=trivial: ${D}${sysconfdir}/init.d/pulseaudio
     fi
     install -m 755 ${WORKDIR}/procman.d/* ${D}/${sysconfdir}/procman.d
+
+    # Symlink this until we get pulse fixed correctly
+    ln -s /.config ${D}/home/root/.config
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
