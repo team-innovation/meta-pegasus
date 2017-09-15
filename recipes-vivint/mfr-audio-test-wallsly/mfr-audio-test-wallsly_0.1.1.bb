@@ -7,7 +7,7 @@ PV = "0.1.1+git${SRCPV}"
 SRCREV = "${AUTOREV}"
 
 GIT_AUDIO_SERVER ?= "${GIT_SERVER}"
-GIT_AUDIO_BRANCH ?= "release/3.10.4"
+GIT_AUDIO_BRANCH ?= "develop"
 GIT_AUDIO_PROTOCOL ?= "ssh"
 
 SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH}"
