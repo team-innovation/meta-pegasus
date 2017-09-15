@@ -1,4 +1,4 @@
-GIT_KERNEL_BRANCH ?= "release/3.10.4"
+GIT_KERNEL_BRANCH ?= "release/3.10.5"
 LOCALVERSION = "-1.0.0_slimline"
 SRCREV = "${AUTOREV}"
 GIT_KERNEL_SERVER ?= "${GIT_SERVER}"
