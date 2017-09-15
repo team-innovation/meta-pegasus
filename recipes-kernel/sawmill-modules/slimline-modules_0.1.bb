@@ -4,7 +4,7 @@ LICENSE = "CLOSED"
 inherit module
 
 GIT_SERVER_MONPWR ?= "${GIT_SERVER}"
-GIT_MONPWR_BRANCH_SLIMLINE ?= "3.10.4"
+GIT_MONPWR_BRANCH_SLIMLINE ?= "release/3.10.5"
 
 SRC_URI = "git://${GIT_SERVER_MONPWR}/slimline-modules;protocol=ssh;branch=${GIT_MONPWR_BRANCH_SLIMLINE}"
 SRCREV = "${AUTOREV}"
