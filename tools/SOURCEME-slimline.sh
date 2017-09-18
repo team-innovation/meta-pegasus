@@ -18,7 +18,7 @@ test -d ${BUILD_DIR} &&
     sed -i '/PRSERV_HOST/d'  ${BUILD_DIR}/conf/local.conf && 
     sed -i '/DISTRO_FEATURES_remove/d' ${BUILD_DIR}/conf/local.conf && 
     sed -i '/IMAGE_INSTALL_remove/d' ${BUILD_DIR}/conf/local.conf && 
-	echo "DISTRO_FEATURES_remove = \"x11 wayland directfb bluetooth\"" >> ${BUILD_DIR}/conf/local.conf &&
+	echo "DISTRO_FEATURES_remove = \"x11 wayland directfb bluetooth zeroconf\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "IMAGE_INSTALL_remove = \" packagegroup-fsl-bluez5-tools\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_SERVER ?= \"git@source.vivint.com:7999/em\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_APPS_TAG ?= \"${_APPS_TAG}\"" >> ${BUILD_DIR}/conf/local.conf &&
@@ -54,11 +54,11 @@ grep -q package_rpm ./conf/local.conf &&
 	sed -i -e s/package_rpm/package_ipk/ ./conf/local.conf
 
 grep -q DISTRO_FEATURES_remove ./conf/local.conf ||
-	echo "DISTRO_FEATURES_remove=\"x11 wayland directfb bluetooth\"" \
+	echo "DISTRO_FEATURES_remove=\"x11 wayland directfb bluetooth zeroconf\"" \
 		>> ./conf/local.conf
 
 grep -q IMAGE_INSTALL_remove ./conf/local.conf ||
-    echo "IMAGE_INSTALL_remove=\" packagegroup-fsl-bluez5-tools\" \
+    echo "IMAGE_INSTALL_remove=\" packagegroup-fsl-bluez5-tools\"" \
         >> ./conf/local.conf
 
 grep -q GIT_SERVER ./conf/local.conf || 

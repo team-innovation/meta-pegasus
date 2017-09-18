@@ -6,6 +6,8 @@ PR = "r0"
 PV = "0.1.1+git${SRCPV}"
 SRCREV = "${AUTOREV}"
 
+DEPENDS += "alsa-lib pulseaudio"
+
 GIT_AUDIO_SERVER ?= "${GIT_SERVER}"
 GIT_AUDIO_BRANCH ?= "develop"
 GIT_AUDIO_PROTOCOL ?= "ssh"

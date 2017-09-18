@@ -10,6 +10,8 @@ GIT_AUDIO_SERVER ?= "${GIT_SERVER}"
 GIT_AUDIO_BRANCH ?= "develop"
 GIT_AUDIO_PROTOCOL ?= "ssh"
 
+DEPENDS += "alsa-lib pulseaudio"
+
 SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH}"
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
 S = "${WORKDIR}/git/vaudio-wallsly"
