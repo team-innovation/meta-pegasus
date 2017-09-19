@@ -46,6 +46,13 @@ then
             sleep 5
         fi
 
+        # check to see if we are already on the AT&T firmware version
+        CURRENT_VERSION="$(sierra_get_version.py)"
+        if [[ $IMAGE_FILE == *$CURRENT_VERSION* ]]; then
+            echo "Modems firmware is up to date"
+            exit 0
+        fi
+
         echo "Flashing Sierra HL7588 modem with: "$IMAGE_FILE
         swdltool $IMAGE_FILE &
 
