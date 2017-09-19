@@ -32,6 +32,7 @@ SRC_URI = "\
 	   file://resize.sh \
 	   file://serialnumset \
 	   file://set-u-boot-part \
+	   file://sierra_get_version.py \
 	   file://simplesuspend \
 	   file://slimline-update \
 	   file://sly-update \
@@ -74,6 +75,7 @@ do_install() {
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
 	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
 	install -m 0755 ${S}/set-u-boot-part ${D}/usr/local/bin
+	install -m 0755 ${S}/sierra_get_version ${D}/usr/local/bin
 	install -m 0755 ${S}/simplesuspend ${D}/usr/local/bin
 	install -m 0755 ${S}/slimline-update ${D}/usr/local/bin
 	install -m 0755 ${S}/sly-update ${D}/usr/local/bin
