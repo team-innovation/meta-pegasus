@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = "file://GPL;md5=4325afd396febcb659c36b49533135d4 \
 
 DEPENDS = "libatomics-ops libsndfile1 libtool intltool-native"
 # optional
-DEPENDS += "udev alsa-lib glib-2.0 gconf bash-completion"
+DEPENDS += "udev alsa-lib glib-2.0 gconf bash-completion tcp-wrappers"
 DEPENDS += "json-c gdbm libxml-parser-perl-native libcap speex webrtc-audio-processing"
 
 inherit autotools pkgconfig useradd gettext perlnative 
