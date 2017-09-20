@@ -5,6 +5,7 @@ PR = "r01"
 
 PKGR_${PN}-hl7588-a = "${PR}.1"
 PKGR_${PN}-hl7588-v = "${PR}.1"
+PKGR_${PN}-hl7588-u = "${PR}.1"
 
 FIRMWARE_hl7588_a = "RHL75xx.A.2.10.151600.201604151852.x7160_1_signed.fls"
 FIRMWARE_hl7588_v = "SWIMCB71XX-VC4.14.01.172300.201706122100.01_signed.fls"
@@ -54,9 +55,9 @@ do_install() {
 
 FILES_${PN}-hl7588-a = "${FIRMWARE_DIR}/${FIRMWARE_hl7588_a}"
 FILES_${PN}-hl7588-v = "${FIRMWARE_DIR}/${FIRMWARE_hl7588_v}"
-FILES_${PN}-util = "${FIRMWARE_DIR}/${FIRMWARE_VERSION_UTIL}"
+FILES_${PN}-hl7588-u = "${FIRMWARE_DIR}/${FIRMWARE_VERSION_UTIL}"
 
 PACKAGES = "${PN}-hl7588-a \
 	        ${PN}-hl7588-v \
-	        ${PN}-util \
+	        ${PN}-hl7588-u \
 		   "
