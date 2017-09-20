@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=2d5025d4aa3495befef8f17206a5b0a1"
 SECTION = "multimedia"
 
 SRC_URI = " \
-    git://anongit.freedesktop.org/gstreamer/qt-gstreamer \
+    git://github.com/GStreamer/qt-gstreamer \
     file://0001-Added-i.MX6-zero-copy-rendering-implementation.patch \
 	file://0002-Set-playbin-s-flags-as-native-video-audio-in-case-of.patch \
 	file://0003-qtgstreamer-build-fix.patch \
