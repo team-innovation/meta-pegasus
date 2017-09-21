@@ -28,7 +28,7 @@ then
     then
         # get the AT&T image filename (contains ".A.")
         # when we switch to Verizon look for ".V."
-        IMAGE_FILE="$(ls /var/lib/firmware/Sierra/RHL*.A.*)"
+        IMAGE_FILE="$(ls ../../var/lib/firmware/Sierra/RHL*.A.*)"
         if [ -z $IMAGE_FILE ]; then
             echo "ERROR: AT&T firmware image not found in /var/lib/firmware/Sierra"
             exit 1
@@ -47,7 +47,7 @@ then
         fi
 
         # check to see if we are already on the AT&T firmware version
-        CURRENT_VERSION="$(python3 /var/lib/firmware/Sierra/sierra_get_version.py)"
+        CURRENT_VERSION="$(python3 ../../var/lib/firmware/Sierra/sierra_get_version.py)"
         if [[ $IMAGE_FILE == *$CURRENT_VERSION* ]]; then
             echo "Modems firmware is up to date"
             exit 0
