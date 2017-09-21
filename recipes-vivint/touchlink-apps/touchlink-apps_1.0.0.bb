@@ -161,13 +161,7 @@ do_compile() {
 	# generate proxies
 	if [ ${BUILD_BOT_BUILD} ] ; then
 			bbnote "This is a buildbot build"
-			if [ -e ${HOME}/CodeBitBucket/strings/string_table.py ]; then
-				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
-				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
-				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
-				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
-			fi
-	        ${S}/scripts/generate_all_proxies.py --generate_string_table
+		        ${S}/scripts/generate_all_proxies.py --generate_string_table ${HOME}/CodeBitBucket/strings
 			if [ ${LOCK_PORTS} ] ; then
 				bbnote "Found setting to LOCK_PORTS - locking daemon servers"
 				python3 ${S}/code/utils/lock_daemon_servers.py lock ${S}/code
