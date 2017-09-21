@@ -9,13 +9,13 @@ PKGR_${PN}-hl7588-u = "${PR}.1"
 
 FIRMWARE_hl7588_a = "RHL75xx.A.2.10.151600.201604151852.x7160_1_signed.fls"
 FIRMWARE_hl7588_v = "SWIMCB71XX-VC4.14.01.172300.201706122100.01_signed.fls"
-FIRMWARE_VERSION_UTIL = "sierra_get_version.py"
+FIRMWARE_hl7588_u = "sierra_get_version.py"
 
 FIRMWARE_DIR = "/var/lib/firmware/Sierra"
 
 SRC_URI = "file://${FIRMWARE_hl7588_a} \
 	       file://${FIRMWARE_hl7588_v} \
-	       file://${FIRMWARE_VERSION_UTIL} \
+	       file://${FIRMWARE_hl7588_u} \
 		  "
 
 do_compile() {
@@ -50,12 +50,12 @@ do_install() {
      install -d ${D}/${FIRMWARE_DIR}
      cp ${WORKDIR}/${FIRMWARE_hl7588_a} ${D}/${FIRMWARE_DIR}
      cp ${WORKDIR}/${FIRMWARE_hl7588_v} ${D}/${FIRMWARE_DIR}
-     cp ${WORKDIR}/${FIRMWARE_VERSION_UTIL} ${D}/${FIRMWARE_DIR}
+     cp ${WORKDIR}/${FIRMWARE_hl7588_u} ${D}/${FIRMWARE_DIR}
 }
 
 FILES_${PN}-hl7588-a = "${FIRMWARE_DIR}/${FIRMWARE_hl7588_a}"
 FILES_${PN}-hl7588-v = "${FIRMWARE_DIR}/${FIRMWARE_hl7588_v}"
-FILES_${PN}-hl7588-u = "${FIRMWARE_DIR}/${FIRMWARE_VERSION_UTIL}"
+FILES_${PN}-hl7588-u = "${FIRMWARE_DIR}/${FIRMWARE_hl7588_u}"
 
 PACKAGES = "${PN}-hl7588-a \
 	        ${PN}-hl7588-v \
