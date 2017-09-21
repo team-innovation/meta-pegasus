@@ -7,7 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia"
 
 PV = "1.0.0+git${SRCPV}"
-PR = "r7"
+PR = "r6"
 
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
@@ -26,6 +26,7 @@ EXEC_DIR = "pumpernickel"
 do_install() {
     install -d ${D}${datadir}/${EXEC_DIR}
     install -m 0755 ${B}/${EXEC_DIR} ${D}${datadir}/${EXEC_DIR}
+    cp -a ${S}/content ${D}${datadir}/${EXEC_DIR}
 }
 
 FILES_${PN}-dbg += "${datadir}/${EXEC_DIR}/.debug"
