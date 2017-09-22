@@ -176,13 +176,7 @@ do_compile() {
 			fi
 	else
 	        bbnote "This is NOT a buildbot build"
-			if [ -e ${HOME}/CodeBitBucket/strings/string_table.py ]; then
-				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
-				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
-				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
-				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
-			fi
-	        ${S}/scripts/generate_all_proxies.py --generate_string_table --verbose
+	        ${S}/scripts/generate_all_proxies.py --generate_string_table /home/localRepos --verbose
 	fi
 
 	# generate .pyc files
