@@ -176,7 +176,7 @@ do_compile() {
 			fi
 	else
 	        bbnote "This is NOT a buildbot build"
-	        ${S}/scripts/generate_all_proxies.py --generate_string_table /home/localRepos --verbose
+	        ${S}/scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER} --verbose
 	fi
 
 	# generate .pyc files
