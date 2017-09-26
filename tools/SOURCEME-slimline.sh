@@ -38,6 +38,10 @@ export MACHINE=imx6dl-slimline
 export EULA=1
 export DISTRO=slimline
 
+if [-z "$SLIMLINE_VERSION" ]; then
+	export UPDATE_STRING_TABLE;
+fi;
+
 source ./fsl-setup-release.sh -b ${BUILD_DIR}
 
 grep -q meta-vivint ./conf/bblayers.conf ||

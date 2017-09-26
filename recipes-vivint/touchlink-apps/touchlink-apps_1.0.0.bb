@@ -160,7 +160,7 @@ RDEPENDS_${PN} = "\
 do_compile() {
 
 	# generate proxies
-	if [ ${SLIMLINE_VERSION} ] ; then
+	if [ ${UPDATE_STRING_TABLE} ] ; then
 			bbnote "This is a buildbot build"
 		        ${S}/scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER}
 			if [ ${LOCK_PORTS} ] ; then
