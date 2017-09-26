@@ -81,7 +81,7 @@ SRCBRANCH = "${GIT_APPS_BRANCH}"
 
 GIT_APPS_SERVER ?= "${GIT_SERVER}"
 GIT_APPS_PROTOCOL ?= "ssh"
-
+GIT_STRINGS_SERVER ?= "/home/localRepos/constants/boilerplate/python"
 
 SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL};branch=${SRCBRANCH} \
     file://procman.d \
