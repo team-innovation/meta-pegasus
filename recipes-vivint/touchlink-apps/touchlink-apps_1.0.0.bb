@@ -81,7 +81,7 @@ SRCBRANCH = "${GIT_APPS_BRANCH}"
 
 GIT_APPS_SERVER ?= "${GIT_SERVER}"
 GIT_APPS_PROTOCOL ?= "ssh"
-GIT_STRINGS_SERVER ?= "/home/localRepos/constants/boilerplate/python"
+
 
 SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL};branch=${SRCBRANCH} \
     file://procman.d \
@@ -160,9 +160,9 @@ RDEPENDS_${PN} = "\
 do_compile() {
 
 	# generate proxies
-	if [ ${BUILD_BOT_BUILD} ] ; then
+	if [ ${SLIMLINE_VERSION} ] ; then
 			bbnote "This is a buildbot build"
-		        ${S}/scripts/generate_all_proxies.py --generate_string_table ${HOME}/CodeBitBucket/strings
+		        ${S}/scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER}
 			if [ ${LOCK_PORTS} ] ; then
 				bbnote "Found setting to LOCK_PORTS - locking daemon servers"
 				python3 ${S}/code/utils/lock_daemon_servers.py lock ${S}/code
@@ -175,6 +175,8 @@ do_compile() {
 			else
 			    bbnote "logging remains verbose"
 			fi
+			bbnote "Copy string_table.py to ${GIT_STRINGS_SERVER}"
+			cp ${S}/code/sundance/proxies/cloud/sundance_proxies/string_table.py ${GIT_STRINGS_SERVER}
 	else
 	        bbnote "This is NOT a buildbot build"
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER} --verbose
@@ -185,7 +187,7 @@ do_compile() {
 
 #	skip="false"
 #	# running  only run test on build machine
-#	if [ -z ${BUILD_BOT_BUILD} ] ; then
+#	if [ -z ${SLIMLINE_VERSION} ] ; then
 #		bbnote "Skip test and doc build"
 #		skip="true"
 #	else
