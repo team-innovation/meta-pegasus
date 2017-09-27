@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=5003807a6b006d7d522a3aaae05443b7"
 SRCNAME = "pyserial"
 PR = "ml5"
 
-SRC_URI = "${SOURCEFORGE_MIRROR}/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
+SRC_URI = "https://pypi.python.org/packages/source/p/pyserial/pyserial-${PV}.tar.gz \
 	file://miniterm.patch"
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
