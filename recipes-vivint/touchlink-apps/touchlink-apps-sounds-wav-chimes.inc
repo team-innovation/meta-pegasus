@@ -1,7 +1,7 @@
 ###
 ### Change SOUND_WAV_CHIMES_PREPEND everytime you touch this script
 ###
-SOUND_WAV_CHIMES_PREPEND = "-2"
+SOUND_WAV_CHIMES_PREPEND = "-3"
 
 SOUND_WAV_CHIMES_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-sound-wav-chimes = "${PR}${SOUND_WAV_CHIMES_PREPEND}${SOUND_WAV_CHIMES_REVISION}"
