@@ -88,6 +88,8 @@ SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL
     file://favicon.ico \
     "
 
+GIT_STRINGS_SERVER ?= "/home/localRepos/constants/boilerplate/python"
+
 S = "${WORKDIR}/git"
 
 PYTHON_BASEVERSION = "3.3"
@@ -161,11 +163,11 @@ do_compile() {
 	# generate proxies
 	if [ ${BUILD_BOT_BUILD} ] ; then
 			bbnote "This is a buildbot build"
-			if [ -e ${HOME}/CodeBitBucket/strings/string_table.py ]; then
+			if [ -e ${GIT_STRINGS_SERVER}/string_table.py ]; then
 				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
 				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
-				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
-				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
+				cp ${GIT_STRINGS_SERVER}/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
+				cp ${GIT_STRINGS_SERVER}/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
 			fi
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table
 			if [ ${LOCK_PORTS} ] ; then
@@ -182,11 +184,11 @@ do_compile() {
 			fi
 	else
 	        bbnote "This is NOT a buildbot build"
-			if [ -e ${HOME}/CodeBitBucket/strings/string_table.py ]; then
+			if [ -e ${GIT_STRINGS_SERVER}/string_table.py ]; then
 				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
 				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
-				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
-				cp ${HOME}/CodeBitBucket/strings/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
+				cp ${GIT_STRINGS_SERVER}/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
+				cp ${GIT_STRINGS_SERVER}/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
 			fi
 	        ${S}/scripts/generate_all_proxies.py --generate_string_table --verbose
 	fi
