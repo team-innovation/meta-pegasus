@@ -81,14 +81,13 @@ SRCBRANCH = "${GIT_APPS_BRANCH}"
 
 GIT_APPS_SERVER ?= "${GIT_SERVER}"
 GIT_APPS_PROTOCOL ?= "ssh"
+GIT_STRINGS_SERVER ?= "/home/localRepos/constants/boilerplate/python"
 
 SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL};branch=${SRCBRANCH} \
     file://procman.d \
     file://procman.d-fcc \
     file://favicon.ico \
     "
-
-GIT_STRINGS_SERVER ?= "/home/localRepos/constants/boilerplate/python"
 
 S = "${WORKDIR}/git"
 
@@ -163,13 +162,7 @@ do_compile() {
 	# generate proxies
 	if [ ${BUILD_BOT_BUILD} ] ; then
 			bbnote "This is a buildbot build"
-			if [ -e ${GIT_STRINGS_SERVER}/string_table.py ]; then
-				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
-				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
-				cp ${GIT_STRINGS_SERVER}/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
-				cp ${GIT_STRINGS_SERVER}/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
-			fi
-	        ${S}/scripts/generate_all_proxies.py --generate_string_table
+		        ${S}/scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER}
 			if [ ${LOCK_PORTS} ] ; then
 				bbnote "Found setting to LOCK_PORTS - locking daemon servers"
 				python3 ${S}/code/utils/lock_daemon_servers.py lock ${S}/code
@@ -184,13 +177,7 @@ do_compile() {
 			fi
 	else
 	        bbnote "This is NOT a buildbot build"
-			if [ -e ${GIT_STRINGS_SERVER}/string_table.py ]; then
-				mkdir -p ${S}/code/sundance/proxies/cloud/sundance_proxies
-				mkdir -p ${S}/code/sundance/proxies/python/sundance_proxies
-				cp ${GIT_STRINGS_SERVER}/string_table.py ${S}/code/sundance/proxies/cloud/sundance_proxies
-				cp ${GIT_STRINGS_SERVER}/string_table.py ${S}/code/sundance/proxies/python/sundance_proxies
-			fi
-	        ${S}/scripts/generate_all_proxies.py --generate_string_table --verbose
+	        ${S}/scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER} --verbose
 	fi
 
 	# generate .pyc files
@@ -198,7 +185,7 @@ do_compile() {
 
 #	skip="false"
 #	# running  only run test on build machine
-#	if [ -z ${BUILD_BOT_BUILD} ] ; then
+#	if [ -z ${SLIMLINE_VERSION} ] ; then
 #		bbnote "Skip test and doc build"
 #		skip="true"
 #	else
