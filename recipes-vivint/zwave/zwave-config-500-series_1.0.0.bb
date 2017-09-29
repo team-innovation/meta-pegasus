@@ -13,7 +13,7 @@ RDEPENDS_${PN} = " \
 SRCREV = "${AUTOREV}"
 
 SRC_URI = " \
-    git://git@source.vivint.com:7999/em/z-wave;protocol=ssh;branch=develop \
+    git://git@source.vivint.com:7999/em/z-wave;protocol=ssh;branch=release/3.10.6 \
     file://zwave-program \
     "
 
