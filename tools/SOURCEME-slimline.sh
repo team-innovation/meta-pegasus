@@ -38,7 +38,7 @@ export MACHINE=imx6dl-slimline
 export EULA=1
 export DISTRO=slimline
 
-if [-z "$SLIMLINE_VERSION" ]; then
+if [ -z "$SLIMLINE_VERSION" ]; then
 	export UPDATE_STRING_TABLE;
 fi;
 
