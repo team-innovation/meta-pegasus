@@ -26,6 +26,7 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-listenerd \
 	touchlink-apps-test-daemon \
 	touchlink-apps-test-ui \
+	touchlink-apps-testui
 	touchlink-apps-videod \
 	touchlink-apps-webd \
 	touchlink-apps-zwaved \
