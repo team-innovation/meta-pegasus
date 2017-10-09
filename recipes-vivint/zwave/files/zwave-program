@@ -5,7 +5,7 @@
 
 zwave_program ()
 {
-    path=/lib/firmware/vivint/serialapi_controller_static_ZW050x_US.hex
+    path=/lib/firmware/vivint/serialapi_controller_bridge_ZW050x_US.hex
 
     # if in fcc test mode use a different fw file
     if [ -f /etc/procman.d/test_ui ]; then
