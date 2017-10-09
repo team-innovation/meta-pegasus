@@ -10,10 +10,12 @@ RDEPENDS_${PN} = " \
     python3-pyserial \
 "
 
-SRCREV = "${AUTOREV}"
+GIT_ZWAVE_BRANCH ?= "develop"
+GIT_ZWAVE_REV = "${AUTOREV}"
+SRCREV = "${GIT_ZWAVE_REV}"
 
 SRC_URI = " \
-    git://git@source.vivint.com:7999/em/z-wave;protocol=ssh;branch=develop \
+    git://${GIT_SERVER}/z-wave;protocol=ssh;branch=${GIT_ZWAVE_BRANCH} \
     file://zwave-program \
     "
 

@@ -12,12 +12,13 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=1707d6db1d42237583f50183a5651ecb"
 GIT_UBOOT_SERVER ?= "${GIT_SERVER}"
 GIT_UBOOT_BRANCH ?= "develop"
 GIT_UBOOT_PROTOCOL ?= "ssh"
+GIT_UBOOT_REV ?= "${AUTOREV}"
 
 SRC_URI = "git://${GIT_UBOOT_SERVER}/uboot-imx;protocol=${GIT_UBOOT_PROTOCOL};branch=${GIT_UBOOT_BRANCH} \
 	   file://fw_env.config \
 "
 
-SRCREV = "${AUTOREV}"
+SRCREV = "${GIT_UBOOT_REV}"
 PV = "2013.04+git${SRCPV}"
 PR = "r15"
 

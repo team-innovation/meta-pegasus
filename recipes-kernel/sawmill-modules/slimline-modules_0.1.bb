@@ -5,9 +5,10 @@ inherit module
 
 GIT_SERVER_MONPWR ?= "${GIT_SERVER}"
 GIT_MONPWR_BRANCH_SLIMLINE ?= "develop"
+GIT_MONPWR_REV_SLIMLINE ?= "${AUTOREV}"
 
 SRC_URI = "git://${GIT_SERVER_MONPWR}/slimline-modules;protocol=ssh;branch=${GIT_MONPWR_BRANCH_SLIMLINE}"
-SRCREV = "${AUTOREV}"
+SRCREV = "${GIT_MONPWR_REV_SLIMLINE}"
 PV = "3.14.28+git${SRCPV}"
 PR = "r4"
 

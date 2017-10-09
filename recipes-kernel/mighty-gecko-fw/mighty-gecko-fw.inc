@@ -10,7 +10,8 @@ SRC_URI = "file://ihex2fw.c "
 
 FW_DIR = "/lib/firmware/vivint"
 
-SRCREV = "${AUTOREV}"
+GIT_ARTIFACTS_REV ?= "${AUTOREV}"
+SRCREV = "${GIT_ARTIFACTS_REV}"
 
 S = "${WORKDIR}"
 

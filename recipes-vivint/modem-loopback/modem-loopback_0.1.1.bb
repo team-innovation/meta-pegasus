@@ -10,8 +10,9 @@ DEPENDS += "alsa-lib pulseaudio"
 GIT_AUDIO_SERVER ?= "${GIT_SERVER}"
 GIT_AUDIO_BRANCH ?= "develop"
 GIT_AUDIO_PROTOCOL ?= "ssh"
+GIT_AUDIO_REV ?= "${AUTOREV}"
 
-SRCREV = "${AUTOREV}"
+SRCREV = "${GIT_AUDIO_REV}"
 SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH}"
 
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"

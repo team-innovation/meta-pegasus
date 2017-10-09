@@ -6,7 +6,6 @@ DEPENDS = "go-cross sqlite3"
 
 inherit go
 
-SRCREV = "${AUTOREV}"
 SRC_URI += " \
     http://updateseng.vivint.com/innovation/downloads/fabric-go-${PV}.tar.bz2 \        
     file://init \

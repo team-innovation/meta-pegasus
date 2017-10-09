@@ -20,7 +20,7 @@ SRCNAME = "python-pulseaudio"
 PR = "ml7"
 PR_append = "+gitr${SRCREV}"
 
-SRCREV = "${AUTOREV}"
+SRCREV = "6ed0449c51967c49b16096bfe41631458807916d"
 SRC_URI = "git://github.com/thelinuxdude/python-pulseaudio.git;protocol=git;branch=pa-10.0 \
 "
 S = "${WORKDIR}/git"

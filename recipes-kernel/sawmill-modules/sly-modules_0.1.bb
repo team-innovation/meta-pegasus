@@ -4,9 +4,10 @@ LICENSE = "CLOSED"
 inherit module
 GIT_SERVER_MONPWR ?= "${GIT_SERVER}"
 GIT_MONPWR_BRANCH_SKYHUB ?= "skyhub-develop"
+GIT_MONPWR_REV_SKYHUB ?= "${AUTOREV}"
 
 SRC_URI = "git://${GIT_SERVER_MONPWR}/slimline-modules;protocol=ssh;branch=${GIT_MONPWR_BRANCH_SKYHUB}"
-SRCREV = "${AUTOREV}"
+SRCREV = "${GIT_MONPWR_REV_SKYHUB}"
 PV = "3.14.28+git${SRCPV}"
 PR = "r3"
 
