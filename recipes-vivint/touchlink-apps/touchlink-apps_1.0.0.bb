@@ -14,7 +14,6 @@ require touchlink-apps-rtspd.inc
 require touchlink-apps-videod.inc
 
 require touchlink-apps-launcherd.inc
-require touchlink-apps-bootsplash.inc
 
 # fcc test apps
 require touchlink-apps-test-ui.inc
@@ -130,7 +129,6 @@ DEPENDS = " \
 	python3-pycrypto-native \
 	python3-pyftpdlib-native \
 	python3-pyinotify-native \
-	python3-pyqt5-native \
 	python3-pyserial-native \
 	python3-pytz-native \
 	python3-requests-native \
@@ -348,6 +346,5 @@ PACKAGES = " \
 	${PN}-sound-wav-dtmf \
 	${PN}-sound-wav-pauses \
 	${PN}-sound-wav-vocab	\
-	${PN}-bootsplash	\
 	${PN} \
 "
