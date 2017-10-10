@@ -28,7 +28,7 @@ ln -s $monpwr_devlink /dev/vivint/psoc
 psoc5_verify()
 {
 	if [ ! -d /sys/class/swd/psoc50 ]; then
-		echo "PSOC5 kernel device driver not installed"
+		echo "ERROR: PSOC5 kernel device driver not installed"
 		return 1
 	fi
 
@@ -40,7 +40,7 @@ psoc5_verify()
 	fi
 
 	if [ ! -e /lib/firmware/$path ]; then
-		echo "PSOC5 firmware not found"
+		echo "ERROR: PSOC5 firmware not found"
 		return 1
 	fi
 

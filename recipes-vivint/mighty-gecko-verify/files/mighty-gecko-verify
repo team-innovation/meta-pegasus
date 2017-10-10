@@ -15,18 +15,18 @@ fi
 mighty_gecko_verify()
 {
 	if [ ! -d /sys/class/mighty_gecko/swd0 ]; then
-		echo "Mighty Gecko kernel device driver not installed"
+		echo "ERROR: Mighty Gecko kernel device driver not installed"
 		return 1
 	fi
 
 	# if in fcc test mode use a different fw file
 	if [ -f /etc/procman.d/test_ui ]; then
 		if [ ! -e /lib/firmware/vivint/railtest_efr32.fw ]; then
-			echo "FCC firmware not found"
+			echo "ERROR: FCC firmware not found"
 			return 1
 		fi
 	elif [ ! -e /lib/firmware/vivint/wallsly-mighty-gecko.fw ]; then
-		echo "Mighty Gecko firmware not found"
+		echo "ERROR: Mighty Gecko firmware not found"
 		return 1
 	fi
 
