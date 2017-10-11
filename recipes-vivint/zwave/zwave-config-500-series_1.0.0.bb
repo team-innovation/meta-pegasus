@@ -10,9 +10,9 @@ RDEPENDS_${PN} = " \
     python3-pyserial \
 "
 
-GIT_ZWAVE_BRANCH ?= "develop"
-GIT_ZWAVE_REV = "${AUTOREV}"
-SRCREV = "${GIT_ZWAVE_REV}"
+GIT_ARTIFACTS_BRANCH ?= "develop"
+GIT_ARTIFACTS_REV = "${AUTOREV}"
+SRCREV = "${GIT_ARTIFACTS_REV}"
 
 SRC_URI = " \
     git://${GIT_SERVER}/artifacts;protocol=ssh;branch=${GIT_ARTIFACTS_BRANCH} \
