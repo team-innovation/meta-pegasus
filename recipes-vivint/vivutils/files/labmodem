@@ -2,7 +2,10 @@
 #set -x
 
 labfixup() {
-	sed -i "s/310410/310410,*/g" /opt/2gig/modemd/modemd_conf.json
+    sed -i "s/310410/310410,*/g" /opt/2gig/modemd/modemd_conf.json
+}
+
+labfixup_verizon() {
     sed -i "s/310012/310012,*/g" /opt/2gig/modemd/modemd_conf.json
 }
 
@@ -11,5 +14,7 @@ labundo() {
 }
 
 test -z "$1" && labfixup
+test "$1" = "att" && labfixup
+test "$1" = "verizon" && labfixup_verizon
 test "$1" = "undo" && labundo
 exit 0
