@@ -15,14 +15,14 @@ GIT_ZWAVE_REV = "${AUTOREV}"
 SRCREV = "${GIT_ZWAVE_REV}"
 
 SRC_URI = " \
-    git://${GIT_SERVER}/z-wave;protocol=ssh;branch=${GIT_ZWAVE_BRANCH} \
+    git://${GIT_SERVER}/artifacts;protocol=ssh;branch=${GIT_ARTIFACTS_BRANCH} \
     file://zwave-program \
     "
 
-FW_NAME = "serialapi_controller_bridge_ZW050x_US.hex"
+FW_NAME = "serialapi_controller_static_ZW050x_US.hex"
 FW_DIR = "/lib/firmware/vivint"
 
-S = "${WORKDIR}/git/SDK_v6_71_01/ProductPlus/SerialAPIPlus/build_prj/serialapi_controller_bridge_ZW050x_US"
+S = "${WORKDIR}/git/wallsly"
 
 
 do_compile() {
