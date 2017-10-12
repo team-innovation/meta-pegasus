@@ -20,6 +20,7 @@ SRC_URI = " \
     "
 
 FW_NAME = "serialapi_controller_static_ZW050x_US.hex"
+FCC_FW_NAME = "micro_rf_linkX_ZW050x_ALL.hex"
 FW_DIR = "/lib/firmware/vivint"
 
 S = "${WORKDIR}/git/wallsly"
@@ -36,6 +37,7 @@ do_runstrip() {
 do_install () {
     install -d ${D}${FW_DIR}
     install -m 644 ${S}/${FW_NAME} ${D}${FW_DIR}
+    install -m 644 ${S}/${FCC_FW_NAME} ${D}${FW_DIR}
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwave-program ${D}${sysconfdir}/init.d
 
@@ -45,6 +47,7 @@ do_install () {
 
 FILES_${PN} = "\
     ${FW_DIR}/${FW_NAME} \
+    ${FW_DIR}/${FCC_FW_NAME} \
     ${sysconfdir}/init.d/zwave-program \
     ${sysconfdir}/rcS.d/*zwave-program \
     "
