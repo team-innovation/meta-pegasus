@@ -3,6 +3,7 @@ HOMEPAGE = "http://www.vivint.com/"
 SECTION = "base"
 LICENSE = "CLOSED"
 PR = "r3"
+PV = "${SRCPV}"
 
 RDEPENDS_${PN} = " \
     touchlink-apps \
