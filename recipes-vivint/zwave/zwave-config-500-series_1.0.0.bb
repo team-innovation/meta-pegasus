@@ -2,7 +2,7 @@ DESCRIPTION = "Flash zwave firmware on first boot up"
 HOMEPAGE = "http://www.vivint.com/"
 SECTION = "base"
 LICENSE = "CLOSED"
-PR = "r3"
+PR = "r4"
 
 RDEPENDS_${PN} = " \
     touchlink-apps \
