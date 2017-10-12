@@ -17,10 +17,10 @@ SRC_URI = " \
     file://zwave-program \
     "
 
-FW_NAME = "serialapi_controller_bridge_ZW050x_US.hex"
+FW_NAME = "serialapi_controller_static_ZW050x_US.hex"
 FW_DIR = "/lib/firmware/vivint"
 
-S = "${WORKDIR}/git/SDK_v6_71_01/ProductPlus/SerialAPIPlus/build_prj/serialapi_controller_bridge_ZW050x_US"
+S = "${WORKDIR}/git/SDK_v6_71_01/ProductPlus/SerialAPIPlus/build_prj/serialapi_controller_static_ZW050x_US"
 
 
 do_compile() {
