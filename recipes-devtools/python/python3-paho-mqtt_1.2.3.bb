@@ -27,3 +27,8 @@ RDEPENDS_${PN} = "\
                python3-io \
                python3-threading \
 "
+# Allows us to create a native package for staging in OE
+BBCLASSEXTEND = "native"
+
+NATIVE_INSTALL_WORKS = "1"
+
