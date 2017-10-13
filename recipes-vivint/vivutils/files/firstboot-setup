@@ -384,6 +384,19 @@ fusecheck || {
 	export FACTORYFIRSTBOOT="true"
 }
 
+function chk_rev()
+{
+        local result=$(fw_printenv board)
+        case "${result##*=}" in
+                WallSly-net|WallSly-v3|WallSly-v4|WallSly-v6)
+                        echo "8.19"
+                        ;;
+                *)
+                        echo "A.0"
+                        ;;
+        esac
+}
+
 addboardmodelfromdevtree() {
 	pit="/media/bootscript/panelinfo.txt"
 
@@ -394,7 +407,11 @@ addboardmodelfromdevtree() {
 		echo 'export SH_BOARD_MODEL="28-600052-001"' >> $pit &&
 		return
 	is_wallsly &&
-		echo 'export SH_BOARD_MODEL="28-FIX-ME"' >> $pit &&
+	        grep -q 28-FIX-ME $pit &&
+        	if [ $? ]; then
+                	sed --in-place '/28-FIX-ME/d' $pit
+	        fi &&
+        	echo "export WS_BOARD_MODEL="28-600060-001-$(chk_rev)"" >> $pit  &&
 		return
 }
 
@@ -408,7 +425,11 @@ addboardrevfromdevtree() {
 		echo 'export SH_BOARD_REV="V-SH1-A0"' >> $pit &&
 		return
 	is_wallsly &&
-		echo 'export SH_BOARD_REV="V-FIX-ME"' >> $pit &&
+	        grep -q V-FIX-ME $pit &&
+        	if [ $? ]; then
+                	sed --in-place '/V-FIX-ME/d' $pit
+	        fi &&
+        	echo "export WS_BOARD_REV="VS-SH2000-000-Rev-$(chk_rev)"" >> $pit &&
 		return
 }
 
@@ -418,6 +439,10 @@ panelinfoboardmodelcheck() {
 
 	test -f $pit ||
 		return $(false)
+	grep -q FIX-ME $pit
+	if [ $? ]; then
+		addboardmodelfromdevtree
+	fi
 	grep -q _BOARD_MODEL $pit
 }
 
@@ -427,6 +452,10 @@ panelinfoboardrevcheck() {
 
 	test -f $pit ||
 		return $(false)
+	grep -q FIX-ME $pit
+	if [ $? ]; then
+		addboardrevfromdevtree
+	fi
 	grep -q _BOARD_REV $pit
 }
 
