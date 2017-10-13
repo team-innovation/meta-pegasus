@@ -13,6 +13,11 @@ SRC_URI = "\
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 PR = "r1"
 
+# Allows us to create a native package for staging in OE
+BBCLASSEXTEND = "native"
+
+NATIVE_INSTALL_WORKS = "1"
+
 inherit distutils3
 
 SRC_URI[md5sum] = "4bd192ea24e7aa347f6d240101ef82f6"
@@ -27,8 +32,4 @@ RDEPENDS_${PN} = "\
                python3-io \
                python3-threading \
 "
-# Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
-
-NATIVE_INSTALL_WORKS = "1"
 
