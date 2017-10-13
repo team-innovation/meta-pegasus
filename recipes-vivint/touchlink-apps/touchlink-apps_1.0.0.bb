@@ -137,6 +137,7 @@ DEPENDS = " \
 	python3-soco-native \
 	python3-sparsedict-native \
 	python3-phue-native \
+	python3-paho-mqtt-native \
 "
 
 
