@@ -10,3 +10,9 @@ do_configure_append() {
 do_install_append() {
 	ln -s -f python3.3m ${D}${includedir}/python3.3
 }
+
+RPROVIDES += " \
+	      python3-math-native \
+	      python3-io-native \
+	      python3-threading-native \
+	      "
