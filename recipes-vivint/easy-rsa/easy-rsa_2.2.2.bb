@@ -2,10 +2,10 @@ DESCRIPTION = "easy-rsa - Simple shell based CA utility"
 HOMEPAGE = "https://github.com/OpenVPN/easy-rsa"
 SECTION = "console/network"
 LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://${WORKDIR}/client.ovpn;md5=521d5af55dc727c003e8d3f14d720b3c"
+LIC_FILES_CHKSUM = "file://${WORKDIR}/client.ovpn;md5=4ec0aaeea1e6465b1e3da43a862f89e3"
 PRIORITY = "optional"
 
-PR = "r17"
+PR = "r20"
 
 SRC_URI = "https://github.com/OpenVPN/easy-rsa/releases/download/${PV}/EasyRSA-${PV}.tgz \
 		   file://vivint.patch \
