@@ -21,7 +21,7 @@ S = "${WORKDIR}/git/code/test_ui"
 
 require recipes-qt/qt5/qt5.inc
 
-EXEC_DIR = "testui"
+EXEC_DIR = "test_ui"
 
 do_install() {
     install -d ${D}${datadir}/${EXEC_DIR}
