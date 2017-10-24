@@ -1,8 +1,8 @@
 state.zl380twaudio {
 	control.1 {
 		iface MIXER
-		name 'Master Playback Volume'
-		value 86
+		name 'Masterphone Playback Volume'
+		value 92
 		comment {
 			access 'read write'
 			type INTEGER
@@ -12,37 +12,16 @@ state.zl380twaudio {
 	}
 	control.2 {
 		iface MIXER
-		name 'Master Playback Switch'
-		value true
+		name 'Sout2wav Playback Volume'
+		value 90
 		comment {
 			access 'read write'
-			type BOOLEAN
+			type INTEGER
 			count 1
+			range '0 - 96'
 		}
 	}
 	control.3 {
-		iface MIXER
-		name 'Phone2wav Capture Volume'
-		value 90
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 96'
-		}
-	}
-	control.4 {
-		iface MIXER
-		name 'Sout2wav Capture Volume'
-		value 90
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 96'
-		}
-	}
-	control.5 {
 		iface MIXER
 		name 'Sout2cell Playback Volume'
 		value 90
@@ -53,41 +32,10 @@ state.zl380twaudio {
 			range '0 - 96'
 		}
 	}
-	control.6 {
-		iface MIXER
-		name 'Sout2cell Playback Switch'
-		value true
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.7 {
-		iface MIXER
-		name 'Wave2cell Playback Volume'
-		value 90
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 96'
-		}
-	}
-	control.8 {
-		iface MIXER
-		name 'Wave2cell Playback Switch'
-		value true
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.9 {
+	control.4 {
 		iface MIXER
 		name 'Wave Playback Volume'
-		value 90
+		value 92
 		comment {
 			access 'read write'
 			type INTEGER
@@ -95,64 +43,10 @@ state.zl380twaudio {
 			range '0 - 96'
 		}
 	}
-	control.10 {
+	control.5 {
 		iface MIXER
-		name 'Phone Playback Volume'
-		value 90
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 96'
-		}
-	}
-	control.11 {
-		iface MIXER
-		name 'Phone Playback Switch'
-		value true
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.12 {
-		iface MIXER
-		name 'Rout Playback Volume'
-		value 64
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 120'
-		}
-	}
-	control.13 {
-		iface MIXER
-		name 'Sin Capture Volume'
-		value 16
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 31'
-		}
-	}
-	control.14 {
-		iface MIXER
-		name 'Sout Capture Volume'
-		value 8
-		comment {
-			access 'read write'
-			type INTEGER
-			count 1
-			range '0 - 15'
-		}
-	}
-	control.15 {
-		iface MIXER
-		name 'Mic Capture Volume'
-		value 4
+		name 'Mic Playback Volume'
+		value 2
 		comment {
 			access 'read write'
 			type INTEGER
@@ -160,36 +54,15 @@ state.zl380twaudio {
 			range '0 - 7'
 		}
 	}
-	control.16 {
+	control.6 {
 		iface MIXER
-		name 'Antihowl Switch'
-		value false
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.17 {
-		iface MIXER
-		name 'Hibernate Switch'
-		value false
-		comment {
-			access 'read write'
-			type BOOLEAN
-			count 1
-		}
-	}
-	control.18 {
-		iface MIXER
-		name 'Sineq Capture Volume'
-		value 3
+		name 'Incall Playback Volume'
+		value 14
 		comment {
 			access 'read write'
 			type INTEGER
 			count 1
-			range '0 - 3'
+			range '0 - 14'
 		}
 	}
 }
-
