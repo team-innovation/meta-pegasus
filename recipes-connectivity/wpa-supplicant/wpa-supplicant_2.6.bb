@@ -24,9 +24,12 @@ SRC_URI = "http://w1.fi/releases/wpa_supplicant-${PV}.tar.gz  \
            file://wpa_supplicant.conf \
            file://wpa_supplicant.conf-sane \
            file://99_wpa_supplicant \
+           file://key-replay-cve-multiple.patch \
           "
 SRC_URI[md5sum] = "091569eb4440b7d7f2b4276dbfc03c3c"
 SRC_URI[sha256sum] = "b4936d34c4e6cdd44954beba74296d964bc2c9668ecaa5255e499636fe2b1450"
+
+CVE_PRODUCT = "wpa_supplicant"
 
 S = "${WORKDIR}/wpa_supplicant-${PV}"
 
@@ -36,7 +39,7 @@ FILES_wpa-supplicant-cli = "${sbindir}/wpa_cli"
 FILES_${PN} += "${datadir}/dbus-1/system-services/*"
 CONFFILES_${PN} += "${sysconfdir}/wpa_supplicant.conf"
 
-PR="r6"
+PR="r7"
 
 do_configure () {
 	${MAKE} -C wpa_supplicant clean
@@ -102,8 +105,9 @@ do_install () {
 }
 
 pkg_postinst_wpa-supplicant () {
+	# If we're offline, we don't need to do this.
 	if [ "x$D" = "x" ]; then
-	    # If we're offline, we don't need to do this.
 		killall -q -HUP dbus-daemon || true
 	fi
+
 }
