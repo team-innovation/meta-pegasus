@@ -35,7 +35,7 @@ state.zl380twaudio {
 	control.4 {
 		iface MIXER
 		name 'Wave Playback Volume'
-		value 92
+		value 86
 		comment {
 			access 'read write'
 			type INTEGER
