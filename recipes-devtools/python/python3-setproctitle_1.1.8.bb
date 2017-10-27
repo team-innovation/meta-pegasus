@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=a4a609ce8a6621f030a70a3a5f2617c1"
 SRCNAME = "setproctitle"
 PR = "ml2"
 
-SRC_URI = "http://pypi.python.org/packages/source/s/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
+SRC_URI = "https://pypi.python.org/packages/source/s/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
   file://setproctitle_33.py"
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"

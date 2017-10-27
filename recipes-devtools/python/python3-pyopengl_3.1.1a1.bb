@@ -9,7 +9,7 @@ SRCNAME = "PyOpenGL"
 PR = "r1"
 
 SRC_URI = "\
-  http://pypi.python.org/packages/source/P/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
+  https://pypi.python.org/packages/source/P/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
   file://platform_init_py.patch \
 "
 S = "${WORKDIR}/${SRCNAME}-${PV}"

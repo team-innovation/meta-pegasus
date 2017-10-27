@@ -8,7 +8,7 @@ DEPENDS += "python3-native"
 
 RDEPENDS_${PN} = "python3-core"
 
-SRC_URI = "http://pypi.python.org/packages/source/J/Jinja2/Jinja2-${PV}.tar.gz \
+SRC_URI = "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-${PV}.tar.gz \
 file://fixup_setuptool_to_distutils.patch \
 file://fixup_decimal_dependency.patch \
 "

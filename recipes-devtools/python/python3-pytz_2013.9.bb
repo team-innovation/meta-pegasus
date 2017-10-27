@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=22b38951eb857cf285a4560a914b7cd6"
 SRCNAME = "pytz"
 PR = "r1"
 
-SRC_URI = "http://pypi.python.org/packages/source/p/pytz/pytz-${PV}.tar.bz2 \
+SRC_URI = "https://pypi.python.org/packages/source/p/pytz/pytz-${PV}.tar.bz2 \
            file://pytz_setup.patch"
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
