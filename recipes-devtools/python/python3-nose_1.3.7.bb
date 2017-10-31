@@ -10,7 +10,9 @@ PR = "ml2"
 DEPENDS += "python3"
 DEPENDS_virtclass-native += "python3-native"
 
-SRC_URI = "https://pypi.python.org/packages/source/n/nose/nose-${PV}.tar.gz"
+SRC_URI = "https://pypi.python.org/packages/source/n/nose/nose-${PV}.tar.gz \
+	   file://fix_url.patch \
+	   "
 
 S = "${WORKDIR}/nose-${PV}"
 
