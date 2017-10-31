@@ -7,8 +7,8 @@ LIC_FILES_CHKSUM = "\
 
 PR = "ml2"
 
-DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
+DEPENDS += "python3 python3-distribute"
+DEPENDS_virtclass-native += "python3-native python3-distribute"
 
 SRC_URI = "https://pypi.python.org/packages/source/n/nose/nose-${PV}.tar.gz \
 	   file://fix_url.patch \
@@ -25,13 +25,6 @@ inherit distutils3
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
-}
-
-do_install_append() {
-   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/__pycache__/site.cpython-33.pyc
-   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/site.py
-   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/setuptools.pth
-   rm -f ${D}/${bindir}/easy_install-3.3
 }
 
 DEPENDS_${PN} = "\
