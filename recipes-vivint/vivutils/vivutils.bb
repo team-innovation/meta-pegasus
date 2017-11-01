@@ -26,6 +26,7 @@ SRC_URI = "\
 	   file://bootgadgets.sh \
 	   file://mfr_audio_heat_test.py \
 	   file://mfr_audio_test.py \
+	   file://mfr_modem_test.py \
 	   file://nfctest.c \
 	   file://pcamtest \
 	   file://resize.c \
@@ -87,6 +88,7 @@ do_install() {
 	install -m 0755 ${S}/zwave-hwtest.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/mfr_audio_heat_test.py ${D}/usr/local/bin
+	install -m 0755 ${S}/mfr_modem_test.py ${D}/usr/local/bin
 	install -m 0644 ${S}/wave_1000_hz_half_mag.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/dtmf-sharp.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/dtmf-one.wav ${D}/usr/local/bin

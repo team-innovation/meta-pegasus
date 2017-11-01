@@ -19,6 +19,7 @@ do_install_append () {
 pkg_postinst_${PN}-modemd () {
 #!/bin/bash -e
 # Post install to flash the modem to default carrier on WallSly
+# then check configuration and get SIM Ids
 #
 if [ x"$D" = "x" ]
 then
@@ -50,6 +51,7 @@ then
         CURRENT_VERSION="$(python3 ../../var/lib/firmware/Sierra/sierra_get_version.py)"
         if [[ $IMAGE_FILE == *$CURRENT_VERSION* ]]; then
             echo "Modems firmware is up to date"
+            mfg_modem_test.py
             exit 0
         fi
 
@@ -71,6 +73,8 @@ then
                 sleep 1
             else
                 echo "Sierra HL7588 flash programming completed"
+                sleep(5)
+                mfg_modem_test.py
                 exit 0
             fi
         done
