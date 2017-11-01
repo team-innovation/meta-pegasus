@@ -73,12 +73,13 @@ then
                 sleep 1
             else
                 echo "Sierra HL7588 flash programming completed"
-                sleep(5)
+                sleep 5
                 mfg_modem_test.py
                 exit 0
             fi
         done
         echo "Timed out flashing Sierra HL7588 modem"
+        mfg_modem_test.py
         exit 1
     else
         echo "Sierra modem class not found"
