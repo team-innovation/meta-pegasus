@@ -53,7 +53,6 @@ SRC_URI = "\
 	   file://user_battery_test.py \
 	   file://latest-sly-sprint-build \
 	   file://wallslyscreentest \
-	   file://ssid-verify.py \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -100,7 +99,6 @@ do_install() {
 	install -m 0755 ${S}/user_battery_test.py ${D}/usr/local/bin
 	install -m 0755 ${S}/latest-sly-sprint-build ${D}/usr/local/bin
 	install -m 0755 ${S}/wallslyscreentest ${D}/usr/local/bin
-	install -m 0755 ${S}/ssid-verify.py ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
