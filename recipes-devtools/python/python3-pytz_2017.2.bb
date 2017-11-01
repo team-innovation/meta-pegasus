@@ -5,9 +5,7 @@ PRIORITY = "optional"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=39ea92752a35cf67d8a885d8e3af3c69"
 SRCNAME = "pytz"
-PR = "r1"
-
-DEFAULT_PREFERENCE = "-1"
+PR = "r2"
 
 SRC_URI = "http://pypi.python.org/packages/p/pytz/pytz-${PV}.zip \
            file://pytz_setup.patch"
