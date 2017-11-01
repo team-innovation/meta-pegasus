@@ -28,6 +28,11 @@ do_compile_append() {
 	cp -r ${S}/build/* ${S}/
 }
 
+do_install_append() {
+   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/__pycache__/site.cpython-33.pyc
+   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/site.py
+}
+
 DEPENDS_${PN} = "\
   python3-distutils \
 "
