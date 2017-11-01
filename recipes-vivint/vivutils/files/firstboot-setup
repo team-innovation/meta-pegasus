@@ -441,7 +441,9 @@ panelinfoboardmodelcheck() {
 		return $(false)
 	grep -q FIX-ME $pit
 	if [ $? ]; then
+		mntbootscriptrw
 		addboardmodelfromdevtree
+		mntbootscriptro
 	fi
 	grep -q _BOARD_MODEL $pit
 }
@@ -454,7 +456,9 @@ panelinfoboardrevcheck() {
 		return $(false)
 	grep -q FIX-ME $pit
 	if [ $? ]; then
+		mntbootscriptrw
 		addboardrevfromdevtree
+		mntbootscriptro
 	fi
 	grep -q _BOARD_REV $pit
 }
