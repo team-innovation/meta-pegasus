@@ -7,8 +7,8 @@ LIC_FILES_CHKSUM = "\
 
 PR = "ml2"
 
-DEPENDS += "python3 python3-distribute-native"
-DEPENDS_virtclass-native += "python3-native python3-distribute-native"
+DEPENDS += "python3"
+DEPENDS_virtclass-native += "python3-native"
 
 SRC_URI = "https://pypi.python.org/packages/source/n/nose/nose-${PV}.tar.gz \
 	   file://fix_url.patch \
@@ -21,7 +21,7 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit distutils3
+inherit setuptools3
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
