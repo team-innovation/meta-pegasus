@@ -8,11 +8,11 @@ SRCNAME = "pytz"
 PR = "r1"
 
 SRC_URI = "https://pypi.python.org/packages/source/p/pytz/pytz-${PV}.tar.bz2 \
-           file://pytz_setup.patch"
+	   "
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit distutils3
+inherit setuptools3
 
 RDEPENDS_${PN} = "\
   python3-core \

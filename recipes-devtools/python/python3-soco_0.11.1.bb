@@ -12,7 +12,7 @@ RDEPENDS_${PN} = "\
 "
 
 SRC_URI = "file://soco-0.11.1.tar.gz \
-	   file://setup.py_distutil_fix.patch"
+	   "
 
 SRC_URI[md5sum] = "fdbcc8ef14b6e9199a894de160eb5730"
 
@@ -23,4 +23,4 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit distutils3
+inherit setuptools3

@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = "\
 DEPENDS += "python3"
 DEPENDS_virtclass-native += "python3-native"
 
-inherit distutils3
+inherit setuptools3
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"

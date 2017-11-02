@@ -9,13 +9,12 @@ DEPENDS += "python3-native"
 RDEPENDS_${PN} = "python3-core"
 
 SRC_URI = "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-${PV}.tar.gz \
-file://fixup_setuptool_to_distutils.patch \
 file://fixup_decimal_dependency.patch \
 "
 
 S = "${WORKDIR}/Jinja2-${PV}"
 
-inherit native distutils3
+inherit native setuptools3
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages

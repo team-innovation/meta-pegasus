@@ -8,7 +8,7 @@ SRCNAME = "pytz"
 PR = "r4"
 
 SRC_URI = "http://pypi.python.org/packages/p/pytz/pytz-${PV}.zip \
-           file://pytz_setup.patch"
+	   "
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 

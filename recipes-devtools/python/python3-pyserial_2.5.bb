@@ -9,7 +9,7 @@ SRC_URI = "https://pypi.python.org/packages/source/p/pyserial/pyserial-${PV}.tar
 	file://miniterm.patch"
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit distutils3
+inherit setuptools3
 
 # FIXME might stop packaging serialwin32 and serialjava files
 

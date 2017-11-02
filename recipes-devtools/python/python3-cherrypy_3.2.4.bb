@@ -8,7 +8,7 @@ DEPENDS += "python3"
 DEPENDS_virtclass-native += "python3-native"
 RDEPENDS_${PN} = "python3-core"
 
-inherit distutils3
+inherit setuptools3
 
 SRC_URI = "https://pypi.python.org/packages/source/C/CherryPy/CherryPy-3.2.4.tar.gz"
 

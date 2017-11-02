@@ -24,4 +24,4 @@ S = "${WORKDIR}/${SRCNAME}"
 
 #NATIVE_INSTALL_WORKS = "1"
 
-inherit distutils3
+inherit setuptools3

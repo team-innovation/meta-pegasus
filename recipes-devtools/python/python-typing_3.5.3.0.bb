@@ -17,7 +17,7 @@ BBCLASSEXTEND = "native nativesdk"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit distutils3
+inherit setuptools3
 
 RDEPENDS_${PN} = "\
   python3-core \

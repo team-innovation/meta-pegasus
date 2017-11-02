@@ -8,7 +8,7 @@ PR = "r1"
 SRCNAME = "msgpack-python"
 
 SRC_URI = "https://pypi.python.org/packages/source/m/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
-		   file://fixup_setuptool_to_distutils.patch"
+	   "
 
 SRC_URI[md5sum] = "8b9ce43619fd1428bf7baddf57e38d1a"
 SRC_URI[sha256sum] = "d078094f0b29b2b93cb96a76febc70fbe90ae4eb131ff60a6dc038edda92c278"
@@ -24,4 +24,4 @@ do_package_qa() {
     echo "Skipping QA ..."
 }
 
-inherit distutils3
+inherit setuptools3

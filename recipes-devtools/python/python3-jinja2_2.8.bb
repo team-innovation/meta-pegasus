@@ -8,13 +8,12 @@ DEPENDS += "python3"
 RDEPENDS_${PN} = "python3-core"
 
 SRC_URI = "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-${PV}.tar.gz \
-file://fixup_setuptool_to_distutils.patch \
 file://fixup_decimal_dependency.patch \
 "
 
 S = "${WORKDIR}/Jinja2-${PV}"
 
-inherit distutils3
+inherit setuptools3
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages

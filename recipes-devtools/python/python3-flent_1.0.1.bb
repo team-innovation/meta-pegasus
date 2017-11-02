@@ -21,14 +21,13 @@ NATIVE_INSTALL_WORKS = "1"
 INSANE_SKIP_${PN} = "installed-vs-shipped"
 
 SRC_URI = "https://github.com/tohojo/flent/archive/v1.0.1.tar.gz"
-SRC_URI += "file://flent_use_distutils_for_yocto.patch"
 
 SRC_URI[md5sum] = "7b3175eee98e60107f03da2c62a83a79"
 SRC_URI[sha256sum] = "1bd2ecfc3e731ff3df161716604aaccb5d945c5040c2c6e512692e373224498c"
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit distutils3
+inherit setuptools3
 
 do_package_qa() {
     echo "Skipping QA ..."

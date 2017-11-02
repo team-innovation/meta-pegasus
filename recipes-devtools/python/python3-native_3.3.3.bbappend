@@ -15,4 +15,5 @@ RPROVIDES += " \
 	      python3-math-native \
 	      python3-io-native \
 	      python3-threading-native \
+	      python3-subprocess-native \
 	      "

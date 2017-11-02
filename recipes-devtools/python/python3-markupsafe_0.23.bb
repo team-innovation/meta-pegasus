@@ -12,11 +12,10 @@ BBCLASSEXTEND = "native"
 NATIVE_INSTALL_WORKS = "1"
 
 SRC_URI = "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-${PV}.tar.gz \
-file://fixup_setuptool_to_distutils.patch"
-
+	   "
 S = "${WORKDIR}/MarkupSafe-${PV}"
 
-inherit distutils3
+inherit setuptools3
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages

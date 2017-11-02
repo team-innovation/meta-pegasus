@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=04a2bf11b85ce49d4a8c0c413fd34404"
 SRCNAME = "pexpect-u"
 PR = "ml1"
 SRC_URI = "https://pypi.python.org/packages/source/p/pexpect-u/${SRCNAME}-${PV}.tar.gz \
-		   file://fixup_setuptool_to_distutils.patch"
+	   "
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
@@ -17,7 +17,7 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit distutils3
+inherit setuptools3
 
 RDEPENDS_${PN} = "\
   python3-core \

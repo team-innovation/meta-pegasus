@@ -10,7 +10,6 @@ DEPENDS += "python3"
 DEPENDS_virtclass-native += "python3-native"
 SRC_URI = " \
 	http://labix.org/download/python-dateutil/${SRCNAME}-${PV}.tar.gz \
-	file://fixup_setuptool_to_distutils.patch \
 "
 
 
@@ -21,7 +20,7 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit distutils3
+inherit setuptools3
 
 RDEPENDS_${PN} = "\
   python3-distutils \

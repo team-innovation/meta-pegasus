@@ -8,7 +8,6 @@ PR = "r1"
 
 SRC_URI = " \
 	https://pypi.python.org/packages/source/c/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
-	file://fixup_setuptool_to_distutils.patch \
 "
 
 
@@ -19,7 +18,7 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit distutils3
+inherit setuptools3
 
 RDEPENDS_${PN} = "\
   python3-distutils \

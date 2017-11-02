@@ -11,7 +11,7 @@ SRC_URI = "https://pypi.python.org/packages/source/s/${SRCNAME}/${SRCNAME}-${PV}
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit distutils3
+inherit setuptools3
 
 DEPENDS += "python3"
 DEPENDS_virtclass-native += "python3-native"

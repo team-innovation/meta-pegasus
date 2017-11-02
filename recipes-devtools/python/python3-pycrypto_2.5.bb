@@ -14,7 +14,7 @@ DEPENDS_virtclass-native += "python3-native"
 SRC_URI = "http://${UPDATESENG}/downloads/pycrypto-${PV}.tar.gz"
 S = "${WORKDIR}/pycrypto-2.5"
 
-inherit distutils3
+inherit setuptools3
 
 do_configure_prepend() {
 	sed -i 's|ac_cv_func_malloc_0_nonnull=no|ac_cv_func_malloc_0_nonnull=yes|' configure
