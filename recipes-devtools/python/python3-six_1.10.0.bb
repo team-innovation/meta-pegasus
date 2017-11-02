@@ -21,3 +21,9 @@ BBCLASSEXTEND = "native"
 NATIVE_INSTALL_WORKS = "1"
 
 inherit distutils3
+
+do_install_append() {
+   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/__pycache__/site.cpython-33.pyc
+   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/site.py
+}
+
