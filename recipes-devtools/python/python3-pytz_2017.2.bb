@@ -31,11 +31,6 @@ DEPENDS_${PN} = "\
 SRC_URI[md5sum] = "f89bde8a811c8a1a5bac17eaaa94383c"
 SRC_URI[sha256sum] = "f5c056e8f62d45ba8215e5cb8f50dfccb198b4b9fbea8500674f3443e4689589"
 
-do_install_append() {
-   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/__pycache__/site.cpython-33.pyc
-   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/site.py
-}
-
 pkg_postinst_${PN}() {
 #!/bin/sh -e
 # create symlink to /usr/share/zoneinfo for pytz to use

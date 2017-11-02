@@ -20,17 +20,12 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit distutils3
+inherit setuptools3
 
 do_compile_append() {
 #	oe_runmake CC="${CC}" CXX="${CXX}" LINK="${CXX}"
 	2to3 -n -w ${S}/build/
 	cp -r ${S}/build/* ${S}/
-}
-
-do_install_append() {
-   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/__pycache__/site.cpython-33.pyc
-   rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/site.py
 }
 
 DEPENDS_${PN} = "\
