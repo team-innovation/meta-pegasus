@@ -14,4 +14,4 @@ check_pub_key()
 # check to make sure public key is in /media/extra/conf
 check_pub_key
 # Give touchscreen a quick reset to clear and re-initialize
-echo 1 > /sys/devices/soc0/soc.0/2100000.aips-bus/21a4000.i2c/i2c-1/1-004a/reset
+echo 1 > /sys/class/input0/device/reset
