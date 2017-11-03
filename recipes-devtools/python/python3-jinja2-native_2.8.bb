@@ -6,7 +6,7 @@ PR = "ml1"
 
 DEPENDS += "python3-native"
 
-RDEPENDS_${PN} = "python3-core"
+RDEPENDS_${PN} = "python3-core python3-markupsafe-native"
 
 SRC_URI = "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-${PV}.tar.gz \
 file://fixup_decimal_dependency.patch \

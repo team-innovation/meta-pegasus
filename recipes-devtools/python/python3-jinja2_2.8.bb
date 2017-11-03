@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=20c831f91dd3bd486020f672ba2be386"
 PR = "ml1"
 
 DEPENDS += "python3"
-RDEPENDS_${PN} = "python3-core"
+RDEPENDS_${PN} = "python3-core python3-markupsafe"
 
 SRC_URI = "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-${PV}.tar.gz \
 file://fixup_decimal_dependency.patch \
