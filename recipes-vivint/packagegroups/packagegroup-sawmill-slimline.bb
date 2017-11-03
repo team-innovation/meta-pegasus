@@ -13,5 +13,6 @@ RDEPENDS_${PN} += " \
 	slimline-utils \
 	slimline-version \
     mosquitto-clients \
+    openvpn \
 "
 
