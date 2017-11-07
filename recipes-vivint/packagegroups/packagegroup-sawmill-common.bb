@@ -49,6 +49,7 @@ RDEPENDS_${PN} = " \
 	python3-terminal \
 	python3-textutils \
 	python3-threading \
+	python3-numbers \
 	speedtest-cli \
 	sqlite3 \
 	touchlink-ntpsync \
