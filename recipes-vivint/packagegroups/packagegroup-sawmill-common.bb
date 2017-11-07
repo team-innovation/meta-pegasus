@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "36"
+PR = "37"
 
 inherit packagegroup
 
