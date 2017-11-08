@@ -29,9 +29,14 @@ then
     then
         # get the AT&T image filename (contains ".A.")
         # when we switch to Verizon look for ".V."
-        IMAGE_FILE="$(ls ../../var/lib/firmware/Sierra/RHL*.A.*)"
-        if [ -z $IMAGE_FILE ]; then
+        ATT_IMAGE_FILE="$(ls ../../var/lib/firmware/Sierra/RHL*.A.*)"
+        VZW_IMAGE_FILE="$(ls ../../var/lib/firmware/Sierra/*-VC4.*)"
+        if [ -z $ATT_IMAGE_FILE ]; then
             echo "ERROR: AT&T firmware image not found in /var/lib/firmware/Sierra"
+            exit 1
+        fi
+        if [ -z $VZW_IMAGE_FILE ]; then
+            echo "ERROR: Verizon firmware image not found in /var/lib/firmware/Sierra"
             exit 1
         fi
 
@@ -49,10 +54,28 @@ then
 
         # check to see if we are already on the AT&T firmware version
         CURRENT_VERSION="$(python3 ../../var/lib/firmware/Sierra/sierra_get_version.py)"
-        if [[ $IMAGE_FILE == *$CURRENT_VERSION* ]]; then
-            echo "Modems firmware is up to date"
+        if [[ $ATT_IMAGE_FILE == *$CURRENT_VERSION* ]]; then
+            echo "Modems AT&T firmware is up to date"
             mfr_modem_test.py
             exit 0
+        fi
+        if [[ $VZW_IMAGE_FILE == *$CURRENT_VERSION* ]]; then
+            echo "Modems Verizon firmware is up to date"
+            mfr_modem_test.py
+            exit 0
+        fi
+
+        # check which image to update
+        if [[ $CURRENT_VERSION == *.A.* ]]
+        then
+            IMAGE_FILE=$ATT_IMAGE_FILE
+        elif [[ $CURRENT_VERSION == *-VC4.* ]]
+        then
+            IMAGE_FILE=$VZW_IMAGE_FILE
+        else
+            echo "Error: Unable to determine current modem firmware provider for "$CURRENT_VERSION
+            mfr_modem_test.py
+            exit 1
         fi
 
         echo "Flashing Sierra HL7588 modem with: "$IMAGE_FILE
