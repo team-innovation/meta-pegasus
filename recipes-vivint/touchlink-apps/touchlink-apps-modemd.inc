@@ -51,7 +51,7 @@ then
         CURRENT_VERSION="$(python3 ../../var/lib/firmware/Sierra/sierra_get_version.py)"
         if [[ $IMAGE_FILE == *$CURRENT_VERSION* ]]; then
             echo "Modems firmware is up to date"
-            mfg_modem_test.py
+            mfr_modem_test.py
             exit 0
         fi
 
@@ -74,12 +74,12 @@ then
             else
                 echo "Sierra HL7588 flash programming completed"
                 sleep 5
-                mfg_modem_test.py
+                mfr_modem_test.py
                 exit 0
             fi
         done
         echo "Timed out flashing Sierra HL7588 modem"
-        mfg_modem_test.py
+        mfr_modem_test.py
         exit 1
     else
         echo "Sierra modem class not found"
