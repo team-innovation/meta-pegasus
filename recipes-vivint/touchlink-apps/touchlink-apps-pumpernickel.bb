@@ -4,10 +4,10 @@ DESCRIPTION = "User interface for Vivint sky panels"
 HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
 SECTION = "SOMETHING"
-DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia"
-
+DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode"
+EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r7"
+PR = "r8"
 
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
