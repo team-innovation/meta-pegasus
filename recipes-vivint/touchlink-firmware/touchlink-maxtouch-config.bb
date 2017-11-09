@@ -1,7 +1,7 @@
 DESCRIPTION = "Maxtouch configuration files"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
-PR = "r1"
+PR = "r2"
 
 FIRMWARE_sly = "maxtouch-sly.cfg"
 FIRMWARE_slim_line  = "maxtouch-slimline.cfg"
