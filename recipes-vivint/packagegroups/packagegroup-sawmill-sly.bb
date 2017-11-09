@@ -31,6 +31,7 @@ RDEPENDS_${PN} += " \
 	vaudio-wallsly \
 	mfr-audio-test-wallsly \
 	mfr-piezo-test \
+	panel-audio-test \
 	modem-loopback \
 	asr-parse \
     mosquitto \
