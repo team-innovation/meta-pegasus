@@ -55,9 +55,15 @@ then
         # check to see if we are already on the AT&T firmware version
         CURRENT_VERSION="$(python3 ../../var/lib/firmware/Sierra/sierra_get_version.py)"
         if [[ $ATT_IMAGE_FILE == *$CURRENT_VERSION* ]]; then
-            echo "Modems AT&T firmware is up to date"
-            mfr_modem_test.py
-            exit 0
+            # check to see if we have generated the mfr_modem_test.py file.  If not then
+            # this is probably the first time booting from the factory and we need to update
+            # the boot loader to the new version otherwise we'll run into problems when
+            # switching to Verizon
+            if [ -f /var/log/modemcfg.log ]; then
+                echo "Modems AT&T firmware is up to date"
+                mfr_modem_test.py
+                exit 0
+            fi
         fi
         if [[ $VZW_IMAGE_FILE == *$CURRENT_VERSION* ]]; then
             echo "Modems Verizon firmware is up to date"
