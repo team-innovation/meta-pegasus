@@ -13,6 +13,7 @@ SRC_URI = "http://mosquitto.org/files/source/mosquitto-${PV}.tar.gz \
            file://build.patch \
            file://mosquitto.init \
            file://mosquitto.conf \
+           file://mosquitto\
 "
 
 SRC_URI[md5sum] = "6b0966e93f118bc71ad7b61600a6c2d3"
@@ -38,6 +39,8 @@ do_install() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/mosquitto.init ${D}/${sysconfdir}/init.d/
 
+    install -d ${D}${sysconfdir}/procman.d
+    install -m 0755 ${WORKDIR}/mosquitto ${D}/${sysconfdir}/procman.d/
 }
 
 PACKAGES += "libmosquitto1 libmosquittopp1 ${PN}-clients ${PN}-python"
@@ -46,6 +49,7 @@ FILES_${PN} = "${sbindir}/mosquitto \
                ${bindir}/mosquitto_passwd \
                ${sysconfdir}/mosquitto \
                ${sysconfdir}/init.d/mosquitto.init \
+               ${sysconfdir}/procman.d/mosquitto\
 "
 
 FILES_libmosquitto1 = "${libdir}/libmosquitto.so.1"
