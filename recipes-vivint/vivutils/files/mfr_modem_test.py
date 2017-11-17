@@ -390,7 +390,7 @@ if __name__ == "__main__":
     sierra_modem.reset()
     sierra_modem.close_serial_port()
 
-    # write results to /var/log/modemcfg.log file
-    cfgfile = open("/var/log/modemcfg.log", "w")
+    # write results to /media/extra/conf/modemids file
+    cfgfile = open("/media/extra/conf/modemids", "w")
     cfgfile.write("{},{},{},{},{}\n".format(firmware_version, imei, sim1, sim2, rxpower))
     cfgfile.close()
