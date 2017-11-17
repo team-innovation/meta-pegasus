@@ -59,7 +59,7 @@ then
             # this is probably the first time booting from the factory and we need to update
             # the boot loader to the new version otherwise we'll run into problems when
             # switching to Verizon
-            if [ -f /var/log/modemcfg.log ]; then
+            if [ -f /media/extra/conf/modemids ]; then
                 echo "Modems AT&T firmware is up to date"
                 mfr_modem_test.py
                 exit 0
