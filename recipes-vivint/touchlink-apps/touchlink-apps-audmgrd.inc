@@ -6,6 +6,10 @@ AUDMGRD_PREPEND = "-1"
 AUDIO_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-audmgrd = "${PR}${AUDMGRD_PREPEND}${AUDIO_REVISION}"
 
+INITSCRIPT_PACKAGES += "${PN}-audmgrd"
+INITSCRIPT_NAME_${PN}-audmgrd = "audmgrd"
+INITSCRIPT_PARAMS_${PN}-audmgrd = "start 28 2 3 4 5 ."
+
 RDEPENDS_${PN}-audmgrd = "\
 	python3-audio \
 	python3-pyalsaaudio \

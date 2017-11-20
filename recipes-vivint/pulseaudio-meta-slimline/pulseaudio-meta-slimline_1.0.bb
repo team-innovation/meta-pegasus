@@ -31,7 +31,7 @@ inherit update-rc.d
 
 export TARGET_PFPU = "${TARGET_FPU}"
 INITSCRIPT_NAME = "pulseaudio"
-INITSCRIPT_PARAMS = "defaults 81"
+INITSCRIPT_PARAMS = "defaults 23"
 
 SRC_URI = "\
   file://COPYING \
