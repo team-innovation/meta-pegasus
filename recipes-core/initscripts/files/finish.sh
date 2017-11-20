@@ -14,4 +14,4 @@ check_pub_key()
 # check to make sure public key is in /media/extra/conf
 check_pub_key
 # Give touchscreen a quick reset to clear and re-initialize
-echo 1 > /sys/class/input0/device/reset
+echo 1 > /sys/class/input/input0/device/reset
