@@ -61,13 +61,13 @@ then
             # switching to Verizon
             if [ -f /media/extra/conf/modemids ]; then
                 echo "Modems AT&T firmware is up to date"
-                mfr_modem_test.py
+                /usr/local/bin/mfr_modem_test.py
                 exit 0
             fi
         fi
         if [[ $VZW_IMAGE_FILE == *$CURRENT_VERSION* ]]; then
             echo "Modems Verizon firmware is up to date"
-            mfr_modem_test.py
+            /usr/local/bin/mfr_modem_test.py
             exit 0
         fi
 
@@ -80,7 +80,7 @@ then
             IMAGE_FILE=$VZW_IMAGE_FILE
         else
             echo "Error: Unable to determine current modem firmware provider for "$CURRENT_VERSION
-            mfr_modem_test.py
+            /usr/local/bin/mfr_modem_test.py
             exit 1
         fi
 
@@ -103,12 +103,12 @@ then
             else
                 echo "Sierra HL7588 flash programming completed"
                 sleep 5
-                mfr_modem_test.py
+                /usr/local/bin/mfr_modem_test.py
                 exit 0
             fi
         done
         echo "Timed out flashing Sierra HL7588 modem"
-        mfr_modem_test.py
+        /usr/local/bin/mfr_modem_test.py
         exit 1
     else
         echo "Sierra modem class not found"
