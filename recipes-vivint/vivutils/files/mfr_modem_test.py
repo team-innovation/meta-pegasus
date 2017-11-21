@@ -323,6 +323,11 @@ class SierraHL7588:
         return False
 
 if __name__ == "__main__":
+    # check for existence of id file - we only need to do it if it isn't there
+    if os.path.exists("/media/extra/conf/modemids"):
+        print("Modemids file found - exiting.")
+        quit(0)
+
     sierra_modem = SierraHL7588()
 
     # try up to 3 times to get iccid's
