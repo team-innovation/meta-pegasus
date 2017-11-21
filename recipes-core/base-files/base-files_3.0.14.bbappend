@@ -7,9 +7,14 @@ PR = "r91"
 BB_HASH_IGNORE_MISMATCH = "1"
 
 SRC_URI += "file://vivintbuild_gpg.pub  \
+	    file://ca_gpg_1.pub  \
+	    file://ca_gpg_2.pub  \
             "
 
 do_install_append () {
 	rm ${D}${sysconfdir}/issue*
-	install -m 0644 ${WORKDIR}/vivintbuild_gpg.pub  ${D}${sysconfdir}/vivintbuild_gpg.pub 
+	install -d ${D}${datadir}/keys
+	install -m 0644 ${WORKDIR}/vivintbuild_gpg.pub  ${D}${datadir}/keys/vivintbuild_gpg.pub 
+	install -m 0644 ${WORKDIR/ca_gpg_1.pub ${D}${datadir}/keys/ca_gpg_1.pub
+	install -m 0644 ${WORKDIR/ca_gpg_2.pub ${D}${datadir}/keys/ca_gpg_2.pub
 }

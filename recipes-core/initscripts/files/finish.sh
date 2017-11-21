@@ -7,7 +7,19 @@ check_pub_key()
 	if [ ! -e /media/extra/conf/vivintbuild_gpg.pub ]
 	then
 		echo "Copy public key to /media/extra/conf"
-		cp -a /etc/vivintbuild_gpg.pub /media/extra/conf/vivintbuild_gpg.pub
+		cp -a /usr/share/keys/vivintbuild_gpg.pub /media/extra/conf/vivintbuild_gpg.pub
+	fi
+
+	if [ ! -e /media/extra/conf/ca_gpg_1.pub ]
+	then
+		echo "Copy ca 1 public key to /media/extra/conf"
+		cp -a /usr/share/keys/ca_gpg_1.pub /media/extra/conf/ca_gpg_1.pub
+	fi
+
+	if [ ! -e /media/extra/conf/ca_gpg_2.pub ]
+	then
+		echo "Copy ca 2 public key to /media/extra/conf"
+		cp -a /usr/share/keys/ca_gpg_2.pub /media/extra/conf/ca_gpg_2.pub
 	fi
 }
 
