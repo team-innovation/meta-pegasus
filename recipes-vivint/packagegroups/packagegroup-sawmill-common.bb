@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "37"
+PR = "38"
 
 inherit packagegroup
 
@@ -37,6 +37,7 @@ RDEPENDS_${PN} = " \
 	python3-numpy \
 	python3-pexpect \
 	python3-pyserial \
+	python3-pyssh-ctypes \
 	python3-pyalsaaudio \
 	python3-pytz \
 	python3-re \
