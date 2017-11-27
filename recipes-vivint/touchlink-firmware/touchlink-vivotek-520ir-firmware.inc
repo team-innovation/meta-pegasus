@@ -1,11 +1,11 @@
-PKGR_${PN}-520ir = "${PR}.45"
+PKGR_${PN}-520ir = "${PR}.47"
 
-FIRMWARE_520IR = "IP8136W-ALAM-0100o9.flash.pkg"
+FIRMWARE_520IR = "IP8136W-ALAM-0100p2.flash.pkg"
 
 SRC_URI += "http://${UPDATESENG}/camera_firmwares/Vivotek/${FIRMWARE_520IR};name=520ir" 
 
-SRC_URI[520ir.md5sum] = "b3928833a2cd830c7e9f5bb6cea68d9b"
-SRC_URI[520ir.sha256sum] = "d615fa908db9afbabdac5f3c4dd5ee08e44fc0224a8ea2ea60378a39c03bdf8e"
+SRC_URI[520ir.md5sum] = "edfbdb4fc3aee817e9f6f3982c5e896a"
+SRC_URI[520ir.sha256sum] = "ceeb10d72948faf8aaf49afdbdf604ab7aa6aed5c3313570c3701ab371e4bf3d"
 
 do_install_append() {
      cp ${WORKDIR}/${FIRMWARE_520IR} ${D}/${FIRMWARE_DIR}
