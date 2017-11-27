@@ -3,14 +3,14 @@ SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "CLOSED"
 SRCNAME = "live555-proxy-server"
-PR = "ml48"
+PR = "ml52"
 
 DEPENDS += "python3 live555"
 #RDEPENDS = "live555-lib"
 RDEPENDS_${PN} = "live555-libusageenvironment live555-libbasicusageenvironment live555-libgroupsock live555-liblivemedia"
 DEPENDS_virtclass-native += "python3-native"
 
-SRCREV = "6b8eb1b04dc6cd2c9df61bd59afc23ed4fee96e6"
+SRCREV = "440259db516d132136066e6eebb814e6f98872ab"
 MODULE = "live555-proxy-server"
 SRC_URI = "git://${GIT_SERVER}/${MODULE};protocol=ssh"
 
