@@ -12,11 +12,13 @@ RDEPENDS_${PN} = " \
 "
 
 GIT_ARTIFACTS_BRANCH ?= "develop"
+GIT_ARTIFACTS_PROTOCOL ?= "ssh"
+GIT_ARTIFACTS_SERVER ?= ${GIT_SERVER}
 GIT_ARTIFACTS_REV = "${AUTOREV}"
 SRCREV = "${GIT_ARTIFACTS_REV}"
 
 SRC_URI = " \
-    git://${GIT_SERVER}/artifacts;protocol=ssh;branch=${GIT_ARTIFACTS_BRANCH} \
+    git://${GIT_ARTIFACTS_SERVER}/artifacts;protocol=${GIT_ARTIFACTS_PROTOCOL};branch=${GIT_ARTIFACTS_BRANCH} \
     file://zwave-program \
     "
 
