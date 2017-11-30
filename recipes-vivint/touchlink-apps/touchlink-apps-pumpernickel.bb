@@ -43,11 +43,15 @@ pkg_postinst_${PN} () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for sundance
 #
-
-rm -f /var/log/pumpernickel.log1
-rm -f /var/log/pumpernickel.log2
-rm -f /var/log/pumpernickel.log3
-rm -f /var/log/pumpernickel.log4
-rm -f /var/log/pumpernickel.log5
+if [ x"$D" = "x" ]; then
+	echo "Removing old pumpernickel.log1|2|3|4|5"
+	rm -f /var/log/pumpernickel.log1
+	rm -f /var/log/pumpernickel.log2
+	rm -f /var/log/pumpernickel.log3
+	rm -f /var/log/pumpernickel.log4
+	rm -f /var/log/pumpernickel.log5
+else
+	exit 1
+fi
 }
 
