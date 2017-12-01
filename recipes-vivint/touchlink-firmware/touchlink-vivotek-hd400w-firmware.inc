@@ -1,11 +1,11 @@
-PKGR_${PN}-hd400w = "${PR}.7"
+PKGR_${PN}-hd400w = "${PR}.8"
 
-FIRMWARE_HD400W = "IB8363W-VINT-0300c.flash.pkg"
+FIRMWARE_HD400W = "IB8363W-VINT-0300d.flash.pkg"
 
 SRC_URI += "http://${UPDATESENG}/camera_firmwares/Vivotek/${FIRMWARE_HD400W};name=hd400w"
 
-SRC_URI[hd400w.md5sum] = "a48d53bb7755f6667bb070ce16b84018"
-SRC_URI[hd400w.sha256sum] = "9116d0d726c3d00f8efe663448ae89d03be933ec1eec0d4b716be2157a4d4030"
+SRC_URI[hd400w.md5sum] = "cde7738cd165758dd24764ab50e04cfc"
+SRC_URI[hd400w.sha256sum] = "b6c34b2db463f0335e658ee49961ee2ec033b23782c0e2b276cd5ec0fa8fb1fa"
 
 do_install_append() {
      cp ${WORKDIR}/${FIRMWARE_HD400W} ${D}/${FIRMWARE_DIR}
