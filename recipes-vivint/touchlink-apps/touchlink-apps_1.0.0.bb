@@ -105,11 +105,11 @@ INSTALL_DIR = "/opt/2gig"
 #DEPENDS_REMOVED += "gst-rtsp-server # no clue
 
 DEPENDS = " \
-	gst-plugins-bad \
-	gst-plugins-base \
-	gst-plugins-good \
-	gst-plugins-ugly \
-	gstreamer \
+	gstreamer1.0-plugins-bad \
+	gstreamer1.0-plugins-base \
+	gstreamer1.0-plugins-good \
+	gstreamer1.0-plugins-ugly \
+	gstreamer1.0 \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cherrypy-native \
