@@ -23,4 +23,4 @@ NATIVE_INSTALL_WORKS = "1"
 
 inherit setuptools3
 
-
+RDEPENDS_${PN} = "libssh"
