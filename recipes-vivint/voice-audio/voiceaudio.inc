@@ -2,32 +2,30 @@
 # Copyright (C) 2015, Vivint
 # 
 
-DESCRIPTION = "Voice Audio Daemon"
-SECTION = "devel"
+DESCRIPTION = "User Voice Audio for Sly"
+SECTION = "utils"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-INC_PR = "r78"
+PR = "r79"
+PV = "0.1.1+git${SRCPV}"
 
-SRCREV = "bac47f24f26a4fc5e6b63267ba31cb6278d16b1b"
+GIT_AUDIO_SERVER ?= "${GIT_SERVER}"
+GIT_AUDIO_BRANCH ?= "develop"
+GIT_AUDIO_PROTOCOL ?= "ssh"
+GIT_AUDIO_REV ?= "${AUTOREV}"
+
+SRCREV = "${GIT_AUDIO_REV}"
+DEPENDS += "alsa-lib pulseaudio"
+
 MODULE = "voice-audio"
-SRC_URI = "git://${GIT_SERVER}/${MODULE};protocol=ssh;branch=sly-master \
-   	file://COPYING \
-	file://libvocal.a"
-
-#SRC_URI = "file:///media/WD_MPassport/live555 \
-#	       file://config.linux-cross-shared-libraries"
-
-
-S = "${WORKDIR}/git"
-TARGET_CC_ARCH += "${LDFLAGS}"
-
-DEPENDS = "pulseaudio"
+SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH}"
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
-#	 libvocal"
-
-do_configure() {
-	cp ${WORKDIR}/libvocal.a ${STAGING_LIBDIR}
+S = "${WORKDIR}/git/vaudio-sly"
+do_compile() {
+   oe_runmake
 }
+
+#TARGET_CC_ARCH += "${LDFLAGS}"
 
 do_install_append() {
 	install -d ${D}/usr/local/bin
