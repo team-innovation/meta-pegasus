@@ -1,4 +1,4 @@
-DESCRIPTION = "User panel-audio-test for Wallsly, Glance, and Sly"
+DESCRIPTION = "User pa-test for Wallsly, Glance, and Sly"
 SECTION = "utils"
 LICENSE = "BSD-2-Clause"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b022f53d2c5f4c04151c3eb748ef18a8"
@@ -15,14 +15,14 @@ GIT_AUDIO_REV ?= "${AUTOREV}"
 SRCREV = "${GIT_AUDIO_REV}"
 SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH}"
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
-S = "${WORKDIR}/git/panel-audio-test"
+S = "${WORKDIR}/git/pa-test"
 do_compile() {
    oe_runmake
 }
 
 do_install_append() {
         install -d ${D}/usr/local/bin
-        install -m 0755 ${S}/panel-audio-test ${D}/usr/local/bin
+        install -m 0755 ${S}/pa-test ${D}/usr/local/bin
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug"
