@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "39"
+PR = "40"
 
 inherit packagegroup
 
@@ -59,6 +59,7 @@ RDEPENDS_${PN} = " \
 	util-linux \
 	vim \
 	webrtc-audio-processing \
+	panel-audio-test \
 	wps-sh \
 	xdelta3 \
     touchlink-maxtouch-config \
