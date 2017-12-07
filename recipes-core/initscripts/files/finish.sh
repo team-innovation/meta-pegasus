@@ -41,7 +41,7 @@ validate_public_key()
         fi
         echo "Public key checksum MISMATCH"
         echo "Overwrite corrupt public key at /media/extra/conf"
-        cp -a /etc/vivintbuild_gpg.pub /media/extra/conf/vivintbuild_gpg.pub
+        cp -a /usr/share/keys/vivintbuild_gpg.pub /media/extra/conf/vivintbuild_gpg.pub
         count=$((count+1))
         sleep 1
     done
