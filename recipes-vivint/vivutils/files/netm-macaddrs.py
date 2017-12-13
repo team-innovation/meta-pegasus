@@ -35,7 +35,7 @@ class NetmMACtest:
     def stop_netd(self):
         print('stopping netd --')
         devnull = open(os.devnull, 'w')
-        call(["/etc/init.d/netd", "stop"], stdout=devnull, stderr=devnull)
+        call(["killall", "-9", "netd"], stdout=devnull, stderr=devnull)
 
     def display_mac_addr(self):
         for count in range(0, 3):
