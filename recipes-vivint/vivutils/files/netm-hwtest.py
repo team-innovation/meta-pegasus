@@ -41,12 +41,12 @@ class NetmHwtest:
     def start_netd(self):
         print('starting netd --')
         devnull = open(os.devnull, 'w')
-        call(["procman", "start", "netd"], stdout=devnull, stderr=devnull)
+        call(["/etc/init.d/netd", "start"], stdout=devnull, stderr=devnull)
 
     def stop_netd(self):
         print('stopping netd --')
         devnull = open(os.devnull, 'w')
-        call(["procman", "stop", "netd"], stdout=devnull, stderr=devnull)
+        call(["/etc/init.d/netd", "stop"], stdout=devnull, stderr=devnull)
 
     def enable_minimal_wifi(self):
         self.serialport.write("uci -q set vivint.@globals[0].mode='wireless_wan'\n".encode())
