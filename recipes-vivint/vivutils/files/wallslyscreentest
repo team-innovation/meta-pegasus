@@ -2,14 +2,14 @@
 #set -x
 
 prep() {
-        ps ax | grep -v grep | grep -q pumpernickel && procman stop pumpernickel && sleep 5
+        ps ax | grep -v grep | grep -q pumpernickel && /etc/init.d/pumpernickel stop && sleep 5
         echo 1 > /dev/vivint/psoc/ambient/am_ambient_activate
         echo 0 > /sys/iodbus/lcd/lcd_power_off/value
         echo 1 > /dev/vivint/psoc/backlights/bl_backlight_blank
 }
 
 cleanup() {
-        procman start pumpernickel
+        /etc/init.d/pumpernickel start
 }
 
 gensolids() {

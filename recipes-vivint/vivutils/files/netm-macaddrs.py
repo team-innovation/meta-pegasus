@@ -30,12 +30,12 @@ class NetmMACtest:
     def start_netd(self):
         print('starting netd --')
         devnull = open(os.devnull, 'w')
-        call(["procman", "start", "netd"], stdout=devnull, stderr=devnull)
+        call(["/etc/init.d/netd", "start"], stdout=devnull, stderr=devnull)
 
     def stop_netd(self):
         print('stopping netd --')
         devnull = open(os.devnull, 'w')
-        call(["procman", "stop", "netd"], stdout=devnull, stderr=devnull)
+        call(["/etc/init.d/netd", "stop"], stdout=devnull, stderr=devnull)
 
     def display_mac_addr(self):
         for count in range(0, 3):
