@@ -15,7 +15,7 @@ DEPENDS += "alsa-lib pulseaudio"
 
 MODULE = "voice-audio"
 SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH} \
-	   file://libvolcal.a\
+	   file://libvocal.a\
 	   "
 
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
