@@ -14,7 +14,10 @@ SRCREV = "${GIT_AUDIO_REV}"
 DEPENDS += "alsa-lib pulseaudio"
 
 MODULE = "voice-audio"
-SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH}"
+SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH} \
+	   file://libvolcal.a\
+	   "
+
 RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
 S = "${WORKDIR}/git/vaudio-sly"
 do_compile() {
@@ -22,6 +25,10 @@ do_compile() {
 }
 
 #TARGET_CC_ARCH += "${LDFLAGS}"
+
+do_configure() {
+        cp ${WORKDIR}/libvocal.a ${STAGING_LIBDIR}
+}
 
 do_install_append() {
 	install -d ${D}/usr/local/bin
