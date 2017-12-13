@@ -94,7 +94,7 @@ def main(args):
     fnull = open(os.devnull, 'w')
     with ZwaveTest() as zwave:
         if args[1] == "1":
-            subprocess.call(["/etc/init.d/zwaved","stop"], stdout=fnull, stderr=subprocess.STDOUT)
+            subprocess.call(["killall", "-9", "zwaved"], stdout=fnull, stderr=subprocess.STDOUT)
             zwave.writep(add_cmd)
             zwave.readp()
         else:
