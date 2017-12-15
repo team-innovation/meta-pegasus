@@ -34,6 +34,6 @@ do_install() {
 	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/touchlink-version
 	echo "OE branch: ${GIT_META_VIVINT_BRANCH%)}" >> ${D}${sysconfdir}/touchlink-version
 	echo "OERev: ${GIT_META_VIVINT_REV}" >> ${D}${sysconfdir}/touchlink-version
-	echo "AppsRev: ${APPS_REV}" >> ${D}${sysconfdir}/wallsly-version	
+	echo "AppsRev: ${APPS_REV}" >> ${D}${sysconfdir}/touchlink-version	
 	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/touchlink-version
 }

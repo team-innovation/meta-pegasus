@@ -41,7 +41,7 @@ do_install() {
 	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/slimline-version
 	echo "OE branch: ${GIT_META_VIVINT_BRANCH%)}" >> ${D}${sysconfdir}/slimline-version
 	echo "OERev: ${GIT_META_VIVINT_REV}" >> ${D}${sysconfdir}/slimline-version
-	echo "AppsRev: ${APPS_REV}" >> ${D}${sysconfdir}/wallsly-version	
+	echo "AppsRev: ${APPS_REV}" >> ${D}${sysconfdir}/slimline-version	
 	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/slimline-version
 
 	install -d ${D}${bindir}
