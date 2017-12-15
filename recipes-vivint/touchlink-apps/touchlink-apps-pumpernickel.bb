@@ -39,6 +39,10 @@ RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
     gstreamer1.0 \
 	"
 
+do_compile_prepend() {
+	${S}/../../scripts/generate_all_proxies.py
+}
+
 pkg_postinst_${PN} () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for sundance
