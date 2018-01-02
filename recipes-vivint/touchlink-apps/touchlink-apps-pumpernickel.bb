@@ -53,6 +53,8 @@ S = "${WORKDIR}/git/code/pumpernickel"
 
 require recipes-qt/qt5/qt5.inc
 
+inherit python-dir pythonnative
+
 EXEC_DIR = "pumpernickel"
 
 do_compile_prepend() {
