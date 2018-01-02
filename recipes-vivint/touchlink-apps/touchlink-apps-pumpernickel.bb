@@ -27,7 +27,7 @@ require recipes-qt/qt5/qt5.inc
 EXEC_DIR = "pumpernickel"
 
 do_compile_append() {
-	${S}/scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER}
+	${S}/../../scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER}
 }
 
 do_install() {
