@@ -4,10 +4,41 @@ DESCRIPTION = "User interface for Vivint sky panels"
 HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
 SECTION = "SOMETHING"
-DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode touchlink-apps"
+DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r10"
+PR = "r11"
+
+DEPENDS += " \
+	python3-bcrypt-native \
+	python3-cachetools \
+	python3-cherrypy-native \
+	python3-dateutil-native \
+	python3-gnupg-native \
+	python3-intelhex-native \
+	python3-jinja2-native \
+	python3-markupsafe-native \
+	python3-mixpanel-native \
+	python3-mock-native \
+	python3-msgpack-native \
+	python3-native \
+	python3-pexpect-native \
+	python3-ptyprocess-native \
+	python3-psutil-native \
+	python3-pyalsaaudio-native \
+	python3-pycrypto-native \
+	python3-pyftpdlib-native \
+	python3-pyinotify-native \
+	python3-pyserial-native \
+	python3-pytz-native \
+	python3-requests-native \
+	python3-six-native \
+	python3-setproctitle-native \
+	python3-soco-native \
+	python3-sparsedict-native \
+	python3-phue-native \
+	python3-paho-mqtt-native \
+"
 
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
