@@ -4,7 +4,7 @@ DESCRIPTION = "User interface for Vivint sky panels"
 HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
 SECTION = "SOMETHING"
-DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode"
+DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode touchlink-apps"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
 PR = "r10"
@@ -20,9 +20,15 @@ SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL
 
 S = "${WORKDIR}/git/code/pumpernickel"
 
+GIT_STRINGS_SERVER ?= "/home/localRepos/constants/boilerplate/python"
+
 require recipes-qt/qt5/qt5.inc
 
 EXEC_DIR = "pumpernickel"
+
+do_compile_append() {
+	${S}/scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER}
+}
 
 do_install() {
     install -d ${D}${datadir}/${EXEC_DIR}
