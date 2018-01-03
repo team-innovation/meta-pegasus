@@ -7,9 +7,9 @@ DESCRIPTION = "Vivotek VADP module - crimson"
 
 require touchlink-vivotek-vadp-rossini.inc
 
-PR = "r1"
+PR = "r2"
 
-VADP_VERSION = "1.3"
+VADP_VERSION = "2.00"
 CODE_NAME = "crimson"
 
 SRC_URI = "http://${DOWNLOAD_SERVER}/rossini-odc-${CODE_NAME}-vadp_${VADP_VERSION}.tar.gz"
