@@ -66,7 +66,9 @@ class ZwaveTest:
         self.sysclass_open('uart_enable').write('0')
         self.sysclass_open('access').write('0')
 
-    def __init__(self):
+    def __init__(self): pass
+
+    def enable_serial(self):
         self.portname = "/dev/" + \
             ZwaveTest.sysclass_open('uartname', mode='r').read()
         self.sysclass_open('access').write('1')
@@ -95,11 +97,14 @@ def main(args):
     with ZwaveTest() as zwave:
         if args[1] == "1":
             subprocess.call(["killall", "-9", "zwaved"], stdout=fnull, stderr=subprocess.STDOUT)
+            time.sleep(.1)
+            zwave.enable_serial()
             zwave.writep(add_cmd)
             zwave.readp()
         else:
+            zwave.enable_serial()
             zwave.writep(abort_cmd)
-            zwave.readp()
+            zwave.readp(True)
             zwave.writep(stop_cmd)
             zwave.readp(True)
             subprocess.call(["/etc/init.d/zwaved","start"], stdout=fnull, stderr=subprocess.STDOUT)
