@@ -25,7 +25,6 @@ require touchlink-apps-345d.inc
 require touchlink-apps-rf915d.inc
 require touchlink-apps-cloudd.inc
 require touchlink-apps-modemd.inc
-require touchlink-apps-multiplexerd.inc
 
 # adtd is touchlink dependent
 #require touchlink-apps-adtd.inc
@@ -72,7 +71,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml108"
+PR = "ml109"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -299,7 +298,6 @@ PACKAGES = " \
 	${PN}-345d          \
     ${PN}-rf915d        \
 	${PN}-framework     \
-	${PN}-multiplexerd          \
 	${PN}-mmpd          \
 	${PN}-audmgrd   \
 	${PN}-roubaix-services  \

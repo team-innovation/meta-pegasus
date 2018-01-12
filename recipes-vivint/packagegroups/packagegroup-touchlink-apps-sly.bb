@@ -3,7 +3,7 @@
 DESCRIPTION = "primary aka sly touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r28"
+PR = "r29"
 
 require packagegroup-touchlink-apps-common.inc
 
@@ -16,7 +16,6 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-httpd \
 	touchlink-apps-mmpd \
 	touchlink-apps-modemd \
-	touchlink-apps-multiplexerd \
 	touchlink-apps-netd \
 	touchlink-apps-pyftpd \
 	touchlink-apps-rf915d \

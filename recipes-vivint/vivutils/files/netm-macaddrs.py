@@ -11,13 +11,7 @@ import sys
 class NetmMACtest:
 
     def __init__(self):
-        if os.uname().nodename == 'imx6dl-skyhub':
-            self.serialdevice = "/opt/2gig/multiplexerd/helpers/network"
-            if not os.path.exists("/opt/2gig/multiplexerd/helpers/network"):
-                print("System not ready for testing, wait for multiplexerd to start")
-                sys.exit(1)
-        else:
-            self.serialdevice = "/dev/ttymxc1"
+        self.serialdevice = "/dev/ttymxc1"
 
         try:
             self.serialport = Serial(self.serialdevice, 57600, timeout=2)
