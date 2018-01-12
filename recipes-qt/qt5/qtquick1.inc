@@ -2,7 +2,7 @@ require qt5.inc
 
 DEPENDS += "qtscript qtsvg qtxmlpatterns"
 
-PACKAGECONFIG ??= "webkit"
+PACKAGECONFIG ??= ""
 PACKAGECONFIG[webkit] = ",,qtwebkit"
 
 EXTRA_QMAKEVARS_PRE += "${@bb.utils.contains('PACKAGECONFIG', 'webkit', '', 'CONFIG+=noqtwebkit', d)}"
