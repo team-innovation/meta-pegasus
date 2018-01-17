@@ -23,11 +23,8 @@ inherit setuptools3
 SRC_URI[md5sum] = "4bd192ea24e7aa347f6d240101ef82f6"
 SRC_URI[sha256sum] = "0fd746d8650563290f1bd0fec01e74cb57c3ab7406bdb58e5d9252bb5fa5ca44"
 
-DEPENDS_${PN} = "\
-        python3-distutils \
-"
-
-RDEPENDS_${PN} = "\
+RDEPENDS_${PN} += "\
+               python3-distutils \
                python3-math \
                python3-io \
                python3-threading \

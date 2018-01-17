@@ -34,7 +34,7 @@ do_install_append() {
    rm -f ${D}/${bindir}/easy_install-3.3
 }
 
-DEPENDS_${PN} = "\
+RDEPENDS_${PN} = "\
   python3-distutils \
 "
 

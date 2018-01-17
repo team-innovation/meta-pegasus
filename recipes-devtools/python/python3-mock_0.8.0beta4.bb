@@ -22,7 +22,7 @@ do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
 }
 
-DEPENDS_${PN} = "\
+RDEPENDS_${PN} = "\
   python3-distutils \
 "
 

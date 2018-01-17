@@ -24,7 +24,7 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-DEPENDS_${PN} = "\
+RDEPENDS_${PN} = "\
   python3-distutils \
 "
 

@@ -30,7 +30,7 @@ do_install_append() {
    rm -rf ${D}/${libdir}/${PYTHON_DIR}/site-packages/cherrypy/test
 }
 
-DEPENDS_${PN} = "\
+RDEPENDS_${PN} = "\
   python3-distutils \
 "
 

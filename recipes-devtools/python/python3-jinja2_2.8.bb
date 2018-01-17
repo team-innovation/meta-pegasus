@@ -19,7 +19,7 @@ do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
 }
 
-DEPENDS_${PN} = "\
+RDEPENDS_${PN} = "\
   python3-distutils \
 "
 SRC_URI[md5sum] = "edb51693fe22c53cee5403775c71a99e"

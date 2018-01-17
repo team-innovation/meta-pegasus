@@ -34,7 +34,7 @@ do_package_qa() {
 
 inherit distutils
 
-DEPENDS_${PN} = "\
+RDEPENDS_${PN} = "\
   python3-distutils \
 "
 

@@ -19,7 +19,7 @@ NATIVE_INSTALL_WORKS = "1"
 
 inherit setuptools3
 
-DEPENDS_${PN} = "\
+RDEPENDS_${PN} = "\
   python3-distutils \
 "
 

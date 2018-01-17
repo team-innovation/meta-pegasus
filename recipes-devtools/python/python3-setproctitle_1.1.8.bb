@@ -32,7 +32,7 @@ do_install_prepend() {
     install -m 0644 ${WORKDIR}/setproctitle_33.py ${D}/${libdir}/${PYTHON_DIR}/site-packages/setproctitle.py
 }
 
-DEPENDS_${PN} = "\
+RDEPENDS_${PN} = "\
   python3-distutils \
 "
 

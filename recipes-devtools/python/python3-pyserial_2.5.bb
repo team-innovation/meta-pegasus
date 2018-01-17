@@ -27,11 +27,8 @@ do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
 }
 
-DEPENDS_${PN} = "\
-  python3-distutils \
-"
-
 RDEPENDS_${PN} = "\
+  python3-distutils \
   python3-fcntl \
   python3-io \
   python3-stringold \
