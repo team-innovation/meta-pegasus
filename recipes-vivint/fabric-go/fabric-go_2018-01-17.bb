@@ -1,6 +1,6 @@
 DESCRIPTION = "Build spacemonkey fabric for arm"
 
-PR = "r9"
+PR = "r10"
 
 DEPENDS = "go-cross sqlite3"
 
