@@ -53,6 +53,7 @@ RDEPENDS_${PN} = " \
 	python3-numbers \
 	speedtest-cli \
 	sqlite3 \
+	sysstat \
 	touchlink-ntpsync \
 	tzdata \
 	tzdata-americas \
