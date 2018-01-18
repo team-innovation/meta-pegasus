@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r76"
+PR = "r77"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -54,6 +54,7 @@ SRC_URI = "\
 	   file://latest-sly-sprint-build \
 	   file://wallslyscreentest \
 	   file://netm-macaddrs.py \
+	   file://ssid-verify.py \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -101,6 +102,7 @@ do_install() {
 	install -m 0755 ${S}/latest-sly-sprint-build ${D}/usr/local/bin
 	install -m 0755 ${S}/wallslyscreentest ${D}/usr/local/bin
 	install -m 0755 ${S}/netm-macaddrs.py ${D}/usr/local/bin
+	install -m 0755 ${S}/ssid-verify.py ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
