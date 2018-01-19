@@ -39,7 +39,7 @@ else
 	echo ""
 	echo "   BAD image name for a SkyHub - WHAT WENT WRONG? - $image"
 	echo ""
-	exit 7
+	#exit 7
 fi
 
 # first check for a roughly reasonable image size -> 135722003 Jun  3 16:19 sly-qt5-image-imx6dl-slimline.tar.bz2 
@@ -55,7 +55,7 @@ echo "Minimum Size:       $mini_size"
 if [[ $file_size -lt  $mini_size ]]
 then
 	echo "Image $imagepath looks too small and is probably corrupt..."
-	exit 4
+	#exit 4
 fi
 
 echo "Installing..."
