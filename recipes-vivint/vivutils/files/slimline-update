@@ -30,6 +30,17 @@ then
 	exit 3
 fi
 
+# check for wrong rootfs image
+if [[ $image == *"slimline-qt5-image-imx6dl-slimline-"*"rootfs.tar.bz2" ]]
+then
+	echo "GOOD image name for a Glance - $image"
+else
+	echo ""
+	echo "   BAD image name for a Glance - WHAT WENT WRONG? - $image"
+	echo ""
+	exit 7
+fi
+
 echo "Installing..."
 
 # install and switch to new installation

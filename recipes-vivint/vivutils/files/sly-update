@@ -31,6 +31,17 @@ then
 	exit 3
 fi
 
+# check for wrong rootfs image
+if [[ $image == *"sly-qt5-image-imx6dl-slimline-"*"rootfs.tar.bz2" ]]
+then
+	echo "GOOD image name for a SkyHub - $image"
+else
+	echo ""
+	echo "   BAD image name for a SkyHub - WHAT WENT WRONG? - $image"
+	echo ""
+	exit 7
+fi
+
 # first check for a roughly reasonable image size -> 135722003 Jun  3 16:19 sly-qt5-image-imx6dl-slimline.tar.bz2 
 # http://www.tldp.org/LDP/abs/html/system.html
 file_size=$(stat -c%s "$imagepath")
