@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "42"
+PR = "43"
 
 inherit packagegroup
 
@@ -55,7 +55,6 @@ RDEPENDS_${PN} = " \
 	python3-numbers \
 	speedtest-cli \
 	sqlite3 \
-	sysstat \
 	touchlink-ntpsync \
 	tzdata \
 	tzdata-americas \
