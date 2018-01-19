@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/BSD-3-Clause;md5=550794465ba0ec
 
 PR = "r1"
 
-RDEPENDS_${PN} = "python-six"
+RDEPENDS_${PN} = "python3-six"
 
 SRC_URI = "https://files.pythonhosted.org/packages/source/p/protobuf/protobuf-${PV}.tar.gz"
 
