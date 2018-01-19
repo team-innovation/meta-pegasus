@@ -1,4 +1,4 @@
-DESCRIPTION = "Implementation of OpenBSD Blowfish password hashing algorithm"
+DESCRIPTION = "Python toolz"
 HOMEPAGE = "https://pypi.python.org/pypi/toolz"
 SECTION = "devel/python"
 LICENSE = "BSD"
