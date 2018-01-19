@@ -32,12 +32,6 @@ do_package_qa() {
     echo "Skipping QA ..."
 }
 
-inherit distutils
-
-RDEPENDS_${PN} = "\
-  python3-distutils \
-"
-
 SRC_URI[md5sum] = "783e45d4a1a309e03ab378b00f97b291"
 SRC_URI[sha256sum] = "e950a78184e2a7defccf5d45e0c29c1e9edeb29984433f0d110a21e9631e38de"
 

@@ -24,10 +24,6 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-RDEPENDS_${PN} = "\
-  python3-distutils \
-"
-
 SRC_URI[md5sum] = "f89bde8a811c8a1a5bac17eaaa94383c"
 SRC_URI[sha256sum] = "f5c056e8f62d45ba8215e5cb8f50dfccb198b4b9fbea8500674f3443e4689589"
 

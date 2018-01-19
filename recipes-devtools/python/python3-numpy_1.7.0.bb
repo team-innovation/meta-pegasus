@@ -82,7 +82,6 @@ RDEPENDS_${PN} = "python3-unittest \
                   python3-nose \
                   python3-doctest \
                   python3-datetime \
-                  python3-distutils \
                   python3-misc \
                   python3-mmap \
                   python3-netclient \

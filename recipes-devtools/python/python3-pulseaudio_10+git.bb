@@ -30,7 +30,6 @@ do_install_prepend() {
 }
 
 RDEPENDS_${PN} = "\
-  python3-distutils \
   python3-ctypes \
   libpulse \
   libpulse-simple \

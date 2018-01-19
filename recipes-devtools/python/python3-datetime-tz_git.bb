@@ -27,7 +27,3 @@ do_compile_append() {
 	2to3 -n -w ${S}/build/
 	cp -r ${S}/build/* ${S}/
 }
-
-RDEPENDS_${PN} = "\
-  python3-distutils \
-"

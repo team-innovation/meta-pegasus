@@ -31,8 +31,4 @@ do_package_qa() {
     echo "Skipping QA ..."
 }
 
-RDEPENDS_${PN} = "\
-  python3-distutils \
-"
-
 INSANE_SKIP_${PN} = "True"

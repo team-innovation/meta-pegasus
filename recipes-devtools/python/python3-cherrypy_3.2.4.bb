@@ -30,10 +30,6 @@ do_install_append() {
    rm -rf ${D}/${libdir}/${PYTHON_DIR}/site-packages/cherrypy/test
 }
 
-RDEPENDS_${PN} = "\
-  python3-distutils \
-"
-
 SRC_URI[md5sum] = "e2c8455e15c39c9d60e0393c264a4d16"
 SRC_URI[sha256sum] = "abd73a449936740e99d3a05eb89b9381dc188ef696904f585463bc28079f1288"
 

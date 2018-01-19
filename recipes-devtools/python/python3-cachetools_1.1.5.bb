@@ -20,10 +20,6 @@ NATIVE_INSTALL_WORKS = "1"
 
 inherit setuptools3
 
-RDEPENDS_${PN} = "\
-  python3-distutils \
-"
-
 SRC_URI[md5sum] = "7674e953ebe414f7ffc7696a4516f7fe"
 SRC_URI[sha256sum] = "9810dd6afaec9e9eaae5ec33f2aa7117214a7a3f8427e70ab23939fe4d1bf279"
 

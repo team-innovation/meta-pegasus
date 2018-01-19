@@ -32,10 +32,6 @@ do_install_prepend() {
     install -m 0644 ${WORKDIR}/setproctitle_33.py ${D}/${libdir}/${PYTHON_DIR}/site-packages/setproctitle.py
 }
 
-RDEPENDS_${PN} = "\
-  python3-distutils \
-"
-
 SRC_URI[md5sum] = "728f4c8c6031bbe56083a48594027edd"
 SRC_URI[sha256sum] = "b564cf6488217c7a4632a9fe646fc3a3bea2f9712b4e667e9632b870d1a58211"
 

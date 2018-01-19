@@ -8,7 +8,7 @@ PR = "r3"
 DEPENDS += "python3"
 DEPENDS_virtclass-native += "python3-native"
 
-RDEPENDS_${PN} = "python3-distutils python3-xmlrpc"
+RDEPENDS_${PN} = "python3-xmlrpc"
 RDEPENDS_${PN} += "iperf (>= 1.9)"                                                                                                                           
 RDEPENDS_${PN} += "netperf (>= 2.6)"                                                                                                                         
 RDEPENDS_${PN} += "fping (>= 3.5)"  
