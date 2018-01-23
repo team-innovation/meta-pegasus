@@ -1,9 +1,18 @@
 #!/usr/bin/python3
 
-import os, time, sys
+import os, time, sys, glob, subprocess
 from serial import Serial
+from sys import argv
 
 class SierraHL7588:
+
+    CARRIER_ATT = 1
+    CARRIER_VERIZON = 2
+
+    SIM_ATT_PREFIX = "89014"
+    SIM_VERIZON_PREFIX = "89148"
+    SIM_ROGERS_PREFIX = "89302"
+    SIM_TELUS_PREFIX = "89122"
 
     def __init__(self):
         self._serial_port = None
@@ -77,27 +86,34 @@ class SierraHL7588:
         self._serial_port.write(b"\r")
         self._serial_port.flush()
 
-    def read_result(self):
-        command_buffer = self._serial_port.read(len(self._last_command) + 1)
+    def read_result(self, retry=True):
+        try:
+            command_buffer = self._serial_port.read(len(self._last_command) + 1)
 
-        if len(command_buffer) == 0:
-            #print("Failed to echo command")
-            return b""
-        #else:
-        #    print("ECHO command {}".format(command_buffer))
+            if len(command_buffer) == 0:
+                #print("Failed to echo command")
+                return b""
+            #else:
+            #    print("ECHO command {}".format(command_buffer))
 
-        # now try another read - if we don't get anything wait up to 5 seconds
-        now = time.time()
-        result_buffer = b""
-        while len(result_buffer) == 0 and (time.time() - now) < 5:
+            # now try another read - if we don't get anything wait up to 5 seconds
+            now = time.time()
+            result_buffer = b""
+            while len(result_buffer) == 0 and (time.time() - now) < 5:
 
-            while self._serial_port.inWaiting() > 0:
-                result_buffer += self._serial_port.read()
-            if len(result_buffer) == 0:
-                time.sleep(0.5)
+                while self._serial_port.inWaiting() > 0:
+                    result_buffer += self._serial_port.read()
+                if len(result_buffer) == 0:
+                    time.sleep(0.5)
 
-        #print("Command {} Result: {}".format(command_buffer, result_buffer))
-        return command_buffer + result_buffer
+            #print("Command {} Result: {}".format(command_buffer, result_buffer))
+            return command_buffer + result_buffer
+        except Exception as exception:
+            self.close_serial_port()
+            self.open_serial_port()
+            if retry:
+                return read_result(retry=False)
+
 
     def wait_for_ready(self):
         #print("Waiting for +PBREADY...")
@@ -120,7 +136,7 @@ class SierraHL7588:
         print("Modem did not respond with +PBREADY")
         return False
 
-    def open_serial_port(self, serial_port, baud_rate=115200, timeout=5):
+    def open_serial_port(self, serial_port="/dev/ttyACM0", baud_rate=115200, timeout=5):
         if self._serial_port:
             return
 
@@ -255,13 +271,27 @@ class SierraHL7588:
                     self.write_command(b"AT+CCID")
                     buffer = self.read_result()
 
+                    if b"SIM NOT INSERTED" in buffer:
+                        return None
+
+                    if b"ERROR" in buffer:
+                        # wait a few seconds and try again
+                        time.sleep(5)
+                        continue
+
                     # strip the command down to just the returned version
                     tuples = buffer.decode("utf-8").split("\r\n")
 
                     for tuple in tuples:
                         if "+CCID: " in tuple:
+                            ccid = tuple[7:]
+
+                            if ccid == "00000000000000000000":
+                                time.sleep(5)
+                                continue
+
                             #print("SIM {} CCID: {}".format(sim_number, tuple[7:]))
-                            return tuple[7:]
+                            return ccid
                 else:
                     print("Error: Serial port is not open")
 
@@ -284,17 +314,36 @@ class SierraHL7588:
 
         return ""
 
+    def reset_nvram(self):
+        try:
+            if self._serial_port is not None:
+                #print("Resetting modem...")
+                self.write_command(b"AT+NVRST=2")
+                self.read_result()
+                self.close_serial_port()
+                time.sleep(5)
+                if self.open_serial_port("/dev/ttyACM0"):
+                    self.wait_for_nvbackup()
+                    return True
+            else:
+                print ("Serial port is not open - using hard reset")
+                return False
+        except:
+            pass
+
+        return False
+
     def reset(self, connect=True):
         try:
             if self._serial_port is not None:
                 #print("Resetting modem...")
                 self.write_command(b"AT+CFUN=1,1")
                 self.read_result()
-                sierra_modem.close_serial_port()
+                self.close_serial_port()
                 if connect:
                     time.sleep(5)
-                    if sierra_modem.open_serial_port("/dev/ttyACM0"):
-                        sierra_modem.wait_for_ready()
+                    if self.open_serial_port("/dev/ttyACM0"):
+                        self.wait_for_nvbackup()
                         return True
                     else:
                         print("Modem did not respond - exiting")
@@ -310,23 +359,122 @@ class SierraHL7588:
         return False
 
     def reset_hard(self):
-        sierra_modem.close_serial_port()
+        self.close_serial_port()
         self.serial_gpio_access()
         self.serial_gpio_reset(False)
         time.sleep(1)
         self.serial_gpio_reset(True)
         time.sleep(5)
-        if sierra_modem.open_serial_port("/dev/ttyACM0"):
-            sierra_modem.wait_for_ready()
+        if self.open_serial_port("/dev/ttyACM0"):
+            #self.wait_for_ready()
+            self.wait_for_nvbackup()
             return True
 
         return False
 
+    def power_down(self):
+        self.write_command(b"AT+CPWROFF")
+        self.read_result()
+        self.close_serial_port()
+
+    def wait_for_nvbackup(self):
+        for n in range(3):
+            self.write_command(b"AT+NVBU?")
+            result = self.read_result()
+            result = result.decode('utf-8')
+
+            if "NVBU: 0," in result and "NVBU: 1," in result and "NVBU: 2," in result:
+                # split the output
+                output = result.split("\r\n")
+                version = None
+                for line in output:
+                    if "+NVBU" in line:
+                        if not version:
+                            version = line[10:-1]
+                        elif version != line[10:-1]:
+                            #print("NVRAM backup not yet complete: {}".format(result))
+                            time.sleep(3)
+                            continue
+            else:
+                time.sleep(3)
+                continue
+
+            return True
+
+        print("Failed to verify NVRAM backup completion")
+        return False
+
+    def reflash_modem(self, carrier):
+        file_list = []
+        if carrier == self.CARRIER_ATT:
+            file_list = glob.glob("/var/lib/firmware/Sierra/*.A.*.fls")
+        elif carrier == self.CARRIER_VERIZON:
+            file_list = glob.glob("/var/lib/firmware/Sierra/*-VC*.fls")
+            if not file_list:
+                file_list = glob.glob("/var/lib/firmware/Sierra/*.A.*.fls")
+
+        firmware_file = None
+        if file_list:
+            # sort the list so if we have multiple files, we'll get the latest at the end of the list
+            file_list.sort()
+            firmware_file = file_list[-1]
+        else:
+            print("Error reflashing modem - invalid carrier specified, or no firmware files found in /var/lib/firmware/Sierra")
+            return False
+
+        if firmware_file:
+            flash_proc = subprocess.Popen(["/usr/bin/swdltool", firmware_file], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            time.sleep(5)
+
+            # reset the modem and close the serial port
+            self.write_command(b"AT+CFUN=1,1")
+            self.read_result()
+            self.close_serial_port()
+
+            try:
+                stdout, stderr = flash_proc.communicate(timeout=60)
+
+                # check stdout for completion string
+                if stdout:
+                    stdout = stdout.decode("utf-8")
+
+                    #print(stdout)
+
+                    # check result
+                    if "failed" in stdout:
+                        print("Flash operation failed!")
+                        print(stdout)
+
+                    elif "Firmware download successful" in stdout:
+                        # flash has completed
+                        print("Success flashing file {}".format(firmware_file))
+                        if self.open_serial_port("/dev/ttyACM0"):
+                            return self.wait_for_nvbackup()
+                else:
+                    print("Flash operation completed with no output")
+                    print(stdout)
+                    if self.open_serial_port("/dev/ttyACM0"):
+                        return self.wait_for_nvbackup()
+            except subprocess.TimeoutExpired:
+                # otherwise poll to see if the app is done
+                result = flash_proc.poll()
+                if result is not None:
+                    print("Flash program complete - no stdout")
+        else:
+            print("Error reflashing modem - no firmware files found in /var/lib/firmware/Sierra")
+            return False
+
+        return False
+
 if __name__ == "__main__":
-    # check for existence of id file - we only need to do it if it isn't there
-    if os.path.exists("/media/extra/conf/modemids"):
-        print("Modemids file found - exiting.")
-        quit(0)
+    # if the command line contains ""--force" or "-f", then skip the file check
+    if "--force" in argv or "-f" in argv:
+        print("Resetting modem to default configuration...")
+    else:
+        # check for existence of id file - we only need to do it if it isn't there
+        if os.path.exists("/media/extra/conf/modemids"):
+            print("Modemids file found - exiting.")
+            quit(0)
 
     sierra_modem = SierraHL7588()
 
@@ -337,6 +485,7 @@ if __name__ == "__main__":
     sim2 = None
     rxpower = None
 
+    print("Turning modem on...")
     powered_up = sierra_modem.turn_on()
     if not sierra_modem.open_serial_port("/dev/ttyACM0"):
         # reset and try again
@@ -345,10 +494,71 @@ if __name__ == "__main__":
             quit()
 
     if powered_up:
-        sierra_modem.wait_for_ready()
+        sierra_modem.wait_for_nvbackup()
 
     firmware_version = sierra_modem.get_firmware_version()
     imei = sierra_modem.get_imei()
+
+    print("Current firmware version is {}".format(firmware_version))
+
+    # Flash the new boot loader (AT&T version)
+    print("Reflashing modem with new boot loader...")
+    if not sierra_modem.reflash_modem(sierra_modem.CARRIER_ATT):
+        print("Error flashing new AT&T boot loader version - exiting")
+        quit()
+
+    # Resetting the NVRam can cause more problems than it fixes - so don't do it for now!
+    # Reset NVRam (modem will reboot) - this clears the time, so nv backup times won't be correct
+    #if not sierra_modem.reset_nvram():
+    #    print("Resetting NVRAM returned False - resetting module")
+    #    if not sierra_modem.reset_hard():
+    #        print("Error: Modem is not responding")
+    #        quit()
+
+    for n in range(3):
+        print("Changing to SIM 1 and resetting...")
+        # change to SIM 1 and reset modem
+        sierra_modem.select_sim(1, wait=False)
+        if not sierra_modem.reset():
+            print("Error: Modem is not responding")
+            quit()
+
+        # read SIM 1
+        sim1 = sierra_modem.get_iccid(1)
+        print("Read SIM 1 ICCID: {}".format(sim1))
+
+        # select SIM 2
+        sierra_modem.select_sim(2)
+
+        # read SIM 2
+        sim2 = sierra_modem.get_iccid(2)
+        print("Read SIM 2 ICCID: {}".format(sim2))
+
+        if sim1 and sim1 != sim2:
+            # if we have a SIM1 value (SIM2 can be empty) and they are not the same, then break out of the loop
+            break
+
+        print("SIM1 and SIM2 have same ID {}, resetting and trying again...".format(sim1))
+
+    # default to Verizon, and select SIM 1 - uncomment this when we're ready to default to Verizon
+    if sim1 and sim1.startswith(sierra_modem.SIM_VERIZON_PREFIX):
+        print("Reflashing modem to select Verizon...")
+        if not sierra_modem.reflash_modem(sierra_modem.CARRIER_VERIZON):
+            print("Error flashing Verizon firmware - exiting")
+            quit()
+        sierra_modem.wait_for_nvbackup()
+        sierra_modem.select_sim(1, wait=False)
+        if not sierra_modem.reset():
+            print("Error: Modem is not responding")
+            quit()
+        sierra_modem.wait_for_nvbackup()
+
+    # clear the read buffer and wait a few seconds
+    sierra_modem.read_result()
+
+    # try an extra AT command to make sure we're ready for receive test
+    sierra_modem.write_command(b"AT")
+    result = sierra_modem.read_result()
 
     # Do the receive test
     try_count = 3
@@ -357,62 +567,13 @@ if __name__ == "__main__":
         rxpower = sierra_modem.get_rx_power()
         if rxpower:
             break
+
+        print("Modem did not respond to rx power test, resetting...")
         # reset modem and try again
         sierra_modem.close_serial_port()
         if not sierra_modem.reset_hard():
             print("Error: Modem is not responding")
             quit()
-
-    # get SIM IDs
-    try_count = 4
-    while try_count > 0:
-        try_count -= 1
-
-        sim_number = sierra_modem.get_sim()
-        #print("SIM number is \"{}\"".format(sim_number))
-
-        if sim_number == '':
-            if not sierra_modem.reset_hard():
-                print("Error: Modem is not responding")
-                quit()
-            continue
-        elif sim_number == '0':
-            #print("No SIM selected...")
-            # select SIM 1 and reset
-            sierra_modem.select_sim(1, wait=False)
-            if not sierra_modem.reset():
-                print("Error: Modem is not responding")
-                quit()
-            continue
-        elif sim_number == '1':
-            if sim1 == None:
-                print("Getting SIM 1 ICCID...")
-                sim1 = sierra_modem.get_iccid(1)
-            sim_number = '2'
-        elif sim_number == '2':
-            if sim2 == None:
-                print("Getting SIM 2 ICCID...")
-                sim2 = sierra_modem.get_iccid(2)
-            sim_number = '1'
-
-        if sim_number == '':
-            continue
-
-        if (sim1 == None or sim2 == None) and sim_number is not '0':
-            # switch SIMs
-            print("Switching to SIM {}...".format(sim_number))
-            sierra_modem.select_sim(int(sim_number))
-            continue
-
-        if sim1 and sim2:
-            if sim1 == sim2:
-                print("Identical sims, resetting and trying again...")
-                sim1 = None
-                sim2 = None
-                sierra_modem.reset_hard()
-            else:
-                # we have sims and they are not the same - we're done
-                break
 
     print("Firmware: {}".format(firmware_version))
     print("IMEI: {}".format(imei))
@@ -425,4 +586,4 @@ if __name__ == "__main__":
     cfgfile.write("{},{},{},{},{}\n".format(firmware_version, imei, sim1, sim2, rxpower))
     cfgfile.close()
 
-    sierra_modem.reset(connect = False)
+    sierra_modem.power_down()
