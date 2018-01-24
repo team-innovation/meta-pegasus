@@ -28,7 +28,8 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-webd \
 	touchlink-apps-zwaved \
 "
+
 # NOTE: temporary remove this to test the build
-#	touchlink-apps-test-ui \
-#	touchlink-apps-testui \
+#	touchlink-apps-test-ui
+#	touchlink-apps-testui
 
