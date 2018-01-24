@@ -3,7 +3,7 @@
 DESCRIPTION = "primary aka sly touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r29"
+PR = "r30"
 
 require packagegroup-touchlink-apps-common.inc
 
@@ -24,10 +24,11 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-smarthomed \
 	touchlink-apps-listenerd \
 	touchlink-apps-test-daemon \
-	touchlink-apps-test-ui \
-	touchlink-apps-testui \
 	touchlink-apps-videod \
 	touchlink-apps-webd \
 	touchlink-apps-zwaved \
 "
+# NOTE: temporary remove this to test the build
+#	touchlink-apps-test-ui \
+#	touchlink-apps-testui \
 
