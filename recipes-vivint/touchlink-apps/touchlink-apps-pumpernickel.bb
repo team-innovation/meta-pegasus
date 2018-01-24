@@ -7,7 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r12"
+PR = "r13"
 
 DEPENDS += " \
 	python3-bcrypt-native \
@@ -61,7 +61,7 @@ inherit python-dir pythonnative
 
 EXEC_DIR = "pumpernickel"
 
-do_compile_prepend() {
+do_configure_prepend() {
 	${S}/../../scripts/generate_all_proxies.py
 }
 
