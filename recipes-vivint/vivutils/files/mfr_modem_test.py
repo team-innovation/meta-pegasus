@@ -9,10 +9,10 @@ class SierraHL7588:
     CARRIER_ATT = 1
     CARRIER_VERIZON = 2
 
-    SIM_ATT_PREFIX = "89014"
-    SIM_VERIZON_PREFIX = "89148"
-    SIM_ROGERS_PREFIX = "89302"
-    SIM_TELUS_PREFIX = "89122"
+    SIM_ATT_PREFIX = "8901"
+    SIM_VERIZON_PREFIX = "8914"
+    SIM_ROGERS_PREFIX = "8930"
+    SIM_TELUS_PREFIX = "8912"
 
     def __init__(self):
         self._serial_port = None
@@ -130,7 +130,6 @@ class SierraHL7588:
                 time.sleep(1)
 
         if result_buffer and b"+PBREADY" in result_buffer:
-            #print("Modem ready in {} seconds".format(time.time() - now))
             return True
 
         print("Modem did not respond with +PBREADY")
@@ -150,8 +149,6 @@ class SierraHL7588:
 
         if os.path.exists(serial_port):
             self._serial_port = Serial(port=serial_port, baudrate=baud_rate, timeout=timeout)
-            #self._serial_port.flushInput()
-            #self._serial_port.flushOutput()
             return True
 
         return False
@@ -286,6 +283,7 @@ class SierraHL7588:
                         if "+CCID: " in tuple:
                             ccid = tuple[7:]
 
+                            # we get all zeros, it just didn't read correctly, try again
                             if ccid == "00000000000000000000":
                                 time.sleep(5)
                                 continue
@@ -366,7 +364,6 @@ class SierraHL7588:
         self.serial_gpio_reset(True)
         time.sleep(5)
         if self.open_serial_port("/dev/ttyACM0"):
-            #self.wait_for_ready()
             self.wait_for_nvbackup()
             return True
 
@@ -378,7 +375,8 @@ class SierraHL7588:
         self.close_serial_port()
 
     def wait_for_nvbackup(self):
-        for n in range(3):
+        # try up to 10 times waiting 1 second between tries
+        for n in range(10):
             self.write_command(b"AT+NVBU?")
             result = self.read_result()
             result = result.decode('utf-8')
@@ -389,14 +387,24 @@ class SierraHL7588:
                 version = None
                 for line in output:
                     if "+NVBU" in line:
-                        if not version:
-                            version = line[10:-1]
-                        elif version != line[10:-1]:
-                            #print("NVRAM backup not yet complete: {}".format(result))
-                            time.sleep(3)
-                            continue
+                        tuples = line.split(",")
+                        if len(tuples) >= 3:
+                            if not version:
+                                # get the version of NVBU: 0
+                                version = tuples[2]
+                            # check NVBU 1, and NVBU 2 to make sure it's the same version as 0
+                            elif tuples[2] != version:
+                                time.sleep(1)
+                                break
+                        else:
+                            # malformed line
+                            time.sleep(1)
+                            break
+                    else:
+                        # ignore line not containing +NVBU
+                        pass
             else:
-                time.sleep(3)
+                time.sleep(1)
                 continue
 
             return True
@@ -411,7 +419,7 @@ class SierraHL7588:
         elif carrier == self.CARRIER_VERIZON:
             file_list = glob.glob("/var/lib/firmware/Sierra/*-VC*.fls")
             if not file_list:
-                file_list = glob.glob("/var/lib/firmware/Sierra/*.A.*.fls")
+                file_list = glob.glob("/var/lib/firmware/Sierra/*.V.*.fls")
 
         firmware_file = None
         if file_list:
@@ -540,18 +548,19 @@ if __name__ == "__main__":
 
         print("SIM1 and SIM2 have same ID {}, resetting and trying again...".format(sim1))
 
-    # default to Verizon, and select SIM 1 - uncomment this when we're ready to default to Verizon
-    if sim1 and sim1.startswith(sierra_modem.SIM_VERIZON_PREFIX):
-        print("Reflashing modem to select Verizon...")
-        if not sierra_modem.reflash_modem(sierra_modem.CARRIER_VERIZON):
-            print("Error flashing Verizon firmware - exiting")
-            quit()
-        sierra_modem.wait_for_nvbackup()
-        sierra_modem.select_sim(1, wait=False)
-        if not sierra_modem.reset():
-            print("Error: Modem is not responding")
-            quit()
-        sierra_modem.wait_for_nvbackup()
+    # Current default for 2018 is AT&T.  When we want to change the default to Verizon, uncomment
+    # the following lines:
+    #if sim1 and sim1.startswith(sierra_modem.SIM_VERIZON_PREFIX):
+    #    print("Reflashing modem to select Verizon...")
+    #    if not sierra_modem.reflash_modem(sierra_modem.CARRIER_VERIZON):
+    #        print("Error flashing Verizon firmware - exiting")
+    #        quit()
+    #    sierra_modem.wait_for_nvbackup()
+    #    sierra_modem.select_sim(1, wait=False)
+    #    if not sierra_modem.reset():
+    #        print("Error: Modem is not responding")
+    #        quit()
+    #    sierra_modem.wait_for_nvbackup()
 
     # clear the read buffer and wait a few seconds
     sierra_modem.read_result()
