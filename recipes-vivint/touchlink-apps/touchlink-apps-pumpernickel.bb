@@ -10,6 +10,7 @@ PV = "1.0.0+git${SRCPV}"
 PR = "r13"
 
 DEPENDS += " \
+	touchlink-apps \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cherrypy-native \
