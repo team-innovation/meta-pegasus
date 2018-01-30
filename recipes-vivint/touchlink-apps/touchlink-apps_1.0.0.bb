@@ -71,7 +71,7 @@ S = "${WORKDIR}"
 
 DISTRO_PR = ".1"
 
-PR = "ml109"
+PR = "ml111"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -294,6 +294,8 @@ fi
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
+# Make sure the proxies are in the list before their non-proxy counterparts
+# otherwise we end up with empty proxy packages and the build will fail
 PACKAGES = " \
 	${PN}-345d          \
     ${PN}-rf915d        \
@@ -314,6 +316,7 @@ PACKAGES = " \
 	${PN}-httpd \
 	${PN}-iod   \
 	${PN}-launcherd \
+	${PN}-modemd-proxies      \
 	${PN}-modemd          \
 	${PN}-netd  \
 	${PN}-pcamd        \

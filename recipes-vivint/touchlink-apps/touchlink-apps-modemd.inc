@@ -1,7 +1,7 @@
 ###
 ### Change MODEMD_PREPEND everytime you touch this script
 ###
-MODEMD_PREPEND = "-4"
+MODEMD_PREPEND = "-5"
 
 MODEMD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-modemd = "${PR}${MODEMD_PREPEND}${MODEMD_REVISION}"
@@ -29,6 +29,10 @@ else
     exit 1
 fi
 }
+
+FILES_${PN}-modemd-proxies = "\
+		${INSTALL_DIR}/modemd/proxies/* \
+		"
 
 FILES_${PN}-modemd = "\
 	${INSTALL_DIR}/modemd/*	\

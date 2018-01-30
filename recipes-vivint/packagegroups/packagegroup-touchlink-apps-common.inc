@@ -32,6 +32,7 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-usage-analytics \
 	touchlink-apps-utils \
 	touchlink-apps-zwaved-proxies \
+	touchlink-apps-modemd-proxies \
 	touchlink-simlock \
 	voiceaudio \
 "
