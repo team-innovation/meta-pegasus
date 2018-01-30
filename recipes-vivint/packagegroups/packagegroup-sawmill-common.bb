@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "44"
+PR = "45"
 
 inherit packagegroup
 
@@ -54,6 +54,7 @@ RDEPENDS_${PN} = " \
 	python3-threading \
 	python3-toolz \
 	python3-numbers \
+	pv \
 	speedtest-cli \
 	sqlite3 \
 	touchlink-ntpsync \
@@ -66,5 +67,6 @@ RDEPENDS_${PN} = " \
 	pa-test \
 	wps-sh \
 	xdelta3 \
+	xz \
     touchlink-maxtouch-config \
 "
