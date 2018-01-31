@@ -5,7 +5,7 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/client.ovpn;md5=4ec0aaeea1e6465b1e3da43a862f89e3"
 PRIORITY = "optional"
 
-PR = "r20"
+PR = "r21"
 
 SRC_URI = "https://github.com/OpenVPN/easy-rsa/releases/download/${PV}/EasyRSA-${PV}.tgz \
 		   file://vivint.patch \
