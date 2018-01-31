@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 image=$1
 
@@ -31,12 +31,15 @@ then
 fi
 
 # check for wrong rootfs image
-if [[ $image == *"slimline-qt5-image-imx6dl-slimline-"*"rootfs.tar.bz2" ]]
+path=( $(echo $image | tr "/" "\n") )
+last_element=${path[${#path[@]}-1]}
+
+if [[ $last_element == *"slimline-qt5-image-imx6dl-slimline-"*"rootfs.tar.bz2" ]]
 then
-	echo "GOOD image name for a Glance - $image"
+	echo "GOOD image name for a Glance - $last_element"
 else
 	echo ""
-	echo "   BAD image name for a Glance - WHAT WENT WRONG? - $image"
+	echo "   BAD image name for a Glance - WHAT WENT WRONG? - $last_element"
 	echo ""
 	exit 7
 fi
