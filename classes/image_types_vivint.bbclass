@@ -66,8 +66,23 @@ export SECTOR_SIZE = "512"
 # 2) /proc/partitions reports
 #   179        0    7634944 mmcblk0
 #   7634944/1024 == 7456MiB
-# go with smallest to be safe
-export IMAGESZ = "7454MiB"
+#
+# newer parts report smaller sizes
+# 1) kernel reports size as 7.12GiB
+#   == 7.12*1024MiB == 7290.88
+#   round down to next 2MiB size
+#   7290MiB
+# 2) /proc/partitions reports
+#   179        0    7471104 mmcblk0
+#   7471104/1024 == 7296MiB
+#
+# to be safe let's assume the part can be
+# 10% smaller than its spec size in MB or
+# 8*1000*1000*.9/(1024*1024)
+# == 6.866GiB
+# == 7031.25MiB
+# round down to 7000MiB
+export IMAGESZ = "7000MiB"
 
 # disk and partition sizes; could change but changes in other places
 # may be necessary
