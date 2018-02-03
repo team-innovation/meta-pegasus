@@ -53,6 +53,7 @@ do_compile() {
 	cp -L ${tmpdir}/boot/imx6dl-wallsly*.dtb  ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/boot.scr ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/usb-reflash-boot.scr ${tmpdir}/staging/
+	cp -L ${tmpdir}/boot/binshell-boot.scr ${tmpdir}/staging/
 
 	# copy from staging area to files directory in mfgtool tree
 	cp ${tmpdir}/staging/* ${ddir}/mfgtool/Profiles/Linux/OS\ Firmware/files/

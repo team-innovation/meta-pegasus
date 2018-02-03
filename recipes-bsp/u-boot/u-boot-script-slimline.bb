@@ -7,6 +7,7 @@ LICENSE = "Closed"
 DEPENDS = "u-boot-mkimage-native"
 UBOOT_SCRIPT = "boot.scr"
 USB_REFLASH_SCRIPT = "usb-reflash-boot.scr"
+BOOT_SHELL_SCRIPT = "binshell-boot.scr"
 SCR_MNT = "/media/bootscript"
 
 COMPATIBLE_MACHINE = "imx6dl-slimline"
@@ -40,6 +41,10 @@ do_mkimage () {
 		-n 'slimline bootscript' \
 		-d ${S}/board/vivint/mx6dlslimline/usb-reflash-boot.txt \
 		${S}/${USB_REFLASH_SCRIPT}
+	uboot-mkimage -A arm -O linux -T script -C none -a 0 -e 0 \
+		-n 'slimline bootscript' \
+		-d ${S}/board/vivint/mx6dlslimline/binshell-boot.txt \
+		${S}/${BOOT_SHELL_SCRIPT}
 }
 
 addtask mkimage after do_compile before do_install
@@ -50,12 +55,16 @@ do_deploy () {
             ${DEPLOYDIR}/${UBOOT_SCRIPT}-${MACHINE}-${PV}-${PR}
     install ${S}/${USB_REFLASH_SCRIPT} \
             ${DEPLOYDIR}/${USB_REFLASH_SCRIPT}-${MACHINE}-${PV}-${PR}
+    install ${S}/${BOOT_SHELL_SCRIPT} \
+            ${DEPLOYDIR}/${BOOT_SHELL_SCRIPT}-${MACHINE}-${PV}-${PR}
 
     cd ${DEPLOYDIR}
     rm -f ${UBOOT_SCRIPT}-${MACHINE}
     rm -f ${USB_REFLASH_SCRIPT}-${MACHINE}
+    rm -f ${BOOT_SHELL_SCRIPT}-${MACHINE}
     ln -sf ${UBOOT_SCRIPT}-${MACHINE}-${PV}-${PR} ${UBOOT_SCRIPT}-${MACHINE}
     ln -sf ${USB_REFLASH_SCRIPT}-${MACHINE}-${PV}-${PR} ${USB_REFLASH_SCRIPT}-${MACHINE}
+    ln -sf ${BOOT_SHELL_SCRIPT}-${MACHINE}-${PV}-${PR} ${BOOT_SHELL_SCRIPT}-${MACHINE}
 }
 
 addtask deploy after do_install before do_build
@@ -64,6 +73,7 @@ do_install () {
 	install -d ${D}/boot
 	install ${S}/${UBOOT_SCRIPT} ${D}/boot/${UBOOT_SCRIPT}
 	install ${S}/${USB_REFLASH_SCRIPT} ${D}/boot/${USB_REFLASH_SCRIPT}
+	install ${S}/${BOOT_SHELL_SCRIPT} ${D}/boot/${BOOT_SHELL_SCRIPT}
 }
 
 do_configure[noexec] = "1"

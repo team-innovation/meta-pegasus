@@ -387,4 +387,21 @@
     <CMD state="BootStrap" type="jump" > Jumping to OS image. </CMD>
   </LIST>
 
+  <LIST name="Wallsly-v6-Boot-to-shell" desc="Boot Wallsly to shell in initramfs">
+    <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot-wallsly.imx">Loading U-boot</CMD>
+
+    <CMD state="BootStrap" type="load" file="files/binshell-boot.scr" address="0x11000000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Bootscript.</CMD>
+
+    <CMD state="BootStrap" type="load" file="files/zImage" address="0x12000000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Kernel.</CMD>
+
+    <CMD state="BootStrap" type="load" file="files/sly-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot" address="0x12C00000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Initramfs.</CMD>
+
+    <CMD state="BootStrap" type="load" file="files/imx6dl-wallsly-v6-ldo.dtb" address="0x18000000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading device tree.</CMD>
+
+    <CMD state="BootStrap" type="jump" >Jumping to OS image.</CMD>
+  </LIST>
 </UCL>
