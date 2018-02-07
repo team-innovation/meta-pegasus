@@ -34,7 +34,7 @@ fi
 path=( $(echo $image | tr "/" "\n") )
 last_element=${path[${#path[@]}-1]}
 
-if [[ $last_element == *"slimline-qt5-image-imx6dl-slimline-"*"rootfs.tar.bz2" ]]
+if [[ $last_element == *"slimline-qt5-image-imx6dl-slimline"*".tar.bz2" ]]
 then
 	echo "GOOD image name for a Glance - $last_element"
 else

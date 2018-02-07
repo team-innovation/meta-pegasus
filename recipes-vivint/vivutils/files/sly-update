@@ -35,14 +35,14 @@ fi
 path=( $(echo $image | tr "/" "\n") )
 last_element=${path[${#path[@]}-1]}
 
-if [[ $last_element == *"sly-qt5-image-imx6dl-slimline-"*"rootfs.tar.bz2" ]]
+if [[ $last_element == *"sly-qt5-image-imx6dl-slimline"*".tar.bz2" ]]
 then
 	echo "GOOD image name for a SmartHub - $last_element"
 else
 	echo ""
 	echo "   BAD image name for a SmartHub - WHAT WENT WRONG? - $last_element"
 	echo ""
-	#exit 7
+	exit 7
 fi
 
 # first check for a roughly reasonable image size -> 135722003 Jun  3 16:19 sly-qt5-image-imx6dl-slimline.tar.bz2 
