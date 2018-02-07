@@ -31,7 +31,7 @@ do_install_append() {
    rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/__pycache__/site.cpython-33.pyc
    rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/site.py
    rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/setuptools.pth
-   rm -f ${D}/${bindir}/easy_install-3.3
+   rm -f ${D}/${bindir}/easy_install-3.5
 }
 
 SRC_URI[md5sum] = "4d3ad0ff07b61373d2cefc89c5d0b20b"

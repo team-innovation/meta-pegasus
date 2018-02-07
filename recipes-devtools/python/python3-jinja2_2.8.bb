@@ -13,10 +13,10 @@ file://fixup_decimal_dependency.patch \
 
 S = "${WORKDIR}/Jinja2-${PV}"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 do_install_prepend() {
-    install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
+    install -d ${D}${libdir}/${PYTHON_DIR}/site-packages
 }
 
 SRC_URI[md5sum] = "edb51693fe22c53cee5403775c71a99e"

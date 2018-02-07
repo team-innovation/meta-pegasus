@@ -15,7 +15,7 @@ touchlink-adt-issserver-firmware \
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/adtd/
         ${RSYNC_CMD} ${S}/code/adtd/ ${D}/${INSTALL_DIR}/adtd/
-        chmod +x ${D}/${INSTALL_DIR}/adtd/adtd.pyo
+        chmod +x ${D}/${INSTALL_DIR}/adtd/adtd.pyc
 }
 
 FILES_${PN}-adtd = "\

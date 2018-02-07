@@ -9,7 +9,7 @@ PKGR_${PN}-mmpd = "${PR}${MMPD_PREPEND}${MMPD_REVISION}"
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/mmpd/
 	${RSYNC_CMD} ${S}/code/mmpd/ ${D}/${INSTALL_DIR}/mmpd/
-	chmod +x ${D}/${INSTALL_DIR}/mmpd/mmpd.pyo
+	chmod +x ${D}/${INSTALL_DIR}/mmpd/mmpd.pyc
 }
 
 FILES_${PN}-mmpd = "\

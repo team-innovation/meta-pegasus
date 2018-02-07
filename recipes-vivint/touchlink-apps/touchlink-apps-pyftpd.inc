@@ -13,7 +13,7 @@ RDEPENDS_${PN}-pyftpd = "\
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/pyftpd/
 	${RSYNC_CMD} ${S}/code/pyftpd/ ${D}/${INSTALL_DIR}/pyftpd/
-	chmod +x ${D}/${INSTALL_DIR}/pyftpd/pyftpd.pyo
+	chmod +x ${D}/${INSTALL_DIR}/pyftpd/pyftpd.pyc
 }
 
 

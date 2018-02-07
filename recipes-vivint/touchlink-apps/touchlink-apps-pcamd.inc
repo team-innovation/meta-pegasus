@@ -20,7 +20,7 @@ do_compile_prepend() {
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/pcamd/
 	${RSYNC_CMD} ${S}/code/pcamd/ ${D}/${INSTALL_DIR}/pcamd/
-	chmod +x ${D}/${INSTALL_DIR}/pcamd/pcamd.pyo
+	chmod +x ${D}/${INSTALL_DIR}/pcamd/pcamd.pyc
 
 	# pcamd library and binary
 	install -d ${D}/${INSTALL_DIR}/lib

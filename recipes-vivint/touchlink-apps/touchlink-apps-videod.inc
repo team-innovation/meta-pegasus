@@ -9,7 +9,7 @@ PKGR_${PN}-videod = "${PR}${VIDEOD_PREPEND}${VIDEOD_REVISION}"
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/videod/
 	${RSYNC_CMD} ${S}/code/videod/ ${D}/${INSTALL_DIR}/videod/
-	chmod +x ${D}/${INSTALL_DIR}/videod/videod.pyo
+	chmod +x ${D}/${INSTALL_DIR}/videod/videod.pyc
 }
 
 

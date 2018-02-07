@@ -12,7 +12,7 @@ PKGR_${PN}-cloudd = "${PR}${CLOUDD_PREPEND}${CLOUDD_REVISION}"
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/cloudd/
 	${RSYNC_CMD} ${S}/code/cloudd/ ${D}/${INSTALL_DIR}/cloudd/
-	chmod +x ${D}/${INSTALL_DIR}/cloudd/cloudd.pyo
+	chmod +x ${D}/${INSTALL_DIR}/cloudd/cloudd.pyc
 }
 
 FILES_${PN}-cloudd = "\

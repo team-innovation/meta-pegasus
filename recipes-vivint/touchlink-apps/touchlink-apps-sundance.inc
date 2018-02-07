@@ -25,7 +25,7 @@ RDEPENDS_${PN}-sundance = "\
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/sundance/
         ${RSYNC_CMD} ${S}/code/sundance/ ${D}/${INSTALL_DIR}/sundance/
-        chmod +x ${D}/${INSTALL_DIR}/sundance/sundance.pyo
+        chmod +x ${D}/${INSTALL_DIR}/sundance/sundance.pyc
 }
 
 pkg_postinst_${PN}-sundance () {

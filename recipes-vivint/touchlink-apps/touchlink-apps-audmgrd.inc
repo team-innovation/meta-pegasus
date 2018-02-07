@@ -23,7 +23,7 @@ do_compile_prepend() {
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/audmgrd/
         ${RSYNC_CMD} ${S}/code/audmgrd/ ${D}/${INSTALL_DIR}/audmgrd/
-        chmod +x ${D}/${INSTALL_DIR}/audmgrd/audmgrd.pyo
+        chmod +x ${D}/${INSTALL_DIR}/audmgrd/audmgrd.pyc
         install -d ${D}/${INSTALL_DIR}/lib
         cp -a ${S}/code/audmgrd/libaudio/libaudio.so ${D}/${INSTALL_DIR}/lib
 }

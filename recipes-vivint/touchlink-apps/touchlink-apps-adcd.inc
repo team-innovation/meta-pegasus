@@ -13,7 +13,7 @@ RDEPENDS_${PN}-adcd = "\
 do_install_append(){
 	install -d ${D}/${INSTALL_DIR}/adcd/
         ${RSYNC_CMD} ${S}/code/adcd/ ${D}/${INSTALL_DIR}/adcd/
-        chmod +x ${D}/${INSTALL_DIR}/adcd/adcd.pyo
+        chmod +x ${D}/${INSTALL_DIR}/adcd/adcd.pyc
 
 	# fix up libadc
 	rm -f ${D}/${INSTALL_DIR}/adcd/libadc/libskytelLibrary.so

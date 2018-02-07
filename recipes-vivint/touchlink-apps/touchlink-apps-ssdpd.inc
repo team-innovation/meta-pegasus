@@ -9,7 +9,7 @@ PKGR_${PN}-ssdpd = "${PR}${SSDPD_PREPEND}${SSDPD_REVISION}"
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/ssdpd/
 	${RSYNC_CMD} ${S}/code/ssdpd/ ${D}/${INSTALL_DIR}/ssdpd/
-	chmod +x ${D}/${INSTALL_DIR}/ssdpd/ssdpd.pyo
+	chmod +x ${D}/${INSTALL_DIR}/ssdpd/ssdpd.pyc
 }
 
 FILES_${PN}-ssdpd = "\

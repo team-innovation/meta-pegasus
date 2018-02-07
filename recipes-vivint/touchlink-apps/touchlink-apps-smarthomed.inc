@@ -9,7 +9,7 @@ PKGR_${PN}-smarthomed = "${PR}${SMARTHOMED_PREPEND}${SMARTHOMED_REVISION}"
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/smarthomed/
 	${RSYNC_CMD} ${S}/code/smarthomed/ ${D}/${INSTALL_DIR}/smarthomed/
-	chmod +x ${D}/${INSTALL_DIR}/smarthomed/smarthomed.pyo
+	chmod +x ${D}/${INSTALL_DIR}/smarthomed/smarthomed.pyc
 }
 
 pkg_postinst_${PN}-smarthomed () {
