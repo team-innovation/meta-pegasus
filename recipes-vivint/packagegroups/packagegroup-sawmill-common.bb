@@ -28,7 +28,6 @@ RDEPENDS_${PN} = " \
 	python3-importlib \
 	python3-intelhex \
 	python3-jinja2 \
-	python3-jinja2-native \
 	python3-json \
 	python3-markupsafe \
 	python3-math \
