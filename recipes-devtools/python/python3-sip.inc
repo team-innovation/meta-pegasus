@@ -15,7 +15,7 @@ S = "${WORKDIR}/sip-${PV}"
 
 TARGET_CC_ARCH += "${LDFLAGS}"
 
-inherit distutils3-base
+inherit distutils3-base python3-dir
 
 EXTRA_QMAKEVARS_POST += " TEMPLATE=lib \
                          CONFIG=console \

@@ -14,7 +14,6 @@ RDEPENDS_${PN} = "\
   python-distutils \
   python-compression \
   python-pkgutil \
-  python-plistlib \
   python-numbers \
   python-html \
   python-netserver \

@@ -114,7 +114,7 @@ DEPENDS = " \
 	python3-dateutil-native \
 	python3-gnupg-native \
 	python3-intelhex-native \
-	python3-jinja2 \
+	python3-jinja2-native \
 	python3-markupsafe-native \
 	python3-mixpanel-native \
 	python3-mock-native \

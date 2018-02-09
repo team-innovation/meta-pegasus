@@ -14,7 +14,7 @@ file://fixup_decimal_dependency.patch \
 
 S = "${WORKDIR}/Jinja2-${PV}"
 
-inherit native setuptools3
+inherit native setuptools3 python3-dir
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages

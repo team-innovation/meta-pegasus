@@ -12,7 +12,7 @@ SRC_URI = "http://pypi.python.org/packages/p/pytz/pytz-${PV}.zip \
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 RDEPENDS_${PN} = "\
   python3-core \
