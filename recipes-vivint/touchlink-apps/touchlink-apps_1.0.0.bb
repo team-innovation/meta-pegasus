@@ -67,11 +67,9 @@ require touchlink-apps-sounds-wav-vocab.inc
 # pyftpd daemon
 require touchlink-apps-pyftpd.inc
 
-S = "${WORKDIR}"
-
 DISTRO_PR = ".1"
 
-PR = "ml111"
+PR = "ml113"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -136,7 +134,13 @@ DEPENDS = " \
 	python3-sparsedict-native \
 	python3-phue-native \
 	python3-paho-mqtt-native \
+	python3-nose-native \
+	python3-coverage-native \
+	python3-cachetools-native \
+	python3-pysodium-native \
+	libsodium-native \
 "
+
 
 
 RDEPENDS_${PN} = "\
@@ -182,29 +186,24 @@ do_compile() {
 	# generate .pyc files
 	python3 -O -mcompileall -b -x docs -d${INSTALL_DIR} ${S}/code
 
-#	skip="false"
-#	# running  only run test on build machine
-#	if [ -z ${SLIMLINE_VERSION} ] ; then
-#		bbnote "Skip test and doc build"
-#		skip="true"
-#	else
-#		export PYTHONPATH=${S}/code/framework
-#		if [ -e /usr/local/bin/nosetests-3.3 ]; then
-#			nosetests_bin="/usr/local/bin/nosetests-3.3"
-#		elif [ -e /usr/local/bin/nosetests-3.2 ]; then
-#			nosetests_bin="/usr/local/bin/nosetests-3.2"
-#		else
-#			nosetests_bin="nosetests"
-#		fi
-#
-#	fi
-#
-#	if [ ${skip} = "false" ]; then
-#		${S}/scripts/python_test_coverage.py --nosetests ${nosetests_bin}
-#
-#	   	# building documentation
-#		make -C ${S}/docs html
-#	fi
+	skip="false"
+	# running  only run test on build machine
+	if [ -z ${UPDATE_STRING_TABLE} ] || [ ${BY_PASS_UNIT_TEST} ] ; then
+		bbnote "Skip test and doc build"
+		skip="true"
+	else
+		export PYTHONPATH=${STAGING_DIR}/${BUILD_SYS}/usr/lib/${PYTHON_DIR}/site-packages
+		nosetests_bin="${STAGING_DIR}/${BUILD_SYS}/usr/bin/nosetests-3.3"
+
+	fi
+
+	if [ ${skip} = "false" ]; then
+		set -x
+		${S}/scripts/python_test_coverage.py --nosetests ${nosetests_bin}
+
+	   	# building documentation
+		#make -C ${S}/docs html
+	fi
 }
 
 do_compile_append(){
