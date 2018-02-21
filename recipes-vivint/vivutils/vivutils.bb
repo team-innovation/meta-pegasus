@@ -23,6 +23,7 @@ SRC_URI = "\
 	   file://firstboot \
 	   file://firstboot-setup \
 	   file://gadgetsetup \
+	   file://hwrevset \
 	   file://bootgadgets.sh \
 	   file://mfr_audio_heat_test.py \
 	   file://mfr_audio_test.py \
@@ -34,6 +35,7 @@ SRC_URI = "\
 	   file://serialnumset \
 	   file://set-u-boot-part \
 	   file://simplesuspend \
+	   file://skunumset \
 	   file://slimline-update \
 	   file://sly-update \
 	   file://pa_info \
@@ -72,12 +74,14 @@ do_install() {
 	install -m 0755 ${S}/fcc_active_receive ${D}/usr/local/bin
 	install -m 0755 ${S}/firstboot-setup ${D}/usr/local/bin
 	install -m 0755 ${S}/gadgetsetup ${D}/usr/local/bin
+	install -m 0755 ${S}/hwrevset ${D}/usr/local/bin
 	install -m 0755 ${S}/resize ${D}/usr/local/bin
 	install -m 0755 ${S}/nfctest ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
 	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
 	install -m 0755 ${S}/set-u-boot-part ${D}/usr/local/bin
 	install -m 0755 ${S}/simplesuspend ${D}/usr/local/bin
+	install -m 0755 ${S}/skunumset ${D}/usr/local/bin
 	install -m 0755 ${S}/slimline-update ${D}/usr/local/bin
 	install -m 0755 ${S}/sly-update ${D}/usr/local/bin
 	install -m 0755 ${S}/pa_info ${D}/usr/local/bin

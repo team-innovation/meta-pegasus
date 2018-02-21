@@ -1,0 +1,114 @@
+#!/bin/bash
+#set -x
+
+DEBUG=yes
+#DEBUG=no
+QUIET=no
+SCRIPTNAME=$(basename $BASH_SOURCE)
+set -e
+
+echo "$SCRIPTNAME"
+
+BSPART=/dev/mmcblk0p3
+
+# Utility functions
+carp() {
+	echo "$SCRIPTNAME: fatalerror: $1"
+	exit 1
+}
+
+usage() {
+	carp "usage: $SCRIPTNAME no-clue?????"
+}
+
+info() {
+	test "$QUIET" == "yes" ||
+		echo "$SCRIPTNAME: $1"
+}
+
+debuginfo() {
+	test "$DEBUG" == "yes" &&
+		echo "$SCRIPTNAME: debug: $1"
+}
+
+## This script is only for a particular board
+boardcheck() {
+	grep -q vivint,slimline /proc/device-tree/compatible &&
+		return 0
+	grep -q vivint,sly /proc/device-tree/compatible &&
+		return 0
+	grep -q vivint,wallsly /proc/device-tree/compatible &&
+		return 0
+	carp "Unknown board type, exiting..."
+}
+
+#
+# The bootscript and serial number are in the bootscript partition
+#
+
+# Some functions for (un)mounting the boot script partition
+# read-only and read/write
+#
+mntbootscript()
+{
+	mount | grep -q ${BSPART} ||
+		mount ${BSPART}
+}
+
+umntbootscript()
+{
+	mount | grep -q ${BSPART} &&
+		umount ${BSPART}
+}
+
+mntbootscriptrw()
+{
+	umntbootscript || true
+	mount ${BSPART} -o rw ||
+		carp "unable to mount ${BSPART} read/write"
+}
+
+read_revnum() {
+	while true; do
+		local rawnum
+
+		read -e -p "Enter hardware revision: " rawnum
+
+		if [[ $rawnum != *.* ]];
+		then
+		    continue
+		fi
+
+	    HWREV=$rawnum
+		break
+	done
+}
+
+# prompt for a hardware revision and save it
+hwrevset() {
+	mntbootscriptrw
+
+	clear; reset
+	read_revnum
+
+	echo "${HWREV}" > /media/bootscript/hwrev.txt
+
+	umntbootscript
+	true
+}
+
+must_succeed()
+{
+	cmd=$1
+	eval "${cmd}" &&
+		info "${cmd} succeeded" &&
+		return
+	carp "${cmd} failed"
+}
+
+must_succeed boardcheck
+hwrevset
+
+info "Done setting hardware revision number"
+
+exit 0
