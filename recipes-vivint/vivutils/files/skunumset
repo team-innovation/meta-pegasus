@@ -72,11 +72,23 @@ read_sku() {
 	while true; do
 		local rawsku
 
-		read -e -p "Enter SKU: " rawsku
+		if [ -z "$1" ]
+		then
+		    read -e -p "Enter SKU (XX-XXXXXX-XXX): " rawsku
+		else
+		    rawsku=$1
+		fi
 
 		if [[ $rawsku != ??-??????-??? ]];
 		then
-		    continue
+            if [ -z "$1" ]
+            then
+                continue
+            else
+                echo "Invalid input, expected format of XX-XXXXXX-XXX"
+                SKU=""
+                return
+            fi
 		fi
 
 	    SKU=$rawsku
@@ -86,14 +98,17 @@ read_sku() {
 
 # prompt for a sku and save it
 skunumset() {
-	mntbootscriptrw
-
+  	mntbootscriptrw
 	clear; reset
-	read_sku
+	read_sku $1
 
-	echo "${SKU}" > /media/bootscript/sku.txt
+    if [ ! -z "$SKU" ]
+    then
+	    echo "${SKU}" > /media/bootscript/sku.txt
+        info "Done setting SKU"
+    fi
 
-	umntbootscript
+    umntbootscript
 	true
 }
 
@@ -107,8 +122,6 @@ must_succeed()
 }
 
 must_succeed boardcheck
-skunumset
-
-info "Done setting SKU"
+skunumset $1
 
 exit 0

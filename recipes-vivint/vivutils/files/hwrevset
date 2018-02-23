@@ -69,31 +69,47 @@ mntbootscriptrw()
 }
 
 read_revnum() {
-	while true; do
-		local rawnum
+    while true; do
+        local rawnum
 
-		read -e -p "Enter hardware revision: " rawnum
+        if [ -z "$1" ]
+        then
+            read -e -p "Enter hardware revision (X.X): " rawnum
+        else
+            rawnum=$1
 
-		if [[ $rawnum != *.* ]];
-		then
-		    continue
-		fi
+        fi
 
-	    HWREV=$rawnum
-		break
-	done
+        if [[ $rawnum != *.* ]];
+        then
+            if [ -z "$1" ]
+            then
+                continue
+            else
+                echo "Invalid input, expected format of X.X"
+                HWREV=""
+                return
+            fi
+        fi
+
+        HWREV=$rawnum
+        break
+    done
 }
 
 # prompt for a hardware revision and save it
 hwrevset() {
-	mntbootscriptrw
-
+   	mntbootscriptrw
 	clear; reset
-	read_revnum
+    read_revnum $1
 
-	echo "${HWREV}" > /media/bootscript/hwrev.txt
+    if [ ! -z "$HWREV" ]
+    then
+	    echo "${HWREV}" > /media/bootscript/hwrev.txt
+	    info "Done setting hardware revision number"
+	fi
 
-	umntbootscript
+    umntbootscript
 	true
 }
 
@@ -107,8 +123,6 @@ must_succeed()
 }
 
 must_succeed boardcheck
-hwrevset
-
-info "Done setting hardware revision number"
+hwrevset $1
 
 exit 0
