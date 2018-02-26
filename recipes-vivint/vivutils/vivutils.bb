@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r80"
+PR = "r81"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -46,6 +46,9 @@ SRC_URI = "\
 	   file://dtmf-two.wav \
 	   file://dtmf-three.wav \
 	   file://dtmf-nine.wav \
+	   file://faux-1.wav \
+	   file://faux-2.wav \
+	   file://faux-3.wav \
 	   file://wlan-hwtest \
 	   file://netm-hwtest.py \
 	   file://zwave-hwtest.py \
@@ -100,6 +103,9 @@ do_install() {
 	install -m 0644 ${S}/dtmf-two.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/dtmf-three.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/dtmf-nine.wav ${D}/usr/local/bin
+	install -m 0644 ${S}/faux-1.wav ${D}/usr/local/bin
+	install -m 0644 ${S}/faux-2.wav ${D}/usr/local/bin
+	install -m 0644 ${S}/faux-3.wav ${D}/usr/local/bin
 	install -m 0755 ${S}/genkeys ${D}/usr/local/bin
 	install -m 0755 ${S}/lockdown_panel ${D}/usr/local/bin
 	install -m 0755 ${S}/user_battery_test.py ${D}/usr/local/bin
