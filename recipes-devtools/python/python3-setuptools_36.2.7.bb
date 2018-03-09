@@ -4,7 +4,7 @@ DEPENDS += "python3"
 DEPENDS_class-native += "python3-native"
 DEPENDS_class-nativesdk += "nativesdk-python3"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 do_install_append() {
     mv ${D}${bindir}/easy_install ${D}${bindir}/easy3_install

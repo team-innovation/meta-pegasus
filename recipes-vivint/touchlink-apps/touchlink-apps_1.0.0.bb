@@ -110,9 +110,11 @@ DEPENDS = " \
 	gstreamer1.0 \
 	python3-bcrypt-native \
 	python3-cachetools \
+	python3-cachetools-native \
 	python3-cherrypy-native \
 	python3-dateutil-native \
 	python3-gnupg-native \
+	python3-grpcio-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
 	python3-markupsafe-native \

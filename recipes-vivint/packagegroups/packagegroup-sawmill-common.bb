@@ -25,6 +25,7 @@ RDEPENDS_${PN} = " \
 	python3-cachetools \
 	python3-ctypes \
 	python3-distribute \
+	python3-grpcio \
 	python3-importlib \
 	python3-intelhex \
 	python3-jinja2 \
