@@ -477,6 +477,28 @@ class SierraHL7588:
 
         return False
 
+    def check_reg_state(self):
+        try:
+            if self._serial_port:
+                self.write_command(b"AT+COPS?")
+                buffer = self.read_result()
+                buffer = buffer.decode('utf-8')
+
+                if "+COPS: 0" in buffer:
+                    # nothing more to do - we are in automatic registration state
+                    print("Modem is configured for automatic registration")
+                    return
+
+                self.write_command((b"AT+COPS=0"))
+                self.read_result()
+                print("Modem changed to automatic registration")
+            else:
+                print("Error: Serial port is not open")
+
+        except Exception as exception:
+            print("Error reading COPS state: {}".format(exception))
+            self.reset_hard()
+
 def is_upgrade_needed(current_version):
     file_version = ""
     file_list = []
@@ -606,6 +628,9 @@ if __name__ == "__main__":
 
         print("SIM1 and SIM2 have same ID {}, resetting and trying again...".format(sim1))
         sierra_modem.reset()
+
+    # Check for COPS deregistration
+    sierra_modem.check_reg_state()
 
     # Current default for 2018 is AT&T.  When we want to change the default to Verizon, uncomment
     # the following lines:
