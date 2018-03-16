@@ -31,7 +31,6 @@ do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
 }
 
-
 do_package_qa() {
     echo "Skipping QA ..."
 }
