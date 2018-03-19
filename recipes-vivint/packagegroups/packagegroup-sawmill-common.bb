@@ -22,14 +22,19 @@ RDEPENDS_${PN} = " \
 	packagegroup-sawmill-debugtools \
 	packagegroup-sawmill-min \
 	procps \
+	python3-asyncio \
 	python3-cachetools \
 	python3-ctypes \
+	python3-curses \
+	python3-gdbm \
 	python3-distribute \
 	python3-grpcio \
+	python3-idle \
 	python3-importlib \
 	python3-intelhex \
 	python3-jinja2 \
 	python3-json \
+	python3-2to3 \
 	python3-markupsafe \
 	python3-math \
 	python3-misc \
@@ -53,6 +58,7 @@ RDEPENDS_${PN} = " \
 	python3-terminal \
 	python3-textutils \
 	python3-threading \
+	python3-tkinter \
 	python3-toolz \
 	python3-numbers \
 	pv \
