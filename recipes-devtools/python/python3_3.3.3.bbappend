@@ -2,6 +2,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 PR = "r1"
 
+DEFAULT_PREFERENCE ="-1"
 #file://fix_ssl_include_dir.patch 
 
 SRC_URI += "\
@@ -34,6 +35,6 @@ do_configure() {
 }
 
 
-do_install_append() {
-	ln -s -f python3.3m ${D}/usr/include/python3.3
-}
+#do_install_append() {
+#	ln -s -f python3.3m ${D}/usr/include/python3.3
+#}

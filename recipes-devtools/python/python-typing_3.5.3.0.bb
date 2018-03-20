@@ -17,7 +17,7 @@ BBCLASSEXTEND = "native nativesdk"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 RDEPENDS_${PN} = "\
   python3-core \
@@ -28,3 +28,5 @@ RDEPENDS_${PN} = "\
   python3-ptyprocess \
 "
 RDEPENDS_${PN}_class-native = ""
+
+

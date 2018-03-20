@@ -62,5 +62,5 @@ FILES_${PN}-clients = "${bindir}/mosquitto_pub \
 
 FILES_${PN}-staticdev += "${libdir}/libmosquitto.a"
 
-FILES_${PN}-python = "/usr/lib/python3.3/site-packages"
+FILES_${PN}-python = "/usr/lib/python3.5/site-packages"
 
