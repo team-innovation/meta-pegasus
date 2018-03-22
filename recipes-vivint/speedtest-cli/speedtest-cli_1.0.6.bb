@@ -10,7 +10,7 @@ PR = "r1"
 
 DEPENDS += "python3 python3-native"
 
-inherit distutils3 python-dir
+inherit distutils3 python3-dir
 
 SRC_URI = "http://updateseng.vivint.com/innovation/downloads/speedtest-cli-1.0.6.tar.gz \
 	   file://python3.patch \

@@ -20,7 +20,7 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 do_compile_append() {
 #	oe_runmake CC="${CC}" CXX="${CXX}" LINK="${CXX}"

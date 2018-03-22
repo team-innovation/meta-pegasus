@@ -27,7 +27,7 @@ SRC_URI[sha256sum] = "1bd2ecfc3e731ff3df161716604aaccb5d945c5040c2c6e512692e3732
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 do_package_qa() {
     echo "Skipping QA ..."

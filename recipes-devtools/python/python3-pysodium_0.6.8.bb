@@ -19,4 +19,4 @@ NATIVE_INSTALL_WORKS = "1"
 
 RDEPENDS_${PN} = "libsodium"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
