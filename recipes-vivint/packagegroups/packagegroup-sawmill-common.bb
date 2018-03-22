@@ -47,6 +47,7 @@ RDEPENDS_${PN} = " \
 	python3-pexpect \
 	python3-profile \
 	python3-protobuf \
+	python3-pyftpdlib \
 	python3-pyserial \
 	python3-pyssh-ctypes \
 	python3-pyalsaaudio \
