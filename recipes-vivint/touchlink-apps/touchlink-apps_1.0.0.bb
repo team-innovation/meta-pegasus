@@ -69,7 +69,7 @@ require touchlink-apps-pyftpd.inc
 
 DISTRO_PR = ".1"
 
-PR = "ml114"
+PR = "ml113"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -138,7 +138,6 @@ DEPENDS = " \
 	python3-coverage-native \
 	python3-cachetools-native \
 	python3-pysodium-native \
-	python3-xmltodict-native \
 	libsodium-native \
 "
 
@@ -157,7 +156,6 @@ RDEPENDS_${PN} = "\
 	python3-brisa \
 	python3-sparsedict \
 	python3-phue \
-	python3-xmltodict \
 "
 
 do_compile() {

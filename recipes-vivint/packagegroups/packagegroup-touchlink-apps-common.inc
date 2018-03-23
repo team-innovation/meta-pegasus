@@ -99,7 +99,6 @@ PYTHON_EXTRA_DEPENDS = "\
 	python3-soco \
 	python3-sparsedict \
 	python3-phue \
-	python3-xmltodict \
 "
 
 RDEPENDS_${PN} = " \

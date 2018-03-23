@@ -1,20 +1,21 @@
-DESCRIPTION = "Makes working with XML feel like you are working with JSON"
-AUTHOR = "Martin Blech"
-HOMEPAGE = "https://github.com/martinblech/xmltodict"
+DESCRIPTION = "Python xmltodict"
 SECTION = "devel/python"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=01441d50dc74476db58a41ac10cb9fa2"
+PR = "r1"
+SRCNAME = "xmltodict"
 
-PR = "r0"
+SRC_URI = "https://pypi.python.org/packages/4a/5e/cd36c16c9eca47162fbbea9aa723b9ab3010f9ae9d4be5c9f6cb2bc147ab/xmltodict-0.10.2.tar.gz \
+	   "
 
-inherit setuptools3
+SRC_URI[md5sum] = "1275cbb2e66c354eb2b6a6bc946f3fa1"
+SRC_URI[sha256sum] = "fc518ccf9adbbb917a2ddcb386be852ae6dd36935e1e8b9a3e760201abfdbf77"
 
-SRC_URI = "git://github.com/martinblech/xmltodict.git"
-SRCREV = "d19b49a59987f4a5cd348dd50aa5b24dbd655670"
-
-S = "${WORKDIR}/git"
+S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
 
-NATIVE_INSTALL_WORKS = "1" 
+NATIVE_INSTALL_WORKS = "1"
+
+inherit setuptools3
