@@ -138,7 +138,7 @@ DEPENDS = " \
 	python3-coverage-native \
 	python3-cachetools-native \
 	python3-pysodium-native \
-	python3-xmltodict \
+	python3-xmltodict-native \
 	libsodium-native \
 "
 
