@@ -86,7 +86,7 @@ class SierraHL7588:
         self._serial_port.write(b"\r")
         self._serial_port.flush()
 
-    def read_result(self, retry=True):
+    def read_result(self, retry=True, timeout=5):
         try:
             command_buffer = self._serial_port.read(len(self._last_command) + 1)
 
@@ -96,10 +96,10 @@ class SierraHL7588:
             #else:
             #    print("ECHO command {}".format(command_buffer))
 
-            # now try another read - if we don't get anything wait up to 5 seconds
+            # now try another read - if we don't get anything wait up to timeout seconds
             now = time.time()
             result_buffer = b""
-            while len(result_buffer) == 0 and (time.time() - now) < 5:
+            while len(result_buffer) == 0 and (time.time() - now) < timeout:
 
                 while self._serial_port.inWaiting() > 0:
                     result_buffer += self._serial_port.read()
@@ -481,7 +481,7 @@ class SierraHL7588:
         try:
             if self._serial_port:
                 self.write_command(b"AT+COPS?")
-                buffer = self.read_result()
+                buffer = self.read_result(timeout=30)
                 buffer = buffer.decode('utf-8')
 
                 if "+COPS: 0" in buffer:
