@@ -481,7 +481,7 @@ class SierraHL7588:
         try:
             if self._serial_port:
                 self.write_command(b"AT+COPS?")
-                buffer = self.read_result(timeout=30)
+                buffer = self.read_result()
                 buffer = buffer.decode('utf-8')
 
                 if "+COPS: 0" in buffer:
@@ -490,7 +490,7 @@ class SierraHL7588:
                     return
 
                 self.write_command((b"AT+COPS=0"))
-                self.read_result()
+                self.read_result(timeout=30)
                 print("Modem changed to automatic registration")
             else:
                 print("Error: Serial port is not open")
