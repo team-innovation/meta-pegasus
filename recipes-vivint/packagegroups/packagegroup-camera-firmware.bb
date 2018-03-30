@@ -3,7 +3,7 @@
 DESCRIPTION = "packages for touchlink firmware"
 LICENSE = "MIT"
 
-PR = "r6"
+PR = "r8"
 
 inherit packagegroup
 
@@ -16,6 +16,7 @@ RDEPENDS_${PN} += " \
 	touchlink-vivotek-firmware-hd400w \
 	touchlink-vivotek-vadp \
 	touchlink-vivotek-vadp-rossini \
+	touchlink-vivotek-vadp-rossini-hawxeye \
 	touchlink-vivotek-vadp-rossini-crimson \
 	touchlink-vivotek-vadp-rossini-crimson-odc \
 "
