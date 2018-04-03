@@ -81,29 +81,6 @@ then
 	exit 5
 fi
 
-# moving network conf file
-media_extra_network_conf_dir="/media/extra/conf/network"
-etc_network_wireless_conf="/etc/network/wireless.conf"
-media_extra_network_wireless_conf="$media_extra_network_conf_dir/wireless.conf"
-etc_wpa_supplicant_conf="/etc/network/wpa_supplicant_wireless.conf"
-media_extra_wpa_supplicant_conf="$media_extra_network_conf_dir/wpa_supplicant_wireless.conf"
-
-mkdir -p $media_extra_network_conf_dir
-
-if [ ! -h $etc_network_wireless_conf ]
-then
-    echo "Moving wireless.conf to $media_extra_network_conf_dir"
-    cp $etc_network_wireless_conf $media_extra_network_wireless_conf
-    ln -sf $media_extra_network_wireless_conf $n_partition/etc/network/wireless.conf
-fi
-
-if [ ! -h $etc_wpa_supplicant_conf ]
-then
-    echo "Moving wpa_supplicant_wireless.conf to $media_extra_network_conf_dir"
-    cp $etc_wpa_supplicant_conf $media_extra_wpa_supplicant_conf
-    ln -sf $media_extra_wpa_supplicant_conf $n_partition/etc/network/wpa_supplicant_wireless.conf
-fi
-
 echo "Switching boot partition.."
 bootnum=$(fw_printenv bootnum | cut -d= -f2)
 
