@@ -77,7 +77,7 @@ then
 	echo "Preparing to install $imagepath on $dev_partition bootnum=2"
 else
 	echo "Can't find file system partition"
-	exit 5
+	exit 4
 fi
 
 echo "Creating ext4 filesystem on $dev_partition"
