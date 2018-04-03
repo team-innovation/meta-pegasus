@@ -57,7 +57,7 @@ echo "Minimum Size:       $mini_size"
 if [[ $file_size -lt  $mini_size ]]
 then
 	echo "Image $imagepath looks too small and is probably corrupt..."
-	#exit 4
+	#exit 8
 fi
 
 echo "Installing..."
