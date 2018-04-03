@@ -123,6 +123,7 @@ DEPENDS = " \
 	python3-msgpack-native \
 	python3-native \
 	python3-pexpect-native \
+	python3-protobuf-native \
 	python3-ptyprocess-native \
 	python3-psutil-native \
 	python3-pyalsaaudio-native \
