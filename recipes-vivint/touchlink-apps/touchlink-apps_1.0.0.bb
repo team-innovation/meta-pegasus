@@ -56,13 +56,7 @@ require touchlink-apps-qml-framework-images.inc
 
 # Sound stuffs
 
-require touchlink-apps-sounds-wav-abs.inc  
-require touchlink-apps-sounds-wav-beeps.inc
 require touchlink-apps-sounds-wav-chimes.inc
-require touchlink-apps-sounds-wav-pauses.inc
-require touchlink-apps-sounds-wav-ad.inc   
-require touchlink-apps-sounds-wav-dtmf.inc   
-require touchlink-apps-sounds-wav-vocab.inc
 
 # pyftpd daemon
 require touchlink-apps-pyftpd.inc
@@ -340,12 +334,6 @@ PACKAGES = " \
 	${PN}-listenerd-proxies      \
 	${PN}-smarthomed      \
 	${PN}-listenerd      \
-	${PN}-sound-wav-abs \
-	${PN}-sound-wav-ad \
-	${PN}-sound-wav-beeps \
 	${PN}-sound-wav-chimes \
-	${PN}-sound-wav-dtmf \
-	${PN}-sound-wav-pauses \
-	${PN}-sound-wav-vocab	\
 	${PN} \
 "
