@@ -1,0 +1,13 @@
+diff --git a/phue.py b/phue.py
+index 07079fb..02a40d7 100755
+--- a/phue.py
++++ b/phue.py
+@@ -702,7 +702,7 @@ class Bridge(object):
+ 
+     def register_app(self):
+         """ Register this computer with the Hue bridge hardware and save the resulting access token """
+-        registration_request = {"devicetype": "python_hue"}
++        registration_request = {"devicetype": "vivint_smart_home"}
+         response = self.request('POST', '/api', registration_request)
+         for line in response:
+             for key in line:

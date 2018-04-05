@@ -4,8 +4,8 @@ image=$1
 
 if [[ `uname -a |cut -d' ' -f2` != "imx6dl-slimline" ]]
 then
-    echo "This is not Glance, quickie update refused!"
-    exit 6
+	echo "This is not Glance, quickie update refused!"
+	exit 6
 fi
 
 if [[ $image == "help" ]]
@@ -16,10 +16,10 @@ fi
 
 if [[ -z $image ]]
 then
-    echo "No image was specified. Please get an image from the update server and copy it to your panel."
-    echo "    http://updateseng.vivint.com/innovation/packages/branches/<version>/<build>/slimline-qt5-image-imx6dl-slimline-<version>.<build>.rootfs.tar.bz2 "
-    echo "Usage: $0 help|path_to_image_file"
-    exit 2
+	echo "No image was specified. Please get an image from the update server and copy it to your panel."
+	echo "    http://updateseng.vivint.com/innovation/packages/branches/<version>/<build>/slimline-qt5-image-imx6dl-slimline-<version>.<build>.rootfs.tar.bz2 "
+	echo "Usage: $0 help|path_to_image_file"
+	exit 2
 else
 	imagepath=`readlink -f $image`
 fi
@@ -34,7 +34,7 @@ fi
 path=( $(echo $image | tr "/" "\n") )
 last_element=${path[${#path[@]}-1]}
 
-if [[ $last_element == *"slimline-qt5-image-imx6dl-slimline-"*"rootfs.tar.bz2" ]]
+if [[ $last_element == *"slimline-qt5-image-imx6dl-slimline"*".tar.bz2" ]]
 then
 	echo "GOOD image name for a Glance - $last_element"
 else
@@ -49,16 +49,16 @@ echo "Installing..."
 # install and switch to new installation
 c_partition=$(cat /proc/cmdline | cut -d= -f3 | cut -d' ' -f1)
 
-if [[ $c_partition == '/dev/mmcblk0p6' ]] 
+if [[ $c_partition == '/dev/mmcblk0p6' ]]
 then
 	n_partition=/media/mmcblk0p5
 	dev_partition=/dev/mmcblk0p5
-	echo "Preparing to install $image on $dev_partition bootnum=1"
+	echo "Preparing to install $imagepath on $dev_partition bootnum=1"
 elif [[ $c_partition == '/dev/mmcblk0p5' ]]
 then
 	n_partition=/media/mmcblk0p6
 	dev_partition=/dev/mmcblk0p6
-	echo "Preparing to install $image on $dev_partition bootnum=2"
+	echo "Preparing to install $imagepath on $dev_partition bootnum=2"
 else
 	echo "Can't find file system partition"
 	exit 4
@@ -71,37 +71,14 @@ mkfs.ext4 -E nodiscard $dev_partition
 echo "Mounting $dev_partition..."
 mount $dev_partition $n_partition
 
-echo "Untar $image to $n_partition"
-tar -C $n_partition -xvjf $image
+echo "Untar $imagepath to $n_partition"
+tar -C $n_partition -xvjf $imagepath
 
 if [[ $? -ne 0 ]]
 then
-    echo "FAILED to extract files..."
-    echo "ABORT update..."
-    exit 5
-fi
-
-# moving network conf file
-media_extra_network_conf_dir="/media/extra/conf/network"
-etc_network_wireless_conf="/etc/network/wireless.conf"
-media_extra_network_wireless_conf="$media_extra_network_conf_dir/wireless.conf"
-etc_wpa_supplicant_conf="/etc/network/wpa_supplicant_wireless.conf"
-media_extra_wpa_supplicant_conf="$media_extra_network_conf_dir/wpa_supplicant_wireless.conf"
-
-mkdir -p $media_extra_network_conf_dir
-
-if [ ! -h $etc_network_wireless_conf ]
-then
-    echo "Moving wireless.conf to $media_extra_network_conf_dir"
-    cp $etc_network_wireless_conf $media_extra_network_wireless_conf
-    ln -sf $media_extra_network_wireless_conf $n_partition/etc/network/wireless.conf
-fi
-
-if [ ! -h $etc_wpa_supplicant_conf ]
-then
-    echo "Moving wpa_supplicant_wireless.conf to $media_extra_network_conf_dir"
-    cp $etc_wpa_supplicant_conf $media_extra_wpa_supplicant_conf
-    ln -sf $media_extra_wpa_supplicant_conf $n_partition/etc/network/wpa_supplicant_wireless.conf
+	echo "FAILED to extract files..."
+	echo "ABORT update..."
+	exit 5
 fi
 
 echo "Switching boot partition.."
@@ -110,10 +87,10 @@ bootnum=$(fw_printenv bootnum | cut -d= -f2)
 echo 0 > /sys/block/mmcblk0boot1/force_ro
 
 if [[ $bootnum -eq 1 ]]
-then 
+then
 	fw_setenv bootnum 2
 elif [[ $bootnum -eq 2 ]]
-then 
+then
 	fw_setenv bootnum 1
 else
 	echo "Uh Oh, blindly setting bootnum to 2."
@@ -126,3 +103,4 @@ echo "Done, Rebooting..."
 reboot
 
 exit 0
+

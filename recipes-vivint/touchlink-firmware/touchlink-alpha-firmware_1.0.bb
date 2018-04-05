@@ -2,16 +2,16 @@ DESCRIPTION = "Alpha Network video camera firmware"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
 
-FIRMWARE_CS6022_OV4689 = "update_CS-6022_1.1.1_422.bin"
+FIRMWARE_CS6022_OV4689 = "update_CS-6022_1.1.1_437.bin"
 FIRMWARE_DIR = "/var/lib/firmware/AlphaNetwork"
 
 SRC_URI = "http://${UPDATESENG}/camera_firmwares/Alpha/${FIRMWARE_CS6022_OV4689}"
 
-SRC_URI[md5sum] = "7adc9c49b758bdf1a9d1806a75579852"
-SRC_URI[sha256sum] = "4e27513b2ac699a604b76568f055cc9d1f986384077eafced1c11dbc27c23c23"
+SRC_URI[md5sum] = "0bb5d07adf06546c28fd723ff1896c11"
+SRC_URI[sha256sum] = "fca03aa115a0d8f8e6a5657c3310f4b92194e9bc6e768a644033c845b2da25f3"
 
 PV_prepend = "1"
-PKGR_${PN}-cs6022-ov4689 = "${PR}.57"
+PKGR_${PN}-cs6022-ov4689 = "${PR}.58"
 
 do_compile() {
      :

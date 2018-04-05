@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo 1 > /sys/class/i2c-dev/i2c-3/device/3-0034/backlights/bl_backlight_blank
+echo 1 > /dev/vivint/psoc/backlights/bl_backlight_blank
 export FB_MULTI_BUFFER=2
 qmlfile=/tmp/touchtest.qml
 

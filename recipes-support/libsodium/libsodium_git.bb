@@ -19,3 +19,5 @@ S = "${WORKDIR}/git"
 RPROVIDES_${PN} = "libsodium18"
 
 inherit autotools
+
+BBCLASSEXTEND = "native"
