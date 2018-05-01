@@ -155,6 +155,27 @@ RDEPENDS_${PN} = "\
 
 do_compile() {
 
+        #verify that the syntax for all JSON files in embedded-apps is correct
+        set +e
+        json_files=$(find ${S} -name "*.json")
+        any_json_syntax_failures="no"
+        for json_file in ${json_files[@]}; do
+                json_verify_message=$(python3 ${S}/code/utils/verify_json_syntax.py --json-file=$json_file)
+                json_verify_error_flag=$?
+                if [ "$json_verify_error_flag" = "1" ]; then
+                        echo $json_verify_message
+                        any_json_syntax_failures="yes"
+                elif [ ! "$json_verify_error_flag" = "0" ]; then
+                        set -e
+                        echo $json_verify_message
+                        exit $json_verify_error_flag
+                fi
+        done
+        set -e
+        if [ "$any_json_syntax_failures" = "yes" ]; then
+                exit 1
+        fi
+
 	# generate proxies
 	if [ ${UPDATE_STRING_TABLE} ] ; then
 			bbnote "This is a buildbot build"
