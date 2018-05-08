@@ -60,7 +60,7 @@ RDEPENDS_${PN} = " \
 	gstreamer-imx-imxvpu \
 	gstreamer-imx-meta \
 	imx-lib \
-	libav \
+	ffmpeg \
 	libfslcodec \
 	libfslparser \
 	libglib-2.0-utils \
