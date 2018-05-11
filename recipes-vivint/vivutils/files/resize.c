@@ -69,7 +69,6 @@ static int ttyrestore(void)
 
 static void getsize_timeout(int sig)
 {
-	fprintf(stderr, "Resize timed out");
 	ttyrestore();
 	exit(1);
 
