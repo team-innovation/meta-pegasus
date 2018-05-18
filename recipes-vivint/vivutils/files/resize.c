@@ -20,11 +20,16 @@
 #include <string.h>
 #include <termios.h>
 #include <unistd.h>
+#include <signal.h>
+#include <ctype.h>
 
 #include <sys/fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/time.h>
+
+#define TIMEOUT 10
 
 static struct termios saved_tio;
 static int ttyfd;
@@ -57,6 +62,18 @@ enum parsestate {
 	PARSE_DONE
 };
 
+static int ttyrestore(void)
+{
+	tcsetattr(ttyfd, TCSADRAIN, &saved_tio);
+}
+
+static void getsize_timeout(int sig)
+{
+	ttyrestore();
+	exit(1);
+
+}
+
 
 static int getsize(int *pcols, int *plines)
 {
@@ -65,6 +82,12 @@ static int getsize(int *pcols, int *plines)
 	unsigned char c;
 	enum parsestate state;
 	int cols, lines;
+	struct itimerval it;
+
+	signal(SIGALRM, getsize_timeout);
+	memset((char *) &it, 0, sizeof(struct itimerval));
+	it.it_value.tv_sec = TIMEOUT;
+	setitimer(ITIMER_REAL, &it, (struct itimerval *) NULL);
 
 	write(ttyfd, outstr, len);
 
@@ -102,6 +125,9 @@ static int getsize(int *pcols, int *plines)
 	} while (c != 'R');
 	*pcols = cols;
 	*plines = lines;
+
+	memset((char *) &it, 0, sizeof(struct itimerval));
+	setitimer(ITIMER_REAL, &it, (struct itimerval *) NULL);
 	return 0;
 }
 
@@ -122,12 +148,8 @@ static void setsize(int cols, int lines)
 	}
 }
 
-static ttyrestore(void)
-{
-	tcsetattr(ttyfd, TCSAFLUSH, &saved_tio);
-}
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	int cols, lines;
 

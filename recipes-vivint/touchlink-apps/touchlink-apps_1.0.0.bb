@@ -56,13 +56,7 @@ require touchlink-apps-qml-framework-images.inc
 
 # Sound stuffs
 
-require touchlink-apps-sounds-wav-abs.inc  
-require touchlink-apps-sounds-wav-beeps.inc
 require touchlink-apps-sounds-wav-chimes.inc
-require touchlink-apps-sounds-wav-pauses.inc
-require touchlink-apps-sounds-wav-ad.inc   
-require touchlink-apps-sounds-wav-dtmf.inc   
-require touchlink-apps-sounds-wav-vocab.inc
 
 # pyftpd daemon
 require touchlink-apps-pyftpd.inc
@@ -163,6 +157,27 @@ RDEPENDS_${PN} = "\
 "
 
 do_compile() {
+
+        #verify that the syntax for all JSON files in embedded-apps is correct
+        set +e
+        json_files=$(find ${S} -name "*.json")
+        any_json_syntax_failures="no"
+        for json_file in ${json_files[@]}; do
+                json_verify_message=$(python3 ${S}/code/utils/verify_json_syntax.py --json-file=$json_file)
+                json_verify_error_flag=$?
+                if [ "$json_verify_error_flag" = "1" ]; then
+                        echo $json_verify_message
+                        any_json_syntax_failures="yes"
+                elif [ ! "$json_verify_error_flag" = "0" ]; then
+                        set -e
+                        echo $json_verify_message
+                        exit $json_verify_error_flag
+                fi
+        done
+        set -e
+        if [ "$any_json_syntax_failures" = "yes" ]; then
+                exit 1
+        fi
 
 	# generate proxies
 	if [ ${UPDATE_STRING_TABLE} ] ; then
@@ -343,12 +358,6 @@ PACKAGES = " \
 	${PN}-listenerd-proxies      \
 	${PN}-smarthomed      \
 	${PN}-listenerd      \
-	${PN}-sound-wav-abs \
-	${PN}-sound-wav-ad \
-	${PN}-sound-wav-beeps \
 	${PN}-sound-wav-chimes \
-	${PN}-sound-wav-dtmf \
-	${PN}-sound-wav-pauses \
-	${PN}-sound-wav-vocab	\
 	${PN} \
 "

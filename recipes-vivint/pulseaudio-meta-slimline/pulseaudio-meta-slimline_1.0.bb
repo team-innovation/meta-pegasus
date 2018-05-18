@@ -2,7 +2,7 @@ DESCRIPTION = "Pulseaudio Meta package w/ initscript et. al."
 SECTION = "audio"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r11"
+PR = "r13"
 
 RDEPENDS_${PN} = "\
   pulseaudio-module-alsa-sink \
@@ -41,6 +41,7 @@ SRC_URI = "\
   file://asound.conf \
   file://procman.d \
   file://daemon.conf \
+  file://pulse.logrotate \
 "
 
 do_install() {
@@ -60,6 +61,9 @@ do_install() {
     # Symlink this until we get pulse fixed correctly
     install -d ${D}/home/root
     ln -sf /.config ${D}/home/root/.config
+
+    install -d ${D}${sysconfdir}/logrotate.d
+    install -m 0600 "${WORKDIR}/pulse.logrotate" "${D}${sysconfdir}/logrotate.d/pulse"
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"

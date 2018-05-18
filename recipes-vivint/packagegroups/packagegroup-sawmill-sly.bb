@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r29"
+PR = "r30"
 
 inherit packagegroup
 
@@ -31,7 +31,6 @@ RDEPENDS_${PN} += " \
 	vaudio-wallsly \
 	mfr-audio-test-wallsly \
 	mfr-piezo-test \
-	modem-loopback \
 	asr-parse \
     mosquitto \
     python3-paho-mqtt \

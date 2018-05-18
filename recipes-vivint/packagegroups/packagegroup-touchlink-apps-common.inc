@@ -17,13 +17,7 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-pumpernickel \
 	touchlink-apps-initpumpernickel \
 	touchlink-apps-roubaix-services \
-	touchlink-apps-sound-wav-abs \
-	touchlink-apps-sound-wav-ad \
-	touchlink-apps-sound-wav-beeps \
 	touchlink-apps-sound-wav-chimes \
-	touchlink-apps-sound-wav-dtmf \
-	touchlink-apps-sound-wav-pauses \
-	touchlink-apps-sound-wav-vocab \
 	touchlink-apps-ssdpd \
 	touchlink-apps-sundance-proxies \
 	touchlink-apps-smarthomed-proxies \
