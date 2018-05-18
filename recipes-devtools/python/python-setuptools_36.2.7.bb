@@ -5,7 +5,7 @@ PROVIDES = "python-distribute"
 DEPENDS += "python"
 DEPENDS_class-native += "python-native"
 
-inherit setuptools
+inherit setuptools3
 
 RDEPENDS_${PN} = "\
   python-stringold \
