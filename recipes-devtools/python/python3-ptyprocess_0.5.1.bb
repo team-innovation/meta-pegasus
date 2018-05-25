@@ -10,14 +10,14 @@ SRC_URI = "https://pypi.python.org/packages/source/p/ptyprocess/${SRCNAME}-${PV}
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit pythonnative
+inherit pythonnative 
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 RDEPENDS_${PN} = "\
   python3-core \

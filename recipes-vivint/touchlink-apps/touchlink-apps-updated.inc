@@ -31,7 +31,7 @@ RDEPENDS_${PN}-updated ="\
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/updated/
         ${RSYNC_CMD} --exclude=docs --exclude=*.cmd ${S}/code/updated/ ${D}/${INSTALL_DIR}/updated/
-        chmod +x ${D}/${INSTALL_DIR}/updated/updated.pyo
+        chmod +x ${D}/${INSTALL_DIR}/updated/updated.pyc
 }
 
 pkg_postinst_${PN}-updated () {

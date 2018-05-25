@@ -24,7 +24,7 @@ INITSCRIPT_PARAMS_${PN}-procmand = "defaults 88 18"
 do_install_append() {
 	install -d ${D}/${INSTALL_DIR}/procmand/
         ${RSYNC_CMD} ${S}/code/procmand/ ${D}/${INSTALL_DIR}/procmand/
-        chmod +x ${D}/${INSTALL_DIR}/procmand/procmand.pyo
+        chmod +x ${D}/${INSTALL_DIR}/procmand/procmand.pyc
 
 	# Install procman startup
 	install -d ${D}/${sysconfdir}/procman.d/

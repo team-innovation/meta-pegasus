@@ -70,7 +70,7 @@ do_compile_prepend() {
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/dvrd/
 	${RSYNC_CMD} ${S}/code/dvrd/ ${D}/${INSTALL_DIR}/dvrd/
-	chmod +x ${D}/${INSTALL_DIR}/dvrd/dvrd.pyo
+	chmod +x ${D}/${INSTALL_DIR}/dvrd/dvrd.pyc
 
 	# dvrd library and binary
         install -d ${D}/${INSTALL_DIR}/lib

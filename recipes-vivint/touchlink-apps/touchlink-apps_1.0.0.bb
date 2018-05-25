@@ -81,11 +81,11 @@ SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL
 
 S = "${WORKDIR}/git"
 
-PYTHON_BASEVERSION = "3.3"
-PREFERRED_VERSION_python3 = "3.3.3"
-PREFERRED_VERSION_python-native = "3.3.3"
+PYTHON_BASEVERSION = "3.5"
+PREFERRED_VERSION_python3 = "3.5.3"
+PREFERRED_VERSION_python-native = "3.5.3"
 
-inherit autotools update-rc.d python-dir pythonnative
+inherit autotools update-rc.d python3-dir pythonnative
 
 RSYNC_CMD = "rsync -azv --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage --exclude=_user_conf"
 
@@ -102,9 +102,11 @@ DEPENDS = " \
 	gstreamer1.0 \
 	python3-bcrypt-native \
 	python3-cachetools \
+	python3-cachetools-native \
 	python3-cherrypy-native \
 	python3-dateutil-native \
 	python3-gnupg-native \
+	python3-grpcio-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
 	python3-markupsafe-native \
@@ -113,6 +115,7 @@ DEPENDS = " \
 	python3-msgpack-native \
 	python3-native \
 	python3-pexpect-native \
+	python3-protobuf-native \
 	python3-ptyprocess-native \
 	python3-psutil-native \
 	python3-pyalsaaudio-native \
@@ -228,7 +231,7 @@ do_compile_append(){
 
     #set -x
 
-    # Set a constant date in the header of every pyo, bytes 4,5,6 & 7
+    # Set a constant date in the header of every.pyc, bytes 4,5,6 & 7
     # Mon Feb 16 14:00:00 MST 2015 = 0x54e25a50 = the date of build 2.0.0.12994 
     #d=$(printf 0x%x $(date --date='Mon Feb 16 14:00:00 MST 2015' +%s))
     #d0=$(printf "%02x\n" $(( $d & 0xff )) )
@@ -245,7 +248,7 @@ do_compile_append(){
         echo ${d0}${d1}${d2}${d3} | xxd -r -p -s 4 - $f
     }
 
-    for f in $(find ${S}/code -name *.pyo)
+    for f in $(find ${S}/code -name *.pyc)
     do
         fixfile $f
     done

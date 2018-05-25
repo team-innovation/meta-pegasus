@@ -15,7 +15,7 @@ RDEPENDS_${PN}-zwaved = "\
 do_install_append () {
         install -d ${D}/${INSTALL_DIR}/zwaved/
         ${RSYNC_CMD} ${S}/code/zwaved/ ${D}/${INSTALL_DIR}/zwaved/
-        chmod +x ${D}/${INSTALL_DIR}/zwaved/zwaved.pyo
+        chmod +x ${D}/${INSTALL_DIR}/zwaved/zwaved.pyc
 
 	# make zwaved/scripts executable
 	chmod 0755 ${D}/${INSTALL_DIR}/zwaved/scripts/*
@@ -57,12 +57,12 @@ if [ x"$D" = "x" ]; then
          if [ -e /media/bootscript/serialnumber.txt ]
          then
               serial_number=$(cat /media/bootscript/serialnumber.txt)
-              if [ -e /opt/2gig/zwaved/scripts/setup_home_id.pyo ]
+              if [ -e /opt/2gig/zwaved/scripts/setup_home_id.pyc ]
               then
                    logging "Setting up zwave home id..."
-                   python3 /opt/2gig/zwaved/scripts/setup_home_id.pyo -hid ${serial_number}
+                   python3 /opt/2gig/zwaved/scripts/setup_home_id.pyc -hid ${serial_number}
               else
-                   logging "setup_home_id.pyo does not exist, can not setup home id of "${serial_number}
+                   logging "setup_home_id.pyc does not exist, can not setup home id of "${serial_number}
 
               fi
          else

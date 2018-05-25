@@ -9,7 +9,7 @@ PKGR_${PN}-usage-analytics = "${PR}${USAGE_ANALYTICS_PREPEND}${USAGE_ANALYTICS_R
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/usage_analytics/
 	${RSYNC_CMD} ${S}/code/usage_analytics/ ${D}/${INSTALL_DIR}/usage_analytics/
-	chmod +x ${D}/${INSTALL_DIR}/usage_analytics/usage_analytics.pyo
+	chmod +x ${D}/${INSTALL_DIR}/usage_analytics/usage_analytics.pyc
 }
 
 FILES_${PN}-usage-analytics = "\

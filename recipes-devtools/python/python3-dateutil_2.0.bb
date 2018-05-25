@@ -18,7 +18,7 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 SRC_URI[md5sum] = "22297f7e891bcd79a80d9446d8b20542"
 SRC_URI[sha256sum] = "8aab12d0e944b33b5e347bcf1963819d8ad925c0617e9257322ef475760c0aab"

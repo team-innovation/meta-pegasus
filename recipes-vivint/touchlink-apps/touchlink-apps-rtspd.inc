@@ -13,7 +13,7 @@ RDEPENDS_${PN}-rtspd = "\
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/rtspd/
 	${RSYNC_CMD} ${S}/code/rtspd/ ${D}/${INSTALL_DIR}/rtspd/
-	chmod +x ${D}/${INSTALL_DIR}/rtspd/rtspd.pyo
+	chmod +x ${D}/${INSTALL_DIR}/rtspd/rtspd.pyc
 }
 
 

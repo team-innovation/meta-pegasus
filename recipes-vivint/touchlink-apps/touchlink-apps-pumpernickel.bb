@@ -54,9 +54,9 @@ S = "${WORKDIR}/git/code/pumpernickel"
 
 require recipes-qt/qt5/qt5.inc
 
-PYTHON_BASEVERSION = "3.3"
-PREFERRED_VERSION_python3 = "3.3.3"
-PREFERRED_VERSION_python-native = "3.3.3"
+PYTHON_BASEVERSION = "3.5"
+PREFERRED_VERSION_python3 = "3.5.3"
+PREFERRED_VERSION_python-native = "3.5.3"
 
 inherit python-dir pythonnative
 

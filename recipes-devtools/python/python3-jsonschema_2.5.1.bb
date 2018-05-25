@@ -18,4 +18,4 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit distutils3
+inherit distutils3 python3-dir
