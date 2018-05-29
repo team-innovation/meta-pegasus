@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "\
 
 PR = "ml2"
 
-DEPENDS += "python3"
+DEPENDS += "python3 python3-setuptools"
 DEPENDS_virtclass-native += "python3-native"
 
 SRC_URI = "https://pypi.python.org/packages/source/n/nose/nose-${PV}.tar.gz \
