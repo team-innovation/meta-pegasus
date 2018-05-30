@@ -4,7 +4,7 @@ SECTION = "devel/python"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://README.md;md5=a4d64601c5848fb026bafd13200f2365"
 
-DEPENDS += "python3 python3-setuptools"
+DEPENDS += "python3" 
 
 PR = "r1"
 SRCNAME = "grpcio"
