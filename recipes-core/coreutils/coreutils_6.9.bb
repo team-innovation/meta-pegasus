@@ -94,7 +94,7 @@ ALTERNATIVE_LINK_NAME[hostname.1] = "${mandir}/man1/hostname.1"
 
 ALTERNATIVE_PRIORITY[uptime] = "10"
 ALTERNATIVE_PRIORITY[hostname] = "10"
-ALTERNATIVE_PRIORITY[dd] = "10"
+ALTERNATIVE_PRIORITY[dd] = "100"
 
 ALTERNATIVE_LINK_NAME[lbracket] = "${bindir}/["
 ALTERNATIVE_TARGET[lbracket] = "${bindir}/lbracket.${BPN}"
