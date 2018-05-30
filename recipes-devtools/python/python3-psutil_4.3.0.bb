@@ -7,7 +7,6 @@ SRCNAME = "psutil"
 PR = "ml"
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 
 #SRC_URI = "git://github.com/thelinuxdude/python-pulseaudio.git;protocol=git;branch=pa-4.0"
 

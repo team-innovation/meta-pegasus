@@ -7,7 +7,6 @@ LIC_FILES_CHKSUM = "\
 "
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 
 inherit setuptools3 python3-dir
 

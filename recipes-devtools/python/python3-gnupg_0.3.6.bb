@@ -6,8 +6,7 @@ SRCNAME = "python-gnupg"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5b3cbf3c3220969afbf461f4a6ac97c9"
 PR = "ml1"
 
-DEPENDS += "python3 python3-native"
-DEPENDS_virtclass-native += "python3-native"
+DEPENDS += "python3"
 RDEPENDS_${PN} = "python3-core gnupg"
 
 SRC_URI = "https://pypi.python.org/packages/source/p/python-gnupg/${SRCNAME}-${PV}.tar.gz"

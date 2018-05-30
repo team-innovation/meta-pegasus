@@ -8,7 +8,6 @@ PR = "ml53"
 DEPENDS += "python3 live555"
 #RDEPENDS = "live555-lib"
 RDEPENDS_${PN} = "live555-libusageenvironment live555-libbasicusageenvironment live555-libgroupsock live555-liblivemedia"
-DEPENDS_virtclass-native += "python3-native"
 
 SRCREV = "b5954ab846be7fb43064a48896165d3918a1eb7a"
 MODULE = "live555-proxy-server"

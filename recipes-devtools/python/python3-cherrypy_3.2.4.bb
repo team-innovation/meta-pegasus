@@ -5,7 +5,6 @@ LIC_FILES_CHKSUM = "file://cherrypy/LICENSE.txt;md5=c187ff3653a0878075713adef2c5
 PR = "ml0"
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 RDEPENDS_${PN} = "python3-core"
 
 inherit setuptools3 python3-dir

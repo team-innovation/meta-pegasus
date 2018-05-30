@@ -14,7 +14,6 @@ inherit setuptools3 python3-dir
 # FIXME might stop packaging serialwin32 and serialjava files
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 
 RDEPENDS_${PN} = "python3-core"
 

@@ -5,7 +5,6 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=fa262dc398460c9421d380ba291a5763"
 PR = "ml0"
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 
 SRC_URI = "http://www.voidspace.org.uk/downloads/mock-0.8.0beta4.tar.gz"
 

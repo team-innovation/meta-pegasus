@@ -8,7 +8,6 @@ LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=35f354d199e8cb7667b059a23578e63d"
 PR = "ml1"
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 
 #SRC_URI = "http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-${PV}.tar.gz"
 SRC_URI = "http://${UPDATESENG}/downloads/pycrypto-${PV}.tar.gz"

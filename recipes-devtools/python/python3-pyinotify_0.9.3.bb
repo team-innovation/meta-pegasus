@@ -7,7 +7,6 @@ SRCNAME = "pyinotify"
 PR = "ml"
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 SRC_URI = " \
 	https://pypi.python.org/packages/source/p/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
 "

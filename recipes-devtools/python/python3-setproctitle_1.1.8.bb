@@ -14,7 +14,6 @@ S = "${WORKDIR}/${SRCNAME}-${PV}"
 inherit setuptools3 python3-dir
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 
 RDEPENDS_${PN} = "python3-core"
 

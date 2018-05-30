@@ -6,7 +6,6 @@ PR = "r1"
 SRCNAME = "python3-brisa"
 
 DEPENDS += "python3"
-#DEPENDS_virtclass-native += "python3-native"
 RDEPENDS_${PN} = "\
   python3-core \
   python3-requests \

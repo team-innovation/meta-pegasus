@@ -6,7 +6,6 @@ SRCNAME = "flent"
 PR = "r3"
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 
 RDEPENDS_${PN} = "python3-xmlrpc"
 RDEPENDS_${PN} += "iperf (>= 1.9)"                                                                                                                           
