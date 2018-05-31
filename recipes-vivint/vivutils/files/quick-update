@@ -96,7 +96,7 @@ At least one valid option is required
 
 Options:
 	-c	clean configuration data - will reboot $product!!
-	-s	manually switch to inactive partition (overrides -s, -u, -l and -n)
+	-s	manually switch to inactive partition (overrides -f, -u, -l and -n)
 	-f FILE	local path to update image (overrides -u, -l and -n)
 	-u  URL	web server location of special update (overrides -l and -n)
 	-l	get and update to the latest build (overrides -n)
