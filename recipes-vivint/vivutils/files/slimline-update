@@ -1,5 +1,11 @@
 #!/bin/bash
 
+echo "
+  'slimline-update' is obsolete.
+   Please use 'quick-update' now.
+"
+exit 0
+
 image=$1
 
 if [[ `uname -a |cut -d' ' -f2` != "imx6dl-slimline" ]]
