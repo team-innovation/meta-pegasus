@@ -8,7 +8,6 @@ LICENSE = "Apache-2.0"
 PR = "m1"
 
 DEPENDS += "python3 python3-pytz python3-dateutil"
-DEPENDS_virtclass-native += "python3-native"
 
 SRCREV = "ed74538f0a3adfb2898721e66b34ea9463f5cfc8"
 PV = "1.0.0rc1+gitr${SRCREV}"
@@ -20,7 +19,7 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 do_compile_append() {
 #	oe_runmake CC="${CC}" CXX="${CXX}" LINK="${CXX}"

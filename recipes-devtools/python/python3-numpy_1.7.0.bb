@@ -54,7 +54,7 @@ CONFIGFILESURI_mips64 = " \
 
 S = "${WORKDIR}/numpy-${PV}"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 export BUILD_SYS
 export HOST_SYS

@@ -1,7 +1,7 @@
 ###
 ### Change UPDATED_PREPEND everything you touch this script
 ###
-UPDATED_PREPEND = "-7"
+UPDATED_PREPEND = "-8"
 
 UPDATED_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-updated = "${PR}${UPDATED_PREPEND}${UPDATED_REVISION}"
@@ -31,7 +31,7 @@ RDEPENDS_${PN}-updated ="\
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/updated/
         ${RSYNC_CMD} --exclude=docs --exclude=*.cmd ${S}/code/updated/ ${D}/${INSTALL_DIR}/updated/
-        chmod +x ${D}/${INSTALL_DIR}/updated/updated.pyo
+        chmod +x ${D}/${INSTALL_DIR}/updated/updated.pyc
 	install -d "${D}${sysconfdir}/logrotate.d"
 	install -m 0600 "${WORKDIR}/updated.logrotate" "${D}${sysconfdir}/logrotate.d/updated" 
 }

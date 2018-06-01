@@ -14,9 +14,9 @@ do_install_append (){
 	# TL-3143 added enphase back
     	${RSYNC_CMD} --exclude=font --exclude=energy --exclude=rules --exclude=libaudio ${S}/code/roubaix/ ${D}/${INSTALL_DIR}/roubaix/
 
-        chmod +x ${D}/${INSTALL_DIR}/roubaix/utils/CameraStatusHelper.pyo
-        chmod +x ${D}/${INSTALL_DIR}/roubaix/definitions.pyo
-        chmod +x ${D}/${INSTALL_DIR}/roubaix/roubaix.pyo
+        chmod +x ${D}/${INSTALL_DIR}/roubaix/utils/CameraStatusHelper.pyc
+        chmod +x ${D}/${INSTALL_DIR}/roubaix/definitions.pyc
+        chmod +x ${D}/${INSTALL_DIR}/roubaix/roubaix.pyc
 
         rm -rf ${D}/${INSTALL_DIR}/roubaix/utils/CameraStatusHelper.py
         rm -rf ${D}/${INSTALL_DIR}/roubaix/definitions.py
@@ -67,15 +67,15 @@ FILES_${PN}-roubaix = "\
     ${INSTALL_DIR}/roubaix/roubaix.qml \
     ${INSTALL_DIR}/roubaix/utils/* \
     ${INSTALL_DIR}/roubaix/helpers/* \
-    ${INSTALL_DIR}/roubaix/definitions.pyo \
-    ${INSTALL_DIR}/roubaix/roubaix.pyo \
+    ${INSTALL_DIR}/roubaix/definitions.pyc \
+    ${INSTALL_DIR}/roubaix/roubaix.pyc \
     ${INSTALL_DIR}/roubaix/proxies/* \
-    ${INSTALL_DIR}/roubaix/ErrorLogWatcherMixin.pyo \
-    ${INSTALL_DIR}/roubaix/KeyEventDispatcher.pyo \
-    ${INSTALL_DIR}/roubaix/FileMixin.pyo \
-    ${INSTALL_DIR}/roubaix/ConnectionsMixin.pyo \
-    ${INSTALL_DIR}/roubaix/AudioMixin.pyo \
-    ${INSTALL_DIR}/roubaix/PlayAudioThread.pyo \
+    ${INSTALL_DIR}/roubaix/ErrorLogWatcherMixin.pyc \
+    ${INSTALL_DIR}/roubaix/KeyEventDispatcher.pyc \
+    ${INSTALL_DIR}/roubaix/FileMixin.pyc \
+    ${INSTALL_DIR}/roubaix/ConnectionsMixin.pyc \
+    ${INSTALL_DIR}/roubaix/AudioMixin.pyc \
+    ${INSTALL_DIR}/roubaix/PlayAudioThread.pyc \
     ${INSTALL_DIR}/roubaix/FileMixin.py \
     ${INSTALL_DIR}/roubaix/ConnectionsMixin.py \
     ${INSTALL_DIR}/roubaix/AudioMixin.py \

@@ -9,7 +9,7 @@ PKGR_${PN}-345d = "${PR}${D345_PREPEND}${D345_REVISION}"
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/345d/
 	${RSYNC_CMD} ${S}/code/345d/ ${D}/${INSTALL_DIR}/345d/
-	chmod +x ${D}/${INSTALL_DIR}/345d/345d.pyo
+	chmod +x ${D}/${INSTALL_DIR}/345d/345d.pyc
 }
 
 FILES_${PN}-345d = "\

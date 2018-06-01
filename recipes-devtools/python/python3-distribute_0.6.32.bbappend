@@ -1,0 +1,2 @@
+PYTHON_BASEVERSION = "3.5"
+

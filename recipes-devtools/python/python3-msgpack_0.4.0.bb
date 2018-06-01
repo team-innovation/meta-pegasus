@@ -24,4 +24,4 @@ do_package_qa() {
     echo "Skipping QA ..."
 }
 
-inherit setuptools3
+inherit setuptools3 python3-dir

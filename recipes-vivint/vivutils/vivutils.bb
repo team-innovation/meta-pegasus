@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r82"
+PR = "r84"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -36,8 +36,7 @@ SRC_URI = "\
 	   file://set-u-boot-part \
 	   file://simplesuspend \
 	   file://skunumset \
-	   file://slimline-update \
-	   file://sly-update \
+	   file://quick-update \
 	   file://pa_info \
 	   file://touchtest \
 	   file://wave_1000_hz_half_mag.wav \
@@ -85,8 +84,7 @@ do_install() {
 	install -m 0755 ${S}/set-u-boot-part ${D}/usr/local/bin
 	install -m 0755 ${S}/simplesuspend ${D}/usr/local/bin
 	install -m 0755 ${S}/skunumset ${D}/usr/local/bin
-	install -m 0755 ${S}/slimline-update ${D}/usr/local/bin
-	install -m 0755 ${S}/sly-update ${D}/usr/local/bin
+	install -m 0755 ${S}/quick-update ${D}/usr/local/bin
 	install -m 0755 ${S}/pa_info ${D}/usr/local/bin
 	install -m 0755 ${S}/fccfixup ${D}/usr/local/bin
 	install -m 0755 ${S}/labmodem ${D}/usr/local/bin

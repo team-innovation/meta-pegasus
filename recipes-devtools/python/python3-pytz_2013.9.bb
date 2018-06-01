@@ -12,7 +12,7 @@ SRC_URI = "https://pypi.python.org/packages/source/p/pytz/pytz-${PV}.tar.bz2 \
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 RDEPENDS_${PN} = "\
   python3-core \
@@ -34,11 +34,11 @@ pkg_postinst_${PN}() {
 
 if [ x"$D" = "x" ]; then
 
-    if [ ! -h /usr/lib/python3.3/site-packages/pytz ]; then
-        rm -rf /usr/lib/python3.3/site-packages/pytz/zoneinfo
+    if [ ! -h /usr/lib/python3.5/site-packages/pytz ]; then
+        rm -rf /usr/lib/python3.5/site-packages/pytz/zoneinfo
 
         if [ -e /usr/share/zoneinfo ]; then
-            cd /usr/lib/python3.3/site-packages/pytz ; ln -s /usr/share/zoneinfo zoneinfo
+            cd /usr/lib/python3.5/site-packages/pytz ; ln -s /usr/share/zoneinfo zoneinfo
         fi
     fi
 

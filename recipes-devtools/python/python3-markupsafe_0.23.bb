@@ -15,7 +15,7 @@ SRC_URI = "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-${PV}
 	   "
 S = "${WORKDIR}/MarkupSafe-${PV}"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages

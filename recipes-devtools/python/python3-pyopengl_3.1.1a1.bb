@@ -14,7 +14,7 @@ SRC_URI = "\
 "
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 SRC_URI[md5sum] = "77ee6044ceb2cf952aca89a9b2d3d585"
 SRC_URI[sha256sum] = "c96d909b359abe3271b746bacf7e6ba52935141e2406a8f90231e4e44dfa4075"

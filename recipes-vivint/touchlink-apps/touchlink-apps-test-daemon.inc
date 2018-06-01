@@ -10,7 +10,7 @@ TEST_DAEMON_DEST_DIR = "${INSTALL_DIR}/test_daemon"
 do_install_append () {
 	install -d ${D}/${TEST_DAEMON_DEST_DIR}
         ${RSYNC_CMD} ${S}/code/test_daemon/ ${D}/${TEST_DAEMON_DEST_DIR}
-        chmod +x ${D}/${TEST_DAEMON_DEST_DIR}/test_daemon.pyo
+        chmod +x ${D}/${TEST_DAEMON_DEST_DIR}/test_daemon.pyc
 }
 
 FILES_${PN}-test-daemon = "\

@@ -8,13 +8,12 @@ LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=35f354d199e8cb7667b059a23578e63d"
 PR = "ml1"
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 
 #SRC_URI = "http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-${PV}.tar.gz"
 SRC_URI = "http://${UPDATESENG}/downloads/pycrypto-${PV}.tar.gz"
 S = "${WORKDIR}/pycrypto-2.5"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 do_configure_prepend() {
 	sed -i 's|ac_cv_func_malloc_0_nonnull=no|ac_cv_func_malloc_0_nonnull=yes|' configure

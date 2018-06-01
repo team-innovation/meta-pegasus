@@ -12,7 +12,7 @@ RDEPENDS_${PN}-webd = "\
 do_install_append () {
         install -d ${D}/${INSTALL_DIR}/webd/
         ${RSYNC_CMD} ${S}/code/webd/ ${D}/${INSTALL_DIR}/webd/
-        chmod +x ${D}/${INSTALL_DIR}/webd/webd.pyo
+        chmod +x ${D}/${INSTALL_DIR}/webd/webd.pyc
 }
 
 FILES_${PN}-webd = "\

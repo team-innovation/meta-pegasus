@@ -13,7 +13,7 @@ INITSCRIPT_PARAMS_${PN}-netd = "start 26 2 3 4 5 ."
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/netd/
         ${RSYNC_CMD} ${S}/code/netd/ ${D}/${INSTALL_DIR}/netd/
-        chmod +x ${D}/${INSTALL_DIR}/netd/netd.pyo
+        chmod +x ${D}/${INSTALL_DIR}/netd/netd.pyc
 
 	install -d ${D}/usr/local/bin
 	cp -a ${S}/code/netd/scripts/speedtest ${D}/usr/local/bin

@@ -9,12 +9,11 @@ SRC_URI = "https://pypi.python.org/packages/source/p/pyserial/pyserial-${PV}.tar
 	file://miniterm.patch"
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 # FIXME might stop packaging serialwin32 and serialjava files
 
 DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
 
 RDEPENDS_${PN} = "python3-core"
 

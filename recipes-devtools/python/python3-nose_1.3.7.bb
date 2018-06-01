@@ -7,8 +7,7 @@ LIC_FILES_CHKSUM = "\
 
 PR = "ml2"
 
-DEPENDS += "python3"
-DEPENDS_virtclass-native += "python3-native"
+DEPENDS = "python3"
 
 SRC_URI = "https://pypi.python.org/packages/source/n/nose/nose-${PV}.tar.gz \
 	   file://fix_url.patch \
@@ -21,7 +20,7 @@ BBCLASSEXTEND = "native"
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit setuptools3
+inherit setuptools3 python3-dir
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
@@ -31,7 +30,7 @@ do_install_append() {
    rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/__pycache__/site.cpython-33.pyc
    rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/site.py
    rm -f ${D}/${libdir}/${PYTHON_DIR}/site-packages/setuptools.pth
-   rm -f ${D}/${bindir}/easy_install-3.3
+   rm -f ${D}/${bindir}/easy_install-3.5
 }
 
 SRC_URI[md5sum] = "4d3ad0ff07b61373d2cefc89c5d0b20b"
