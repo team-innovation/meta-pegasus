@@ -475,11 +475,7 @@ panelinfoboardmodelupdate() {
 panelinfoboardrevupdate() {
 	pit="/media/bootscript/panelinfo.txt"
 	mntbootscriptrw
-<<<<<<< Updated upstream
 	grep -v .._BOARD_rev $pit > /tmp/panelinfo.new
-=======
-	grep -v .._BOARD_REV $pit > /tmp/panelinfo.new
->>>>>>> Stashed changes
 	mv /tmp/panelinfo.new $pit
 	addboardrevfromdevtree
 	mntbootscriptro
