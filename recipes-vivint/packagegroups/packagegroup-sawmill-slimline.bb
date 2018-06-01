@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for slimline"
 LICENSE = "MIT"
 
-PR = "r6"
+PR = "r7"
 
 inherit packagegroup
 
