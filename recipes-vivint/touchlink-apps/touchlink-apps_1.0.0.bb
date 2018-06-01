@@ -63,7 +63,7 @@ require touchlink-apps-pyftpd.inc
 
 DISTRO_PR = ".1"
 
-PR = "ml114"
+PR = "ml115"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -77,6 +77,7 @@ SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL
     file://procman.d \
     file://procman.d-fcc \
     file://favicon.ico \
+    file://updated.logrotate \
     "
 
 S = "${WORKDIR}/git"

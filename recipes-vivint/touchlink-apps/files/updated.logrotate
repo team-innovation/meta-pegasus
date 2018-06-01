@@ -1,0 +1,15 @@
+/media/extra/update/.firmware_update_status {
+    missingok
+    size 1M
+    copytruncate
+    rotate 1
+    compress
+}
+
+/media/extra/update/.update_status {
+    missingok
+    size 1M
+    copytruncate
+    rotate 1
+    compress
+}
