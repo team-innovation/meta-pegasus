@@ -2,7 +2,7 @@
 
 # make it easy and flexible to do a quick update
 
-version="-b"
+version="-c"
 clean=0     # default clean user data directive
 quash=0     # default quash image checksum validation directive
 debug=0     # default show debugging output directive
@@ -288,7 +288,12 @@ clean_user_data() {
 		[ $device == "slimline" ] && usage "This is $product nothing to be cleaned,$errors"
 
 		writelog "Zero out ZWave Home ID..."
-		python3 /opt/2gig/zwaved/scripts/set_home_id.pyo -hid 00000000 2> /dev/null
+
+		# python 3.3 versus 3.5
+		[ -f /opt/2gig/zwaved/scripts/set_home_id.pyo ] &&
+			python3 /opt/2gig/zwaved/scripts/set_home_id.pyo -hid 00000000 2> /dev/null
+		[ -f /opt/2gig/zwaved/scripts/set_home_id.pyc ] &&
+			python3 /opt/2gig/zwaved/scripts/set_home_id.pyc -hid 00000000 2> /dev/null
 
 		writelog "Clearing /media/extra"
 		mkdir -p /media/extra/backup
