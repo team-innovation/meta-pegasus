@@ -1,6 +1,7 @@
---- Python-3.3.3/configure	2014-02-17 23:14:16.773918847 -0700
-+++ Python-3.3.3/configure.b	2014-03-14 11:34:54.877404340 -0600
-@@ -14336,7 +14336,7 @@
+diff -rupN Python-3.5.3/configure Python/configure
+--- Python-3.5.3/configure	2017-01-17 00:57:54.000000000 -0700
++++ Python/configure	2018-06-05 10:34:22.179187592 -0600
+@@ -15419,7 +15419,7 @@ if ${ac_cv_working_tzset+:} false; then
  else
  
  if test "$cross_compiling" = yes; then :
@@ -9,7 +10,7 @@
  else
    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
  /* end confdefs.h.  */
-@@ -14408,7 +14408,7 @@
+@@ -15491,7 +15491,7 @@ _ACEOF
  if ac_fn_c_try_run "$LINENO"; then :
    ac_cv_working_tzset=yes
  else
