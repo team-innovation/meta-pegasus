@@ -2,7 +2,7 @@
 
 # make it easy and flexible to do a quick update
 
-version="-c"
+version="-d"
 clean=0     # default clean user data directive
 quash=0     # default quash image checksum validation directive
 debug=0     # default show debugging output directive
@@ -477,20 +477,16 @@ normalize() {
 		# maybe pad this element to three digits
 		esize=${#versiona[$j]}
 		while [ $esize -lt 3 ]; do
-			if [ $esize -lt 3 ]; then
-				versiona[$j]="0${versiona[$j]}"
-				esize=${#versiona[$j]}
-			fi
+			versiona[$j]="0${versiona[$j]}"
+			esize=${#versiona[$j]}
 		done
 
 		if [ $j -eq $last ]; then
 
 			# maybe pad the build number to seven digits
 			while [ $esize -lt 7 ]; do
-				if [ $esize -lt 7 ]; then
-					versiona[$j]="0${versiona[$j]}"
-					esize=${#versiona[$j]}
-				fi
+				versiona[$j]="0${versiona[$j]}"
+				esize=${#versiona[$j]}
 			done
 
 			v="$v${versiona[$j]}"
