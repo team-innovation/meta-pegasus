@@ -17,13 +17,13 @@ zwave_program ()
         return 1
     fi
 
-    if [ ! -e /opt/2gig/zwaved/scripts/zwave_program.pyo ]; then
+    if [ ! -e /opt/2gig/zwaved/scripts/zwave_program.pyc ]; then
         echo "ERROR: Zwave programmer not found"
         return 1
     fi
 
     echo "Check that Zwave firmware is up to date"
-    python3 /opt/2gig/zwaved/scripts/zwave_program.pyo $path
+    python3 /opt/2gig/zwaved/scripts/zwave_program.pyc $path
 }
 
 stop() {
