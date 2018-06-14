@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r87"
+PR = "r88"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -45,6 +45,7 @@ SRC_URI = "\
 	   file://dtmf-two.wav \
 	   file://dtmf-three.wav \
 	   file://dtmf-nine.wav \
+	   file://stipa.wav \
 	   file://faux-1.wav \
 	   file://faux-2.wav \
 	   file://faux-3.wav \
@@ -101,6 +102,7 @@ do_install() {
 	install -m 0644 ${S}/dtmf-two.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/dtmf-three.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/dtmf-nine.wav ${D}/usr/local/bin
+	install -m 0644 ${S}/stipa.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/faux-1.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/faux-2.wav ${D}/usr/local/bin
 	install -m 0644 ${S}/faux-3.wav ${D}/usr/local/bin
