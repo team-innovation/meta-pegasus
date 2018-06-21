@@ -1,21 +1,14 @@
-diff -rupN Python-3.5.3/configure Python/configure
---- Python-3.5.3/configure	2017-01-17 00:57:54.000000000 -0700
-+++ Python/configure	2018-06-05 10:34:22.179187592 -0600
-@@ -15419,7 +15419,7 @@ if ${ac_cv_working_tzset+:} false; then
- else
- 
- if test "$cross_compiling" = yes; then :
--  ac_cv_working_tzset=no
-+  ac_cv_working_tzset=yes
- else
-   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
- /* end confdefs.h.  */
-@@ -15491,7 +15491,7 @@ _ACEOF
- if ac_fn_c_try_run "$LINENO"; then :
-   ac_cv_working_tzset=yes
- else
--  ac_cv_working_tzset=no
-+  ac_cv_working_tzset=yes
- fi
- rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
-   conftest.$ac_objext conftest.beam conftest.$ac_ext
+diff -rupN Python-3.5.3/configure.ac Python/configure.ac
+--- Python-3.5.3/configure.ac	2018-06-21 13:40:16.518784296 -0600
++++ Python/configure.ac	2018-06-21 11:13:27.603797184 -0600
+@@ -4826,8 +4826,8 @@ int main()
+ }
+ ]])],
+ [ac_cv_working_tzset=yes],
+-[ac_cv_working_tzset=no],
+-[ac_cv_working_tzset=no])])
++[ac_cv_working_tzset=yes],
++[ac_cv_working_tzset=yes])])
+ AC_MSG_RESULT($ac_cv_working_tzset)
+ if test "$ac_cv_working_tzset" = yes
+ then

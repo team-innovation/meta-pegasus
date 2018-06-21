@@ -1,7 +1,7 @@
 require recipes-devtools/python/python.inc
 
 DEPENDS = "python3-native libffi bzip2 db gdbm openssl readline sqlite3 zlib virtual/libintl xz "
-PR = "${INC_PR}.0"
+PR = "${INC_PR}.1"
 PYTHON_MAJMIN = "3.5"
 PYTHON_BINABI= "${PYTHON_MAJMIN}m"
 DISTRO_SRC_URI ?= "file://sitecustomize.py"
