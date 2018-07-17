@@ -28,7 +28,6 @@ RDEPENDS_${PN} = " \
 	python3-ctypes \
 	python3-curses \
 	python3-gdbm \
-	python3-distribute \
 	python3-grpcio \
 	python3-idle \
 	python3-importlib \

@@ -10,6 +10,9 @@ do_install_append() {
     mv ${D}${bindir}/easy_install ${D}${bindir}/easy3_install
 }
 
+PROVIDES = "python3-distribute"
+
+
 RDEPENDS_${PN}_class-native = "\
   python3-distutils \
   python3-compression \
@@ -30,4 +33,9 @@ RDEPENDS_${PN} = "\
   python3-unittest \
   python3-xml \
 "
+
+RREPLACES_${PN} = "python3-distribute"
+RPROVIDES_${PN} = "python3-distribute"
+RCONFLICTS_${PN} = "python3-distribute"
+
 BBCLASSEXTEND = "native nativesdk"
