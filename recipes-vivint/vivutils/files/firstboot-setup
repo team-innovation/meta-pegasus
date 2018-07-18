@@ -408,9 +408,9 @@ addboardmodelfromdevtree() {
 		return
 	is_wallsly &&
 	        grep -q 28-FIX-ME $pit &&
-        	if [ $? ]; then
+        	if [ $? -eq 0 ]; then
                 	sed --in-place '/28-FIX-ME/d' $pit
-	        fi &&
+	        fi 
         	echo "export WS_BOARD_MODEL="28-600060-001-$(chk_rev)"" >> $pit  &&
 		return
 }
@@ -426,9 +426,9 @@ addboardrevfromdevtree() {
 		return
 	is_wallsly &&
 	        grep -q V-FIX-ME $pit &&
-        	if [ $? ]; then
+        	if [ $? -eq 0 ]; then
                 	sed --in-place '/V-FIX-ME/d' $pit
-	        fi &&
+	        fi 
         	echo "export WS_BOARD_REV="VS-SH2000-000-Rev-$(chk_rev)"" >> $pit &&
 		return
 }
@@ -440,7 +440,7 @@ panelinfoboardmodelcheck() {
 	test -f $pit ||
 		return $(false)
 	grep -q FIX-ME $pit
-	if [ $? ]; then
+	if [ $? -eq 0 ]; then
 		mntbootscriptrw
 		addboardmodelfromdevtree
 		mntbootscriptro
@@ -455,7 +455,7 @@ panelinfoboardrevcheck() {
 	test -f $pit ||
 		return $(false)
 	grep -q FIX-ME $pit
-	if [ $? ]; then
+	if [ $? -eq 0 ]; then
 		mntbootscriptrw
 		addboardrevfromdevtree
 		mntbootscriptro
