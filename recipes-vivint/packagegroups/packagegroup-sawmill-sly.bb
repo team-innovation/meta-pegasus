@@ -32,7 +32,8 @@ RDEPENDS_${PN} += " \
 	mfr-audio-test-wallsly \
 	mfr-piezo-test \
 	asr-parse \
-    mosquitto \
-    python3-paho-mqtt \
+        mosquitto \
+        python3-paho-mqtt \
+        python3-ubus \
 "
 
