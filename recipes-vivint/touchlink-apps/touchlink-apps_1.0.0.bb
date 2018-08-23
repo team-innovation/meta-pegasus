@@ -207,8 +207,7 @@ do_compile() {
 	python3 -O -mcompileall -b -x docs -d${INSTALL_DIR} ${S}/code
 
 	skip="false"
-	# running  only run test on build machine
-	if [ -z ${UPDATE_STRING_TABLE} ] || [ ${BY_PASS_UNIT_TEST} ] ; then
+	if [ ${BY_PASS_UNIT_TEST} ] ; then
 		bbnote "Skip test and doc build"
 		skip="true"
 	else
