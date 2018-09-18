@@ -548,6 +548,8 @@ if __name__ == "__main__":
 
     # get the firmware version currently on the modem to check for an upgrade
     firmware_version = sierra_modem.get_firmware_version()
+    if not "A.2.10." in firmware_version:
+        flash_modem = False
 
     # if the command line contains ""--force" or "-f", then skip the file check
     if "--force" in argv or "-f" in argv:
@@ -564,7 +566,9 @@ if __name__ == "__main__":
             # check to see if a firmware update is available
             if tuples and tuples[0]:
                 update_firmware = is_upgrade_needed(firmware_version)
-                if not update_firmware:
+                if update_firmware:
+                    flash_modem = True
+                else:
                     # if no update, then we can exit if sims have been read
                     # if we have at least one CCID, then the file is good - exit
                     if len(tuples) >= 4 and tuples[2]:
