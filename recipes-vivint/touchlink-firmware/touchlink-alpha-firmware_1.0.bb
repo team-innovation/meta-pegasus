@@ -11,7 +11,7 @@ SRC_URI[md5sum] = "9430511aad98d94200b3977ec7dbfabd"
 SRC_URI[sha256sum] = "86c971571317a8955ee31e486922bbacef0a7956364bb0cafbfe7f9296f57f20"
 
 PV_prepend = "1"
-PKGR_${PN}-cs6022-ov4689 = "${PR}.59"
+PKGR_${PN}-cs6022-ov4689 = "${PR}.60"
 
 do_compile() {
      :
