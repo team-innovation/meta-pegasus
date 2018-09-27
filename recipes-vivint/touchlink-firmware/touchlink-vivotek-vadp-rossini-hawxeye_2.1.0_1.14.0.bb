@@ -7,13 +7,13 @@ DESCRIPTION = "Vivotek VADP module - hawxeye1.14.0"
 
 require touchlink-vivotek-vadp-rossini.inc
 
-PR = "r6"
+PR = "r7"
 
-VADP_VERSION = "2.1_1.14.0"
+VADP_VERSION = "2.2_1.15.3"
 CODE_NAME = "hawxeye"
 # using the PR in the name to stop the bitbake download cache
 VADP_MODULE_NAME = "rossini-${CODE_NAME}-vadp_${VADP_VERSION}.tar.gz"
 
 SRC_URI = "http://${DOWNLOAD_SERVER}/${VADP_MODULE_NAME}"
-SRC_URI[md5sum] = "755279caf7750da924e034157c69b4dd"
-SRC_URI[sha256sum] = "a652df052acf707e8767efeea68b113274ecf87c62717c930a71e442b38a9fd9"
+SRC_URI[md5sum] = "555de0a8ba6d8f01b4cab2f1a91d908c"
+SRC_URI[sha256sum] = "5013ea23496e84052b5e9c30eae02096f5fb94b80d578758e87e291fb2c8b4cb"
