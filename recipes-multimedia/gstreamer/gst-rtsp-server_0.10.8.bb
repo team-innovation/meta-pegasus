@@ -15,8 +15,8 @@ do_install() {
 	cp  -a ${S}/gst/rtsp-server/.libs/libgstrtspserver*.so* ${D}${libdir}/
 
 	# deploy header file
-	install -d ${STAGING_DIR}/${MACHINE}/usr/include/gstreamer-0.10/gst/rtsp-server
-	cp  -a ${S}/gst/rtsp-server/rtsp-server.h ${STAGING_DIR}/${MACHINE}/usr/include/gstreamer-0.10/gst/rtsp-server
+	install -d ${D}/${includedir}/gstreamer-0.10/gst/rtsp-server
+	cp  -a ${S}/gst/rtsp-server/rtsp-server.h ${D}/${includedir}/gstreamer-0.10/gst/rtsp-server
 }
 
 
