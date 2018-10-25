@@ -1,7 +1,7 @@
 DESCRIPTION = "Kwikset lock firmware"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
-PR = "r49"
+PR = "r50"
 
 FIRMWARE_MCU    = "Kwikset2017_0090_0003_0541_4100_26a3_65.05.hex"
 FIRMWARE_ZWAVE  =  "Kwikset2017_0090_0003_0541_1400_3108_4.76.hex"

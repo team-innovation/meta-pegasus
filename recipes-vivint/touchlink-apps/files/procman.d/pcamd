@@ -1,7 +1,8 @@
 {
     "pcamd":
     {
-	"name" : "Panel Camera Services",
+        "priority": 4,
+    	"name" : "Panel Camera Services",
     	"start": "/etc/init.d/pcamd start"
     }
 }

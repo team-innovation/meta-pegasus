@@ -1,7 +1,8 @@
 {
     "smarthomed":
     {
-	"name" : "Smarthome Services",
+        "priority" : 3,
+	    "name" : "Smarthome Services",
     	"start": "/etc/init.d/smarthomed start"
     }
 }

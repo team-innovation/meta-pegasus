@@ -1,0 +1,30 @@
+#!/bin/sh
+
+PYTHON="chrt -b 0 python3"
+EXEC_DIR="/opt/2gig/zwaved"
+EXEC_BIN="zwaved.pyc"
+
+. /etc/init.d/functions
+
+case "$1" in
+  start)
+    cd $EXEC_DIR && $PYTHON $EXEC_BIN start
+    ;;
+  stop)
+    cd $EXEC_DIR && $PYTHON $EXEC_BIN stop
+    ;;
+  restart)
+    cd $EXEC_DIR && $PYTHON $EXEC_BIN restart
+    ;;
+  console)
+    cd $EXEC_DIR && $PYTHON $EXEC_BIN console
+     ;;
+
+  *)
+    echo "Usage: $0 {start|stop|restart}" >&2
+    exit 1
+    ;;
+esac
+
+exit 0
+

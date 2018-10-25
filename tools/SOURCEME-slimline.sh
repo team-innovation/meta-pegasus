@@ -4,7 +4,7 @@ export BUILD_DIR=$1
 
 _APPS_TAG="embedded-apps"
 _APPS_REV='${AUTOREV}'
-_APPS_BRANCH="develop"
+_APPS_BRANCH="feature/iotivity"
 _OPENWRT_BRANCH="check"
 
 # if already set up then we just run the setup-environment script
@@ -29,6 +29,7 @@ test -d ${BUILD_DIR} &&
     echo "PRSERV_HOST = \"localhost:0\"" >> ${BUILD_DIR}/conf/local.conf &&
 	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
 	grep -q oe-meta-go ${BUILD_DIR}/conf/bblayers.conf &&
+	grep -q meta-oic ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
 	return
 
@@ -52,6 +53,10 @@ grep -q oe-meta-go ./conf/bblayers.conf ||
 	echo "BBLAYERS += \" \${BSPDIR}/sources/oe-meta-go \"" \
 		>> ./conf/bblayers.conf
 
+grep -q meta-oic ./conf/bblayers.conf ||
+    echo "BBLAYERS += \" \${BSPDIR}/sources/meta-oic \"" \
+            >> ./conf/bblayers.conf
+
 ln -s ../sstate-cache . || true
 
 grep -q package_rpm ./conf/local.conf &&
@@ -63,6 +68,10 @@ grep -q DISTRO_FEATURES_remove ./conf/local.conf ||
 
 grep -q IMAGE_INSTALL_remove ./conf/local.conf ||
     echo "IMAGE_INSTALL_remove=\" packagegroup-fsl-bluez5-tools\"" \
+        >> ./conf/local.conf
+
+grep -q IMAGE_INSTALL_append ./conf/local.conf ||
+    echo "IMAGE_INSTALL_append=\" iotivity-resource iotivity-service-encapsulation iotivity-service-notification iotivity-bridging-plugins\"" \
         >> ./conf/local.conf
 
 grep -q GIT_SERVER ./conf/local.conf || 
