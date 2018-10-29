@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 if [ ! -e /media/extra/serial_lock ]; then
+    /opt/2gig/utils/password_utils --fixroot
     if grep -sq ttymxc0 /proc/cmdline; then
         /sbin/getty -L ttymxc0 115200 xterm
     elif grep -sq ttymxc1 /proc/cmdline; then
