@@ -1,7 +1,8 @@
 {
     "listenerd":
     {
-	"name" : "Device Event Listener Service",
+        "priority" : 4,
+	    "name" : "Device Event Listener Service",
     	"start": "/etc/init.d/listenerd start"
     }
 }

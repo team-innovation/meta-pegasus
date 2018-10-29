@@ -4,6 +4,8 @@ require openssl.inc
 # if they are available.
 DEPENDS += "cryptodev-linux"
 
+PR="r2"
+
 CFLAG += "-DHAVE_CRYPTODEV -DUSE_CRYPTODEV_DIGESTS"
 
 LIC_FILES_CHKSUM = "file://LICENSE;md5=27ffa5d74bb5a337056c14b2ef93fbf6"
@@ -42,6 +44,8 @@ SRC_URI += "file://find.pl;subdir=${BP}/util/ \
             file://openssl-util-perlpath.pl-cwd.patch \
             file://CVE-2016-7055.patch \
             file://reformat_cryptodev.patch \
+            file://openssl.patch \
+            file://openssl_ld.patch \
            "
 SRC_URI[md5sum] = "96322138f0b69e61b7212bc53d5e912b"
 SRC_URI[sha256sum] = "e7aff292be21c259c6af26469c7a9b3ba26e9abaaffd325e3dccc9785256c431"

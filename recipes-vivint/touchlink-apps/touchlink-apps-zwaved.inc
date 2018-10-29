@@ -83,13 +83,7 @@ fi
 }
 
 
-FILES_${PN}-zwaved-proxies = "\
-	${INSTALL_DIR}/zwaved/proxies/*	\
-	"
-
 FILES_${PN}-zwaved = "\
 	${INSTALL_DIR}/zwaved/*	\
-	${sysconfdir}/init.d/zwaved		\
-	${sysconfdir}/procman.d/zwaved		\
 	"
 

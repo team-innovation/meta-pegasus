@@ -85,6 +85,7 @@ S = "${WORKDIR}/git"
 PYTHON_BASEVERSION = "3.5"
 PREFERRED_VERSION_python3 = "3.5.3"
 PREFERRED_VERSION_python-native = "3.5.3"
+PREFERRED_VERSION_iotivity = "2.0.0"
 
 inherit autotools update-rc.d python3-dir pythonnative
 
@@ -101,6 +102,9 @@ DEPENDS = " \
 	gstreamer1.0-plugins-base \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0 \
+ 	zipgateway \
+ 	zware \
+ 	iotivity \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cachetools-native \
@@ -138,6 +142,9 @@ DEPENDS = " \
 	python3-pysodium-native \
 	python3-xmltodict-native \
 	libsodium-native \
+	breakpad \
+    	variant-lite \
+	taocpp-json \
 "
 
 
@@ -151,13 +158,24 @@ RDEPENDS_${PN} = "\
 	python3-threading \
 	python3-setproctitle \
 	python3-soco \
-        python3-jsonschema \
-	python3-brisa \
+ 	python3-jsonschema \
 	python3-sparsedict \
 	python3-phue \
+ 	iotivity-bridging-plugins \
+ 	breakpad \
 "
 
 do_compile() {
+    export HAS_BREAKPAD
+    # Build plugin_server
+    cd ${S}/code/sundance/plugins
+    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
+    # Build hue plugin
+    cd ${S}/code/sundance/plugins/hue
+    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
+    # Build nest plugin
+    cd ${S}/code/sundance/plugins/nest
+    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
 
         #verify that the syntax for all JSON files in embedded-apps is correct
         set +e
@@ -271,6 +289,11 @@ do_install_append() {
 	find ${D}/${INSTALL_DIR} -name *.py | xargs rm -f
 	# remove yaml_definitions
 	find ${D}/${INSTALL_DIR} -name yaml_definitions | xargs rm -rf
+
+    # remove unused init scripts
+    rm -f ${D}/${sysconfdir}/init.d/bootsplash.sh
+    rm -f ${D}/${sysconfdir}/init.d/takeoverd
+    rm -f ${D}/${sysconfdir}/init.d/zwaved
 }
 
 pkg_postinst_${PN} () {
@@ -343,7 +366,6 @@ PACKAGES = " \
 	${PN}-rtspd   \
 	${PN}-ssdpd      \
 	${PN}-sundance-proxies      \
-        ${PN}-zwaved-proxies \
 	${PN}-sundance      \
 	${PN}-test-daemon  \
 	${PN}-test-ui  \
