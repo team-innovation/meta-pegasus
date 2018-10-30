@@ -6,7 +6,7 @@ PR = "ml0"
 
 DEPENDS += "python3"
 
-SRC_URI = "http://www.voidspace.org.uk/downloads/mock-0.8.0beta4.tar.gz"
+SRC_URI = "http://${UPDATESENG}/downloads/mock-0.8.0beta4.tar.gz"
 
 S = "${WORKDIR}/mock-${PV}"
 
