@@ -6,11 +6,13 @@ DESCRIPTION = "nfc-util interface to CR95HF"
 HOMEPAGE = "https://source.vivint.com/projects/EM/repos/nfc-util/browse"
 LICENSE = "CLOSED"
 SECTION = "devel"
-PR = "r1.1"
+PR = "r1.2"
 
-SRCREV = "c26df53a92e3d10b195ecd3470023313923897ba"
+SRCREV = "e78b3fd189821422ff925bfde3bd49778eeea082"
 MODULE = "nfc-util"
 SRC_URI = "git://${GIT_SERVER}/${MODULE};protocol=ssh"
+
+INHIBIT_PACKAGE_DEBUG_SPLIT = '1'
 
 S = "${WORKDIR}/git"
 TARGET_CC_ARCH += "${LDFLAGS}"
@@ -25,5 +27,5 @@ do_install() {
 }
 
 
-PACKAGES = "nfc-util"
+PACKAGES = "${PN}"
 FILES_${PN} = "${bindir}/nfc-util"
