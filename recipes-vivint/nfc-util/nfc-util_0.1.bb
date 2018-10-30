@@ -27,3 +27,4 @@ do_install() {
 
 PACKAGES = "nfc-util"
 FILES_${PN} = "${bindir}/nfc-util"
+FILES_${PN}-dbg = "/usr/src/debug ${bindir}/.debug"
