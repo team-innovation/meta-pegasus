@@ -10,7 +10,7 @@ PR = "r7"
 BBCLASSEXTEND = "native"
 NATIVE_INSTALL_WORKS = "1"
 
-SRC_URI = "http://zsync.moria.org.uk/download/zsync-${PV}.tar.bz2 \
+SRC_URI = "http://${UPDATESENG}/downloads/zsync-${PV}.tar.bz2 \
 	file://0001-New-version-with-libcurl-updates-and-new-autotools.patch \
 	file://0002-curl-auth.patch \
 	file://0003-enable-progress-no-tty.patch \
