@@ -13,10 +13,10 @@ PV = "2.81+git${SRCPV}"
 SRCREV = "${AUTOREV}"
 SRCBRANCH = "master"
 
-GIT_APPS_SERVER ?= "${GIT_SERVER}"
-GIT_APPS_PROTOCOL ?= "ssh"
+GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
+GIT_ZGATE_PROTOCOL ?= "ssh"
 
-SRC_URI = "git://${GIT_APPS_SERVER}/zware_controller_sdk;protocol=${GIT_APPS_PROTOCOL};branch=${SRCBRANCH} \
+SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_PROTOCOL};branch=${SRCBRANCH} \
            file://zwaved \
            "
 
