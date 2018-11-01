@@ -12,10 +12,10 @@ PV = "1.20+git${SRCPV}"
 SRCREV = "${AUTOREV}"
 SRCBRANCH = "master"
 
-GIT_APPS_SERVER ?= "${GIT_SERVER}"
-GIT_APPS_PROTOCOL ?= "ssh"
+GIT_ZWARE_SERVER ?= "${GIT_SERVER}"
+GIT_ZWARE_PROTOCOL ?= "ssh"
 
-SRC_URI = "git://${GIT_APPS_SERVER}/zware_controller_sdk;protocol=${GIT_APPS_PROTOCOL};branch=${SRCBRANCH}"
+SRC_URI = "git://${GIT_ZWARE_SERVER}/zware_controller_sdk;protocol=${GIT_ZWARE_PROTOCOL};branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git/zware_1_20/src/zwave/hcapi"
 
