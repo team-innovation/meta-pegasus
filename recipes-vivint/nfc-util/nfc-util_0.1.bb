@@ -8,7 +8,7 @@ LICENSE = "CLOSED"
 SECTION = "devel"
 PR = "r1.3"
 
-SRCREV = "29c662958c8d249781b703bf721cce116f1bb3b7"
+SRCREV = "e7fe767cc3610b0d5c4a1bc6be3e15336b16dc8b"
 MODULE = "nfc-util"
 SRC_URI = "git://${GIT_SERVER}/${MODULE};protocol=ssh"
 
