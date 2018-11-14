@@ -1,0 +1,7 @@
+{
+    "zwaved":
+    {
+	"name" : "Z-Wave Services",
+    	"start": "/etc/init.d/zwaved start"
+    }
+}
