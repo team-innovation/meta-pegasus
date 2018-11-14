@@ -16,10 +16,6 @@ RDEPENDS_${PN} = " \
 	ca-certificates \
 	cronie \
 	gnupg \
-	iotivity-resource \
-	iotivity-service-encapsulation \
-	iotivity-service-notification \
-	iotivity-bridging-plugins \
 	libsodium18 \
 	logrotate \
 	lookbusy \
