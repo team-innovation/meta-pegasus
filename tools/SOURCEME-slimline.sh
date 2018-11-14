@@ -29,7 +29,6 @@ test -d ${BUILD_DIR} &&
     echo "PRSERV_HOST = \"localhost:0\"" >> ${BUILD_DIR}/conf/local.conf &&
 	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
 	grep -q oe-meta-go ${BUILD_DIR}/conf/bblayers.conf &&
-	grep -q meta-oic ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
 	return
 
@@ -53,10 +52,6 @@ grep -q oe-meta-go ./conf/bblayers.conf ||
 	echo "BBLAYERS += \" \${BSPDIR}/sources/oe-meta-go \"" \
 		>> ./conf/bblayers.conf
 
-grep -q meta-oic ./conf/bblayers.conf ||
-    echo "BBLAYERS += \" \${BSPDIR}/sources/meta-oic \"" \
-            >> ./conf/bblayers.conf
-
 ln -s ../sstate-cache . || true
 
 grep -q package_rpm ./conf/local.conf &&
@@ -69,8 +64,6 @@ grep -q DISTRO_FEATURES_remove ./conf/local.conf ||
 grep -q IMAGE_INSTALL_remove ./conf/local.conf ||
     echo "IMAGE_INSTALL_remove=\" packagegroup-fsl-bluez5-tools\"" \
         >> ./conf/local.conf
-
-sed '/iotivity-resource/d' ./conf/local.conf
 
 grep -q GIT_SERVER ./conf/local.conf || 
 	echo -e "GIT_SERVER ?= \"git@source.vivint.com:7999/em\"\nGIT_APPS_TAG ?= \"${_APPS_TAG}\"\nGIT_APPS_REV ?=\"${_APPS_REV}\"\nGIT_APPS_BRANCH ?= \"${_APPS_BRANCH}\"\nOPENWRT_BRANCH ?= \"${_OPENWRT_BRANCH}\"\nUPDATESENG = \"updateseng.vivint.com/innovation\"\nPRSERV_HOST = \"localhost:0\"" >> ./conf/local.conf
