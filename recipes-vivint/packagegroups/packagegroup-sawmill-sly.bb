@@ -10,12 +10,14 @@ RDEPENDS_${PN} += " \
 	acm-usb-v6 \
 	easy-rsa \
 	fabric-go \
+	lxfp \
 	openvpn \
 	openwrt-mt7620 \
 	openwrt-rt3352 \
 	psoc-fw-sly \
 	psoc-fw-sly-fcc \
 	psoc-fw-wallsly \
+	qflash \
 	mighty-gecko-fw-wallsly \
 	sly-utils \
 	sly-version \
