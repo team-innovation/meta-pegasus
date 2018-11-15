@@ -12,7 +12,7 @@ DEPENDS = "libusb1"
 S = "${WORKDIR}"
 
 do_compile() {
-	${CC} acm_usb_v6.c -lusb-1.0 -g -O9 -o acm_usb_v6
+	${CC} acm_usb_v6.c $(CFLAGS) -lusb-1.0 -g -O9 -o acm_usb_v6
 }
 
 do_install() {

@@ -3,7 +3,7 @@
 DESCRIPTION = "packages for modem ppp config"
 LICENSE = "MIT"
 
-PR = "r1"
+PR = "r2"
 
 inherit packagegroup
 
@@ -13,5 +13,6 @@ RDEPENDS_${PN} += " \
 	ppp-config-telit-ce910 \
 	ppp-config-telit-he910 \
 	ppp-config-telit-ue910 \
+	ppp-config-quectel-eg91 \
 "
 
