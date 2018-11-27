@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r29"
+PR = "r30"
 
 inherit packagegroup
 
@@ -35,5 +35,6 @@ RDEPENDS_${PN} += " \
 	asr-parse \
     mosquitto \
     python3-paho-mqtt \
+	vis \
 "
 
