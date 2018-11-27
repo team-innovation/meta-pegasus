@@ -858,6 +858,7 @@ Interface wlan1
                         rows[key] = val
                     elif len(line) > 0:
                         print('Failed to parse: {}'.format(line))
+                        print('FAILED cmd: {}'.format(s.command))
             return rows
 
         result = s.execute_cmd('iw wlan1 info')
@@ -1352,21 +1353,83 @@ def on_touchlink():
     is_linux = "linux" in sys.platform
     return is_linux and not "x86" in uname[4] and not "Ubuntu" in uname[3]
 
-if __name__ == '__main__':
+def main(use_ssdp=True):
+    node_list = []
     p = PanelSystemInfo()
     j = p.get_camera_info()
-    pprint(j)
+    # pprint(j)
+    #
+    # for cam in j:
+    #     print()
+    #     print(cam['class'])
+    #     print(cam['properties']['name'])
+    #     print(cam['id'])
+    #     print(cam['properties']['camera_ip_address'])  # cam['properties']['address']
+    #     print(cam['properties']['camera_mac_address'])
 
-    for cam in j:
-        print()
-        print(cam['class'])
-        print(cam['properties']['name'])
-        print(cam['id'])
-        print(cam['properties']['camera_ip_address'])  # cam['properties']['address']
-        print(cam['properties']['camera_mac_address'])
+    if use_ssdp:
+        try:
+            import sys
+            from taurine.async_io.protocols.ssdp import SsdpServer
+            from taurine.async_io.event_loop import EventLoop
+            from taurine.async_io.delayed_call import DelayedCall
 
-    # node_list = [254, 141, 144, 162, 186, 142, 152]
-    node_list = [254, 134, 161, 160]
+            yofi_nodes = []
+            ssdp = None
+
+            search_target = "urn:schemas-upnp-org:device:VivintMesh-YOFI0001:1"
+
+            def ssdp_callback(headers, address, multicast):
+                val = headers['ST']
+                if val == search_target:
+                    if not address in yofi_nodes:
+                        print("%83s" % headers.get("USN"), "%20s" % address,
+                              "%20s" % "multicast" if multicast else "unicast")
+                        yofi_nodes.append(address)
+
+            def exit_now():
+                for i in yofi_nodes:
+                    node_list.append(i.split('.')[-1])
+                sys.exit(0)
+
+            loop = EventLoop()
+            ssdp = SsdpServer(ssdp_callback)
+            if not on_touchlink():
+                ssdp.SSDP_UUID_PATH='/tmp/ssdp-uuid'
+
+            ssdp.search(search_target)
+
+            DelayedCall(10, exit_now)
+            loop.run()
+
+        except ImportError:
+            # node_list = [254, 141, 144, 162, 186, 142, 152]
+            node_list = [254, 135, 196, 103, 148, 104]
+    else:
+        s = SSHToNetworkModule()
+        addr = '172.16.10.254'
+        print('Attempt login to address: {}'.format(addr))
+        ret = s.login_network_module(addr)
+        if ret is False:
+            s.close()
+            s = SSHToNetworkModule()
+            ret = s.login_network_module(addr, 2020)
+
+        if ret:
+            uptime = s.execute_cmd('uptime')
+            print(uptime)
+            node_health = s.execute_cmd('netv mhealth')
+            print(node_health)
+            lines=node_health.split('\r\n')
+            for line in lines:
+                if line.startswith('node'):
+                    a=line.split()
+                    mac=a[1]
+                    ip=a[2]
+                    ip_last=ip.split('.')[-1]
+                    if not ip_last in node_list:
+                        node_list.append(ip_last)
+        s.close()
 
     nm = NetworkModuleInfo(node_list)
 
@@ -1374,7 +1437,7 @@ if __name__ == '__main__':
 
     # nm.get_camera_info()
     data = nm.mesh_node_info_map()
-    #data = nm.test_all_iperf()
+    # data = nm.test_all_iperf()
 
     print("------------------------------------------------------------------------------")
     pprint(data)
@@ -1386,9 +1449,6 @@ if __name__ == '__main__':
     with open('{}/tmp.dat'.format(dest_dir), 'w') as f:
         pprint(data, f)
 
-    #    nm.force_udhcpc_renew(data)
 
-    # nm.iperf_from_cameras_to_laptop(data, bw='20M', timelimit=10)
-    #
-    # nm.iperf_from_laptop_to_cameras(data, bw='20M', timelimit=10)
-# nm.test_1()
+if __name__ == '__main__':
+    main(use_ssdp=False)
