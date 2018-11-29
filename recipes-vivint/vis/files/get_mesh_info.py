@@ -547,6 +547,7 @@ class NetworkModuleInfo:
         import logging
 
         self.logger = logging.getLogger('{}'.format(self.__class__))
+        self.dhcpdump = None
         # logging.basicConfig(level=logging.DEBUG)
         logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
         if list_of_nm is None:
@@ -993,29 +994,29 @@ Interface wlan1
     def netv_dhcpdump(self, s):
         msg = 'DHCPDUMP {} - {}'.format(s._server, s._server_mac)
         line = "-" * len(msg)
-        self.logger.debug('\n{}\n{}'.format(msg, line))
+        #self.logger.debug('\n{}\n{}'.format(msg, line))
         result = s.execute_cmd('netv dhcpdump')
         rows = self._parse_dhcp_dump(result)
-        self.logger.debug(rows)
+        #self.logger.debug(rows)
         return rows
 
     def mesh_node_info_map(self):
-        dhcpdump = None
         mesh_map = {}
 
-        # Try to get the dhcpdump info first from the MPP
-        addr2 = '172.16.10.254'
-        s1 = SSHToNetworkModule()
-        ret = s1.login_network_module(addr2)
-        if ret is False:
-            s1.close()
+        if self.dhcpdump is None:
+            # Try to get the dhcpdump info first from the MPP
+            addr2 = '172.16.10.254'
             s1 = SSHToNetworkModule()
-            ret = s1.login_network_module(addr2, 2020)
+            ret = s1.login_network_module(addr2)
+            if ret is False:
+                s1.close()
+                s1 = SSHToNetworkModule()
+                ret = s1.login_network_module(addr2, 2020)
 
-        if ret:
-            self.logger.info('Logged into {}'.format(addr2))
-            dhcpdump = self.netv_dhcpdump(s1)
-            # mesh_map[s1._server_mac]['dhcpdump'] = dhcpdump
+            if ret:
+                self.logger.info('Logged into {}'.format(addr2))
+                self.dhcpdump = self.netv_dhcpdump(s1)
+                # mesh_map[s1._server_mac]['dhcpdump'] = self.dhcpdump
 
         for j in self.list_of_nm:
             addr2 = '172.16.10.{}'.format(j)
@@ -1031,15 +1032,15 @@ Interface wlan1
                     wlan_mac = s1._server_mac
                     mesh_map[wlan_mac] = {}
                     mesh_map[wlan_mac]['uptime'] = s1._uptime
-                    if j == 254 and dhcpdump is None:
-                        dhcpdump = self.netv_dhcpdump(s1)
-                    if dhcpdump:
-                        mesh_map[wlan_mac]['dhcpdump'] = dhcpdump
+                    if j == 254 and self.dhcpdump is None:
+                        self.dhcpdump = self.netv_dhcpdump(s1)
+                    if self.dhcpdump:
+                        mesh_map[wlan_mac]['dhcpdump'] = self.dhcpdump
                     msg = 'Getting MESH NODE INFO {} - {}'.format(s1._server, wlan_mac)
                     line = "-" * len(msg)
                     self.logger.debug('\n{}\n{}'.format(msg, line))
                     # Get Mesh node STA info from AP
-                    sta = self.get_ap_station_info(s1, dhcpdump)
+                    sta = self.get_ap_station_info(s1, self.dhcpdump)
                     if len(sta):
                         self.logger.info('\tFound {} STA'.format(len(sta)))
                     mesh_map[wlan_mac]['sta_on_ap'] = sta

@@ -1,7 +1,7 @@
 #!/bin/sh
 export PYTHONUNBUFFERED=1
-/usr/bin/python3 /usr/bin/get_mesh_info.py &> /dev/null
-/usr/bin/python3 /usr/bin/build_dot_graph.py &> /dev/null
+/usr/bin/python3 /usr/bin/get_mesh_info.py &> /var/log/get_mesh_info.log
+/usr/bin/python3 /usr/bin/build_dot_graph.py &> /var/log/build_dot_graph.log
 
 echo "Content-type: text/html"
 echo ""
