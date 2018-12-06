@@ -24,8 +24,10 @@ Window {
     height: 600  
                 
     property bool top_left_touched: false
+    property bool top_right_touched: false
     property bool bottom_right_touched: false
-    property int test_timeout: 1
+    property bool bottom_left_touched: false
+    property int test_timeout: 0
 
     Item {
         Timer {
@@ -33,13 +35,8 @@ Window {
             interval: 1000; running: true; repeat: true
             onTriggered: {
                 test_timeout = test_timeout + 1
-                if (top_left_touched && bottom_right_touched) {
+                if (top_left_touched || bottom_right_touched) {
                     Qt.quit()
-                }
-
-                if (test_timeout == 10) {
-                    console.log("TIMEOUT!")
-                    Qt.quit() 
                 }
             }
         }
@@ -60,10 +57,7 @@ Window {
            onClicked: {
                parent.color = 'green'
                top_left_touched = true
-               if (bottom_right_touched) {                                                                             
-                   console.log("PASSED!")
-                   //Qt.quit()
-               }
+               console.log("PASSED!")
            }
        }
    }
@@ -71,7 +65,6 @@ Window {
    Rectangle {
        id: bottomright
        width: 100; height: 100
-       color: "red"         
                               
        anchors{
            bottom: parent.bottom
@@ -83,10 +76,7 @@ Window {
            onClicked: {
                parent.color = 'green'
                bottom_right_touched = true
-               if (top_left_touched) {
-                   console.log("PASSED!")
-                   //Qt.quit()
-               }
+	          console.log("REVERSED!")
            }
        }
    }
@@ -95,13 +85,19 @@ Window {
        font.family: "Int Circular Pro Light"
        font.pixelSize: 20
        anchors.centerIn: parent
-       text: "Vivint Touchscreen Production Test"
+       text: "Touch the red square"
    }
 }
 EOF
 )
 
 echo -e "$S" > $qmlfile
-/usr/bin/qt5/qmlscene $qmlfile
+ret=$(/usr/bin/qt5/qmlscene $qmlfile 2>&1)
+echo $ret
 rm $qmlfile 
 unset FB_MULTI_BUFFER
+if [ "$ret" = "qml: PASSED!" ]; then
+	exit 0
+else
+	exit 1
+fi
