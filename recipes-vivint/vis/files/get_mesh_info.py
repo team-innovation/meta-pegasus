@@ -175,12 +175,13 @@ class SSHToNetworkModule(CustomSSH):
         ret = False
         try:
             ret = self.login(server=server, port=port, username='root', password='ap3x!0wrt',
-                             original_prompt=owrt_prompt, login_timeout=20)
+                             original_prompt=owrt_prompt, login_timeout=60)
             if ret:
                 self._server_mac = self.execute_cmd("ifconfig wlan0 | grep HWaddr | awk '{print $5}'").strip()
                 self._uptime = self.execute_cmd('uptime').strip()
-        except pexpect.pxssh.ExceptionPxssh:
+        except pexpect.pxssh.ExceptionPxssh as ex:
             print('Do we have issue logging in to the panel {}?  Try at commandline! {}'.format(server, self.before))
+            print('Exception: {}'.format(ex))
             if self.can_ping(server):
                 subprocess.check_output('ssh-keygen -f "/home/craig/.ssh/known_hosts" -R "{}"'.format(server),
                                         shell=True)
@@ -543,6 +544,75 @@ MAP8 wlan0 Panel: 88:6a:e3:e8:f1:2f 172.16.10.114 (Marked Bad MAC, SE Window by 
 
 
 class NetworkModuleInfo:
+    @staticmethod
+    def find_nodes(use_ssdp=False):
+        node_list = []
+        if use_ssdp:
+            try:
+                import sys
+                from taurine.async_io.protocols.ssdp import SsdpServer
+                from taurine.async_io.event_loop import EventLoop
+                from taurine.async_io.delayed_call import DelayedCall
+
+                yofi_nodes = []
+                ssdp = None
+
+                search_target = "urn:schemas-upnp-org:device:VivintMesh-YOFI0001:1"
+
+                def ssdp_callback(headers, address, multicast):
+                    val = headers['ST']
+                    if val == search_target:
+                        if not address in yofi_nodes:
+                            print("%83s" % headers.get("USN"), "%20s" % address,
+                                  "%20s" % "multicast" if multicast else "unicast")
+                            yofi_nodes.append(address)
+
+                def exit_now():
+                    for i in yofi_nodes:
+                        node_list.append(i.split('.')[-1])
+                    sys.exit(0)
+
+                loop = EventLoop()
+                ssdp = SsdpServer(ssdp_callback)
+                if not on_touchlink():
+                    ssdp.SSDP_UUID_PATH = '/tmp/ssdp-uuid'
+
+                ssdp.search(search_target)
+
+                DelayedCall(10, exit_now)
+                loop.run()
+
+            except ImportError:
+                # node_list = [254, 141, 144, 162, 186, 142, 152]
+                node_list = [254, 135, 196, 103, 148, 104]
+        else:
+            s = SSHToNetworkModule()
+            addr = '172.16.10.254'
+            print('Attempt login to address: {}'.format(addr))
+            ret = s.login_network_module(addr)
+            if ret is False:
+                s.close()
+                s = SSHToNetworkModule()
+                ret = s.login_network_module(addr, 2020)
+
+            if ret:
+                uptime = s.execute_cmd('uptime')
+                print(uptime)
+                node_health = s.execute_cmd('netv mhealth')
+                print(node_health)
+                lines = node_health.split('\r\n')
+                for line in lines:
+                    if line.startswith('node'):
+                        a = line.split()
+                        mac = a[1]
+                        ip = a[2]
+                        ip_last = ip.split('.')[-1]
+                        if not ip_last in node_list:
+                            node_list.append(ip_last)
+            s.close()
+
+        return node_list
+
     def __init__(self, list_of_nm=None):
         import logging
 
@@ -551,8 +621,8 @@ class NetworkModuleInfo:
         # logging.basicConfig(level=logging.DEBUG)
         logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
         if list_of_nm is None:
-            print('Using test default at office')
-            self.list_of_nm = [254, 141, 145, 162, 186, 142, 152, 114, 131]
+            print('Search for nodes')
+            self.list_of_nm = NetworkModuleInfo.find_nodes(use_ssdp=False)
         else:
             self.list_of_nm = list_of_nm
 
@@ -1354,6 +1424,7 @@ def on_touchlink():
     is_linux = "linux" in sys.platform
     return is_linux and not "x86" in uname[4] and not "Ubuntu" in uname[3]
 
+
 def main(use_ssdp=True):
     node_list = []
     p = PanelSystemInfo()
@@ -1368,69 +1439,7 @@ def main(use_ssdp=True):
     #     print(cam['properties']['camera_ip_address'])  # cam['properties']['address']
     #     print(cam['properties']['camera_mac_address'])
 
-    if use_ssdp:
-        try:
-            import sys
-            from taurine.async_io.protocols.ssdp import SsdpServer
-            from taurine.async_io.event_loop import EventLoop
-            from taurine.async_io.delayed_call import DelayedCall
-
-            yofi_nodes = []
-            ssdp = None
-
-            search_target = "urn:schemas-upnp-org:device:VivintMesh-YOFI0001:1"
-
-            def ssdp_callback(headers, address, multicast):
-                val = headers['ST']
-                if val == search_target:
-                    if not address in yofi_nodes:
-                        print("%83s" % headers.get("USN"), "%20s" % address,
-                              "%20s" % "multicast" if multicast else "unicast")
-                        yofi_nodes.append(address)
-
-            def exit_now():
-                for i in yofi_nodes:
-                    node_list.append(i.split('.')[-1])
-                sys.exit(0)
-
-            loop = EventLoop()
-            ssdp = SsdpServer(ssdp_callback)
-            if not on_touchlink():
-                ssdp.SSDP_UUID_PATH='/tmp/ssdp-uuid'
-
-            ssdp.search(search_target)
-
-            DelayedCall(10, exit_now)
-            loop.run()
-
-        except ImportError:
-            # node_list = [254, 141, 144, 162, 186, 142, 152]
-            node_list = [254, 135, 196, 103, 148, 104]
-    else:
-        s = SSHToNetworkModule()
-        addr = '172.16.10.254'
-        print('Attempt login to address: {}'.format(addr))
-        ret = s.login_network_module(addr)
-        if ret is False:
-            s.close()
-            s = SSHToNetworkModule()
-            ret = s.login_network_module(addr, 2020)
-
-        if ret:
-            uptime = s.execute_cmd('uptime')
-            print(uptime)
-            node_health = s.execute_cmd('netv mhealth')
-            print(node_health)
-            lines=node_health.split('\r\n')
-            for line in lines:
-                if line.startswith('node'):
-                    a=line.split()
-                    mac=a[1]
-                    ip=a[2]
-                    ip_last=ip.split('.')[-1]
-                    if not ip_last in node_list:
-                        node_list.append(ip_last)
-        s.close()
+    node_list = NetworkModuleInfo.find_nodes(use_ssdp)
 
     nm = NetworkModuleInfo(node_list)
 

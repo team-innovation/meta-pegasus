@@ -16880,7 +16880,8 @@ def main():
 
     # data = BuildDotFile.TEST_MESH_NODE_MAP_DATA_8a
 
-    node_list = [254, 141, 144, 162, 186, 142, 123, 161] # 161 is node in hall (88:6A:E3:DD:15:1E)
+    node_list = None # NetworkModuleInfo.find_nodes(use_ssdp=False)
+#    node_list = [254, 141, 144, 162, 186, 142, 123, 161] # 161 is node in hall (88:6A:E3:DD:15:1E)
     # node_list = [254, 136, 196, 103, 148]
     # node_list = [254, 135, 196, 103, 148, 160] # home (home_mesh_with_two_panels_removed_added_two_nodes.png)
     #node_list = [254, 135, 103, 160]  # home now with nodes
@@ -16941,37 +16942,80 @@ def main2(main_panel_ip='192.168.7.195'):
     if main_panel_ip is not None:
         data = download("tmp.dat")
         j = download("tmp_cam.dat")
-        out1file='/tmp/tmp.dot'
-        out2file='/tmp/tmp2.dot'
-        out3file='/tmp/tmp3.dot'
+
+        outfile1 = "/tmp/tmp.dot"
+        outfile2 = "/tmp/tmp2.dot"
+        outfile3 = "/tmp/tmp3.dot"
     else:
         data = load("/srv/www/tmp.dat")
         j = load("/srv/www/tmp_cam.dat")
-        out1file='/srv/www/vis/test/tmp.dot'
-        out2file='/srv/www/vis/test/tmp2.dot'
-        out3file='/srv/www/vis/test/tmp3.dot'
-        
+
+        outfile1 = "/srv/www/vis/test/tmp.dot"
+        outfile2 = "/srv/www/vis/test/tmp2.dot"
+        outfile3 = "/srv/www/vis/test/tmp3.dot"
+
     # Grouping all nodes
     dot = BuildDotFile(show_clusters=True, show_ap_nodes=True)
     dot_data = dot.create_node_map_signals(data, j)
-    with open(out1file, 'w') as f:
+
+    with open(outfile1, 'w') as f:
         f.write(dot_data)
 
     # No grouping all nodes
     dot2 = BuildDotFile(show_clusters=False, show_ap_nodes=True)
     dot_data = dot2.create_node_map_signals(data, j)
-    with open(out2file, 'w') as f:
+    with open(outfile2, 'w') as f:
         f.write(dot_data)
 
     # Mesh nodes only
     dot3 = BuildDotFile(show_clusters=False, show_ap_nodes=False)
     dot_data = dot3.create_node_map_signals(data, j)
-    with open(out3file, 'w') as f:
+    with open(outfile3, 'w') as f:
         f.write(dot_data)
 
     if main_panel_ip is not None:
         a = subprocess.Popen('/usr/bin/xdot /tmp/tmp2.dot', shell=True)
         a.wait()
+
+def main3():
+    import subprocess
+
+    def load(file):
+        data = None
+        with open(file, 'r') as f:
+            a = f.read()
+            data = eval(a)
+
+        return data
+
+    data = load("/tmp/tmp.dat")
+    j = load("/tmp/tmp_cam.dat")
+
+    outfile1 = "/tmp/tmp.dot"
+    outfile2 = "/tmp/tmp2.dot"
+    outfile3 = "/tmp/tmp3.dot"
+
+    # Grouping all nodes
+    dot = BuildDotFile(show_clusters=True, show_ap_nodes=True)
+    dot_data = dot.create_node_map_signals(data, j)
+
+    with open(outfile1, 'w') as f:
+        f.write(dot_data)
+
+    # No grouping all nodes
+    dot2 = BuildDotFile(show_clusters=False, show_ap_nodes=True)
+    dot_data = dot2.create_node_map_signals(data, j)
+    with open(outfile2, 'w') as f:
+        f.write(dot_data)
+
+    # Mesh nodes only
+    dot3 = BuildDotFile(show_clusters=False, show_ap_nodes=False)
+    dot_data = dot3.create_node_map_signals(data, j)
+    with open(outfile3, 'w') as f:
+        f.write(dot_data)
+
+    a = subprocess.Popen('/usr/bin/xdot /tmp/tmp2.dot', shell=True)
+    a.wait()
 
 if __name__ == '__main__':
     #main()
