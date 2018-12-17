@@ -146,11 +146,13 @@ EOF
 
 # create filesystems
 echo "Making filesystems, please wait..."
-mkfs.ext4 -qL BOOT    -E nodiscard "$DRIVE"p1 > /dev/null 2>&1
-mkfs.ext4 -qL BOOTSCR -E nodiscard "$DRIVE"p3 > /dev/null 2>&1
-mkfs.ext4 -qL ROOTFS1 -E nodiscard "$DRIVE"p5 > /dev/null 2>&1
-mkfs.ext4 -qL ROOTFS2 -E nodiscard "$DRIVE"p6 > /dev/null 2>&1
-mkfs.ext4 -qL DATA    -E nodiscard "$DRIVE"p7 > /dev/null 2>&1
+export DISCARDOPT=""
+test $(cat /sys/block/mmcblk0/queue/discard_granularity) = 0 && export DISCARDOPT="-E nodiscard"
+mkfs.ext4 -qL BOOT    $DISCARDOPT "$DRIVE"p1 > /dev/null 2>&1
+mkfs.ext4 -qL BOOTSCR $DISCARDOPT "$DRIVE"p3 > /dev/null 2>&1
+mkfs.ext4 -qL ROOTFS1 $DISCARDOPT "$DRIVE"p5 > /dev/null 2>&1
+mkfs.ext4 -qL ROOTFS2 $DISCARDOPT "$DRIVE"p6 > /dev/null 2>&1
+mkfs.ext4 -qL DATA    $DISCARDOPT "$DRIVE"p7 > /dev/null 2>&1
 sync
 
 exit 0
