@@ -28,11 +28,27 @@ class IodHelper(EventLoop):
 
     def connect_to_panel(self):
         with open('/var/tmp/battery_raw', 'w') as f:
-            f.write('7660')
+            f.write('3800')
         with open('/var/tmp/temp_raw', 'w') as f:
-            f.write('300')
+            f.write('1965')
         with open('/var/tmp/temp1_input', 'w') as f:
             f.write('25000')
+        with open('/var/tmp/battery_no_fault', 'w') as f:
+            f.write('1')
+        with open('/var/tmp/battery_not_charging', 'w') as f:
+            f.write('0')
+        with open('/var/tmp/v_batch_i', 'w') as f:
+            f.write('0')
+        with open('/var/tmp/battery_no_fault', 'w') as f:
+            f.write('1')
+        with open('/var/tmp/battery_not_charging', 'w') as f:
+            f.write('0')
+        with open('/var/tmp/ch_battery_charge_enable', 'w') as f:
+            f.write('2')
+        with open('/var/tmp/ch_battery_not_charged', 'w') as f:
+            f.write('3')
+        with open('/var/tmp/ch_battery_warn_indicator', 'w') as f:
+            f.write('0')
 
         if len(sys.argv) == 1:
             enable = True
