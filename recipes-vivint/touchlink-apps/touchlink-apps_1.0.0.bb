@@ -212,7 +212,7 @@ do_compile() {
 		skip="true"
 	else
 		export PYTHONPATH=${STAGING_DIR}/${BUILD_SYS}/usr/lib/${PYTHON_DIR}/site-packages
-		nosetests_bin="${STAGING_DIR}/${BUILD_SYS}/usr/bin/nosetests-3.3"
+		nosetests_bin="${STAGING_DIR}/${BUILD_SYS}/usr/bin/nosetests-3.5"
 
 	fi
 
