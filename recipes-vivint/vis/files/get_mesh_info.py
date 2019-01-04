@@ -121,11 +121,13 @@ class SSHToNetworkModule(CustomSSH):
         self._server = None
         self._server_mac = None
         self._uptime = None
+        self._cmd = None
 
     def execute_cmd(self, cmd, strip_cmd=True, timeout=None):
         result = ''
         if self.before:
             self.before = ''
+        self._cmd = cmd
         self.sendline(cmd)
         if self.prompt(-1 if timeout is None else timeout):
             result = self.before
@@ -649,7 +651,7 @@ class NetworkModuleInfo:
         stations = []
         if result is not None and len(result) > 0:
             lines = result.split('\n')
-            ('LINES(iw IFACE station dump): {}\n'.format(lines))
+            self.logger.debug('LINES(iw IFACE station dump): {}\n'.format(lines))
             station_info = {}
             for line in lines:
                 if line.startswith('Station'):
@@ -686,7 +688,7 @@ class NetworkModuleInfo:
         ifaces = []
         if result is not None and len(result) > 0:
             lines = result.split('\n')
-            ('LINES(iwinfo): {}\n'.format(lines))
+            self.logger.debug('LINES(iwinfo): {}\n'.format(lines))
             wlan_info = {}
             for line in lines:
                 try:
@@ -751,7 +753,7 @@ class NetworkModuleInfo:
 
                         wlan_info[key] = val.strip()
                 except Exception as ex:
-                    print(ex)
+                    print('EXCEPTION: _parse_iwinfo: {}'.format(ex))
 
             # Append the lst bit of info
             if wlan_info:
@@ -929,7 +931,7 @@ Interface wlan1
                         rows[key] = val
                     elif len(line) > 0:
                         print('Failed to parse: {}'.format(line))
-                        print('FAILED cmd: {}'.format(s.command))
+                        print('FAILED cmd: {}'.format(s._cmd))
             return rows
 
         result = s.execute_cmd('iw wlan1 info')
