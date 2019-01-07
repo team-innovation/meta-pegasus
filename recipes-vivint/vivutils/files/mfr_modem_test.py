@@ -535,7 +535,7 @@ if __name__ == "__main__":
     device = ModemDevice()
 
     # check device id
-    id = self.serial_gpio_get_id()
+    id = device.serial_gpio_get_id()
     if id > 0:
         print("Modem ID: {}, no flash check needed.".format(id))
         quit()
