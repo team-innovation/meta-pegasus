@@ -10,11 +10,6 @@ USB_SCSI_PATH="/dev/disk/by-path/platform-musb-hdrc.1-usb-0:1:1.0-scsi-0:0:0:0-p
 GPG_HOME="/.gnupg"
 GPG_HOME_OPT="--homedir=$GPG_HOME"
 
-echo '1-1.4' > /sys/bus/usb/drivers/usb/unbind
-sleep 1
-echo '1-1.4' > /sys/bus/usb/drivers/usb/bind
-sleep 5
-
 import_key()
 {
 	if [ ! -e $GPG_HOME/trustdb.gpg ]
