@@ -69,5 +69,8 @@ check_pub_key
 # remove roubaix logs if any are still around
 rm_roubaix_logs
 
+# set the system root password to a random value when touchlink starts
+/opt/2gig/utils/password_utils --random
+
 # Give touchscreen a quick reset to clear and re-initialize
 echo 1 > /sys/class/input/input0/device/reset

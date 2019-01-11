@@ -33,14 +33,15 @@ VIVINT_APPS_COMMON = "\
 
 QT5_DEPENDS = "\
 	libegl-mx6 \
-    libgal-mx6 \
-    libvivante-mx6 \
+    	libgal-mx6 \
+    	libvivante-mx6 \
 	libgles-mx6 \
 	libgles2-mx6 \
-    libopenvg-mx6 \
-    imx-gpu-viv-g2d \
+    	libopenvg-mx6 \
+    	imx-gpu-viv-g2d \
 	python3-pyopengl \
 	touchlink-qt5-profile \
+	touchlink-ssl-profile \
 "
 
 QT5_PKGS = "\

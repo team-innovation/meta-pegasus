@@ -1,0 +1,103 @@
+#!/bin/bash
+
+echo 1 > /dev/vivint/psoc/backlights/bl_backlight_blank
+export FB_MULTI_BUFFER=2
+qmlfile=/tmp/touchtest.qml
+
+pidof pumpernickel &> /dev/null
+if [ $? == 0 ];
+then
+	procman stop pumpernickel 2>&1 /dev/null &
+fi
+
+S=$(cat <<EOF
+import QtQuick 2.4
+import QtQuick.Window 2.2
+import "/opt/2gig/roubaix/views" as Views
+import "/opt/2gig/roubaix/controls" as Buttons
+import "/opt/2gig/roubaix/grids_lists" as Grids
+
+Window {
+    id: window
+    visible: true
+    width: 1024  
+    height: 600  
+                
+    property bool top_left_touched: false
+    property bool top_right_touched: false
+    property bool bottom_right_touched: false
+    property bool bottom_left_touched: false
+    property int test_timeout: 0
+
+    Item {
+        Timer {
+            id: timerDelay
+            interval: 1000; running: true; repeat: true
+            onTriggered: {
+                test_timeout = test_timeout + 1
+                if (top_left_touched || bottom_right_touched) {
+                    Qt.quit()
+                }
+            }
+        }
+    }
+
+   Rectangle {
+       id: topleft
+       width: 100; height: 100
+       color: "red"
+
+       anchors{                               
+           top: parent.top              
+           left: parent.left                
+       }                                      
+
+       MouseArea {
+           anchors.fill: parent
+           onClicked: {
+               parent.color = 'green'
+               top_left_touched = true
+               console.log("PASSED!")
+           }
+       }
+   }
+
+   Rectangle {
+       id: bottomright
+       width: 100; height: 100
+                              
+       anchors{
+           bottom: parent.bottom
+           right: parent.right
+       }
+
+       MouseArea {
+           anchors.fill: parent
+           onClicked: {
+               parent.color = 'green'
+               bottom_right_touched = true
+	          console.log("REVERSED!")
+           }
+       }
+   }
+
+   Text {
+       font.family: "Int Circular Pro Light"
+       font.pixelSize: 20
+       anchors.centerIn: parent
+       text: "Touch the red square"
+   }
+}
+EOF
+)
+
+echo -e "$S" > $qmlfile
+ret=$(/usr/bin/qt5/qmlscene $qmlfile 2>&1)
+echo $ret
+rm $qmlfile 
+unset FB_MULTI_BUFFER
+if [ "$ret" = "qml: PASSED!" ]; then
+	exit 0
+else
+	exit 1
+fi
