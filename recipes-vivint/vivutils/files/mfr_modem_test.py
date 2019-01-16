@@ -536,7 +536,7 @@ if __name__ == "__main__":
 
     # check device id
     id = device.serial_gpio_get_id()
-    if id > 0:
+    if id > 1:
         print("Modem ID: {}, no flash check needed.".format(id))
         quit()
 
