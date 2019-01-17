@@ -560,7 +560,7 @@ if __name__ == "__main__":
         quit()
 
     # get the firmware version currently on the modem to check for an upgrade
-    firmware_version = sierra_modem.get_firmware_version()
+    firmware_version = modem.get_firmware_version()
 
     # if the command line contains ""--force" or "-f", then skip the file check
     if "--force" in argv or "-f" in argv:
@@ -582,7 +582,7 @@ if __name__ == "__main__":
                     # if we have at least one CCID, then the file is good - exit
                     if len(tuples) >= 4 and tuples[2]:
                         print("Modemids file found with SIM Id's - exiting.")
-                        sierra_modem.power_down()
+                        modem.power_down()
                         quit(0)
 
     # try up to 3 times to get iccid's
@@ -613,16 +613,16 @@ if __name__ == "__main__":
             result = modem.reflash_modem(CARRIER_VERIZON)
         else:
             print("Unknown firmware version {} - can't update".format(firmware_version))
-            sierra_modem.power_down()
+            modem.power_down()
             quit()
 
         if not result:
             print("Error updating firmware - exiting")
-            sierra_modem.power_down()
+            modem.power_down()
             quit()
 
     # Resetting the NVRam can cause more problems than it fixes - so don't do it for now!
-    firmware_version = sierra_modem.get_firmware_version()
+    firmware_version = modem.get_firmware_version()
     #    print("Resetting NVRAM returned False - resetting module")
 
     for n in range(3):
