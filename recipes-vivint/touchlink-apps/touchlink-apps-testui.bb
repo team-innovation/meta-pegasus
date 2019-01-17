@@ -4,10 +4,10 @@ DESCRIPTION = "User interface for Fcc testing"
 HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
 SECTION = "SOMETHING"
-DEPENDS = "qtdeclarative"
+DEPENDS = "qtdeclarative touchlink-apps-pumpernickel"
 
 PV = "1.0.0+git${SRCPV}"
-PR = "r7"
+PR = "r8"
 
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
