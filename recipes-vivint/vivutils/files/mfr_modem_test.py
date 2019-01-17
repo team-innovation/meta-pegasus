@@ -161,13 +161,25 @@ class ModemDevice:
         self._serial_port.timeout = orig_timeout
         return result_buffer.decode("utf-8")
 
+    def reset_hard(self):
+        self.close_serial_port()
+        self.serial_gpio_access()
+        self.serial_gpio_reset(False)
+        time.sleep(1)
+        self.serial_gpio_reset(True)
+        time.sleep(5)
+        if self.open_serial_port("/dev/ttyACM0"):
+            time.sleep(5)
+            return True
+
+        return False
+
+
 class SierraHL7588:
 
     def __init__(self, device):
-        self._device = None
+        self._device = device
         self._last_command = None
-
-
 
     def wait_for_ready(self):
         #print("Waiting for +PBREADY...")
@@ -183,9 +195,9 @@ class SierraHL7588:
 
     def get_firmware_version(self):
         try:
-            if self._serial_port is not None:
+            if self._device._serial_port is not None:
                 self._device.write_command("AT+CGMR")
-                buffer = self.read_result()
+                buffer = self._device.read_result()
 
                 if len(buffer) == 0:
                     return ""
@@ -213,9 +225,9 @@ class SierraHL7588:
 
     def get_imei(self):
         try:
-            if self._serial_port is not None:
+            if self._device._serial_port is not None:
                 self._device.write_command("AT+CGSN")
-                buffer = self.read_result()
+                buffer = self._device.read_result()
 
                 if len(buffer) == 0:
                     return ""
@@ -243,9 +255,9 @@ class SierraHL7588:
 
     def get_sim(self):
         try:
-            if self._serial_port is not None:
+            if self._device._serial_port is not None:
                 self._device.write_command("AT+KSIMSEL?")
-                buffer = self.read_result()
+                buffer = self._device.read_result()
 
                 tuples = buffer.split("\r\n")
                 for tuple in tuples:
@@ -269,10 +281,10 @@ class SierraHL7588:
 
     def select_sim(self, sim_number, wait=True):
         try:
-            if self._serial_port is not None:
+            if self._device._serial_port is not None:
                 #print("Selecting SIM {}...".format(sim_number))
                 self._device.write_command("AT+KSIMSEL={}".format(sim_number))
-                buffer = self.read_result()
+                buffer = self._device.read_result()
 
                 if "OK" in buffer and wait:
                     self.wait_for_ready()
@@ -286,9 +298,9 @@ class SierraHL7588:
         #print("Getting ICCID for sim {}...".format(sim_number))
         for n in range(3):
             try:
-                if self._serial_port:
+                if self._device._serial_port:
                     self._device.write_command("AT+CCID")
-                    buffer = self.read_result()
+                    buffer = self._device.read_result()
 
                     if "SIM NOT INSERTED" in buffer:
                         return None
@@ -324,7 +336,7 @@ class SierraHL7588:
     def get_rx_power(self):
         try:
             self._device.write_command("AT+WMRXPOWER=1,2,600")
-            buffer = self.read_result()
+            buffer = self._device.read_result()
 
             tuples = buffer.split("\r\n")
             for tuple in tuples:
@@ -337,14 +349,14 @@ class SierraHL7588:
 
     def reset(self, connect=True):
         try:
-            if self._serial_port is not None:
+            if self._device._serial_port is not None:
                 #print("Resetting modem...")
                 self._device.write_command("AT+CFUN=1,1")
-                self.read_result()
-                self.close_serial_port()
+                self._device.read_result()
+                self._device.close_serial_port()
                 if connect:
                     time.sleep(5)
-                    if self.open_serial_port("/dev/ttyACM0"):
+                    if self._device.open_serial_port("/dev/ttyACM0"):
                         self.wait_for_nvbackup()
                         return True
                     else:
@@ -361,13 +373,13 @@ class SierraHL7588:
         return False
 
     def reset_hard(self):
-        self.close_serial_port()
-        self.serial_gpio_access()
-        self.serial_gpio_reset(False)
+        self._device.close_serial_port()
+        self._device.serial_gpio_access()
+        self._device.serial_gpio_reset(False)
         time.sleep(1)
-        self.serial_gpio_reset(True)
+        self._device.serial_gpio_reset(True)
         time.sleep(5)
-        if self.open_serial_port("/dev/ttyACM0"):
+        if self._device.open_serial_port("/dev/ttyACM0"):
             self.wait_for_nvbackup()
             return True
 
@@ -375,14 +387,14 @@ class SierraHL7588:
 
     def power_down(self):
         self._device.write_command("AT+CPWROFF")
-        self.read_result()
-        self.close_serial_port()
+        self._device.read_result()
+        self._device.close_serial_port()
 
     def wait_for_nvbackup(self):
         # try up to 10 times waiting 1 second between tries
         for n in range(10):
             self._device.write_command("AT+NVBU?")
-            result = self.read_result()
+            result = self._device.read_result()
 
             if "NVBU: 0," in result and "NVBU: 1," in result and "NVBU: 2," in result:
                 # split the output
@@ -439,8 +451,8 @@ class SierraHL7588:
 
             # reset the modem and close the serial port
             self._device.write_command("AT+CFUN=1,1")
-            self.read_result()
-            self.close_serial_port()
+            self._device.read_result()
+            self._device.close_serial_port()
 
             try:
                 stdout, stderr = flash_proc.communicate(timeout=60)
@@ -459,13 +471,13 @@ class SierraHL7588:
                     elif "Firmware download successful" in stdout:
                         # flash has completed
                         print("Success flashing file {}".format(firmware_file))
-                        if self.open_serial_port("/dev/ttyACM0"):
+                        if self._device.open_serial_port("/dev/ttyACM0"):
                             self.wait_for_nvbackup()
                             return True
                 else:
                     print("Flash operation completed with no output")
                     print(stdout)
-                    if self.open_serial_port("/dev/ttyACM0"):
+                    if self._device.open_serial_port("/dev/ttyACM0"):
                         self.wait_for_nvbackup()
                         return True
             except subprocess.TimeoutExpired:
@@ -481,9 +493,9 @@ class SierraHL7588:
 
     def check_reg_state(self):
         try:
-            if self._serial_port:
+            if self._device._serial_port:
                 self._device.write_command("AT+COPS?")
-                buffer = self.read_result()
+                buffer = self._device.read_result()
 
                 if "+COPS: 0" in buffer:
                     # nothing more to do - we are in automatic registration state
@@ -491,7 +503,7 @@ class SierraHL7588:
                     return
 
                 self._device.write_command("AT+COPS=0")
-                self.read_result(timeout=30)
+                self._device.read_result(timeout=30)
                 print("Modem changed to automatic registration")
             else:
                 print("Error: Serial port is not open")
