@@ -37,5 +37,6 @@ RDEPENDS_${PN} += " \
         mosquitto \
         python3-paho-mqtt \
         python3-ubus \
+	vis \
 "
 

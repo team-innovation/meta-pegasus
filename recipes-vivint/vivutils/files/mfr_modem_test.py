@@ -146,7 +146,7 @@ class ModemDevice:
             self.close_serial_port()
             self.open_serial_port()
             if retry:
-                return read_result(retry=False)
+                return self.read_result(retry=False)
 
     def monitor(self, timeout=10):
         orig_timeout = self._serial_port.timeout
@@ -542,6 +542,28 @@ if __name__ == "__main__":
     modem = None
     flash_modem = True
     update_firmware = False
+    firmware_version = None
+    imei = None
+    sim1 = None
+    sim2 = None
+
+    sierra_modem = SierraHL7588()
+
+    print("Turning modem on...")
+    powered_up = sierra_modem.turn_on()
+    if not sierra_modem.open_serial_port("/dev/ttyACM0"):
+        # reset and try again
+        if not sierra_modem.reset_hard():
+            print("Error: Modem is not responding")
+            quit()
+
+    if powered_up:
+        sierra_modem.wait_for_nvbackup()
+
+    # get the firmware version currently on the modem to check for an upgrade
+    firmware_version = sierra_modem.get_firmware_version()
+    if not "A.2.10." in firmware_version:
+        flash_modem = False
 
     # open the device and determine modem type
     device = ModemDevice()
@@ -590,7 +612,7 @@ if __name__ == "__main__":
             if tuples and tuples[0]:
                 update_firmware = is_upgrade_needed(firmware_version)
                 if not update_firmware:
-                    # if no update, then we can exit if sims have been read
+                   # if no update, then we can exit if sims have been read
                     # if we have at least one CCID, then the file is good - exit
                     if len(tuples) >= 4 and tuples[2]:
                         print("Modemids file found with SIM Id's - exiting.")
@@ -608,7 +630,6 @@ if __name__ == "__main__":
 
     firmware_version = modem.get_firmware_version()
     imei = modem.get_imei()
-
     print("Current firmware version is {}".format(firmware_version))
 
     if flash_modem:
@@ -616,6 +637,7 @@ if __name__ == "__main__":
         # Flash the new boot loader (AT&T version)
         if not modem.reflash_modem(CARRIER_ATT):
             print("Error flashing new AT&T boot loader version - exiting")
+            sierra_modem.power_down()
             quit()
     elif update_firmware:
         result = True
@@ -626,7 +648,7 @@ if __name__ == "__main__":
         else:
             print("Unknown firmware version {} - can't update".format(firmware_version))
             modem.power_down()
-            quit()
+           quit()
 
         if not result:
             print("Error updating firmware - exiting")
@@ -636,13 +658,14 @@ if __name__ == "__main__":
     # Resetting the NVRam can cause more problems than it fixes - so don't do it for now!
     firmware_version = modem.get_firmware_version()
     #    print("Resetting NVRAM returned False - resetting module")
-
+    # Read the sims
     for n in range(3):
         print("Changing to SIM 1 and resetting...")
         # change to SIM 1 and reset modem
         modem.select_sim(1, wait=False)
         if not modem.reset():
             print("Error: Modem is not responding")
+            sierra_modem.power_down()
             quit()
 
         # read SIM 1
@@ -665,7 +688,6 @@ if __name__ == "__main__":
 
     # Check for COPS deregistration
     modem.check_reg_state()
-
     # set values to blank instead of None
     if not imei:
         imei = ""

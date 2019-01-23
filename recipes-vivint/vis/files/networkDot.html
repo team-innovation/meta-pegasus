@@ -1,0 +1,78 @@
+<! DOCTYPE html >
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+    <script type="text/javascript" src="../dist/vis.js"></script> <!-- network handling framework -->
+
+    <link href="../dist/vis.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        #network{
+            width: "100%";
+            height: "100%";
+            border: 1px solid lightgray;
+        }
+    </style>
+
+</head>
+<body>
+<h1>Network DOT Test</h1>
+<FORM ACTION="../../cgi-bin/graph_me.sh">
+	<INPUT TYPE="SUBMIT" NAME="Submit" VALUE="Generate Graph">
+</FORM>
+<br>
+<div id="network"></div>
+
+<script type="text/javascript">
+var fileContent;
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		fileContent = xmlhttp.responseText;
+		console.log(fileContent)
+		process_dot(fileContent)
+	}
+}
+var filePath = "./tmp2.dot"
+xmlhttp.open("GET",filePath,true);
+xmlhttp.send();
+
+function process_dot(fileContent) {
+    // create a network
+    var container = document.getElementById('network');
+
+    var parsedData = vis.network.convertDot(fileContent);
+
+    // create a network
+    var data = {
+      nodes: parsedData.nodes,
+      edges: parsedData.edges
+    }
+
+    var options = parsedData.options 
+
+    var t = data['nodes'];
+    var i;
+    for (i = 0; i < t.length; i++) {
+	data['nodes'][i]['color']['background'] = 'white'
+	if (data['nodes'][i]['shape'] == 'box') {
+		data['nodes'][i]['mass'] = 30
+		data['nodes'][i]['color']['background'] = 'lightgreen'
+	}
+	else {
+		data['nodes'][i]['mass'] = 8
+	}
+    }
+
+    t = data['edges'];
+    for (i = 0; i < t.length; i++) {
+	data['edges'][i]['smooth'] = true;
+	data['edges'][i]['smooth']['type'] = 'cubicBezier';
+    }
+
+    var network = new vis.Network(container, data, options);
+}
+
+</script>
+</body>
+</html>

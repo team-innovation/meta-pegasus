@@ -81,6 +81,7 @@ MISC_DEPENDS = "\
 	ppp \
 	socat \
 	live555-openrtsp \
+	nfc-util \
 "
 
 PYTHON_EXTRA_DEPENDS = "\
