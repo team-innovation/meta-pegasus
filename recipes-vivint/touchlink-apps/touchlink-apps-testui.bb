@@ -63,6 +63,8 @@ inherit python-dir pythonnative
 
 
 do_configure_prepend() {
+        export PYTHONPATH=${S}/../../code/sundance/services/devices/generated/grpc:$PYTHONPATH
+
         ${S}/../../scripts/generate_all_proxies.py
 }
 
