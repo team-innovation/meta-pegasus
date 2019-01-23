@@ -59,7 +59,6 @@ QT5_PKGS = "\
 	qtdeclarative-qmlplugins \
 	qtdeclarative-tools \
 	qtgraphicaleffects-qmlplugins \
-	qtgstreamer \
 	qtmultimedia-plugins \
 	qtmultimedia-qmlplugins \
 	qtquickcontrols-qmlplugins \
@@ -94,6 +93,7 @@ PYTHON_EXTRA_DEPENDS = "\
 	python3-soco \
 	python3-sparsedict \
 	python3-phue \
+	python3-transitions \
 "
 
 RDEPENDS_${PN} = " \
