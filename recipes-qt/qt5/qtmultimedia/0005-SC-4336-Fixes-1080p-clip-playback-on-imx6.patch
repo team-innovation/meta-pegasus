@@ -10,11 +10,11 @@ Subject: [PATCH] SC-4336 - Fixes 1080p clip playback on imx6
  src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp |  2 +-
  4 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/src/gsttools/qvideosurfacegstsink.cpp b/src/gsttools/qvideosurfacegstsink.cpp
+diff --git a/src/gsttools/qgstutils.cpp b/src/gsttools/qgstutils.cpp
 index 94aaee7..09ac575 100644
---- a/src/gsttools/qvideosurfacegstsink.cpp
-+++ b/src/gsttools/qvideosurfacegstsink.cpp
-@@ -787,6 +787,13 @@ QVideoSurfaceFormat QVideoSurfaceGstSink::formatForCaps(GstCaps *caps, int *byte
+--- a/src/gsttools/qgstutils.cpp
++++ b/src/gsttools/qgstutils.cpp
+@@ -1180,6 +1180,13 @@ QVideoSurfaceFormat QGstUtils::formatForCaps(GstCaps *caps, int *byte
          if (bytesPerLine)
              *bytesPerLine = ((size.width() * bitsPerPixel / 8) + 3) & ~3;
  

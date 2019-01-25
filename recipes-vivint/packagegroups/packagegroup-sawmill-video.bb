@@ -4,7 +4,7 @@ DESCRIPTION = "touchlink video packages, imx firmware, gst plugins, etc"
 LICENSE = "MIT"
 LICENSE_FLAGS_WHITELIST = "commercial license"
 
-PR = "r17"
+PR = "r19"
 
 inherit packagegroup
 
@@ -21,9 +21,7 @@ RPROVIDES_${PN} = " \
 
 RDEPENDS_${PN} = " \
 	firmware-imx \
-	gst-fsl-plugin \
 	gstreamer1.0-plugins-bad \
-	gstreamer1.0-plugins-bad-opus \
 	gstreamer1.0-plugins-bad-videoparsersbad \
 	gstreamer1.0-plugins-base \
 	gstreamer1.0-plugins-base-audioconvert \
@@ -35,6 +33,7 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-base-videoconvert \
 	gstreamer1.0-plugins-base-videotestsrc \
 	gstreamer1.0-plugins-base-volume \
+	gstreamer1.0-plugins-base-opus \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0-plugins-good-imagefreeze \
 	gstreamer1.0-plugins-good-isomp4 \
@@ -50,15 +49,15 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-good-wavenc \
 	gstreamer1.0-plugins-good-wavparse \
 	gstreamer1.0-rtsp-server \
-	gstreamer-imx \
-	gstreamer-imx-imxaudio \
-	gstreamer-imx-imxeglvivsink \
-	gstreamer-imx-imxg2d \
-	gstreamer-imx-imxipu \
-	gstreamer-imx-imxpxp \
-	gstreamer-imx-imxv4l2videosrc \
-	gstreamer-imx-imxvpu \
-	gstreamer-imx-meta \
+	gstreamer1.0-plugins-imx \
+	gstreamer1.0-plugins-imx-imxaudio \
+	gstreamer1.0-plugins-imx-imxeglvivsink \
+	gstreamer1.0-plugins-imx-imxg2d \
+	gstreamer1.0-plugins-imx-imxipu \
+	gstreamer1.0-plugins-imx-imxpxp \
+	gstreamer1.0-plugins-imx-imxv4l2videosrc \
+	gstreamer1.0-plugins-imx-imxvpu \
+	gstreamer1.0-plugins-imx-meta \
 	imx-lib \
 	ffmpeg \
 	libfslcodec \
@@ -75,4 +74,5 @@ RDEPENDS_${PN} = " \
 	libgstsdp-1.0-0 \
 	libgsturidownloader-1.0-0 \
 	libopus0 \
+	civetweb \
 "

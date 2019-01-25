@@ -2,6 +2,7 @@ require qt5.inc
 
 SRC_URI += " \
     file://0001-qmltestexample-fix-link.patch \
+    file://add-scenegraph.patch \
 "
 
 # There are no LGPLv3-only licensed files in this component.

@@ -12,8 +12,8 @@ inherit packagegroup
 #   then add it to packagegroup-sawmill-min not here.
 RDEPENDS_${PN} = " \
 	alsa-utils \
-	busybox-httpd \
 	ca-certificates \
+	civetweb \
 	cronie \
 	gnupg \
 	libsodium18 \
@@ -27,6 +27,7 @@ RDEPENDS_${PN} = " \
 	python3-compile \
 	python3-ctypes \
 	python3-curses \
+	python3-cython \
 	python3-gdbm \
 	python3-distribute \
 	python3-grpcio \
@@ -64,6 +65,7 @@ RDEPENDS_${PN} = " \
 	python3-threading \
 	python3-tkinter \
 	python3-toolz \
+	python3-transitions \
 	python3-unixadmin \
 	python3-numbers \
 	pv \

@@ -7,7 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative touchlink-apps-pumpernickel"
 
 PV = "1.0.0+git${SRCPV}"
-PR = "r8"
+PR = "r9"
 
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
@@ -63,6 +63,8 @@ inherit python-dir pythonnative
 
 
 do_configure_prepend() {
+        export PYTHONPATH=${S}/../../code/sundance/services/devices/generated/grpc:$PYTHONPATH
+
         ${S}/../../scripts/generate_all_proxies.py
 }
 
