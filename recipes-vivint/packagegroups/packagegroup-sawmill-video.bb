@@ -4,7 +4,7 @@ DESCRIPTION = "touchlink video packages, imx firmware, gst plugins, etc"
 LICENSE = "MIT"
 LICENSE_FLAGS_WHITELIST = "commercial license"
 
-PR = "r19"
+PR = "r20"
 
 inherit packagegroup
 
@@ -55,7 +55,7 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-imx-imxg2d \
 	gstreamer1.0-plugins-imx-imxipu \
 	gstreamer1.0-plugins-imx-imxpxp \
-	gstreamer1.0-plugins-imx-imxv4l2videosrc \
+	gstreamer1.0-plugins-imx-imxv4l2video \
 	gstreamer1.0-plugins-imx-imxvpu \
 	gstreamer1.0-plugins-imx-meta \
 	imx-lib \
