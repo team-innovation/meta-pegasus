@@ -31,4 +31,5 @@ SRC_URI += "\
     file://0006-SC-4678-dbc-colors.patch \
     file://enable-live-sync.patch \
     file://qtlatency.patch \
+    file://gst-empty-frame.patch \
 "
