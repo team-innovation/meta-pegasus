@@ -1,0 +1,15 @@
+diff --git a/gst/isomp4/qtdemux.c b/gst/isomp4/qtdemux.c
+index f2ea73b..7db83c2 100644
+--- a/gst/isomp4/qtdemux.c
++++ b/gst/isomp4/qtdemux.c
+@@ -6477,8 +6477,8 @@ qtdemux_parse_samples (GstQTDemux * qtdemux, QtDemuxStream * stream, guint32 n)
+ 
+         if (stream->samples_per_frame * stream->bytes_per_frame) {
+           cur->size =
+-              (stream->samples_per_chunk * stream->n_channels) /
+-              stream->samples_per_frame * stream->bytes_per_frame;
++              ((stream->samples_per_chunk * stream->n_channels) /
++              stream->samples_per_frame) * stream->bytes_per_frame * stream->sample_size;
+         } else {
+           cur->size = stream->samples_per_chunk;
+         }
