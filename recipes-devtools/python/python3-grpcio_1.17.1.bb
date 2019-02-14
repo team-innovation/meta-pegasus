@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://README.md;md5=d2e7d1e6fa6808c1d647b186c9ed1874"
 DEPENDS += "python3 python3-cython"
 RDEPENDS_${PN} = "python3-protobuf python3-six"
 
-PR = "r2"
+PR = "r3"
 
 SRCNAME = "grpcio"
 SRC_URI = "https://files.pythonhosted.org/packages/98/df/e181e36dc54fc0166d59cf2cb25991e33df52090922495175b2e2abc1381/${SRCNAME}-${PV}.tar.gz"
