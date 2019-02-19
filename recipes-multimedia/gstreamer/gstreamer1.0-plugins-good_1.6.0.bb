@@ -12,4 +12,4 @@ S = "${WORKDIR}/gst-plugins-good-${PV}"
 #override X11ENABLEOPTS value in poky layer as xshm is unknown configure option
 X11ENABLEOPTS = "--enable-x "
 X11DISABLEOPTS = "--disable-x "
-PR="r2"
+PR="r3"
