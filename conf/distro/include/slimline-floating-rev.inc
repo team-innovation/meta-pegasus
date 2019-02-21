@@ -9,7 +9,7 @@ GIT_APPS_BRANCH ?= "develop"
 GIT_ARTIFACTS_BRANCH ?= "develop"
 GIT_ZWAVE_BRANCH ?= "develop"
 GIT_SIMLOCK_BRANCH ?= "master"
-GIT_LIVE555_BRANCH ?= "master"
+GIT_LIVE555_BRANCH ?= "develop"
 
 GIT_UBOOT_REV ?= "${AUTOREV}"
 GIT_WALLSLY_UBOOT_REV ?= "${AUTOREV}"
