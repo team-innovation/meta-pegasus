@@ -8,5 +8,6 @@ SRC_URI_append = " file://0001-gstrtpmp4gpay-set-dafault-value-for-MPEG4-without
 		   file://ringbuffer.patch \
 		   file://dbc_clips_audio.patch \
 		   file://dbc_clips_seek_audio.patch \
+		   file://opusdemux.patch \
 "
 

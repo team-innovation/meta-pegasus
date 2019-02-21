@@ -49,15 +49,24 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-good-wavenc \
 	gstreamer1.0-plugins-good-wavparse \
 	gstreamer1.0-rtsp-server \
-	imx-gst1.0-plugin \
-	imx-gst1.0-plugin-gplay \
-	imx-gst1.0-plugin-grecorder \
+	gstreamer-imx \
+	gstreamer-imx-imxaudio \
+	gstreamer-imx-imxeglvivsink \
+	gstreamer-imx-imxg2d \
+	gstreamer-imx-imxipu \
+	gstreamer-imx-imxpxp \
+	gstreamer-imx-imxv4l2videosrc \
+	gstreamer-imx-imxvpu \
+	gstreamer-imx-meta \
 	imx-lib \
 	ffmpeg \
-	imx-codec \
-	imx-parser \
+	libfslcodec \
+	libfslparser \
 	libglib-2.0-utils \
 	libgstcodecparsers-1.0-0 \
+	libgstimxblitter0 \
+	libgstimxcommon0 \
+	libgstimxcompositor0 \
 	libgstriff-1.0-0 \
 	libgstrtp-1.0-0 \
 	libgstrtsp-1.0-0 \
