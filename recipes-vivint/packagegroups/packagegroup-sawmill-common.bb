@@ -22,9 +22,12 @@ RDEPENDS_${PN} = " \
 	packagegroup-sawmill-debugtools \
 	packagegroup-sawmill-min \
 	procps \
+	python3-asn1crypto \
 	python3-asyncio \
 	python3-cachetools \
+	python3-cffi \
 	python3-compile \
+	python3-cryptography \
 	python3-ctypes \
 	python3-curses \
 	python3-cython \
@@ -48,10 +51,12 @@ RDEPENDS_${PN} = " \
 	python3-pexpect \
 	python3-profile \
 	python3-protobuf \
+	python3-pycparser \
 	python3-pyftpdlib \
 	python3-pyserial \
 	python3-pyssh-ctypes \
 	python3-pyalsaaudio \
+	python3-pyopenssl \
 	python3-pytz \
 	python3-re \
 	python3-resource \
