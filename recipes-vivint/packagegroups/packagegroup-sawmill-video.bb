@@ -60,8 +60,8 @@ RDEPENDS_${PN} = " \
 	gstreamer-imx-meta \
 	imx-lib \
 	ffmpeg \
-	libfslcodec \
-	libfslparser \
+	imx-codec \
+	imx-parser \
 	libglib-2.0-utils \
 	libgstcodecparsers-1.0-0 \
 	libgstimxblitter0 \
