@@ -1,0 +1,104 @@
+#!/bin/sh
+DAEMON=/usr/bin/civetweb
+NAME=civetweb
+DESC="Civetweb HTTPS server"
+ARGS="/etc/civetweb/CivetWeb.conf"
+ONEYEAR=31557600
+CERTPATH="/media/extra/ssl_certs"
+PIDFILE="/var/run/civetweb"
+HTTPROOT="/srv/www"
+
+test -f $DAEMON || exit 0
+
+set -e
+
+# source function library
+. /etc/init.d/functions
+
+delay_stop() {
+	count=0
+	while [ $count -lt 9 ] ; do
+	        if pidof $DAEMON >/dev/null; then
+	                sleep 1
+	        else
+	                return 0
+	        fi
+		count=`expr $count + 1`
+	done
+	echo "Failed to stop $DESC."
+	return 1
+}
+
+generate_cert() {
+	openssl req -x509 -newkey rsa:4096 -keyout ${CERTPATH}/key.pem \
+		-out ${CERTPATH}/https_server.pem -days 3650 -nodes \
+		-subj '/CN=vivint.panel'
+	cat ${CERTPATH}/key.pem >> ${CERTPATH}/https_server.pem
+	rm ${CERTPATH}/key.pem	
+}
+
+create_thumbnail_links() {
+	if [ ! -h $HTTPROOT/thumbnails ]; then
+		echo "Create thumbnails symlink..."		
+		ln -sf /tmp/thumbnails $HTTPROOT/thumbnails
+        fi
+}
+
+create_clips_links() {
+	if [ ! -h $HTTPROOT/clips ]; then
+		echo "Create clips symlink..."
+		ln -sf /media/clips $HTTPROOT/clips
+        fi
+}
+
+create_slupdate_links() {
+	if [ ! -h $HTTPROOT/update ]; then
+		echo "Create update symlink..."
+		ln -sf /media/extra/update $HTTPROOT/update
+        fi
+}
+
+case "$1" in
+    start)
+    	echo -n "Checking certificate: "
+    	if openssl x509 -checkend $ONEYEAR -noout -in ${CERTPATH}/https_server.pem 2>/dev/null
+	then
+    		echo "Good"
+	else
+		echo  "Regenerate"
+		generate_cert
+	fi
+
+	echo -n "Starting $DESC: "
+	if [ ! -d $HTTPROOT ]; then
+		echo "$HTTPROOT is missing."
+		exit 1
+	fi
+
+	create_thumbnail_links
+	create_clips_links
+	create_slupdate_links
+
+	start-stop-daemon -S -b -m -p ${PIDFILE} -x $DAEMON -- $ARGS
+	echo "$NAME."
+	;;
+    stop)
+	echo -n "Stopping $DESC: "
+	start-stop-daemon -K -p ${PIDFILE} 
+	echo "$NAME."
+	;;
+    restart)
+	$0 stop
+	delay_stop && $0 start
+	;;
+    status)
+	status $DAEMON
+	exit $?
+	;;
+    *)
+	echo "Usage: $0 {start|stop|restart|status}"
+	exit 1
+	;;
+esac
+
+exit 0

@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for slimline"
 LICENSE = "MIT"
 
-PR = "r7"
+PR = "r8"
 
 inherit packagegroup
 
@@ -14,5 +14,6 @@ RDEPENDS_${PN} += " \
 	slimline-version \
     mosquitto-clients \
     openvpn \
+    telegraf \
 "
 

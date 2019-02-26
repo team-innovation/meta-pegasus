@@ -9,14 +9,6 @@ Added new sync check
 diff --git a/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp b/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp
 --- a/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp
 +++ b/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp
-@@ -151,6 +151,7 @@
-     gboolean result = gst_type_find_register(0, "playlist", GST_RANK_MARGINAL, playlistTypeFindFunction, 0, 0, this, 0);
-     Q_ASSERT(result == TRUE);
-     Q_UNUSED(result);
-+ //qDebug() << Q_FUNC_INFO;
- #if GST_CHECK_VERSION(1,0,0)
-     m_playbin = gst_element_factory_make("playbin", NULL);
- #else
 @@ -176,6 +177,21 @@
          g_object_set(G_OBJECT(m_playbin), "flags", flags, NULL);
  

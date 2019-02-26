@@ -1,0 +1,8 @@
+{
+    "metricz":
+    {
+        "name" : "Metrics and logs, done better!",
+        "pid_file" : "/var/run/metricz.pid",
+        "start": "/etc/init.d/metricz start"
+    }
+}

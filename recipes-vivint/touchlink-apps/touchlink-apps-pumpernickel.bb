@@ -16,6 +16,9 @@ DEPENDS += " \
 	python3-cherrypy-native \
 	python3-dateutil-native \
 	python3-gnupg-native \
+	python3-grpcio-native \
+	python3-grpcio-tools-native \
+	python3-googleapis-common-protos-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
 	python3-markupsafe-native \
@@ -24,6 +27,7 @@ DEPENDS += " \
 	python3-msgpack-native \
 	python3-native \
 	python3-pexpect-native \
+	python3-protobuf-native \
 	python3-ptyprocess-native \
 	python3-psutil-native \
 	python3-pyalsaaudio-native \
@@ -63,6 +67,7 @@ inherit python-dir pythonnative
 EXEC_DIR = "pumpernickel"
 
 do_configure_prepend() {
+	export PYTHONPATH=${S}/../sundance/services/devices/generated/grpc:$PYTHONPATH
 	${S}/../../scripts/generate_all_proxies.py
 }
 
