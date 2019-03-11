@@ -142,6 +142,11 @@ DEPENDS = " \
 	python3-pysodium-native \
 	python3-xmltodict-native \
 	libsodium-native \
+	python3-pyopenssl-native \
+	python3-cryptography-native \
+	python3-cffi-native \
+	python3-asn1crypto-native \
+	python3-pycparser-native \
 "
 
 
