@@ -25,7 +25,7 @@ EXTRA_QMAKEVARS_PRE += "${@bb.utils.contains_any('PACKAGECONFIG', 'gstreamer gst
 SRC_URI += "\
     file://port_to_gstreamer_1.0.patch \
     file://0002-qtmultimedia_log.patch \
-    file://0003-qtmultimedia_levels.patch \
+    file://qtmultimedia_levels.patch \
     file://0004-qtmultimedia_audiosink_fix.patch \
     file://0005-SC-4336-Fixes-1080p-clip-playback-on-imx6.patch \
     file://0006-SC-4678-dbc-colors.patch \
