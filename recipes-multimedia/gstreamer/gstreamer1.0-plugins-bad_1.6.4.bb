@@ -7,8 +7,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=73a5855a8119deb017f5f13cf327095d \
                     file://gst/tta/crc32.h;beginline=12;endline=29;md5=27db269c575d1e5317fffca2d33b3b50"
 
 
-SRC_URI[md5sum] = "111632f8d1d1ba39bbf3665aaafcb28c"
-SRC_URI[sha256sum] = "d8ff26128d4ecd2ffeb28e14843808d2d971b09056b7cee6f08afcae01fc0f49"
+SRC_URI[md5sum] = "6768524cb8bcdcaf1345d9c66f3bd7bd"
+SRC_URI[sha256sum] = "2b98df8d4d7784d5186baf2e19f565a6d8f8924119f8470e23c96889aaa603fe"
 
 
 CFLAGS_append_mx6 = " -DLINUX \
