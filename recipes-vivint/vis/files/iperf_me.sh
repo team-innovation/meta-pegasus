@@ -1,8 +1,8 @@
 #!/bin/sh
 
-echo "test_me.sh got invoked with QUERY_STRING=$QUERY_STRING" >> /var/log/test_me.log
-echo "and with REQUEST_METHOD=$REQUEST_METHOD" >> /var/log/test_me.log
-echo "and with HTTP_REFERER=$HTTP_REFERER" >> /var/log/test_me.log
+# echo "test_me.sh got invoked with QUERY_STRING=$QUERY_STRING" >> /var/log/test_me.log
+# echo "and with REQUEST_METHOD=$REQUEST_METHOD" >> /var/log/test_me.log
+# echo "and with HTTP_REFERER=$HTTP_REFERER" >> /var/log/test_me.log
 
 IFS='=&'
 set -- $QUERY_STRING
@@ -12,15 +12,10 @@ prot="$6"
 secs="$8"
 bw="${10}"
 bw_units="${12}"
-echo "test_me.sh src=$src, dst=$dst, prot=$prot, secs=$secs, bw=$bw, bw_units=$bw_units" >> /var/log/test_me.log
+# echo "test_me.sh src=$src, dst=$dst, prot=$prot, secs=$secs, bw=$bw, bw_units=$bw_units" >> /var/log/test_me.log
 
-# TODO: validate src and dest:
-# not equal
-# represent real mesh nodes?
-
-# TODO: fix use of /tmp/netv
 info=`/usr/bin/python3 /opt/2gig/utils/send_net_router_command "netv miperf $src $dst $prot $secs $bw $bw_units"`
-echo "info=$info" >> /var/log/test_me.log
+# echo "info=$info" >> /var/log/test_me.log
 if echo $info | grep "Connection refused"
 then
     rate_data="iPerf client unable to connect to server"
