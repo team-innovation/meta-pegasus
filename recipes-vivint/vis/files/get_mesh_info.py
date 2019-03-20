@@ -1454,7 +1454,7 @@ def main(use_ssdp=True):
     print("------------------------------------------------------------------------------")
     pprint(data)
     print("------------------------------------------------------------------------------")
-    dest_dir = '/srv/www' if on_touchlink() else '/tmp'
+    dest_dir = '/srv/www/yofi' if on_touchlink() else '/tmp'
     with open('{}/tmp_cam.dat'.format(dest_dir), 'w') as f:
         pprint(j, f)
 

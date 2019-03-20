@@ -16922,6 +16922,9 @@ def main2(main_panel_ip='192.168.7.195'):
     import subprocess
     import os
 
+    srv_root = "/srv/www/yofi"
+    srv_test_dir = os.path.join(srv_root, "vis/test")
+
     def load(file):
         data = None
         with open(file, 'r') as f:
@@ -16947,12 +16950,12 @@ def main2(main_panel_ip='192.168.7.195'):
         outfile2 = "/tmp/tmp2.dot"
         outfile3 = "/tmp/tmp3.dot"
     else:
-        data = load("/srv/www/tmp.dat")
+        data = load(os.path.join(srv_root, "vis/tmp.dat"))
         j = load("/srv/www/tmp_cam.dat")
 
-        outfile1 = "/srv/www/vis/test/tmp.dot"
-        outfile2 = "/srv/www/vis/test/tmp2.dot"
-        outfile3 = "/srv/www/vis/test/tmp3.dot"
+        outfile1 = os.path.join(srv_test_dir, "tmp.dot")
+        outfile2 = os.path.join(srv_test_dir, "tmp2.dot"
+        outfile3 = os.path.join(srv_test_dir, "tmp3.dot"
 
     # Grouping all nodes
     dot = BuildDotFile(show_clusters=True, show_ap_nodes=True)
