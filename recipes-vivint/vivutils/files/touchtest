@@ -4,10 +4,10 @@ echo 1 > /dev/vivint/psoc/backlights/bl_backlight_blank
 export FB_MULTI_BUFFER=2
 qmlfile=/tmp/touchtest.qml
 
-pidof roubaix &> /dev/null
+pidof pumpernickel &> /dev/null
 if [ $? == 0 ];
 then
-	procman stop roubaix 2>&1 /dev/null &
+	procman stop pumpernickel 2>&1 /dev/null &
 fi
 
 S=$(cat <<EOF

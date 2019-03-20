@@ -13,3 +13,5 @@ noipdefault
 user ""
 remotename Quectel
 ipparam Quectel
+lcp-echo-interval 900
+lcp-echo-failure 1

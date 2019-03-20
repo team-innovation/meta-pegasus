@@ -23,10 +23,13 @@ EXTRA_QMAKEVARS_PRE += "${@bb.utils.contains('PACKAGECONFIG', 'gstreamer010', 'G
 EXTRA_QMAKEVARS_PRE += "${@bb.utils.contains_any('PACKAGECONFIG', 'gstreamer gstreamer010', '', 'CONFIG+=done_config_gstreamer', d)}"
 
 SRC_URI += "\
-    file://0001-Initial-porting-effort-to-GStreamer-1.0.patch \
+    file://port_to_gstreamer_1.0.patch \
     file://0002-qtmultimedia_log.patch \
     file://0003-qtmultimedia_levels.patch \
     file://0004-qtmultimedia_audiosink_fix.patch \
     file://0005-SC-4336-Fixes-1080p-clip-playback-on-imx6.patch \
     file://0006-SC-4678-dbc-colors.patch \
+    file://enable-live-sync.patch \
+    file://qtlatency.patch \
+    file://gst-empty-frame.patch \
 "

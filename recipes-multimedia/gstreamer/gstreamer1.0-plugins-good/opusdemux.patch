@@ -1,0 +1,231 @@
+diff --git a/gst/isomp4/atoms.c b/gst/isomp4/atoms.c
+index 267c4f092..eb3684bb9 100644
+--- a/gst/isomp4/atoms.c
++++ b/gst/isomp4/atoms.c
+@@ -4730,6 +4730,44 @@ build_ac3_extension (guint8 fscod, guint8 bsid, guint8 bsmod, guint8 acmod,
+       atom_data_free);
+ }
+ 
++AtomInfo *
++build_opus_extension (guint32 rate, guint8 channels, guint8 mapping_family,
++    guint8 stream_count, guint8 coupled_count, guint8 channel_mapping[256],
++    guint16 pre_skip, guint16 output_gain)
++{
++  AtomData *atom_data;
++  guint8 *data_block;
++  GstByteWriter bw;
++  gboolean hdl = TRUE;
++  guint data_block_len;
++
++  gst_byte_writer_init (&bw);
++  hdl &= gst_byte_writer_put_uint8 (&bw, 0x00); /* version number */
++  hdl &= gst_byte_writer_put_uint8 (&bw, channels);
++  hdl &= gst_byte_writer_put_uint16_le (&bw, pre_skip);
++  hdl &= gst_byte_writer_put_uint32_le (&bw, rate);
++  hdl &= gst_byte_writer_put_uint16_le (&bw, output_gain);
++  hdl &= gst_byte_writer_put_uint8 (&bw, mapping_family);
++  if (mapping_family > 0) {
++    hdl &= gst_byte_writer_put_uint8 (&bw, stream_count);
++    hdl &= gst_byte_writer_put_uint8 (&bw, coupled_count);
++    hdl &= gst_byte_writer_put_data (&bw, channel_mapping, channels);
++  }
++
++  if (!hdl) {
++    GST_WARNING ("Error creating header");
++    return NULL;
++  }
++
++  data_block_len = gst_byte_writer_get_size (&bw);
++  data_block = gst_byte_writer_reset_and_get_data (&bw);
++  atom_data = atom_data_new_from_data (FOURCC_dops, data_block, data_block_len);
++  g_free (data_block);
++
++  return build_atom_info_wrapper ((Atom *) atom_data, atom_data_copy_data,
++      atom_data_free);
++}
++
+ AtomInfo *
+ build_uuid_xmp_atom (GstBuffer * xmp_data)
+ {
+diff --git a/gst/isomp4/atoms.h b/gst/isomp4/atoms.h
+index f8789e470..8016809fe 100644
+--- a/gst/isomp4/atoms.h
++++ b/gst/isomp4/atoms.h
+@@ -964,6 +964,11 @@ AtomInfo *   build_fiel_extension        (gint fields);
+ AtomInfo *   build_ac3_extension         (guint8 fscod, guint8 bsid,
+                                           guint8 bsmod, guint8 acmod,
+                                           guint8 lfe_on, guint8 bitrate_code);
++AtomInfo *   build_opus_extension        (guint32 rate, guint8 channels, guint8 mapping_family,
++                                          guint8 stream_count, guint8 coupled_count,
++                                          guint8 channel_mapping[256], guint16 pre_skip,
++                                          guint16 output_gain);
++
+ AtomInfo *   build_amr_extension         (void);
+ AtomInfo *   build_h263_extension        (void);
+ AtomInfo *   build_gama_atom             (gdouble gamma);
+diff --git a/gst/isomp4/fourcc.h b/gst/isomp4/fourcc.h
+index 4bff1e0d5..1f0a8f102 100644
+--- a/gst/isomp4/fourcc.h
++++ b/gst/isomp4/fourcc.h
+@@ -163,6 +163,8 @@ G_BEGIN_DECLS
+ #define FOURCC_mp4s     GST_MAKE_FOURCC('m','p','4','s')
+ #define FOURCC_mp4v     GST_MAKE_FOURCC('m','p','4','v')
+ #define FOURCC_name     GST_MAKE_FOURCC('n','a','m','e')
++#define FOURCC_opus     GST_MAKE_FOURCC('O','p','u','s')
++#define FOURCC_dops     GST_MAKE_FOURCC('d','O','p','s')
+ #define FOURCC_pasp     GST_MAKE_FOURCC('p','a','s','p')
+ #define FOURCC_pcst     GST_MAKE_FOURCC('p','c','s','t')
+ #define FOURCC_pgap     GST_MAKE_FOURCC('p','g','a','p')
+diff --git a/gst/isomp4/gstqtmux.c b/gst/isomp4/gstqtmux.c
+index c43d612ce..f6c52988a 100644
+--- a/gst/isomp4/gstqtmux.c
++++ b/gst/isomp4/gstqtmux.c
+@@ -122,6 +122,7 @@
+ #include <gst/audio/audio.h>
+ #include <gst/video/video.h>
+ #include <gst/tag/tag.h>
++#include <gst/pbutils/pbutils.h>
+ 
+ #include <sys/types.h>
+ #ifdef G_OS_WIN32
+@@ -3659,6 +3660,49 @@ gst_qt_mux_audio_sink_set_caps (GstQTPad * qtpad, GstCaps * caps)
+      * the stream itself. Abuse the prepare_buf_func so we parse a frame
+      * and get the needed data */
+     qtpad->prepare_buf_func = gst_qt_mux_prepare_parse_ac3_frame;
++  } else if (strcmp (mimetype, "audio/x-opus") == 0) {
++    /* Based on the specification defined in:
++     * https://www.opus-codec.org/docs/opus_in_isobmff.html */
++    guint8 channels, mapping_family, stream_count, coupled_count;
++    guint16 pre_skip;
++    gint16 output_gain;
++    guint32 rate;
++    guint8 channel_mapping[256];
++    const GValue *streamheader;
++    const GValue *first_element;
++    GstBuffer *header;
++
++    entry.fourcc = FOURCC_opus;
++    entry.sample_size = 16;
++
++    streamheader = gst_structure_get_value (structure, "streamheader");
++    if (streamheader && GST_VALUE_HOLDS_ARRAY (streamheader) &&
++        gst_value_array_get_size (streamheader) != 0) {
++      first_element = gst_value_array_get_value (streamheader, 0);
++      header = gst_value_get_buffer (first_element);
++      if (!gst_codec_utils_opus_parse_header (header, &rate, &channels,
++              &mapping_family, &stream_count, &coupled_count, channel_mapping,
++              &pre_skip, &output_gain)) {
++        GST_ERROR_OBJECT (qtmux, "Incomplete OpusHead");
++        goto refuse_caps;
++      }
++    } else {
++      GST_WARNING_OBJECT (qtmux,
++          "no streamheader field in caps %" GST_PTR_FORMAT, caps);
++
++      if (!gst_codec_utils_opus_parse_caps (caps, &rate, &channels,
++              &mapping_family, &stream_count, &coupled_count,
++              channel_mapping)) {
++        GST_ERROR_OBJECT (qtmux, "Incomplete Opus caps");
++        goto refuse_caps;
++      }
++      pre_skip = 0;
++      output_gain = 0;
++    }
++
++    entry.channels = channels;
++    ext_atom = build_opus_extension (rate, channels, mapping_family,
++        stream_count, coupled_count, channel_mapping, pre_skip, output_gain);
+   }
+ 
+   if (!entry.fourcc)
+diff --git a/gst/isomp4/gstqtmuxmap.c b/gst/isomp4/gstqtmuxmap.c
+index e088a424a..bc4b5a0ec 100644
+--- a/gst/isomp4/gstqtmuxmap.c
++++ b/gst/isomp4/gstqtmuxmap.c
+@@ -137,6 +137,12 @@
+   "audio/x-alac, " \
+   COMMON_AUDIO_CAPS(2, MAX)
+ 
++#define OPUS_CAPS \
++  "audio/x-opus, " \
++  "channel-mapping-family = (int) [0, 255], " \
++  COMMON_AUDIO_CAPS(8, MAX)
++
++
+ #define TEXT_UTF8 \
+   "text/x-raw, " \
+   "format=(string)utf8"
+@@ -188,7 +194,8 @@ GstQTMuxFormatProp gst_qt_mux_format_list[] = {
+         GST_STATIC_CAPS ("video/quicktime, variant = (string) iso"),
+         GST_STATIC_CAPS (MPEG4V_CAPS "; " H264_CAPS ";"
+             "video/x-mp4-part," COMMON_VIDEO_CAPS),
+-        GST_STATIC_CAPS (MP3_CAPS "; " AAC_CAPS " ; " AC3_CAPS " ; " ALAC_CAPS),
++        GST_STATIC_CAPS (MP3_CAPS "; "
++            AAC_CAPS " ; " AC3_CAPS " ; " ALAC_CAPS " ; " OPUS_CAPS),
+       GST_STATIC_CAPS (TEXT_UTF8)}
+   ,
+   /* Microsoft Smooth Streaming fmp4/isml */
+diff --git a/gst/isomp4/qtdemux.c b/gst/isomp4/qtdemux.c
+index 1de62dfc3..3e5ecc451 100644
+--- a/gst/isomp4/qtdemux.c
++++ b/gst/isomp4/qtdemux.c
+@@ -9701,6 +9701,38 @@ qtdemux_parse_trak (GstQTDemux * qtdemux, GNode * trak)
+         }
+         break;
+       }
++      case FOURCC_opus:
++      {
++        GNode *opus;
++        const guint8 *opus_data;
++        guint8 *channel_mapping = NULL;
++        guint32 rate;
++        guint8 channels;
++        guint8 channel_mapping_family;
++        guint8 stream_count;
++        guint8 coupled_count;
++        guint8 i;
++
++        opus = qtdemux_tree_get_child_by_type (stsd, FOURCC_opus);
++        opus_data = opus->data;
++
++        channels = GST_READ_UINT8 (opus_data + 45);
++        rate = GST_READ_UINT32_LE (opus_data + 48);
++        channel_mapping_family = GST_READ_UINT8 (opus_data + 54);
++        stream_count = GST_READ_UINT8 (opus_data + 55);
++        coupled_count = GST_READ_UINT8 (opus_data + 56);
++
++        if (channels > 0) {
++          channel_mapping = g_malloc (channels * sizeof (guint8));
++          for (i = 0; i < channels; i++)
++            channel_mapping[i] = GST_READ_UINT8 (opus_data + i + 57);
++        }
++
++        stream->caps = gst_codec_utils_opus_create_caps (rate, channels,
++            channel_mapping_family, stream_count, coupled_count,
++            channel_mapping);
++        break;
++      }
+       default:
+         break;
+     }
+@@ -12175,8 +12207,7 @@ qtdemux_video_caps (GstQTDemux * qtdemux, QtDemuxStream * stream,
+     case GST_MAKE_FOURCC ('U', 'M', 'P', '4'):
+       caps = gst_caps_new_simple ("video/mpeg",
+           "mpegversion", G_TYPE_INT, 4, NULL);
+-      if (codec_name)
+-        *codec_name = g_strdup ("MPEG-4");
++      _codec ("MPEG-4");
+       break;
+ 
+     case GST_MAKE_FOURCC ('c', 'v', 'i', 'd'):
+@@ -12571,6 +12602,10 @@ qtdemux_audio_caps (GstQTDemux * qtdemux, QtDemuxStream * stream,
+       _codec ("WMA");
+       caps = gst_caps_new_empty_simple ("audio/x-wma");
+       break;
++    case FOURCC_opus:
++      _codec ("Opus");
++      caps = gst_caps_new_empty_simple ("audio/x-opus");
++      break;
+     case GST_MAKE_FOURCC ('l', 'p', 'c', 'm'):
+     {
+       guint32 flags = 0;

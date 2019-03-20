@@ -1,0 +1,31 @@
+From de700906a19a6b0b0aa465cf2767c4f8041ea88e Mon Sep 17 00:00:00 2001
+From: Yoann Lopes <yoann.lopes@theqtcompany.com>
+Date: Tue, 24 Mar 2015 16:41:51 +0100
+Subject: [PATCH] Don't error out when presenting empty frames in
+ QSGVideoItemSurface.
+
+There's no good reason to do so. Backends can actually provide empty
+frames, for example when flushing the pipeline or after stopping
+playback.
+
+Change-Id: I687c12b667e31b25e91c3201f59c52a8969d8e05
+Reviewed-by: Andrew den Exter <andrew.den.exter@qinetic.com.au>
+---
+ src/qtmultimediaquicktools/qdeclarativevideooutput_render.cpp | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/src/qtmultimediaquicktools/qdeclarativevideooutput_render.cpp b/src/qtmultimediaquicktools/qdeclarativevideooutput_render.cpp
+index 7970ae14a..f4efe47e7 100644
+--- a/src/qtmultimediaquicktools/qdeclarativevideooutput_render.cpp
++++ b/src/qtmultimediaquicktools/qdeclarativevideooutput_render.cpp
+@@ -444,10 +444,6 @@ void QSGVideoItemSurface::stop()
+ 
+ bool QSGVideoItemSurface::present(const QVideoFrame &frame)
+ {
+-    if (!frame.isValid()) {
+-        qWarning() << Q_FUNC_INFO << "I'm getting bad frames here...";
+-        return false;
+-    }
+     m_backend->present(frame);
+     return true;
+ }

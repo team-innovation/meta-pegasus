@@ -105,9 +105,12 @@ DEPENDS = " \
 	python3-cachetools \
 	python3-cachetools-native \
 	python3-cherrypy-native \
+	python3-cython-native \
 	python3-dateutil-native \
 	python3-gnupg-native \
 	python3-grpcio-native \
+	python3-grpcio-tools-native \
+	python3-googleapis-common-protos-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
 	python3-markupsafe-native \
@@ -130,6 +133,7 @@ DEPENDS = " \
 	python3-setproctitle-native \
 	python3-soco-native \
 	python3-sparsedict-native \
+	python3-transitions-native \
 	python3-phue-native \
 	python3-paho-mqtt-native \
 	python3-nose-native \
@@ -138,6 +142,11 @@ DEPENDS = " \
 	python3-pysodium-native \
 	python3-xmltodict-native \
 	libsodium-native \
+	python3-pyopenssl-native \
+	python3-cryptography-native \
+	python3-cffi-native \
+	python3-asn1crypto-native \
+	python3-pycparser-native \
 "
 
 
@@ -158,6 +167,7 @@ RDEPENDS_${PN} = "\
 "
 
 do_compile() {
+	export PYTHONPATH=${S}/code/sundance/services/devices/generated/grpc:$PYTHONPATH
 
         #verify that the syntax for all JSON files in embedded-apps is correct
         set +e
@@ -211,7 +221,7 @@ do_compile() {
 		bbnote "Skip test and doc build"
 		skip="true"
 	else
-		export PYTHONPATH=${STAGING_DIR}/${BUILD_SYS}/usr/lib/${PYTHON_DIR}/site-packages
+		export PYTHONPATH=${STAGING_DIR}/${BUILD_SYS}/usr/lib/${PYTHON_DIR}/site-packages:$PYTHONPATH
 		nosetests_bin="${STAGING_DIR}/${BUILD_SYS}/usr/bin/nosetests-3.5"
 
 	fi
