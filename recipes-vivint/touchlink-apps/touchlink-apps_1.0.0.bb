@@ -221,7 +221,6 @@ do_compile() {
 		bbnote "Skip test and doc build"
 		skip="true"
 	else
-		export PYTHONPATH=${STAGING_DIR}/${BUILD_SYS}/usr/lib/${PYTHON_DIR}/site-packages
 		export PYTHONPATH=${STAGING_DIR}/${BUILD_SYS}/usr/lib/${PYTHON_DIR}/site-packages:$PYTHONPATH
 		nosetests_bin="${STAGING_DIR}/${BUILD_SYS}/usr/bin/nosetests-3.5"
 
