@@ -9,11 +9,11 @@ HOMEPAGE = "http://www.vivint.com"
 
 inherit gettext
 
-PR = "ml47"
+PR = "ml48"
 
 SRCREV = "06fe974df68"
 
-SRC_URI = "git://git@${GIT_SERVER}/analytics.git;protocol=ssh"
+SRC_URI = "git://git@${GIT_SERVER}/analytics.git;protocol=ssh;branch=master"
 
 S = "${WORKDIR}/git"
 
