@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "46"
+PR = "47"
 
 inherit packagegroup
 
@@ -71,6 +71,7 @@ RDEPENDS_${PN} = " \
 	python3-tkinter \
 	python3-toolz \
 	python3-transitions \
+	python3-typing \
 	python3-unixadmin \
 	python3-numbers \
 	pv \
