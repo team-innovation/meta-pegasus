@@ -10,6 +10,7 @@ RDEPENDS_${PN} += " \
 	acm-usb-v6 \
 	easy-rsa \
 	fabric-go \
+	graphviz \
 	openvpn \
 	openwrt-mt7620 \
 	openwrt-rt3352 \

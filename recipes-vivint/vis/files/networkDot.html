@@ -2,28 +2,175 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>JS Bin</title>
-    <script type="text/javascript" src="../dist/vis.js"></script> <!-- network handling framework -->
+    <title>Network DOT Test</title>
 
+    <script type="text/javascript" src="../dist/vis.js"></script>
     <link href="../dist/vis.css" rel="stylesheet" type="text/css"/>
-    <style type="text/css">
-        #network{
-            width: "100%";
-            height: "100%";
-            border: 1px solid lightgray;
-        }
-    </style>
 
+<style>
+#network{
+    width: "100%";
+    height: "100%";
+    border: 1px solid lightgray;
+}
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+</style>
 </head>
+
 <body>
+<meta http-equiv="cache-control" content="max-age=0">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="-1">
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 11:00:00 GMT">
+<meta http-equiv="pragma" content="no-cache">
 <h1>Network DOT Test</h1>
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'network_tab', 'network_button')" id="network_button">Network Graph</button>
+  <button class="tablinks" onclick="openTab(event, 'bw_check_tab', 'bw_check_button')" id="bw_check_button">Bandwidth Check</button>
+</div>
+
+<div id="network_tab" class="tabcontent">
 <FORM ACTION="../../cgi-bin/graph_me.sh">
-	<INPUT TYPE="SUBMIT" NAME="Submit" VALUE="Generate Graph">
+	<INPUT TYPE="SUBMIT" NAME="Submit" VALUE="Generate">
 </FORM>
 <br>
 <div id="network"></div>
+</div>
 
-<script type="text/javascript">
+<div id="bw_check_tab" class="tabcontent">
+
+<FORM name="nodeBwCheckForm" ACTION="../../cgi-bin/iperf_me.sh" onsubmit="return validateYoFiNodesForm()">
+  <label>Source:</label>
+  <select name="src_ip" id="src_ip">
+    <option value="src_select">--Select--</option>
+  </select>
+  <label>Destination:</label>
+  <select id="dst_ip" name="dst_ip">
+   <option value="dst_select">--Select--</option>
+  </select>
+  <label>Protocol:</label>
+  <select name="prot" id="prot">
+   <option value="udp" default>UDP</option>
+   <option value="tcp">TCP</option>
+  </select>
+  <label>Seconds:</label>
+  <input type="text" name="secs" id="secs" maxlength="3" size="3">
+  <label>Bandwidth:</label>
+  <input type="text" name="bw" id="bw" maxlength="3" size="3">
+  <select name="bw_units" id="bw_units">
+   <option value="K" default>Kb/s</option>
+   <option value="M">Mb/s</option>
+   <option value="G">Gb/s</option>
+  </select><br><p>
+  <input type="submit" value="Run Check"><br><p>
+  <label>Results:</label><br>
+  <textarea rows="13" cols="80" id="yofi_nodes_result">
+  </textarea>
+</form>
+</div>
+
+<script>
+var last_button_clicked;
+
+if (typeof(Storage) !== "undefined") {
+  if(typeof(localStorage.getItem("username")) == 'undefined') {
+    localStorage.setItem("last_button_id_clicked", "network_button");
+    last_button_clicked = "network_button";
+  } else {
+    last_button_clicked = localStorage.getItem("last_button_id_clicked");
+  }
+} else {
+  last_button_clicked = "network_button";
+}
+
+document.getElementById(last_button_clicked).click();
+
+function openTab(evt, tab_id, button_id) {
+  var i, tabcontent, tablinks;
+
+  localStorage.setItem("last_button_id_clicked", button_id);
+
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tab_id).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+  function validateYoFiNodesForm() {
+    var src_ip = document.forms["nodeBwCheckForm"]["src_ip"].value;
+    if (src_ip == "src_select") {
+      alert("Please select a source");
+      return false;
+    }
+    var dst_ip = document.forms["nodeBwCheckForm"]["dst_ip"].value;
+    if (dst_ip == "dst_select") {
+      alert("Please select a destination");
+      return false;
+    }
+    if (dst_ip == src_ip) {
+      alert("Source and destination must be different");
+      return false;
+    }
+
+    var secs = document.forms["nodeBwCheckForm"]["secs"].value;
+    if (isNaN(secs) || !Number.isInteger(+secs) || secs <= 0) {
+      alert("Seconds: must be a positive integer");
+      return false;
+    }
+
+    var bw = document.forms["nodeBwCheckForm"]["bw"].value;
+    if (isNaN(bw) || !Number.isInteger(+bw) || bw <= 0) {
+      alert("Bandwidth: must be a positive integer");
+      return false;
+    }
+
+    document.getElementById('yofi_nodes_result').innerHTML = "Started bandwidth test...";
+
+    return true;
+  }
+
 var fileContent;
 var xmlhttp = new XMLHttpRequest();
 xmlhttp.onreadystatechange = function() {
@@ -49,18 +196,30 @@ function process_dot(fileContent) {
       edges: parsedData.edges
     }
 
-    var options = parsedData.options 
+    var options = parsedData.options;
 
     var t = data['nodes'];
     var i;
+    var new_option;
+    var fields;
+    var sub_fields;
     for (i = 0; i < t.length; i++) {
 	data['nodes'][i]['color']['background'] = 'white'
+	fields = data['nodes'][i]['label'].split('\n');
+
 	if (data['nodes'][i]['shape'] == 'box') {
-		data['nodes'][i]['mass'] = 30
-		data['nodes'][i]['color']['background'] = 'lightgreen'
-	}
-	else {
-		data['nodes'][i]['mass'] = 8
+		data['nodes'][i]['mass'] = 30;
+		data['nodes'][i]['color']['background'] = 'lightgreen';
+
+		// add this YoIf node to the src and dst iPerf dropdowns
+                new_option = document.createElement("option");
+		new_option.value = fields[0];
+		new_option.text = fields[0];
+		document.getElementById('src_ip').appendChild(new_option);
+                new_option = document.createElement("option");
+		new_option.value = fields[0];
+		new_option.text = fields[0];
+		document.getElementById('dst_ip').appendChild(new_option);
 	}
     }
 
@@ -71,6 +230,37 @@ function process_dot(fileContent) {
     }
 
     var network = new vis.Network(container, data, options);
+
+    var xhr = new XMLHttpRequest();
+    var iperf_cmd;
+    var fields;
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        iperf_cmd = xhr.responseText;
+        if (iperf_cmd != "") {
+          fields = iperf_cmd.split("|");
+          document.getElementById('src_ip').value = fields[0];
+          document.getElementById('dst_ip').value = fields[1];
+          document.getElementById('prot').value = fields[2];
+          document.getElementById('secs').value = fields[3];
+          document.getElementById('bw').value = fields[4];
+          document.getElementById('bw_units').value = fields[5].trim(); // might pick up the trailing newline
+        }
+      }
+    }
+    iperf_cmd_url = "http://" + window.location.hostname + "/vis/test/iperf_cmd.html";
+    xhr.open('GET', iperf_cmd_url);
+    xhr.send();
+
+    var xhr2 = new XMLHttpRequest();
+    xhr2.onreadystatechange = function() {
+      if (xhr2.readyState == 4 && xhr2.status == 200) {
+        document.getElementById('yofi_nodes_result').innerHTML = xhr2.responseText;
+      }
+    }
+    iperf_result_url = "http://" + window.location.hostname + "/vis/test/iperf_result.html";
+    xhr2.open('GET', iperf_result_url);
+    xhr2.send();
 }
 
 </script>
