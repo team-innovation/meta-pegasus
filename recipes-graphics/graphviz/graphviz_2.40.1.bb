@@ -1,7 +1,7 @@
 SUMMARY = "Graph Visualization Tools"
 HOMEPAGE = "http://www.graphviz.org"
 LICENSE = "EPL-1.0"
-LIC_FILES_CHKSUM = "file://COPYING;md5=9109f5fc16cf963fb3cdd32781b3ce04"
+LIC_FILES_CHKSUM = "file://epl-v10.txt;md5=9109f5fc16cf963fb3cdd32781b3ce04"
 
 DEPENDS = " \
     intltool-native \
