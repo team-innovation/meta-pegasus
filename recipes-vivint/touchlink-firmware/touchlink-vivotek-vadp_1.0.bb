@@ -6,7 +6,7 @@ HOMEPAGE = "http://www.vivint.com"
 # changes in analytics source you want to be build
 #
 
-require touchlink-vivotek-vadp.inc
+require touchlink-vivotek-vadp-dbc.inc
 
 SRC_URI += " http://updateseng.vivint.com/innovation/downloads/DM36x_Toolchain.tar.gz;name=toolchain"
 
