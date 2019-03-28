@@ -7,7 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r13"
+PR = "r14"
 
 DEPENDS += " \
 	touchlink-apps \
@@ -78,6 +78,7 @@ FILES_${PN}-dbg += "${datadir}/${EXEC_DIR}/.debug"
 FILES_${PN} += "${datadir}"
 
 RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
+    qtsvg-plugins \
     gstreamer1.0 \
 	"
 
