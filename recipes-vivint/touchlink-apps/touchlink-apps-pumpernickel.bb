@@ -39,7 +39,6 @@ DEPENDS += " \
 	python3-sparsedict-native \
 	python3-phue-native \
 	python3-paho-mqtt-native \
-	qtsvg \
 "
 
 SRCREV = "${GIT_APPS_REV}"
@@ -79,6 +78,7 @@ FILES_${PN}-dbg += "${datadir}/${EXEC_DIR}/.debug"
 FILES_${PN} += "${datadir}"
 
 RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
+    qtsvg-plugins \
     gstreamer1.0 \
 	"
 
