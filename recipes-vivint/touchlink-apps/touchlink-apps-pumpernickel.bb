@@ -7,7 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r13"
+PR = "r14"
 
 DEPENDS += " \
 	touchlink-apps \
@@ -39,6 +39,7 @@ DEPENDS += " \
 	python3-sparsedict-native \
 	python3-phue-native \
 	python3-paho-mqtt-native \
+	qtsvg \
 "
 
 SRCREV = "${GIT_APPS_REV}"
