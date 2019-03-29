@@ -42,6 +42,9 @@ create_thumbnail_links() {
 		echo "Create thumbnails symlink..."		
 		ln -sf /tmp/thumbnails $HTTPROOT/thumbnails
         fi
+
+	mkdir -p /tmp/thumbnails
+	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/thumbnails/.htpasswd
 }
 
 create_clips_links() {
@@ -49,6 +52,9 @@ create_clips_links() {
 		echo "Create clips symlink..."
 		ln -sf /media/clips $HTTPROOT/clips
         fi
+
+	mkdir -p /media/clips
+	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/clips/.htpasswd
 }
 
 create_slupdate_links() {
@@ -57,6 +63,28 @@ create_slupdate_links() {
 		ln -sf /media/extra/update $HTTPROOT/update
         fi
 }
+
+
+create_fullframes_links() {
+	if [ ! -h $HTTPROOT/fullframes ]; then
+		echo "Create frames symlink..."		
+		ln -sf /tmp/fullframes $HTTPROOT/fullframes
+        fi
+
+	mkdir -p /tmp/fullframes
+	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/fullframes/.htpasswd
+}
+
+create_upload_links() {
+	if [ ! -h $HTTPROOT/upload_clips ]; then
+		echo "Create clips symlink..."
+		ln -sf /media/upload_clips/ftp $HTTPROOT/upload_clips
+        fi
+
+	mkdir -p /media/upload_clips/ftp
+	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/upload_clips/.htpasswd
+}
+
 
 case "$1" in
     start)
@@ -78,6 +106,8 @@ case "$1" in
 	create_thumbnail_links
 	create_clips_links
 	create_slupdate_links
+	create_fullframes_links 
+	create_upload_links
 
 	start-stop-daemon -S -b -m -p ${PIDFILE} -x $DAEMON -- $ARGS
 	echo "$NAME."
