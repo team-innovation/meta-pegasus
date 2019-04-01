@@ -13,7 +13,7 @@ SRC_URI = "git://github.com/civetweb/civetweb.git \
            "
 
 S = "${WORKDIR}/git"
-PR = "r7"
+PR = "r8"
 
 inherit update-rc.d 
 INITSCRIPT_NAME = "civetweb"
@@ -41,7 +41,7 @@ EXTRA_OECMAKE_class-native = " \
 # should come from external CMake project)
 OECMAKE_GENERATOR = "Unix Makefiles"
 
-PACKAGECONFIG ??= "caching ipv6 server ssl websockets"
+PACKAGECONFIG ??= "caching cgi ipv6 server ssl websockets"
 PACKAGECONFIG[caching] = "-DCIVETWEB_DISABLE_CACHING=OFF,-DCIVETWEB_DISABLE_CACHING=ON,"
 PACKAGECONFIG[cgi] = "-DCIVETWEB_DISABLE_CGI=OFF,-DCIVETWEB_DISABLE_CGI=ON,"
 PACKAGECONFIG[cpp] = "-DCIVETWEB_ENABLE_CXX=ON,-DCIVETWEB_ENABLE_CXX=OFF,"

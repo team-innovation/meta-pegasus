@@ -61,7 +61,7 @@
 </div>
 
 <div id="network_tab" class="tabcontent">
-<FORM ACTION="../../cgi-bin/graph_me.sh">
+<FORM ACTION="../../cgi-bin/graph_me.cgi">
 	<INPUT TYPE="SUBMIT" NAME="Submit" VALUE="Generate">
 </FORM>
 <br>
@@ -70,7 +70,7 @@
 
 <div id="bw_check_tab" class="tabcontent">
 
-<FORM name="nodeBwCheckForm" ACTION="../../cgi-bin/iperf_me.sh" onsubmit="return validateYoFiNodesForm()">
+<FORM name="nodeBwCheckForm" ACTION="../../cgi-bin/iperf_me.cgi" onsubmit="return validateYoFiNodesForm()">
   <label>Source:</label>
   <select name="src_ip" id="src_ip">
     <option value="src_select">--Select--</option>

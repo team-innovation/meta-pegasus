@@ -7,14 +7,14 @@ SECTION = "base"
 LICENSE = "MIT" 
 LIC_FILES_CHKSUM = "file://LICENSE-MIT;md5=d147f14c7e6b7edc53fc9053bef1e483"
 
-PR = "r1"
+PR = "r2"
 
 DEPENDS="vivutils"
 
 SRC_URI = "https://github.com/almende/vis/archive/v${PV}.tar.gz \
 	file://networkDot.html \
-	file://graph_me.sh \
-	file://iperf_me.sh \
+	file://graph_me.cgi \
+	file://iperf_me.cgi \
 	file://build_dot_graph.py \
 	file://get_mesh_info.py \
           "
@@ -39,8 +39,8 @@ do_install() {
 	install -d ${D}/usr/bin
 	cp -a ${S}/* ${D}/${SERVER_ROOT}/vis
         install -m 0755 ${WORKDIR}/networkDot.html ${D}/${SERVER_ROOT}/vis/test
-        install -m 0755 ${WORKDIR}///graph_me.sh ${D}/${SERVER_ROOT}/cgi-bin
-        install -m 0755 ${WORKDIR}///iperf_me.sh ${D}/${SERVER_ROOT}/cgi-bin
+        install -m 0755 ${WORKDIR}///graph_me.cgi ${D}/${SERVER_ROOT}/cgi-bin
+        install -m 0755 ${WORKDIR}///iperf_me.cgi ${D}/${SERVER_ROOT}/cgi-bin
         install -m 0755 ${WORKDIR}///build_dot_graph.py ${D}/usr/bin
         install -m 0755 ${WORKDIR}///get_mesh_info.py ${D}/usr/bin
 }

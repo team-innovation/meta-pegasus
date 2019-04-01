@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # First key is the mac of the network module we are surveying
 #  Each NM has a:
 #   mesh_neighbor list
@@ -16950,12 +16951,12 @@ def main2(main_panel_ip='192.168.7.195'):
         outfile2 = "/tmp/tmp2.dot"
         outfile3 = "/tmp/tmp3.dot"
     else:
-        data = load(os.path.join(srv_root, "vis/tmp.dat"))
-        j = load("/srv/www/tmp_cam.dat")
+        data = load(os.path.join(srv_root, "tmp.dat"))
+        j = load(os.path.join(srv_root, "tmp_cam.dat"))
 
         outfile1 = os.path.join(srv_test_dir, "tmp.dot")
-        outfile2 = os.path.join(srv_test_dir, "tmp2.dot"
-        outfile3 = os.path.join(srv_test_dir, "tmp3.dot"
+        outfile2 = os.path.join(srv_test_dir, "tmp2.dot")
+        outfile3 = os.path.join(srv_test_dir, "tmp3.dot")
 
     # Grouping all nodes
     dot = BuildDotFile(show_clusters=True, show_ap_nodes=True)
