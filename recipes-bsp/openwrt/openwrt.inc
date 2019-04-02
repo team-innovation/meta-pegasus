@@ -13,6 +13,7 @@ PV = "${SRCPV}"
 RT3352_uImage = "RT3352_uImage"
 RT3352_uboot = "RT3352_uboot.img"
 MT7620_uImage = "MT7620_uImage"
+MT7620_7612_uImage = "MT7620_MT7612_MESH_NODE_uImage"
 MT7620_uboot = "MT7620_uboot.img"
 REPO_DIR = "git/wallsly/"
 
@@ -40,6 +41,10 @@ do_install() {
     #MT7620 sysrootfs
     install ${WORKDIR}/${REPO_DIR}/${MT7620_uImage} ${D}${FW_DIR}/MT7620_uImage
     md5sum ${D}${FW_DIR}/MT7620_uImage | awk '{ print $1 }' > ${D}${FW_DIR}/MT7620_uImage.md5sum
+
+    #MT7620 sysrootfs for YoFi-Mesh
+    install ${WORKDIR}/${REPO_DIR}/${MT7620_7612_uImage} ${D}${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage
+    md5sum ${D}${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage | awk '{ print $1 }' > ${D}${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage.md5sum
 }
 
 FILES_${PN}-rt3352 = "\
@@ -53,5 +58,7 @@ FILES_${PN}-mt7620 = "\
     ${FW_DIR}/MT7620_uboot.img.md5sum \
     ${FW_DIR}/MT7620_uImage \
     ${FW_DIR}/MT7620_uImage.md5sum \
+    ${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage \
+    ${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage.md5sum \
     "
 
