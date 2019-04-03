@@ -44,6 +44,18 @@ EXTRA_OECONF_class-target = "\
 		--disable-perl \
 		--disable-tcl \
                 "
+
+EXTRA_OECONF_class-native = "\
+                --with-expatincludedir=${STAGING_INCDIR} \
+                --with-expatlibdir=${STAGING_LIBDIR} \
+                --without-included-ltdl \
+                --disable-java \
+                --disable-r \
+                --disable-sharp \
+		--disable-perl \
+		--disable-tcl \
+                "
+
 CFLAGS_append_class-target = " -D_typ_ssize_t=1 -D_long_double=1"
 do_configure_prepend() {
     cd ${S}
