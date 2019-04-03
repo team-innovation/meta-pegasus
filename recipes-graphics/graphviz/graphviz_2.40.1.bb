@@ -41,6 +41,8 @@ EXTRA_OECONF_class-target = "\
                 --disable-java \
                 --disable-r \
                 --disable-sharp \
+		--disable-perl \
+		--disable-tcl \
                 "
 CFLAGS_append_class-target = " -D_typ_ssize_t=1 -D_long_double=1"
 do_configure_prepend() {
