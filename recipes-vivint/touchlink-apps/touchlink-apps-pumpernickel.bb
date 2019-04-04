@@ -83,6 +83,7 @@ FILES_${PN}-dbg += "${datadir}/${EXEC_DIR}/.debug"
 FILES_${PN} += "${datadir}"
 
 RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
+    qtsvg-plugins \
     gstreamer1.0 \
 	"
 

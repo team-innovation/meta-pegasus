@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r31"
+PR = "r32"
 
 inherit packagegroup
 
@@ -11,6 +11,7 @@ RDEPENDS_${PN} += " \
 	easy-rsa \
 	fabric-go \
 	lxfp \
+	graphviz \
 	openvpn \
 	openwrt-mt7620 \
 	openwrt-rt3352 \
