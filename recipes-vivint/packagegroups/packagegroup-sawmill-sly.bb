@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r30"
+PR = "r31"
 
 inherit packagegroup
 
@@ -18,6 +18,7 @@ RDEPENDS_${PN} += " \
 	psoc-fw-sly-fcc \
 	psoc-fw-wallsly \
 	mighty-gecko-fw-wallsly \
+	nm-pkgs \
 	sly-utils \
 	sly-version \
 	wallsly-version \
