@@ -65,11 +65,11 @@ rm_roubaix_logs()
 
 extract_nm_pkgs()
 {
-    if [ -f /srv/www/yofi/nm_pkgs.tar.gz ]
+    if [ -f /srv/www/network/nm_pkgs.tar.gz ]
     then
        echo "Extracting Network Module packages"
-       mkdir -p /srv/www/yofi/packages
-       tar xzf /srv/www/yofi/nm_pkgs.tar.gz -C /srv/www/yofi/packages
+       mkdir -p /srv/www/network/packages
+       tar xzf /srv/www/network/nm_pkgs.tar.gz -C /srv/www/network/packages
     fi
 }
 

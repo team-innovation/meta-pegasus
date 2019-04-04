@@ -19,7 +19,7 @@ MT7620_update_pkg = "nm_pkgs.tar.gz"
 REPO_DIR = "git/wallsly"
 
 FW_DIR = "/lib/firmware"
-SRV_WWW_DIR = "/srv/www/yofi"
+SRV_WWW_DIR = "/srv/www/network"
 
 do_configure[noexec] = "1"
 

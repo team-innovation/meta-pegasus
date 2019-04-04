@@ -22,7 +22,7 @@ then
 else
     rate_data="$info"
 fi
-srv_test_dir="/srv/www/yofi/vis/test"
+srv_test_dir="/srv/www/network/vis/test"
 echo "$src|$dst|$prot|$secs|$bw|$bw_units" > $srv_test_dir/iperf_cmd.html
 printf %s "$rate_data" | tail -n +3 > $srv_test_dir/iperf_result.html
 

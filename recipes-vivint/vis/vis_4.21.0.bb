@@ -21,7 +21,7 @@ SRC_URI = "https://github.com/almende/vis/archive/v${PV}.tar.gz \
 SRC_URI[md5sum] = "fe2f429b04e75958b5079d5026af23a2"
 SRC_URI[sha256sum] = "055f17340e0bfa4eccc4d4dadd625e19d768e43c65d82228425d4d79c0d3f415"
 
-SERVER_ROOT = "/srv/www/yofi"
+SERVER_ROOT = "/srv/www/network"
 
 FILES_${PN} = "${SERVER_ROOT}/vis/* \
 ${SERVER_ROOT}/cgi-bin/* \
