@@ -15,11 +15,9 @@ RT3352_uboot = "RT3352_uboot.img"
 MT7620_uImage = "MT7620_uImage"
 MT7620_7612_uImage = "MT7620_MT7612_MESH_NODE_uImage"
 MT7620_uboot = "MT7620_uboot.img"
-MT7620_update_pkg = "nm_pkgs.tar.gz"
 REPO_DIR = "git/wallsly"
 
 FW_DIR = "/lib/firmware"
-SRV_WWW_DIR = "/srv/www/network"
 
 do_configure[noexec] = "1"
 
@@ -27,7 +25,6 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${FW_DIR}
-    install -d ${D}${SRV_WWW_DIR}
 
     #RT3352 u-boot
     install ${WORKDIR}/${REPO_DIR}/${RT3352_uboot} ${D}${FW_DIR}/RT3352_uboot.img
@@ -48,9 +45,6 @@ do_install() {
     #MT7620 sysrootfs for YoFi-Mesh
     install ${WORKDIR}/${REPO_DIR}/${MT7620_7612_uImage} ${D}${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage
     md5sum ${D}${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage | awk '{ print $1 }' > ${D}${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage.md5sum
-
-    #MT7620 update package
-    install ${WORKDIR}/${REPO_DIR}/${MT7620_update_pkg} ${D}${SRV_WWW_DIR}/${MT7620_update_pkg}
 }
 
 FILES_${PN}-rt3352 = "\
@@ -66,5 +60,4 @@ FILES_${PN}-mt7620 = "\
     ${FW_DIR}/MT7620_uImage.md5sum \
     ${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage \
     ${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage.md5sum \
-    ${SRV_WWW_DIR}/${MT7620_update_pkg} \
     "

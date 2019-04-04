@@ -63,24 +63,11 @@ rm_roubaix_logs()
     fi
 }
 
-extract_nm_pkgs()
-{
-    if [ -f /srv/www/network/nm_pkgs.tar.gz ]
-    then
-       echo "Extracting Network Module packages"
-       mkdir -p /srv/www/network/packages
-       tar xzf /srv/www/network/nm_pkgs.tar.gz -C /srv/www/network/packages
-    fi
-}
-
 # check to make sure public key is in /media/extra/conf
 check_pub_key
 
 # remove roubaix logs if any are still around
 rm_roubaix_logs
-
-# prepare NM packages for use
-extract_nm_pkgs
 
 # Give touchscreen a quick reset to clear and re-initialize
 echo 1 > /sys/class/input/input0/device/reset
