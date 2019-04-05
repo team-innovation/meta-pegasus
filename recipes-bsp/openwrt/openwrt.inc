@@ -7,7 +7,7 @@ DESCRIPTION = "OpenWrt RT3352/MT7620 Network Module"
 HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 
-PR = "r68"
+PR = "r69"
 PV = "${SRCPV}"
 
 RT3352_uImage = "RT3352_uImage"
@@ -15,7 +15,7 @@ RT3352_uboot = "RT3352_uboot.img"
 MT7620_uImage = "MT7620_uImage"
 MT7620_7612_uImage = "MT7620_MT7612_MESH_NODE_uImage"
 MT7620_uboot = "MT7620_uboot.img"
-REPO_DIR = "git/wallsly/"
+REPO_DIR = "git/wallsly"
 
 FW_DIR = "/lib/firmware"
 
@@ -61,4 +61,3 @@ FILES_${PN}-mt7620 = "\
     ${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage \
     ${FW_DIR}/MT7620_MT7612_MESH_NODE_uImage.md5sum \
     "
-

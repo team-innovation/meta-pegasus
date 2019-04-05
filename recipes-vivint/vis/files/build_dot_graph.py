@@ -16923,7 +16923,7 @@ def main2(main_panel_ip='192.168.7.195'):
     import subprocess
     import os
 
-    srv_root = "/srv/www/yofi"
+    srv_root = "/srv/www/network"
     srv_test_dir = os.path.join(srv_root, "vis/test")
 
     def load(file):
