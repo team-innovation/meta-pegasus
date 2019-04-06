@@ -16760,7 +16760,7 @@ class BuildDotFile:
                 # The primary node has the dhcpdump info
                 labels[k_lower]['attr'] += ' color=green'
                 if not labels[k_lower]['name'].startswith('YOFI-MESH-'):
-                    labels[k_lower]['name'] = 'main portal\n{}\n{}\n[YOFI-MESH-{}]\n{}'.format('172.16.10.254',self.mesh_data[k]['wan_address'], k_lower[-8:], more_info + '\n' + self.mesh_data[k]['uptime'])
+                    labels[k_lower]['name'] = 'main portal\n{}\n{}\n{}\n{}\n[YOFI-MESH-{}]\n{}'.format('172.16.10.254',k_lower,self.mesh_data[k]['wan_address'],self.mesh_data[k]['wan_address_mac'], k_lower[-8:], more_info + '\n' + self.mesh_data[k]['uptime'])
             i += 1
 
             # NM STA on AP
