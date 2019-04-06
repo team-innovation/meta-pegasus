@@ -16746,6 +16746,8 @@ class BuildDotFile:
             if br_ip is not None and re.match(r'([0-9a-fA-F]{2}[:]){5}([0-9a-fA-F]{2})', nname):
                 nname = '*{}*\n{}'.format(br_ip, nname)
 
+            nname = self.mesh_data[k]['name'] + '\n' + self.mesh_data[k]['uuid'] + '\n' + nname
+
             fill_color = 'antiquewhite2'
             platform = self.mesh_data[k]['platform']
             if platform:
@@ -16760,7 +16762,7 @@ class BuildDotFile:
                 # The primary node has the dhcpdump info
                 labels[k_lower]['attr'] += ' color=green'
                 if not labels[k_lower]['name'].startswith('YOFI-MESH-'):
-                    labels[k_lower]['name'] = 'main portal\n{}\n{}\n{}\n{}\n[YOFI-MESH-{}]\n{}'.format('172.16.10.254',k_lower,self.mesh_data[k]['wan_address'],self.mesh_data[k]['wan_address_mac'], k_lower[-8:], more_info + '\n' + self.mesh_data[k]['uptime'])
+                    labels[k_lower]['name'] = 'main portal\n' + self.mesh_data[k]['name'] + '\n' + self.mesh_data[k]['uuid'] + '\n' + '{}\n{}\n{}\n{}\n[YOFI-MESH-{}]\n{}'.format('172.16.10.254',k_lower,self.mesh_data[k]['wan_address'],self.mesh_data[k]['wan_address_mac'], k_lower[-8:], more_info + '\n' + self.mesh_data[k]['uptime'])
             i += 1
 
             # NM STA on AP
