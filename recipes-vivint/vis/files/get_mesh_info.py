@@ -1072,6 +1072,20 @@ Interface wlan1
         #self.logger.debug(rows)
         return rows
 
+    def get_platform(self, s):
+        result = s.execute_cmd('uci -q get vivint.@globals[0].platform').strip()
+        return result
+
+    def get_wan_address(self, s):
+        address = ''
+        try:
+            #result = s.execute_cmd('ifconfig eth0.2 | grep "inet addr"').strip()
+            #address = result.strip().split(' ')[1].split(':')[1]
+            address = s.execute_cmd("ifconfig eth0.2 | grep 'inet addr' | awk '{print $2}' | cut -d':' -f2")
+        except :
+            self.logger.exception('Failed to get wan_address')
+        return address
+
     def mesh_node_info_map(self):
         mesh_map = {}
 
@@ -1103,9 +1117,14 @@ Interface wlan1
                     self.logger.info('Logged into {}'.format(addr2))
                     wlan_mac = s1._server_mac
                     mesh_map[wlan_mac] = {}
+                    mesh_map[wlan_mac]['platform'] = self.get_platform(s1)
                     mesh_map[wlan_mac]['uptime'] = s1._uptime
-                    if j == 254 and self.dhcpdump is None:
-                        self.dhcpdump = self.netv_dhcpdump(s1)
+                    if j == 254:
+                        if self.dhcpdump is None:
+                            self.dhcpdump = self.netv_dhcpdump(s1)
+                        mesh_map[wlan_mac]['wan_address'] = self.get_wan_address(s1)
+                    else:
+                        mesh_map[wlan_mac]['wan_address'] = ''
                     if self.dhcpdump:
                         mesh_map[wlan_mac]['dhcpdump'] = self.dhcpdump
                     msg = 'Getting MESH NODE INFO {} - {}'.format(s1._server, wlan_mac)
