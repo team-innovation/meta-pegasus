@@ -609,9 +609,8 @@ if __name__ == "__main__":
     firmware_version = modem.get_firmware_version()
     imei = modem.get_imei()
 
-    print("Current firmware version is {}".format(firmware_version))
-
-    if flash_modem:
+    # only force reflash if current version is on AT&T
+    if flash_modem and ".A." in firmware_version:
         print("Flashing modem with new boot loader...")
         # Flash the new boot loader (AT&T version)
         if not modem.reflash_modem(CARRIER_ATT):
@@ -632,56 +631,62 @@ if __name__ == "__main__":
             print("Error updating firmware - exiting")
             modem.power_down()
             quit()
+    else:
+        print("Modem firmware is up-to-date on {}".format(firmware_version))
 
     # Resetting the NVRam can cause more problems than it fixes - so don't do it for now!
     firmware_version = modem.get_firmware_version()
     #    print("Resetting NVRAM returned False - resetting module")
 
-    for n in range(3):
-        print("Changing to SIM 1 and resetting...")
-        # change to SIM 1 and reset modem
-        modem.select_sim(1, wait=False)
-        if not modem.reset():
-            print("Error: Modem is not responding")
-            quit()
+    if not os.path.exists(MODEMID_FILENAME):
+        for n in range(3):
+            print("Changing to SIM 1 and resetting...")
+            # change to SIM 1 and reset modem
+            modem.select_sim(1, wait=False)
+            if not modem.reset():
+                print("Error: Modem is not responding")
+                quit()
 
-        # read SIM 1
-        sim1 = modem.get_iccid(1)
-        print("Read SIM 1 ICCID: {}".format(sim1))
+            # read SIM 1
+            sim1 = modem.get_iccid(1)
+            print("Read SIM 1 ICCID: {}".format(sim1))
 
-        # select SIM 2
-        modem.select_sim(2)
+            # Wait for 30 seconds before switching from SIM 1 to let Verizon finish SIM OTA
+            time.sleep(30)
 
-        # read SIM 2
-        sim2 = modem.get_iccid(2)
-        print("Read SIM 2 ICCID: {}".format(sim2))
+            # select SIM 2
+            modem.select_sim(2)
 
-        if sim1 and sim1 != sim2:
-            # if we have a SIM1 value (SIM2 can be empty) and they are not the same, then break out of the loop
-            break
+            # read SIM 2
+            sim2 = modem.get_iccid(2)
+            print("Read SIM 2 ICCID: {}".format(sim2))
 
-        print("SIM1 and SIM2 have same ID {}, resetting and trying again...".format(sim1))
-        modem.reset()
+            if sim1 and sim1 != sim2:
+                # if we have a SIM1 value (SIM2 can be empty) and they are not the same, then break out of the loop
+                break
 
-    # Check for COPS deregistration
-    modem.check_reg_state()
+            print("SIM1 and SIM2 have same ID {}, resetting and trying again...".format(sim1))
+            modem.reset()
 
-    # set values to blank instead of None
-    if not imei:
-        imei = ""
-    if not sim1:
-        sim1 = ""
-    if not sim2:
-        sim2 = ""
+        # Check for COPS deregistration
+        modem.check_reg_state()
 
-    print("Firmware: {}".format(firmware_version))
-    print("IMEI: {}".format(imei))
-    print("SIM1: {}".format(sim1))
-    print("SIM2: {}".format(sim2))
+        # set values to blank instead of None
+        if not imei:
+            imei = ""
+        if not sim1:
+            sim1 = ""
+        if not sim2:
+            sim2 = ""
 
-    # write results to /media/extra/conf/modemids file
-    cfgfile = open("/media/extra/conf/modemids", "w")
-    cfgfile.write("{},{},{},{}\n".format(firmware_version, imei, sim1, sim2))
-    cfgfile.close()
+        print("Firmware: {}".format(firmware_version))
+        print("IMEI: {}".format(imei))
+        print("SIM1: {}".format(sim1))
+        print("SIM2: {}".format(sim2))
+
+        # write results to /media/extra/conf/modemids file
+        cfgfile = open("/media/extra/conf/modemids", "w")
+        cfgfile.write("{},{},{},{}\n".format(firmware_version, imei, sim1, sim2))
+        cfgfile.close()
 
     modem.power_down()

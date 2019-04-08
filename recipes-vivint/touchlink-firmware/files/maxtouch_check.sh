@@ -11,23 +11,18 @@
 
 check_and_set() {
     if grep -q wallsly /proc/device-tree/compatible; then
-	mxtfam=$(mxt-app -i | grep Family | awk '{print $2}')
-	mxtver=$(mxt-app -i | grep Firmware | awk '{print $6}')
+        mxtfam=$(mxt-app -i | grep Family | awk '{print $2}')
 	mxtusr=$(mxt-app -R -T 38)
-	mxtpar=$(echo $mxtusr | xxd -p -r)
-	mxtmfg="NA"
+        mxtpar=$(echo $mxtusr | xxd -p -r)
         if [ "$mxtfam" = '166' ]; then
                 echo "Setting NVD panel"
                 mxt-app --load /lib/firmware/maxtouch-wallsly_nvd.cfg
-		mxtmfg="NVD"
         elif [ "${mxtusr:0:2}" = "TA" ]; then
 		echo "Setting Tianma panel"
 		mxt-app --load /lib/firmware/maxtouch-wallsly_tianma.cfg 
-		mxtmfg="Tianma"
 	elif [ "${mxtusr:0:11}" = "01 15 06 04" ]; then
                 echo "Setting Haier panel"
                 mxt-app --load /lib/firmware/maxtouch-wallsly_haier.cfg
-		mxtmfg="Haier"
 	else
 		mxt-app --load /lib/firmware/maxtouch-wallsly_haier.cfg
 		source /etc/profile.d/qt5.sh
@@ -41,18 +36,7 @@ check_and_set() {
 			mxt-app --load /lib/firmware/maxtouch-wallsly_haier.cfg
 		fi
 	fi
-    else
-	mxtmfg="Haier"
-	mxtver=$(mxt-app -i | grep Firmware | awk '{print $6}')
     fi
-
-	boot_dir=/media/bootscript
-	panelinfo_file=$boot_dir/panelinfo.txt
-	mount -o remount,rw $boot_dir
-	sed -i '/export CTP_/d' $panelinfo_file
-	echo "export CTP_MODEL=$mxtmfg" >> $panelinfo_file
-	echo "export CTP_VERSION=$mxtver" >> $panelinfo_file
-    	mount -o remount,ro $boot_dir
 }
 
 stop() {

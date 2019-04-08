@@ -89,9 +89,7 @@ bootscrupdate() {
 	mntbootscriptrw
 	cp /boot/boot.scr /media/bootscript/boot.scr
 	mntbootscriptro
-	date > /.reboot
 	true
-
 }
 
 # is there a serial number file
@@ -157,7 +155,6 @@ ubootupdate() {
 	sync
 	emmcro 0
 
-	date > /.reboot
 	# clearing u-boot env loses bootnum so leave it alone
 	true
 }

@@ -9,7 +9,7 @@ HOMEPAGE = "http://www.vivint.com"
 
 inherit gettext
 
-PR = "ml46"
+PR = "ml50"
 
 SRCREV = "23679ef276656c98cd8811fc0076f41a69ca713f"
 
