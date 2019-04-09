@@ -1172,11 +1172,12 @@ Interface wlan1
                     mesh_map[wlan_mac]['platform'] = self.get_platform(s1)
                     uuid = self.get_uuid(s1)
                     if uuid:
+                        mesh_map[wlan_mac]['uuid'] = uuid
                         try:
-                            mesh_map[wlan_mac]['uuid'] = uuid
                             mesh_map[wlan_mac]['name'] = list_of_node_names[uuid]
                         except :
                             self.logger.exception('Failed with UUID and NAME setup')
+                            mesh_map[wlan_mac]['name'] = 'Unknown Name'
                     else:
                         mesh_map[wlan_mac]['uuid'] = ''
                         mesh_map[wlan_mac]['name'] = ''
