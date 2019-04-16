@@ -22,7 +22,7 @@ PV = "${SRCPV}"
 MT7620_update_pkg = "nm_pkgs.tar.gz"
 REPO_DIR = "git/wallsly"
 
-SRV_WWW_DIR = "/srv/www/network"
+SRV_WWW_DIR = "/srv/www"
 
 do_configure[noexec] = "1"
 
