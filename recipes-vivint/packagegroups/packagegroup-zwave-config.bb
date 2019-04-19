@@ -3,7 +3,7 @@
 DESCRIPTION = "packages for zwave config"
 LICENSE = "MIT"
 
-PR = "r0"
+PR = "r1"
 
 inherit packagegroup
 

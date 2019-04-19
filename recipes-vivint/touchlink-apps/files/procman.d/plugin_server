@@ -1,0 +1,9 @@
+{
+    "plugin_server":
+    {
+	"priority" : 0,
+	"name" : "Plugin Service",
+	"start": "/etc/init.d/plugin_server start",
+	"stop": "/etc/init.d/plugin_server stop"
+    }
+}

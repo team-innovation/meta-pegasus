@@ -20,12 +20,10 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-sound-wav-chimes \
 	touchlink-apps-ssdpd \
 	touchlink-apps-sundance-proxies \
-	touchlink-apps-smarthomed-proxies \
 	touchlink-apps-listenerd-proxies \
 	touchlink-apps-updated \
 	touchlink-apps-usage-analytics \
 	touchlink-apps-utils \
-	touchlink-apps-zwaved-proxies \
 	touchlink-apps-modemd-proxies \
 	touchlink-simlock \
 	voiceaudio \
@@ -84,6 +82,9 @@ MISC_DEPENDS = "\
 
 PYTHON_EXTRA_DEPENDS = "\
 	python3-brisa \
+	python3-certifi \
+	python3-urllib3 \
+	python3-sentry-sdk \
 	python3-jsonschema \
 	python3-mixpanel \
 	python3-mmap \

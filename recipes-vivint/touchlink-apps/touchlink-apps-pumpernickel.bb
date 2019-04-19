@@ -14,6 +14,7 @@ DEPENDS += " \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cherrypy-native \
+	python3-certifi-native \
 	python3-dateutil-native \
 	python3-gnupg-native \
 	python3-grpcio-native \
@@ -41,8 +42,10 @@ DEPENDS += " \
 	python3-setproctitle-native \
 	python3-soco-native \
 	python3-sparsedict-native \
+	python3-sentry-sdk-native \
 	python3-phue-native \
 	python3-paho-mqtt-native \
+	python3-urllib3-native \
 "
 
 SRCREV = "${GIT_APPS_REV}"

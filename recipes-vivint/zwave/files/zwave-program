@@ -5,25 +5,18 @@
 
 zwave_program ()
 {
-    path=/lib/firmware/vivint/serialapi_controller_static_ZW050x_US.hex
-
     # if in fcc test mode use a different fw file
     if [ -f /etc/procman.d/test_ui ]; then
         path=/lib/firmware/vivint/micro_rf_linkX_ZW050x_ALL.hex
+        if [ ! -e /opt/2gig/zwaved/scripts/zwave_program.pyc ]; then
+            echo "ERROR: Zwave programmer not found"
+            return 1
+        fi
+
+        python3 /opt/2gig/zwaved/scripts/zwave_program.pyc $path
     fi
 
-    if [ ! -e $path ]; then
-        echo "ERROR: Zwave firmware not found"
-        return 1
-    fi
-
-    if [ ! -e /opt/2gig/zwaved/scripts/zwave_program.pyc ]; then
-        echo "ERROR: Zwave programmer not found"
-        return 1
-    fi
-
-    echo "Check that Zwave firmware is up to date"
-    python3 /opt/2gig/zwaved/scripts/zwave_program.pyc $path
+    echo "Zwave firmware will be flashed by zwaved"
 }
 
 stop() {

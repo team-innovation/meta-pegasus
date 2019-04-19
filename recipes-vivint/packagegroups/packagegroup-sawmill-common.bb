@@ -16,6 +16,8 @@ RDEPENDS_${PN} = " \
 	civetweb \
 	cronie \
 	gnupg \
+	iotivity-resource \
+	iotivity-bridging-plugins \
 	libsodium18 \
 	logrotate \
 	lookbusy \

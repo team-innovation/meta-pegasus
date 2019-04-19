@@ -15,7 +15,7 @@ inherit pythonnative
 
 NATIVE_INSTALL_WORKS = "1"
 
-inherit setuptools3 python3-dir
+inherit setuptools
 
 RDEPENDS_${PN} = "\
   python3-core \
