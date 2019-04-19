@@ -3,7 +3,7 @@
 DESCRIPTION = "packages for touchlink firmware"
 LICENSE = "MIT"
 
-PR = "r9"
+PR = "r10"
 
 inherit packagegroup
 
@@ -18,4 +18,5 @@ RDEPENDS_${PN} += " \
 	touchlink-vivotek-vadp-rossini \
 	touchlink-vivotek-vadp-rossini-hawxeye \
 	touchlink-vivotek-vadp-rossini-crimson-odc \
+	touchlink-lgit-firmware-poe-bridge \
 "
