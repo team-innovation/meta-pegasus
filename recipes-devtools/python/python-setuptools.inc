@@ -9,8 +9,8 @@ SRCNAME = "setuptools"
 
 SRC_URI = "https://files.pythonhosted.org/packages/source/s/${SRCNAME}/${SRCNAME}-${PV}.zip"
 
-SRC_URI[md5sum] = "b9e6c049617bac0f9e908a41ab4a29ac"
-SRC_URI[sha256sum] = "b0fe5d432d922df595e918577c51458d63f245115d141b309ac32ecfca329df5"
+SRC_URI[md5sum] = "dd4e3fa83a21bf7bf9c51026dc8a4e59"
+SRC_URI[sha256sum] = "f7cddbb5f5c640311eb00eab6e849f7701fa70bf6a183fc8a2c33dd1d1672fb2"
 
 UPSTREAM_CHECK_URI = "https://pypi.python.org/pypi/setuptools"
 
@@ -18,6 +18,6 @@ S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 
 do_install_prepend() {
-    install -d ${D}${PYTHON_SITEPACKAGES_DIR}
+     install -d ${D}${PYTHON_SITEPACKAGES_DIR}
 }
 

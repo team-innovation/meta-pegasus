@@ -3,11 +3,17 @@
 DESCRIPTION = "Packages needed for network debug"
 LICENSE = "MIT"
 
-PR = "5"
+PR = "6"
 
 inherit packagegroup
 
-RDEPENDS_${PN} = " \
+PANEL_DEBUG_PACKAGES = "gdb"
+PYTHON_DEBUG_PACKAGES = "python3-pip python3-pydevd"
+
+DEBUG_PACKAGES += "${PANEL_DEBUG_PACKAGES} \
+                   ${PYTHON_DEBUG_PACKAGES} \
+		  "
+RDEPENDS_${PN} += " \
         python3-flent \
         netperf \
         fping \
@@ -21,4 +27,5 @@ RDEPENDS_${PN} = " \
 	lsof \
 	netcat \
 	tcpdump \
+	${@base_contains('BUILD_TYPE', 'dbg','${DEBUG_PACKAGES}', '', d)} \
 "
