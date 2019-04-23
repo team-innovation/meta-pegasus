@@ -20,9 +20,9 @@ active_version="undefined"
 inactive_version="undefined"
 update_version="undefined"
 errors="" # default comma delimeted usage errors string
-wallsly_image=*"sly-qt5-image-imx6dl-slimline"*".tar.bz2"
-slimline_image=*"slimline-qt5-image-imx6dl-slimline"*".tar.bz2"
-touchlink_image=*"touchlink-qte-image-glibc-ipk"*".tar.bz2"
+wallsly_image=*"sly-qt5-image-imx6dl-slimline"*".tar."*
+slimline_image=*"slimline-qt5-image-imx6dl-slimline"*".tar."*
+touchlink_image=*"touchlink-qte-image-glibc-ipk"*".tar."*
 device="undefined" # default device
 product="a Vivint product" # default product
 version_file="version"
@@ -791,13 +791,22 @@ extract_to_inactive() {
 
 	[ $debug -eq 0 ] || writelog "extract_to_inactive"
 	writelog "Extractng $(basename $1) to $inactive_part Please wait..."
+
+	if [[ $(basename $1) =~ ^.*\.xz$ ]] && [ $(which xz 2>/dev/null) ]; then
+		flags="-xJf"
+	elif [[ $(basename $1) =~ ^.*\.bz2$ ]] && [ $(which bzip2 2>/dev/null) ]; then
+		flags="-xjf"
+	else
+		writelog "Unsupported archive format $1"
+		exit 1
+	fi
 		
 	if [ $(which pv) ]; then
 		[ $debug -eq 0 ] || writelog "pv is installed"
-		pv $1 | tar -xjf - -C $inactive_part
+		pv $1 | tar $flags - -C $inactive_part
 	else
 		[ $debug -eq 0 ] || writelog "pv is not installed"
-		tar -C $inactive_part -xjvf $1
+		tar -C $inactive_part -v $flags $1
 	fi
 
 	status=$?
