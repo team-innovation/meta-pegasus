@@ -235,6 +235,10 @@ class SSHIntoPanel(SSHToNetworkModule):
             self.expect(self._sql_prompt)
             self._in_db = None
 
+    def close(self):
+        self.close_sql()
+        super().close()
+
     def execute_db_cmd(self, cmd):
         result = None
 
@@ -1072,9 +1076,72 @@ Interface wlan1
         #self.logger.debug(rows)
         return rows
 
+    def get_platform(self, s):
+        result = s.execute_cmd('uci -q get vivint.@globals[0].platform').strip()
+        return result
+
+    def get_uuid(self, s):
+        result = s.execute_cmd('netv get uuid').strip()
+        return result
+
+    def get_wan_address(self, s):
+        address = ''
+        try:
+            address = s.execute_cmd("ifconfig eth0.2 | grep 'inet addr' | awk '{print $2}' | cut -d':' -f2").strip()
+            self.logger.info('get_wan_address: ip={}, result={}'.format(s._server, address))
+        except :
+            self.logger.exception('Failed to get wan_address')
+        return address
+
+    def get_wan_address_mac(self, s):
+        address = ''
+        try:
+            address = s.execute_cmd("ifconfig -a eth0.2 | grep 'HWaddr' | awk '{print $5}'").strip()
+            self.logger.info('get_wan_address: mac={}, result={}'.format(s._server, address))
+        except :
+            self.logger.exception('Failed to get wan_address')
+        return address
+
+    def get_node_info_from_sundance_database(self):
+        result = {}
+        # addr2 = '172.16.10.100'
+        # self.logger.info('Attempting to log into {}'.format(addr2))
+        # try:
+        #     s1 = SSHIntoPanel(timeout=5)
+        #     ret = s1.login_network_module(addr2)
+        #     if ret:
+        #         self.logger.info('Logged into panel {}'.format(addr2))
+        #         ret = s1.login_into_sql('sundance.db')
+        #         if ret == 1:  # Got prompt
+        #             ret = s1.execute_db_cmd("select id from service where class='YofiDevice';")
+        #             # above returns the list of service id's
+        #             for id in ret.split():
+        #                 name = s1.execute_db_cmd("select value from property where service_id={}} and name='name' ;".format(id))
+        #                 uuid = s1.execute_db_cmd("select value from property where service_id={}} and name='uuid' ;".format(id))
+        #                 result[uuid] = name
+        #         s1.close()
+        # except Exception :
+        #     self.logger.exception('Failed on access of panel db')
+
+        p = PanelSystemInfo()
+        yofi_devices = p.get_yofi_info()
+        for node in yofi_devices:
+            # print()
+            # print(node['class'])
+            # print(node['properties']['name'])
+            # print(node['id'])
+            # print(node['properties']['address'])
+            # print(node['properties']['mac_address'])
+            #
+            uuid = node['properties']['uuid']
+            result[uuid] = node['properties']['name']
+
+        return result
+
     def mesh_node_info_map(self):
         mesh_map = {}
 
+        list_of_node_names = self.get_node_info_from_sundance_database()
         if self.dhcpdump is None:
             # Try to get the dhcpdump info first from the MPP
             addr2 = '172.16.10.254'
@@ -1088,7 +1155,6 @@ Interface wlan1
             if ret:
                 self.logger.info('Logged into {}'.format(addr2))
                 self.dhcpdump = self.netv_dhcpdump(s1)
-                # mesh_map[s1._server_mac]['dhcpdump'] = self.dhcpdump
 
         for j in self.list_of_nm:
             addr2 = '172.16.10.{}'.format(j)
@@ -1103,9 +1169,28 @@ Interface wlan1
                     self.logger.info('Logged into {}'.format(addr2))
                     wlan_mac = s1._server_mac
                     mesh_map[wlan_mac] = {}
+                    mesh_map[wlan_mac]['platform'] = self.get_platform(s1)
+                    uuid = self.get_uuid(s1)
+                    if uuid:
+                        mesh_map[wlan_mac]['uuid'] = uuid
+                        try:
+                            mesh_map[wlan_mac]['name'] = list_of_node_names[uuid]
+                        except :
+                            self.logger.exception('Failed with UUID and NAME setup')
+                            mesh_map[wlan_mac]['name'] = 'Unknown Name'
+                    else:
+                        mesh_map[wlan_mac]['uuid'] = ''
+                        mesh_map[wlan_mac]['name'] = ''
+
                     mesh_map[wlan_mac]['uptime'] = s1._uptime
-                    if j == 254 and self.dhcpdump is None:
-                        self.dhcpdump = self.netv_dhcpdump(s1)
+                    if int(j) == 254:
+                        if self.dhcpdump is None:
+                            self.dhcpdump = self.netv_dhcpdump(s1)
+                        mesh_map[wlan_mac]['wan_address'] = self.get_wan_address(s1)
+                        mesh_map[wlan_mac]['wan_address_mac'] = self.get_wan_address_mac(s1)
+                    else:
+                        mesh_map[wlan_mac]['wan_address'] = ''
+                        mesh_map[wlan_mac]['wan_address_mac'] = ''
                     if self.dhcpdump:
                         mesh_map[wlan_mac]['dhcpdump'] = self.dhcpdump
                     msg = 'Getting MESH NODE INFO {} - {}'.format(s1._server, wlan_mac)
@@ -1417,6 +1502,31 @@ class PanelSystemInfo:
                     mac = cam['properties']['camera_mac_address']
 
                 cam['properties']['camera_mac_address'] = mac.lower()
+        except:
+            pass
+        return j
+
+    def get_yofi_info(self):
+        j = {}
+        try:
+            import requests
+            r = requests.post('http://{}:8080/yofi_device/'.format(self.address))
+            # print(r.content)
+            import json
+            j = json.loads(r.content.decode())
+            for node in j:
+                # Fix up MAC address
+                try:
+                    m = node['properties']['mac_address']
+                    if ':' not in m:
+                        #  fancy way to add : to the MAC
+                        mac = ':'.join([m[i: i + 2] for i in range(0, len(m), 2)])
+                    else:
+                        mac = m
+                except:
+                    mac = node['properties']['mac_address']
+
+                node['properties']['mac_address'] = mac.lower()
         except:
             pass
         return j
