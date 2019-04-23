@@ -211,15 +211,20 @@ function process_dot(fileContent) {
 		data['nodes'][i]['mass'] = 30;
 		data['nodes'][i]['color']['background'] = 'lightgreen';
 
-		// add this YoIf node to the src and dst iPerf dropdowns
+		// add this YoFi node to the src and dst iPerf dropdowns
                 new_option = document.createElement("option");
-		new_option.value = fields[0];
-		new_option.text = fields[0];
-		document.getElementById('src_ip').appendChild(new_option);
-                new_option = document.createElement("option");
-		new_option.value = fields[0];
-		new_option.text = fields[0];
-		document.getElementById('dst_ip').appendChild(new_option);
+		for (j = 0; j < fields.length; j++) {
+			if (fields[j].startsWith("172.16.10.")) {
+				new_option.value = fields[j];
+				new_option.text = fields[j];
+				document.getElementById('src_ip').appendChild(new_option);
+       	         		new_option = document.createElement("option");
+				new_option.value = fields[j];
+				new_option.text = fields[j];
+				document.getElementById('dst_ip').appendChild(new_option);
+				break;
+			}
+		}
 	}
     }
 
