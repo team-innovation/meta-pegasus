@@ -7,8 +7,8 @@ SRC_URI = " \
      http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${PV}.tar.xz \
      file://0002-Fix-crash-with-gst-inspect-Chris-Lord-chris-openedha.patch \
 "
-SRC_URI[md5sum] = "201c15ac4b956833f7f6774485433969"
-SRC_URI[sha256sum] = "52ef885647afef11c8b7645a9afefe04aa09e8971c4b932e7717872ab8a30fcc"
+SRC_URI[md5sum] = "fb2fbf42db73ef736bdf39f50d63dd66"
+SRC_URI[sha256sum] = "4ccba88a286b13d6f2d8c1180f78a13dcd49f2fc3cb2b3b3f502b3a23f7c01b5"
 
 S = "${WORKDIR}/gstreamer-${PV}"
 
