@@ -7,7 +7,8 @@ PR = "6"
 
 inherit packagegroup
 
-PANEL_DEBUG_PACKAGES = "gdb"
+VIVINT_DEBUG_PACKAGES = "touchlink-apps-pumpernickel-dbg"
+PANEL_DEBUG_PACKAGES = "gdb gdbserver perf valgrind glibc-dbg libc6-dev"
 PYTHON_DEBUG_PACKAGES = "python3-pip python3-pydevd"
 
 DEBUG_PACKAGES += "${PANEL_DEBUG_PACKAGES} \
