@@ -25,7 +25,7 @@ do_install_append () {
         ${RSYNC_CMD} ${S}/code/audmgrd/ ${D}/${INSTALL_DIR}/audmgrd/
         chmod +x ${D}/${INSTALL_DIR}/audmgrd/audmgrd.pyc
         install -d ${D}/${INSTALL_DIR}/lib
-        cp -a ${S}/code/audmgrd/libaudio/libaudio.so ${D}/${INSTALL_DIR}/lib
+        install ${S}/code/audmgrd/libaudio/libaudio.so ${D}/${INSTALL_DIR}/lib
 }
 
 FILES_${PN}-audmgrd = "\

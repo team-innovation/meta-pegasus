@@ -15,7 +15,7 @@ import_key()
 	if [ ! -e $GPG_HOME/trustdb.gpg ]
 	then
 		echo "Importing gpg public key..."
-		gpg $GPG_HOME_OPT --import /usr/share/keys/vivintbuild_gpg.pub
+		gpg $GPG_HOME_OPT --import /etc/vivintbuild_gpg.pub
 		if [ $? -ne 0 ]
 		then
 			echo "Failed to import public key"

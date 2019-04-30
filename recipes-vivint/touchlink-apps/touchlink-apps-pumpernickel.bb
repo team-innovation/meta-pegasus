@@ -4,7 +4,7 @@ DESCRIPTION = "User interface for Vivint sky panels"
 HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
 SECTION = "SOMETHING"
-DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode"
+DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode qtdeclarative-native"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
 PR = "r14"
@@ -21,6 +21,7 @@ DEPENDS += " \
 	python3-googleapis-common-protos-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
+	python3-idna-native \
 	python3-markupsafe-native \
 	python3-mixpanel-native \
 	python3-mock-native \
@@ -62,7 +63,7 @@ PYTHON_BASEVERSION = "3.5"
 PREFERRED_VERSION_python3 = "3.5.3"
 PREFERRED_VERSION_python-native = "3.5.3"
 
-inherit python-dir pythonnative
+inherit python3-dir python3native
 
 EXEC_DIR = "pumpernickel"
 

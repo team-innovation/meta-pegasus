@@ -116,7 +116,7 @@ if [ x"$D" = "x" ]; then
     old_root_ssh_config=$previous_bootmount/home/root/.ssh
     if [ -d $old_root_ssh_config ]
     then
-        cp -a $old_root_ssh_config /home/root/
+        install $old_root_ssh_config /home/root/
         logging "Copied $old_root_ssh_config to /home/root/"
     fi
 

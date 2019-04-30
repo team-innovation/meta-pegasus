@@ -11,16 +11,12 @@ MODULE = "lock"
 2GIG_DIR = "opt/2gig"
 S = "${WORKDIR}/git/code/SimLock"
 
-GIT_SIMLOCK_SERVER ?= "${GIT_SERVER}"
 GIT_SIMLOCK_REV ?= "${AUTOREV}"
-GIT_SIMLOCK_PROTOCOL ?= "ssh"
-GIT_SIMLOCK_BRANCH ?= "master"
-
 SRCREV = "${GIT_SIMLOCK_REV}"
-SRC_URI = "git://${GIT_SIMLOCK_SERVER}/${MODULE};protocol=${GIT_SIMLOCK_PROTOCOL};branch=${GIT_SIMLOCK_BRANCH}"
-
+SRC_URI = "git://git@${GIT_SERVER}/${MODULE};protocol=ssh"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
+TARGET_CC_ARCH += "${LDFLAGS}"
 
 FILES_${PN} = "\
 	/opt/2gig/lib/libsimLock.so \
@@ -29,14 +25,13 @@ FILES_${PN}-dbg += "\
 	/opt/2gig/lib/.debug/ \
 "
 
-do_compile() {
- 	oe_runmake CFLAGS+="-shared -fPIC -I../../boost_1_53_0 -lstdc++"
+do_configure() {
+    sed -i '/^CC/d' ${S}/Makefile    
+    sed -i '/^CFLAGS/d' ${S}/Makefile    
 }
 
-
-# TODO - For now just skip this, need to fix to only skip the firmware files
-do_package_qa(){
-	:
+do_compile() {
+ 	oe_runmake CFLAGS+="-shared -fPIC -I../../boost_1_53_0 -lstdc++"
 }
 
 do_install() {

@@ -12,6 +12,8 @@ inherit packagegroup
 #   then add it to packagegroup-sawmill-min not here.
 RDEPENDS_${PN} = " \
 	alsa-utils \
+	imx-gpu-viv-demos \
+	imx-gpu-viv-tools \
 	ca-certificates \
 	civetweb \
 	cronie \
@@ -32,7 +34,7 @@ RDEPENDS_${PN} = " \
 	python3-curses \
 	python3-cython \
 	python3-gdbm \
-	python3-distribute \
+	python3-setuptools \
 	python3-grpcio \
 	python3-idle \
 	python3-importlib \
@@ -82,8 +84,6 @@ RDEPENDS_${PN} = " \
 	util-linux \
 	vim \
 	webrtc-audio-processing \
-	panel-audio-test \
-	pa-test \
 	wps-sh \
 	xdelta3 \
 	xz \

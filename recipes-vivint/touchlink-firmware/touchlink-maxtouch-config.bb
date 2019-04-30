@@ -3,6 +3,8 @@ LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
 PR = "r4"
 
+RDEPENDS_${PN} += "bash"
+
 FIRMWARE_sly = "maxtouch-sly.cfg"
 FIRMWARE_slim_line  = "maxtouch-slimline.cfg"
 FIRMWARE_wallsly  = "maxtouch-wallsly_haier.cfg"

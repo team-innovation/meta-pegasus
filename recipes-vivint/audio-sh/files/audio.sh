@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 rmmods() {
 	lsmod | grep -q snd_soc_imx_cx20704 &&
 		rmmod snd_soc_imx_cx20704

@@ -29,6 +29,8 @@ version_file="version"
 logfile="/media/extra/update/.update_status"
 #logfile="/media/extra/update/.update_status_test" # TODO TEST logfile
 
+export EXTRACT_UNSAFE_SYMLINKS=1
+
 main() {
 	
 	[ ! -f $logfile ] && touch $logfile && writelogonly "Created log file $logfile"
@@ -273,6 +275,28 @@ maybe_run_update() {
 	usage "Unhandled state in maybe_run_update,$errors"
 }
 
+stop_procman_and_friends() {
+	# Stop the daemons so that we can delete their dbs. Otherwise, when we
+	# shutdown, the daemons will recreate them, and we want them to remain
+	# gone.
+	writelog "Stop procman and the services it starts"
+	# This init script uses start-stop-daemon, and doesn't wait for it to
+	# exit. It can take over 15-30 seconds for it to stop. So we make sure it
+	# is no longer running before proceeding.
+	/etc/init.d/procmand stop
+	sleep 5
+	loop_counter=30
+	while : ; do
+		pgrep procmand >/dev/null
+		if [ $? -eq 0 -a $loop_counter -gt 0 ] ; then
+			loop_counter=$((loop_counter - 1))
+			sleep 3
+		else
+			break
+		fi
+	done
+}
+
 clean_user_data() {
 
 	# Remove user configuration data and reboot
@@ -285,15 +309,18 @@ clean_user_data() {
 	prompt "delete all user configuration data on this $product" 
 
 	if [ $dryrun -eq 0 ]; then 
-		[ $device == "slimline" ] && usage "This is $product nothing to be cleaned,$errors"
+		stop_procman_and_friends
 
-		writelog "Zero out ZWave Home ID..."
+		if [ $device != "slimline" ]; then
+			writelog "Zero out ZWave Home ID..."
 
-		# python 3.3 versus 3.5
-		[ -f /opt/2gig/zwaved/scripts/set_home_id.pyo ] &&
-			python3 /opt/2gig/zwaved/scripts/set_home_id.pyo -hid 00000000 2> /dev/null
-		[ -f /opt/2gig/zwaved/scripts/set_home_id.pyc ] &&
-			python3 /opt/2gig/zwaved/scripts/set_home_id.pyc -hid 00000000 2> /dev/null
+			# python 3.3 versus 3.5
+			[ -f /opt/2gig/zwaved/scripts/set_home_id.pyo ] &&
+				python3 /opt/2gig/zwaved/scripts/set_home_id.pyo -hid 00000000 2> /dev/null
+			[ -f /opt/2gig/zwaved/scripts/set_home_id.pyc ] &&
+				python3 /opt/2gig/zwaved/scripts/set_home_id.pyc -hid 00000000 2> /dev/null
+
+		fi
 
 		writelog "Clearing /media/extra"
 		mkdir -p /media/extra/backup
@@ -312,8 +339,12 @@ clean_user_data() {
 		[ -d /media/extra/conf/unlock ] && 
 			writelog "Preserving developer mode unlock key: $(ls /media/extra/conf/unlock)"
 		[ -d /media/extra/conf/unlock ] && cp -a /media/extra/conf/unlock /media/extra
+		[ -f /media/extra/conf/ssdp-uuid ] && cp -a /media/extra/conf/ssdp-uuid /media/extra
+
 		rm -rf /media/extra/conf/*
+
 		[ -d /media/extra/unlock ] && mv /media/extra/unlock /media/extra/conf
+		[ -f /media/extra/ssdp-uuid ] && mv /media/extra/ssdp-uuid /media/extra/conf
 
 		reboot_device
 	else
@@ -330,7 +361,7 @@ reboot_device() {
 	[ $dryrun -gt 0 ] && writelog "This is a dry run on reboot_device, not rebooting"
 	writelogonly "EXIT:  $(basename $0) version: $(version)"
 	sync
-	[ $dryrun -eq 0 ] && reboot
+	[ $dryrun -eq 0 ] && shutdown -rFt 5 now
     1>&2; exit 0;
 }
 

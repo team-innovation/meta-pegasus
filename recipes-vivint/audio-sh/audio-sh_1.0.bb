@@ -9,12 +9,14 @@ PR = "r13"
 SRC_URI = "file://COPYING \
            file://audio.sh"
 
+inherit update-rc.d
+
+INITSCRIPT_NAME = "audio.sh"
+INITSCRIPT_PARAMS = "start 38 S ."
+
 do_install () {
 	install -d ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/audio.sh ${D}${sysconfdir}/init.d
-
-	# Creat run level links
-	update-rc.d -r ${D} audio.sh start 38 S . 
 }
 
 FILES_${PN} += "/usr/local/bin/*"

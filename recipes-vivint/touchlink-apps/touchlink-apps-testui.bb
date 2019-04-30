@@ -59,7 +59,7 @@ PYTHON_BASEVERSION = "3.5"
 PREFERRED_VERSION_python3 = "3.5.3"
 PREFERRED_VERSION_python-native = "3.5.3"
 
-inherit python-dir pythonnative
+inherit python3-dir python3native
 
 
 do_configure_prepend() {

@@ -1,8 +1,9 @@
 DESCRIPTION = "Build spacemonkey fabric for arm"
 
-PR = "r10"
+PR = "r11"
+export GOROOT_BOOTSTRAP = "${GOROOT}"
 
-DEPENDS = "go-cross sqlite3"
+DEPENDS = "go-cross-arm sqlite3"
 
 inherit go
 
@@ -20,12 +21,13 @@ SRC_URI[sha256sum] = "5eef1d6d6accd9dd929aa97132ef797b75f5359bfb2b84ce353e3382bb
 LICENSE = "CLOSED"
 
 do_compile() {
-    CGO_ENABLED=1 GOPATH=${WORKDIR} go build fabric/bin/schooner
+	export GOARCH="${TARGET_GOARCH}"
+	CGO_ENABLED=1 GOPATH=${WORKDIR} go build fabric/bin/schooner
 }
 
 do_install() {
     install -d "${D}/${bindir}"
-    install -m 0755 "${S}/schooner" "${D}/${bindir}"
+    install -m 0755 "${B}/schooner" "${D}/${bindir}"
 
     install -d "${D}${sysconfdir}/init.d"
     install -m 0755 "${WORKDIR}/init" "${D}${sysconfdir}/init.d/schooner"

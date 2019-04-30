@@ -20,3 +20,5 @@ do_install() {
 	install -d ${D}/usr/bin
 	install -m 0755 ${S}/bin/lxfp ${D}/usr/bin/lxfp
 }
+
+INSANE_SKIP_${PN} = "ldflags"

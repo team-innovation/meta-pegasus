@@ -9,10 +9,12 @@ PR = "r12"
 SRC_URI = "file://psoc5-verify \
            file://COPYING"
 
+inherit update-rc.d
+
+INITSCRIPT_NAME = "psoc5-verify"
+INITSCRIPT_PARAMS = "start 08 S ."
+
 do_install () {
 	install -d ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/psoc5-verify ${D}${sysconfdir}/init.d
-
-	# Create run level links
-	update-rc.d -r ${D} psoc5-verify start 08 S .
 }

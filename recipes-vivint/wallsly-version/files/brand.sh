@@ -26,6 +26,9 @@ check_and_set()
 			mv /usr/bin/lsb_release /usr/bin/lsb_release-orig
 			cp /usr/bin/lsb_release_wallsly /usr/bin/lsb_release
 			chmod 755 /usr/bin/lsb_release
+
+			rm -f /etc/init.d/multiplexerd
+			rm -f /etc/procman.d/multiplexerd
 		fi
     else
         if [ -e /etc/init.d/rf915d ]; then

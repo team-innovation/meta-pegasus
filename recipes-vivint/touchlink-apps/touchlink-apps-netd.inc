@@ -16,7 +16,7 @@ do_install_append () {
         chmod +x ${D}/${INSTALL_DIR}/netd/netd.pyc
 
 	install -d ${D}/usr/local/bin
-	cp -a ${S}/code/netd/scripts/speedtest ${D}/usr/local/bin
+	install ${S}/code/netd/scripts/speedtest ${D}/usr/local/bin
 	chmod 0755 ${D}/usr/local/bin/*
 
 }

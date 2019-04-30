@@ -33,14 +33,13 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-base-videoconvert \
 	gstreamer1.0-plugins-base-videotestsrc \
 	gstreamer1.0-plugins-base-volume \
-	gstreamer1.0-plugins-bad-opus \
+	gstreamer1.0-plugins-base-opus \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0-plugins-good-imagefreeze \
 	gstreamer1.0-plugins-good-isomp4 \
 	gstreamer1.0-plugins-good-jpeg \
 	gstreamer1.0-plugins-good-level \
 	gstreamer1.0-plugins-good-mulaw \
-	gstreamer1.0-plugins-good-pulse \
 	gstreamer1.0-plugins-good-rtp \
 	gstreamer1.0-plugins-good-rtpmanager \
 	gstreamer1.0-plugins-good-rtsp \

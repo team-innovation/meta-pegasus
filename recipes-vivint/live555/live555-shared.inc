@@ -7,30 +7,28 @@ HOMEPAGE = "http://live.com/"
 LICENSE = "LGPL-2.1"
 SECTION = "devel"
 
-INC_PR = "r60"
+INC_PR = "r55"
 
 # IF UPDATING THE LIVE555 MAKE SURE TO UPDATE SKYCONTROL RECIPES AS WELL
-SRCREV = "${GIT_LIVE555_REV}"
-SRCBRANCH = "${GIT_LIVE555_BRANCH}"
-GIT_LIVE555_SERVER ?= "${GIT_SERVER}"
-GIT_LIVE555_PROTOCOL ?= "ssh"
-
+SRCREV = "0b8617dfa526b59ecdeb9a002ae1432b8039030f"
 MODULE = "live555"
-SRC_URI = "git://${GIT_LIVE555_SERVER}/${MODULE};protocol=${GIT_LIVE555_PROTOCOL};branch=${SRCBRANCH}"
+SRC_URI = "git://${GIT_SERVER}/${MODULE};protocol=ssh;branch=master \
+"
 
 S = "${WORKDIR}/git"
 TARGET_CC_ARCH += "${LDFLAGS}"
 
 do_configure() {
 	./genMakefiles linux-with-shared-libraries
+	sed -i 's/#include <xlocale.h>.*/#include <locale.h>/' ${S}/liveMedia/include/Locale.hh
 }
 
 do_compile() {
-	make
+	oe_runmake
 }
 
 do_install() {
-	make install DESTDIR=${D} PREFIX=/usr
+	oe_runmake install DESTDIR=${D} PREFIX=/usr
 	install -d ${D}${includedir}/BasicUsageEnvironment
 	install -d ${D}${includedir}/groupsock
 	install -d ${D}${includedir}/liveMedia

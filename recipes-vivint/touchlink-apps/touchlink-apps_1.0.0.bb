@@ -86,7 +86,7 @@ PYTHON_BASEVERSION = "3.5"
 PREFERRED_VERSION_python3 = "3.5.3"
 PREFERRED_VERSION_python-native = "3.5.3"
 
-inherit autotools update-rc.d python3-dir pythonnative
+inherit autotools update-rc.d python3-dir python3native
 
 RSYNC_CMD = "rsync -azv --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage --exclude=_user_conf"
 
@@ -141,6 +141,7 @@ DEPENDS = " \
 	python3-cachetools-native \
 	python3-pysodium-native \
 	python3-xmltodict-native \
+	rsync-native \
 	libsodium-native \
 	python3-pyopenssl-native \
 	python3-cryptography-native \
@@ -272,7 +273,7 @@ do_runstrip() {
 do_install () {
         # Install init.d scripts
 	install -d ${D}/${sysconfdir}/init.d/
-	cp -a ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
+	install -m 0755 ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
 }
 
 do_install_append() {

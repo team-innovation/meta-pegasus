@@ -3,15 +3,16 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r89"
+PR = "r90"
 
-PACKAGES = "${PN} ${PN}-dbg"
+DEPENDS_append = "update-rc.d-native"
 
 RDEPENDS_${PN} = " \
     python3-pysodium \
     libpulse-simple \
     libpulse \
     libasound \
+    bash \
 "
 
 SRC_URI = "\
@@ -63,6 +64,7 @@ SRC_URI = "\
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
+TARGET_CC_ARCH += "${LDFLAGS}"
 S = "${WORKDIR}"
 
 do_compile() {

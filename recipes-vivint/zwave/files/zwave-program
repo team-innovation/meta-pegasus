@@ -13,7 +13,7 @@ zwave_program ()
     fi
 
     if [ ! -e $path ]; then
-        echo "ERROR: Zwave firmware not found"
+        echo "Zwave firmware not found"
         return 1
     fi
 

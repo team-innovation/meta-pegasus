@@ -282,7 +282,7 @@ addmediaextrafs() {
     :
 }
 
-IMAGE_DEPENDS_emmc = "util-linux-native:do_populate_sysroot \
+do_image_emmc[depends] += "util-linux-native:do_populate_sysroot \
                         dosfstools-native:do_populate_sysroot \
                         mtools-native:do_populate_sysroot \
                         virtual/kernel:do_deploy \

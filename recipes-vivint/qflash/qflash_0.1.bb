@@ -20,3 +20,5 @@ do_install() {
 	install -d ${D}/usr/bin
 	install -m 0755 ${S}/qflash ${D}/usr/bin/qflash
 }
+
+INSANE_SKIP_${PN} = "ldflags"
