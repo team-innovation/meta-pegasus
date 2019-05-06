@@ -1,13 +1,13 @@
 SUMMARY = "vis web visualizer."
-DESCRIPTION = "Allow us to see the visual representation of the network."
+DESCRIPTION = "Allow us to see the visual representation of the network. Modified with scripts from Vivint"
 HOMEPAGE = "https://github.com/almende/vis"
 
-AUTHOR = "Atmel"
+AUTHOR = "Almende B.V. and Contributors"
 SECTION = "base"
 LICENSE = "MIT" 
 LIC_FILES_CHKSUM = "file://LICENSE-MIT;md5=d147f14c7e6b7edc53fc9053bef1e483"
 
-PR = "r3"
+PR = "r4"
 
 DEPENDS="vivutils"
 
