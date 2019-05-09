@@ -88,7 +88,8 @@ PREFERRED_VERSION_iotivity = "2.0.0"
 
 inherit autotools update-rc.d python3-dir pythonnative
 
-RSYNC_CMD = "rsync -azv --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage --exclude=_user_conf"
+RSYNC_CMD = "rsync -azv --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage --exclude=_user_conf \
+	     --exclude=.pytest_cache"
 
 FRAMEWORK_DIR = "${PYTHON_SITEPACKAGES_DIR}"
 INSTALL_DIR = "/opt/2gig"
