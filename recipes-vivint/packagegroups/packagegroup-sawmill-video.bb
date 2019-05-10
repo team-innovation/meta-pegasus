@@ -33,7 +33,6 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-base-videoconvert \
 	gstreamer1.0-plugins-base-videotestsrc \
 	gstreamer1.0-plugins-base-volume \
-	gstreamer1.0-plugins-base-opus \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0-plugins-good-imagefreeze \
 	gstreamer1.0-plugins-good-isomp4 \
@@ -44,13 +43,21 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-good-rtpmanager \
 	gstreamer1.0-plugins-good-rtsp \
 	gstreamer1.0-plugins-good-udp \
-	gstreamer1.0-plugins-good-video4linux2 \
 	gstreamer1.0-plugins-good-wavenc \
 	gstreamer1.0-plugins-good-wavparse \
 	gstreamer1.0-rtsp-server \
 	imx-gst1.0-plugin \
 	imx-gst1.0-plugin-gplay \
 	imx-gst1.0-plugin-grecorder \
+	gstreamer1.0-plugins-imx \
+	gstreamer1.0-plugins-imx-imxaudio \
+	gstreamer1.0-plugins-imx-imxeglvivsink \
+	gstreamer1.0-plugins-imx-imxv4l2video \
+	gstreamer1.0-plugins-imx-imxg2d \
+	gstreamer1.0-plugins-imx-imxipu \
+	gstreamer1.0-plugins-imx-imxpxp \
+	gstreamer1.0-plugins-imx-imxvpu \
+	gstreamer1.0-plugins-imx-meta \
 	imx-lib \
 	ffmpeg \
 	imx-codec \
