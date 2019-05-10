@@ -253,7 +253,7 @@ function process_dot(fileContent) {
         }
       }
     }
-    iperf_cmd_url = "http://" + window.location.hostname + "/vis/test/iperf_cmd.html";
+    iperf_cmd_url = "http://" + window.location.hostname + "/network/vis/test/iperf_cmd.html";
     xhr.open('GET', iperf_cmd_url);
     xhr.send();
 
@@ -263,7 +263,7 @@ function process_dot(fileContent) {
         document.getElementById('yofi_nodes_result').innerHTML = xhr2.responseText;
       }
     }
-    iperf_result_url = "http://" + window.location.hostname + "/vis/test/iperf_result.html";
+    iperf_result_url = "http://" + window.location.hostname + "/network/vis/test/iperf_result.html";
     xhr2.open('GET', iperf_result_url);
     xhr2.send();
 }
