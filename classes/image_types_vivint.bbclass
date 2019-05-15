@@ -18,22 +18,22 @@ inherit image_types
 # Slimline partition table details:
 #
 # The actual msdos partition table defined partitioning as represented
-# by sfdisk -l is:
+# by sfdisk -l -u S is:
 #
-# Disk /dev/mmcblk0: 238592 cylinders, 4 heads, 16 sectors/track
-# sfdisk: Warning: The partition table looks like it was made
-#   for C/H/S=*/128/32 (instead of 238592/4/16).
-# For this listing I'll assume that geometry.
-# Units: cylinders of 2097152 bytes, blocks of 1024 bytes, counting from 0
-#
-# Device Boot Start     End   #cyls    #blocks   Id  System
-# /dev/mmcblk0p1          0+     35      36-     73712   83  Linux
-# /dev/mmcblk0p2         36      39       4       8192   e3  DOS R/O
-# /dev/mmcblk0p3         40      43       4       8192   83  Linux
-# /dev/mmcblk0p4         44    3727    3684    7544832    5  Extended
-# /dev/mmcblk0p5         45     837     793    1624064   83  Linux
-# /dev/mmcblk0p6        839    1631     793    1624064   83  Linux
-# /dev/mmcblk0p7       1633    3727    2095    4290560   83  Linux
+#Disk /dev/mmcblk0: 238592 cylinders, 4 heads, 16 sectors/track
+#sfdisk: Warning: The partition table looks like it was made
+#  for C/H/S=*/128/32 (instead of 238592/4/16).
+#For this listing I'll assume that geometry.
+#Units: sectors of 512 bytes, counting from 0
+
+#   Device Boot    Start       End   #sectors  Id  System
+#/dev/mmcblk0p1            32    147455     147424  83  Linux
+#/dev/mmcblk0p2        147456    163839      16384  e3  DOS R/O
+#/dev/mmcblk0p3        163840    180223      16384  83  Linux
+#/dev/mmcblk0p4        180224  15269887   15089664   5  Extended
+#/dev/mmcblk0p5        184320   3432447    3248128  83  Linux
+#/dev/mmcblk0p6       3436544   6684671    3248128  83  Linux
+#/dev/mmcblk0p7       6688768  15269887    8581120  83  Linux
 #
 # p1 legacy, was u-boot on touchlink, not used here since we use mmcblk0boot0
 # p2 legacy, was u-boot env not used here since we use mmcblk0boot1
@@ -66,23 +66,8 @@ export SECTOR_SIZE = "512"
 # 2) /proc/partitions reports
 #   179        0    7634944 mmcblk0
 #   7634944/1024 == 7456MiB
-#
-# newer parts report smaller sizes
-# 1) kernel reports size as 7.12GiB
-#   == 7.12*1024MiB == 7290.88
-#   round down to next 2MiB size
-#   7290MiB
-# 2) /proc/partitions reports
-#   179        0    7471104 mmcblk0
-#   7471104/1024 == 7296MiB
-#
-# to be safe let's assume the part can be
-# 10% smaller than its spec size in MB or
-# 8*1000*1000*.9/(1024*1024)
-# == 6.866GiB
-# == 7031.25MiB
-# round down to 7000MiB
-export IMAGESZ = "7000MiB"
+# go with smallest to be safe
+export IMAGESZ = "7454MiB"
 
 # disk and partition sizes; could change but changes in other places
 # may be necessary
@@ -109,13 +94,13 @@ kmgtobytes() {
     echo $sz
 }
 
-## cylinders to bytes
+## cylinder to bytes
 #
 ctob() {
     expr $1 \* $HEADS \* $SECTORS \* $SECTOR_SIZE
 }
 
-## bytes to cylinders
+## bytes to cylinder
 #    with sanity check make sure all sizes are cylinder aligned
 #
 btoc() {
@@ -127,8 +112,26 @@ btoc() {
     test "$sz" -eq "$nsz" || bberror "bad size not cylinder aligned"
     echo $szcyl
 }
+## sectors to bytes
+#
+stob() {
+    expr $1  \* $SECTOR_SIZE
+}
 
-## setup all sizes in both bytes and cylinders
+## bytes to sectors
+#    with sanity check make sure all sizes are sector aligned
+#
+btos() {
+    local sz=$1
+    local nsz
+
+    szsec=$(expr $sz / $SECTOR_SIZE )
+    nsz=$(expr $szsec \* $SECTOR_SIZE )
+    test "$sz" -eq "$nsz" || bberror "bad size not sector aligned"
+    echo $szsec
+}
+
+## setup all sizes in both bytes and sectors
 #
 setupsizes() {
     # expand sizes that are expressed in k, m or g
@@ -140,47 +143,47 @@ setupsizes() {
     P5SZ=$ROOTFSSZ
     P6SZ=$ROOTFSSZ
 
-    # starts and sizes in cylinders of all partitions
-    # mbr/partition table are in 0 so start partition at 1
-    local NXTCYL=1
+    # starts and sizes in sectors of all partitions
+    # mbr/partition table are in 0 so start partition at next sector
+    local NXTSEC=$SECTORS
 
-    export P1STRT_CYL=$NXTCYL
-    export P1STRT=$(ctob $P1STRT_CYL)
-    export P1SZ_CYL=$(btoc $P1SZ)
-    NXTCYL=$(expr $NXTCYL + $P1SZ_CYL )
+    export P1STRT_SEC=$NXTSEC
+    export P1STRT=$(stob $P1STRT_SEC)
+    export P1SZ_SEC=$(expr `btos $P1SZ` - $SECTORS)
+    NXTSEC=$(expr $NXTSEC + $P1SZ_SEC )
 
-    export P2STRT_CYL=$NXTCYL
-    export P2STRT=$(ctob $P2STRT_CYL)
-    export P2SZ_CYL=$(btoc $P2SZ)
-    NXTCYL=$(expr $NXTCYL + $P2SZ_CYL )
+    export P2STRT_SEC=$NXTSEC
+    export P2STRT=$(stob $P2STRT_SEC)
+    export P2SZ_SEC=$(btos $P2SZ)
+    NXTSEC=$(expr $NXTSEC + $P2SZ_SEC )
 
-    export P3STRT_CYL=$NXTCYL
-    export P3STRT=$(ctob $P3STRT_CYL)
-    export P3SZ_CYL=$(btoc $P3SZ)
-    NXTCYL=$(expr $NXTCYL + $P3SZ_CYL )
+    export P3STRT_SEC=$NXTSEC
+    export P3STRT=$(stob $P3STRT_SEC)
+    export P3SZ_SEC=$(btos $P3SZ)
+    NXTSEC=$(expr $NXTSEC + $P3SZ_SEC )
 
     # we don't give p4 (extended) a size
-    # just increment NXTCYL
-    export P4STRT_CYL=$NXTCYL
-    NXTCYL=$(expr $NXTCYL + 1)
+    # just increment NXTSEC
+    export P4STRT_SEC=$NXTSEC
+    NXTSEC=$(expr $NXTSEC + $HEADS \* $SECTORS)
 
-    export P5STRT_CYL=$NXTCYL
-    export P5STRT=$(ctob $P5STRT_CYL)
-    export P5SZ_CYL=$(btoc $P5SZ)
+    export P5STRT_SEC=$NXTSEC
+    export P5STRT=$(stob $P5STRT_SEC)
+    export P5SZ_SEC=$(btos $P5SZ)
     # partitions in extended store info inline so add
     # one extra cylinder
-    NXTCYL=$(expr $NXTCYL + $P5SZ_CYL + 1 )
+    NXTSEC=$(expr $NXTSEC + $P5SZ_SEC + $HEADS \* $SECTORS )
 
-    export P6STRT_CYL=$NXTCYL
-    export P6STRT=$(ctob $P6STRT_CYL)
-    export P6SZ_CYL=$(btoc $P6SZ)
+    export P6STRT_SEC=$NXTSEC
+    export P6STRT=$(stob $P6STRT_SEC)
+    export P6SZ_SEC=$(btos $P6SZ)
     # partitions in extended store info inline so add
     # one extra cylinder
-    NXTCYL=$(expr $NXTCYL + $P6SZ_CYL + 1 )
+    NXTSEC=$(expr $NXTSEC + $P6SZ_SEC + $HEADS \* $SECTORS )
 
     # p7 takes the rest
-    export P7STRT_CYL=$NXTCYL
-    export P7STRT=$(ctob $P7STRT_CYL)
+    export P7STRT_SEC=$NXTSEC
+    export P7STRT=$(stob $P7STRT_SEC)
     export P7SZ=$(expr $IMAGESZ - $P7STRT)
     :
 }
@@ -192,14 +195,14 @@ partitionimage() {
     # NOTE: leave the heredoc below unindented
     #       sfdisk does not deal well with leading spaces
     #
-    sfdisk -f -q -D -L -H $HEADS -S $SECTORS -C $(btoc $IMAGESZ) $EMMC << EOF
-$P1STRT_CYL,$P1SZ_CYL,L
-$P2STRT_CYL,$P2SZ_CYL,0xe3
-$P3STRT_CYL,$P3SZ_CYL,L
-$P4STRT_CYL,,E
-$P5STRT_CYL,$P5SZ_CYL,L
-$P6STRT_CYL,$P6SZ_CYL,L
-$P7STRT_CYL,+,L
+    sfdisk -f -q  $EMMC << EOF
+$P1STRT_SEC,$P1SZ_SEC,L
+$P2STRT_SEC,$P2SZ_SEC,0xe3
+$P3STRT_SEC,$P3SZ_SEC,L
+$P4STRT_SEC,,E
+$P5STRT_SEC,$P5SZ_SEC,L
+$P6STRT_SEC,$P6SZ_SEC,L
+$P7STRT_SEC,+,L
 EOF
 }
 
@@ -239,7 +242,7 @@ addrootfs() {
     local start=$3
     local size=$4
 
-    cp "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.ext4" \
+    cp ${EMMC_ROOTFS} \
 	${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4
     dd if=/dev/zero \
 	of=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.ext4 \
@@ -263,7 +266,7 @@ addmediaextrafs() {
     local start=$3
     local size=$4
     local extrad="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.d/"
-    local gzname="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.tar.gz"
+    local gzname="${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.tar.gz"
     mkdir -p $extrad/factory_image
     cp $gzname $extrad/factory_image
     dd if=/dev/zero \
@@ -290,10 +293,10 @@ do_image_emmc[depends] += "util-linux-native:do_populate_sysroot \
 
 export EMMC = "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.image.emmc"
 
-EMMC_GENERATION_COMMAND_slimline = "generate_slimline_emmc"
+EMMC_GENERATION_COMMAND = "generate_slimline_emmc"
 #EMMC_GENERATION_COMMAND_monkeyv2 = "generate_monkeyv2_emmc"
 
-EMMC_ROOTFS ?= "${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.ext4"
+EMMC_ROOTFS ?= "${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.ext4"
 
 ## generate an emmc card image file
 #
