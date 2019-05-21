@@ -69,27 +69,24 @@ mntbootscriptrw()
 }
 
 read_serial() {
+	# 13 digits. The first three characters are allowed to be uppercase
+	# alphanumeric. The remaining ten must be decimal digits.
+
+	# Note: The panel uses bash 3.2, and so the regex must be in a variable.
+	# This should also be compatible with more recent versions of bash.
+	# Ref: https://stackoverflow.com/questions/15253792/bash-3-2-regex-pattern-not-matched-while-using
+
+	alnum_regex="^[A-Z0-9]{3}[0-9]{10}$"
 	while true; do
 		local rawsn
-		local sn
-		local hexsn
-		local dsn
 
 		read -e -p "Enter Serialnumber: " rawsn
-
-		(eval "echo $(( 10#$rawsn ))") ||
-			continue
-
-		sn=$(( 10#$rawsn ))
-
-		echo "$rawsn" | grep -q "$sn" ||
-			continue
-
-		hexsn=$(printf "%x" $sn)
-		dsn=$(printf "%d" 0x${hexsn})
-		test "$sn" = "$dsn" &&
-			HEXSN=$hexsn &&
+		if [[ $rawsn =~ $alnum_regex ]]; then
+			SERIAL_NUMBER=$rawsn
 			break
+		else
+			continue
+		fi
 	done
 }
 
@@ -100,7 +97,16 @@ serialnumset() {
 	clear; reset
 	read_serial
 
-	echo "${HEXSN}" > /media/bootscript/serialnumber.txt
+	echo "${SERIAL_NUMBER}" > /media/bootscript/serialnumber2.txt
+
+	# For backward compatability. If the serialnumber can be represented as
+	# hex, also write it in the hex-formatted file that panel versions
+	# prior to 3.19.3 understand
+	decimal_regex="^[0-9]{13}$"
+	if [[ $SERIAL_NUMBER =~ $decimal_regex ]]; then
+		HEX_SERIAL_NUMBER="$(printf '%x' $(( 10#$SERIAL_NUMBER)) )"
+		echo "${HEX_SERIAL_NUMBER}" > /media/bootscript/serialnumber.txt
+	fi
 
 	umntbootscript
 	true
