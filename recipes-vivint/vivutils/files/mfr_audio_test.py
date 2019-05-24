@@ -29,7 +29,7 @@ try:
 except ImportError:
     print('ERROR: numpy library not installed')
 
-
+__author__ = 'bob'
 
 #frequencies = [220, 330, 440, 500, 600, 700, 880, 1000, 1100, 1200, 1760, 3520]
 frequencies = [440, 600, 880, 1000, 1100, 1200, 1760, 3520]

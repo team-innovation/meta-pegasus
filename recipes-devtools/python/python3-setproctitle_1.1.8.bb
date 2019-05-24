@@ -2,7 +2,7 @@ DESCRIPTION = "Set Proc Title Support for Python"
 SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "PSF"
-LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=a1f1f516ff59e8899115754de850190f"
+LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=a4a609ce8a6621f030a70a3a5f2617c1"
 SRCNAME = "setproctitle"
 PR = "ml2"
 
@@ -31,7 +31,7 @@ do_install_prepend() {
     install -m 0644 ${WORKDIR}/setproctitle_33.py ${D}/${libdir}/${PYTHON_DIR}/site-packages/setproctitle.py
 }
 
-SRC_URI[md5sum] = "2dcdd1b761700a5a13252fea3dfd1977"
-SRC_URI[sha256sum] = "6283b7a58477dd8478fbb9e76defb37968ee4ba47b05ec1c053cb39638bd7398"
+SRC_URI[md5sum] = "728f4c8c6031bbe56083a48594027edd"
+SRC_URI[sha256sum] = "b564cf6488217c7a4632a9fe646fc3a3bea2f9712b4e667e9632b870d1a58211"
 
 INSANE_SKIP_${PN} = "True"

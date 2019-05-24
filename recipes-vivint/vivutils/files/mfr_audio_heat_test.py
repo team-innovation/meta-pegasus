@@ -25,7 +25,7 @@ try:
 except ImportError:
     print('ERROR: numpy library not installed')
 
-
+__author__ = 'mark'
 
 #wave_files = ['wave_1000_hz.wav', 'wave_900_hz.wav', 'wave_1800_hz.wav', 'wave_3600_hz.wav']
 
