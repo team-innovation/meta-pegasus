@@ -21,6 +21,8 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 S = "${WORKDIR}"
 
 RPROVIDES_${PN} = "slimline-utils"
+RDEPENDS_${PN} += "update-rc.d python3-core"
+DEPENDS_append = "update-rc.d-native"
 
 do_install() {
     install -d ${D}/${sysconfdir}/init.d
