@@ -7,8 +7,19 @@ RUNNING=/tmp/graph_me.run
 if [ ! -e $RUNNING ] ; then
     logger -t DEBUG "Run graph_me!"
     date > $RUNNING
+    # Need to see if httpd is running if not start it as we need info from it
+    _pid=$(pgrep httpd)
+    [ -z "$_pid" ] && {
+	/etc/init.d/httpd start
+	sleep 4
+    }
     /usr/bin/python3 /usr/bin/get_mesh_info.py &> /var/log/get_mesh_info.log
     /usr/bin/python3 /usr/bin/build_dot_graph.py &> /var/log/build_dot_graph.log
+
+    # If httpd was not running we we stop it
+    [ -z "$_pid" ] && {
+	/etc/init.d/httpd stop
+    }
     rm $RUNNING
     logger -t DEBUG "Done graph_me!"
     [ -e /usr/bin/dot ] && {
