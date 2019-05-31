@@ -17,7 +17,7 @@ diff -rupN qtmultimedia-opensource-src-5.4.1/src/plugins/gstreamer/mediaplayer/q
  
          if (!m_streamTypes.isEmpty()) {
              m_streamProperties.clear();
-@@ -1788,6 +1790,14 @@ GstAutoplugSelectResult QGstreamerPlayer
+@@ -1788,6 +1790,15 @@ GstAutoplugSelectResult QGstreamerPlayer
      return res;
  }
  
@@ -25,7 +25,8 @@ diff -rupN qtmultimedia-opensource-src-5.4.1/src/plugins/gstreamer/mediaplayer/q
 +{
 +    Q_UNUSED(pipe);
 +
-+    g_object_set(source, "latency", session->m_latency, NULL);
++    if (session->m_isLiveSource)
++        g_object_set(source, "latency", session->m_latency, NULL);
 +}
 +
 +
