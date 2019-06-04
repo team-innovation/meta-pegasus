@@ -15,13 +15,9 @@ SRC_URI = " \
 
 inherit autotools
 
-do_compile() {
-	:
-}
-
-do_runstrip() {
-        :
-}
+do_configure[noexec] = "1"
+do_compile[noexec] = "1"
+do_runstrip[noexec] = "1"
 
 do_install () {
 	mkdir -p ${D}${sysconfdir}/chatscripts/

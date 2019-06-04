@@ -13,33 +13,19 @@ SRC_URI[sha256sum] = "2647513463d16174151a87cf303ca402f60b49735132ae21feb81c7832
 PV_prepend = "1"
 PKGR_${PN}-cs6022-ov4689 = "${PR}.63"
 
-do_compile() {
-     :
-}
+do_compile[noexec] = "1"
 
-do_configure() {
-     :
-}
+do_configure[noexec] = "1"
 
-do_compileconfigs() {
-     :
-}
+do_compileconfigs[noexec] = "1"
 
-do_setscene() {
-     :
-}
+do_setscene[noexec] = "1"
 
-do_distribute_sources() {
-     :
-}
+do_distribute_sources[noexec] = "1"
 
-do_create_srcipk() {
-     :
-}
+do_create_srcipk[noexec] = "1"
 
-do_copy_license() {
-     :
-}
+do_copy_license[noexec] = "1"
 
 do_install() {
      install -d ${D}/${FIRMWARE_DIR}

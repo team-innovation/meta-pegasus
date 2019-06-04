@@ -10,13 +10,9 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 S = "${WORKDIR}"
 
-do_config(){
-:
-}
+do_configure[noexec] = "1"
 
-do_compile() {
-:
-}
+do_compile[noexec] = "1"
 
 do_install() {
         install -d ${D}/etc/profile.d

@@ -25,9 +25,8 @@ do_install_prepend() {
 	install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
 }
 
-do_compile() {
-	:
-}
+do_configure[noexec] = "1"
+do_compile[noexec] = "1"
 
 do_install() {
 	install -m 644 ${WORKDIR}/speedtest-cli/speedtest-cli.1 ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/

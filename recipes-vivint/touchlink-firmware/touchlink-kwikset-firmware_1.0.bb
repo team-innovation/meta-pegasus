@@ -16,33 +16,19 @@ SRC_URI = "file://${FIRMWARE_MCU} \
            file://${FIRMWARE_MCU_912} \
            file://${FIRMWARE_ZWAVE_912}"
 
-do_compile() {
-     :
-}
+do_compile[noexec] = "1"
 
-do_configure() {
-     :
-}
+do_configure[noexec] = "1"
 
-do_compileconfigs() {
-     :
-}
+do_compileconfigs[noexec] = "1"
 
-do_setscene() {
-     :
-}
+do_setscene[noexec] = "1"
 
-do_distribute_sources() {
-     :
-}
+do_distribute_sources[noexec] = "1"
 
-do_create_srcipk() {
-     :
-}
+do_create_srcipk[noexec] = "1"
 
-do_copy_license() {
-     :
-}
+do_copy_license[noexec] = "1"
 
 do_install() {
      install -d ${D}/${FIRMWARE_DIR}
