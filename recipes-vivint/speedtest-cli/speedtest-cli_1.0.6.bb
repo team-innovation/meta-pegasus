@@ -32,6 +32,6 @@ do_compile() {
 do_install() {
 	install -m 644 ${WORKDIR}/speedtest-cli/speedtest-cli.1 ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
 	install -m 644 ${WORKDIR}/speedtest-cli/tox.ini ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
-	install -m 755 ${WORKDIR}/speedtest-cli/speedtest-cli ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
+	install -m 755 ${WORKDIR}/speedtest-cli/speedtest-cli.py ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
 	install -m 755 ${WORKDIR}/speedtest-cli/speedtest.py ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
 }
