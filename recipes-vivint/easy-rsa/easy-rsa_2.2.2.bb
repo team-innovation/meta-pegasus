@@ -19,17 +19,17 @@ EASY_RSA_DIR = "${sysconfdir}/openvpn/easy-rsa"
 
 do_install() {
 	install -d ${D}/${EASY_RSA_DIR}
-	cp -p ${S}/build-ca ${D}/${EASY_RSA_DIR}
-	cp -p ${S}/build-dh ${D}/${EASY_RSA_DIR}
-	cp -p ${S}/build-key ${D}/${EASY_RSA_DIR}
-	cp -p ${S}/build-key-server ${D}/${EASY_RSA_DIR}
-	cp -p ${S}/clean-all ${D}/${EASY_RSA_DIR}
-	cp -p ${S}/openssl-1.0.0.cnf ${D}/${EASY_RSA_DIR}
-	cp -p ${S}/pkitool ${D}/${EASY_RSA_DIR}
-	cp -p ${S}/vars ${D}/${EASY_RSA_DIR}
-	cp -p ${S}/whichopensslcnf ${D}/${EASY_RSA_DIR}
-	cp -p ${WORKDIR}/create-all-certs  ${D}/${EASY_RSA_DIR}
-	cp -p ${WORKDIR}/client.ovpn  ${D}/${EASY_RSA_DIR}
+	install -m 755 ${S}/build-ca ${D}/${EASY_RSA_DIR}
+	install -m 755 ${S}/build-dh ${D}/${EASY_RSA_DIR}
+	install -m 755 ${S}/build-key ${D}/${EASY_RSA_DIR}
+	install -m 755 ${S}/build-key-server ${D}/${EASY_RSA_DIR}
+	install -m 755 ${S}/clean-all ${D}/${EASY_RSA_DIR}
+	install -m 644 ${S}/openssl-1.0.0.cnf ${D}/${EASY_RSA_DIR}
+	install -m 755 ${S}/pkitool ${D}/${EASY_RSA_DIR}
+	install -m 644 ${S}/vars ${D}/${EASY_RSA_DIR}
+	install -m 755 ${S}/whichopensslcnf ${D}/${EASY_RSA_DIR}
+	install -m 755 ${WORKDIR}/create-all-certs  ${D}/${EASY_RSA_DIR}
+	install -m 644 ${WORKDIR}/client.ovpn  ${D}/${EASY_RSA_DIR}
 }
 
 FILES_${PN} = "${EASY_RSA_DIR}/build-ca  \
