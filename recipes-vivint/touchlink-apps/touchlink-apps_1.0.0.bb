@@ -88,7 +88,9 @@ PREFERRED_VERSION_python-native = "3.5.3"
 
 inherit autotools update-rc.d python3-dir python3native
 
-RSYNC_CMD = "rsync -azv --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage --exclude=_user_conf"
+RSYNC_CMD = "rsync -azv --no-o --no-g --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage \
+             --exclude=_user_conf"
+
 
 FRAMEWORK_DIR = "${PYTHON_SITEPACKAGES_DIR}"
 INSTALL_DIR = "/opt/2gig"
