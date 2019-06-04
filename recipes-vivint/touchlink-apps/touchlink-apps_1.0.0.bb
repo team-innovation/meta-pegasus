@@ -284,11 +284,10 @@ do_install_append() {
 	find ${D}/${INSTALL_DIR} -name yaml_definitions | xargs rm -rf
 }
 
-pkg_postinst_${PN} () {
+pkg_postinst_ontarget_${PN} () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup 
 #
-if [ x"$D" = "x" ]; then
      logging()
      {
         if busybox ps | grep psplash | grep -qv grep
@@ -315,10 +314,6 @@ if [ x"$D" = "x" ]; then
         logging "Removing all error log in /media/extra/log..."
         rm -f /media/extra/log/*error.log*
     fi
-
-else
-    exit 1
-fi
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"

@@ -17,7 +17,7 @@ do_install_append () {
 }
 
 
-pkg_postinst_${PN}-pyftpd () {
+pkg_postinst_ontarget_${PN}-pyftpd () {
 #!/bin/sh
 # Post install to setup the home id directories
 #

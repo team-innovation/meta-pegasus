@@ -68,24 +68,6 @@ do_install() {
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-pkg_postinst_${PN} () {
-#!/bin/sh
-if [ "x$D" != "x" ]; then
-        exit 1
-fi
-
-if grep audio /etc/group; then
-	grep pulse /etc/group || addgroup pulse
-fi
-
-# Overwrite existing configfiles, yuck!
-cp /etc/pulse/session.pulseaudio-meta-slimline /etc/pulse/session
-cp /etc/pulse/asound.conf.pulseaudio-meta-slimline /etc/pulse/asound.conf
-cp /etc/pulse/daemon.conf.pulseaudio-meta-slimline /etc/pulse/daemon.conf
-
-
-}
-
 
 CONFFILES_${PN} = "\
   ${sysconfdir}/init.d/pulseaudio \
@@ -97,11 +79,16 @@ CONFFILES_${PN} = "\
 FILES_${PN} += " /home/root/.config"
 
 # At the time the postinst runs, dbus might not be setup so only restart if running
-pkg_postinst_hal () {
-        # can't do this offline
-        if [ "x$D" != "x" ]; then
-                exit 1
-        fi
+pkg_postinst_ontarget_hal () {
+
+	if grep audio /etc/group; then
+		grep pulse /etc/group || addgroup pulse
+	fi
+
+        # Overwrite existing configfiles, yuck!
+	cp /etc/pulse/session.pulseaudio-meta-slimline /etc/pulse/session
+	cp /etc/pulse/asound.conf.pulseaudio-meta-slimline /etc/pulse/asound.conf
+	cp /etc/pulse/daemon.conf.pulseaudio-meta-slimline /etc/pulse/daemon.conf
 
         grep haldaemon ${sysconfdir}/group || addgroup haldaemon
         grep haldaemon ${sysconfdir}/passwd || adduser --disabled-password --system --home /var/run/hald --no-create-home haldaemon --ingroup haldaemon -g HAL

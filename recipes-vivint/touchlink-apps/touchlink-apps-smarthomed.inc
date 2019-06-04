@@ -12,11 +12,9 @@ do_install_append () {
 	chmod +x ${D}/${INSTALL_DIR}/smarthomed/smarthomed.pyc
 }
 
-pkg_postinst_${PN}-smarthomed () {
+pkg_postinst_ontarget_${PN}-smarthomed () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for smarthomed
-#
-if [ x"$D" = "x" ]; then
      logging()
      {
         if busybox ps | grep psplash | grep -qv grep
@@ -55,9 +53,6 @@ if [ x"$D" = "x" ]; then
             logging "Removing all error log in /media/extra/log..."
             rm -f /media/extra/log/*_error.log*
     fi
-else
-    exit 1
-fi
 }
 
 FILES_${PN}-smarthomed-proxies = "\

@@ -27,12 +27,10 @@ NATIVE_INSTALL_WORKS = "1"
 SRC_URI[md5sum] = "ec7076947a46a8a3cb33cbf2983a562c"
 SRC_URI[sha256sum] = "4252226fa20e0715d4dcd05f9233f0076c44bca30e4f1793b2fe03cdfb422ed4"
 
-pkg_postinst_${PN}() {
+pkg_postinst_ontarget_${PN}() {
 #!/bin/sh -e
 # create symlink to /usr/share/zoneinfo for pytz to use
 #
-
-if [ x"$D" = "x" ]; then
 
     if [ ! -h /usr/lib/python3.5/site-packages/pytz ]; then
         rm -rf /usr/lib/python3.5/site-packages/pytz/zoneinfo
@@ -71,9 +69,5 @@ if [ x"$D" = "x" ]; then
         echo $default_timezone > $new_path/timezone
         cd $new_path && ln -sf $zone_location/$default_timezone localtime
     fi
-
-else
-    exit 1
-fi
 }
 

@@ -136,11 +136,8 @@ FILES_${PN}-dbg += "/usr/local/bin/.debug/"
 FILES_${PN} += "/home/root /usr/local/bin/* /etc/profile.d/*"
 
 
-pkg_postinst_${PN} () {
+pkg_postinst_ontarget_${PN} () {
 #!/bin/sh
-if [ "x$D" != "x" ]; then
-        exit 1
-fi
 
 # Overwrite existing files.
 if grep -q wallsly /proc/device-tree/compatible; then

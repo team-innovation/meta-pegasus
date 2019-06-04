@@ -47,16 +47,12 @@ FILES_${PN} = "${EASY_RSA_DIR}/build-ca  \
 SRC_URI[md5sum] = "8b6002af8bfc217e0290a172d24e0c26"
 SRC_URI[sha256sum] = "68da869085dde7c6a964e9c6104b86e4af91c4c592f8ec2a2f6cfc9d20808991"
 
-pkg_postinst_${PN} () {
+pkg_postinst_ontarget_${PN} () {
 #!/bin/sh
-if [ "x$D" = "x" ]; then
 	 easy_rsa_dir="/media/extra/conf/openvpn_server/easy-rsa"
 
 	 test -d $easy_rsa_dir || {
 		mkdir -p $easy_rsa_dir
 	 }
-else
-	exit 1
-fi
 }
 
