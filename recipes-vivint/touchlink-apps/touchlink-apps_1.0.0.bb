@@ -140,6 +140,7 @@ DEPENDS = " \
 	python3-sparsedict-native \
 	python3-sentry-sdk-native \
 	python3-transitions-native \
+	python3-toolz-native \
 	python3-phue-native \
 	python3-paho-mqtt-native \
 	python3-urllib3-native \
