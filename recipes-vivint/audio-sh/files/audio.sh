@@ -213,5 +213,6 @@ elif [ "$platform" == "sly" ]; then
 	init_slimline
 else
 #slimline
-	init_slimline
+#	init_slimline
+	echo "Skipping audio loading for now to debug issue."
 fi

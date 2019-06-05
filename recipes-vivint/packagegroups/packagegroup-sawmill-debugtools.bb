@@ -10,6 +10,8 @@ inherit packagegroup
 RDEPENDS_${PN} = " \
         python3-flent \
         netperf \
+	gdb \
+	perf \
         fping \
 	dhrystone \
 	i2c-tools \
