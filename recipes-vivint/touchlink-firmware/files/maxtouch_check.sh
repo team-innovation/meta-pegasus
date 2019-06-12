@@ -20,7 +20,7 @@ check_and_set() {
                 echo "Setting NVD panel"
                 mxt-app --load /lib/firmware/maxtouch-wallsly_nvd.cfg
 		mxtmfg="NVD"
-        elif [ "${mxtusr:0:2}" = "TA" ]; then
+        elif [ "${mxtpar:0:2}" = "TA" ]; then
 		echo "Setting Tianma panel"
 		mxt-app --load /lib/firmware/maxtouch-wallsly_tianma.cfg 
 		mxtmfg="Tianma"
