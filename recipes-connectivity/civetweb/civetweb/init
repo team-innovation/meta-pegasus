@@ -41,6 +41,7 @@ create_thumbnail_links() {
 	ln -sfn /tmp/thumbnails $HTTPROOT/thumbnails
 
 	mkdir -p /tmp/thumbnails
+	chown nobody /tmp/thumbnails
 	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/thumbnails/.htpasswd
 }
 
@@ -61,6 +62,7 @@ create_fullframes_links() {
 	ln -sfn /tmp/fullframes $HTTPROOT/fullframes
 
 	mkdir -p /tmp/fullframes
+	chown nobody /tmp/fullframes
 	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/fullframes/.htpasswd
 }
 
@@ -69,6 +71,7 @@ create_upload_links() {
 	ln -sfn /media/clips/ftp $HTTPROOT/upload_clips
 
 	mkdir -p /media/clips/ftp
+	chown nobody /media/clips/ftp
 	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/upload_clips/.htpasswd
 }
 
