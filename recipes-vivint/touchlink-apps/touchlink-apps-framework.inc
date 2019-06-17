@@ -9,6 +9,9 @@ PKGR_${PN}-framework = "${PR}${FRAMEWORK_PREPEND}${FRAMEWORK_REVISION}"
 RDEPENDS_${PN}-framework = "\
         python3-dateutil \
         python3-sparsedict \
+	iotivity \
+	iotivity-resource \
+	iotivity-bridging-plugins \
 	"
 
 do_install_append () {
@@ -21,4 +24,5 @@ do_install_append () {
 
 FILES_${PN}-framework = "\
 	${FRAMEWORK_DIR}/* \
+        ${libdir}/liboc.so \
 	"	

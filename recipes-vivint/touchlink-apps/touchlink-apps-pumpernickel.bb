@@ -36,6 +36,7 @@ DEPENDS += " \
 	python3-pyftpdlib-native \
 	python3-pyinotify-native \
 	python3-pyserial-native \
+	python3-pyopenssl-native \
 	python3-pytz-native \
 	python3-requests-native \
 	python3-six-native \

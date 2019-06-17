@@ -25,6 +25,7 @@ pkg_postinst_ontarget_${PN}-zwaved () {
 #!/bin/sh -e
 # Post install to setup the home id directories
 #
+if [ x"$D" = "x" ]; then
     if [ -f /proc/device-tree/compatible ]; then
         exit 0
     fi
@@ -76,16 +77,13 @@ pkg_postinst_ontarget_${PN}-zwaved () {
          logging "Creating log directory..."
          mkdir -p /media/extra/log/error
     fi
+else
+    exit 1
+fi
 }
 
 
-FILES_${PN}-zwaved-proxies = "\
-	${INSTALL_DIR}/zwaved/proxies/*	\
-	"
-
 FILES_${PN}-zwaved = "\
 	${INSTALL_DIR}/zwaved/*	\
-	${sysconfdir}/init.d/zwaved		\
-	${sysconfdir}/procman.d/zwaved		\
 	"
 

@@ -42,7 +42,6 @@ require touchlink-apps-procmand.inc
 require touchlink-apps-favicon.inc
 require touchlink-apps-global-conf.inc
 require touchlink-apps-mmpd.inc
-require touchlink-apps-smarthomed.inc
 require touchlink-apps-listenerd.inc
 
 #roubaix
@@ -85,6 +84,7 @@ S = "${WORKDIR}/git"
 PYTHON_BASEVERSION = "3.5"
 PREFERRED_VERSION_python3 = "3.5.3"
 PREFERRED_VERSION_python-native = "3.5.3"
+PREFERRED_VERSION_iotivity = "2.0.0"
 
 inherit autotools update-rc.d python3-dir python3native
 
@@ -103,6 +103,9 @@ DEPENDS = " \
 	gstreamer1.0-plugins-base \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0 \
+ 	zipgateway \
+ 	zware \
+ 	iotivity \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cachetools-native \
@@ -148,13 +151,18 @@ DEPENDS = " \
 	python3-pyopenssl-native \
 	python3-cryptography-native \
 	python3-cffi-native \
+	python3-idna-native \
 	python3-asn1crypto-native \
 	python3-pycparser-native \
+	breakpad \
+    	variant-lite \
+	taocpp-json \
 "
 
 
 
 RDEPENDS_${PN} = "\
+	bash \
 	python3-intelhex \
 	python3-subprocess \
 	python3-pyserial \
@@ -165,12 +173,31 @@ RDEPENDS_${PN} = "\
 	python3-soco \
         python3-jsonschema \
 	python3-brisa \
+	python3-idna \
 	python3-sparsedict \
 	python3-phue \
+ 	iotivity-resource \
+ 	iotivity-bridging-plugins \
+ 	breakpad \
 "
 
 do_compile() {
-	export PYTHONPATH=${S}/code/sundance/services/devices/generated/grpc:$PYTHONPATH
+    export HAS_BREAKPAD
+    export ZWAVE_300_SERIES
+    # Build plugin_server
+    cd ${S}/code/sundance/plugins
+    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
+    # Build plugin_server_legacy
+    cd ${S}/code/sundance/plugins
+    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE ZWAVE_300_SERIES=TRUE
+    # Build hue plugin
+    cd ${S}/code/sundance/plugins/hue
+    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
+    # Build nest plugin
+    cd ${S}/code/sundance/plugins/nest
+    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
+	
+    export PYTHONPATH=${S}/code/sundance/services/devices/generated/grpc:$PYTHONPATH
 
         #verify that the syntax for all JSON files in embedded-apps is correct
         set +e
@@ -284,12 +311,18 @@ do_install_append() {
 	find ${D}/${INSTALL_DIR} -name *.py | xargs rm -f
 	# remove yaml_definitions
 	find ${D}/${INSTALL_DIR} -name yaml_definitions | xargs rm -rf
+
+    # remove unused init scripts
+    rm -f ${D}/${sysconfdir}/init.d/bootsplash.sh
+    rm -f ${D}/${sysconfdir}/init.d/takeoverd
+    rm -f ${D}/${sysconfdir}/init.d/zwaved
 }
 
 pkg_postinst_ontarget_${PN} () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup 
 #
+if [ x"$D" = "x" ]; then
      logging()
      {
         if busybox ps | grep psplash | grep -qv grep
@@ -316,6 +349,10 @@ pkg_postinst_ontarget_${PN} () {
         logging "Removing all error log in /media/extra/log..."
         rm -f /media/extra/log/*error.log*
     fi
+
+else
+    exit 1
+fi
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -351,7 +388,6 @@ PACKAGES = " \
 	${PN}-rtspd   \
 	${PN}-ssdpd      \
 	${PN}-sundance-proxies      \
-        ${PN}-zwaved-proxies \
 	${PN}-sundance      \
 	${PN}-test-daemon  \
 	${PN}-test-ui  \
@@ -362,9 +398,7 @@ PACKAGES = " \
 	${PN}-vocabulary    \
 	${PN}-webd  \
 	${PN}-zwaved        \
-	${PN}-smarthomed-proxies      \
 	${PN}-listenerd-proxies      \
-	${PN}-smarthomed      \
 	${PN}-listenerd      \
 	${PN}-sound-wav-chimes \
 	${PN} \
