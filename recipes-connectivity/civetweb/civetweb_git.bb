@@ -13,7 +13,7 @@ SRC_URI = "git://github.com/civetweb/civetweb.git \
            "
 
 S = "${WORKDIR}/git"
-PR = "r10"
+PR = "r11"
 
 inherit update-rc.d 
 INITSCRIPT_NAME = "civetweb"
