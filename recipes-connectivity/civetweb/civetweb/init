@@ -15,6 +15,13 @@ set -e
 # source function library
 . /etc/init.d/functions
 
+# user developer conf if there is a seconds args
+MODE=$2
+if [ ! -z $MODE ] && [ $MODE == "devmode" ]; then
+	echo "Warning: civetweb will be running in dev mode"
+	ARGS="/etc/civetweb/CivetWeb-DevMode.conf"
+fi
+
 delay_stop() {
 	count=0
 	while [ $count -lt 9 ] ; do
@@ -109,7 +116,7 @@ case "$1" in
 	;;
     restart)
 	$0 stop
-	delay_stop && $0 start
+	delay_stop && $0 start $MODE
 	;;
     status)
 	status $DAEMON
