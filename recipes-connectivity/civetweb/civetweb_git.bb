@@ -9,6 +9,7 @@ PV = "1.11+git${SRCPV}"
 SRC_URI = "git://github.com/civetweb/civetweb.git \
            file://fix-build-1-11.patch \
 	   file://CivetWeb.conf \
+	   file://CivetWeb-DevMode.conf \
 	   file://init \
            "
 
