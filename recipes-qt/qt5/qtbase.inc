@@ -60,6 +60,7 @@ PACKAGECONFIG ?= " \
 
 PACKAGECONFIG[release] = "-release,-debug"
 PACKAGECONFIG[developer] = "-developer-build"
+PACKAGECONFIG[qml-debug] = "-qml-debug,-no-qml-debug"
 PACKAGECONFIG[sm] = "-sm,-no-sm"
 PACKAGECONFIG[tests] = "-make tests,-nomake tests"
 PACKAGECONFIG[examples] = "-make examples -compile-examples,-nomake examples"
