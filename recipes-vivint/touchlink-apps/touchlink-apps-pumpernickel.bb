@@ -7,7 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r14"
+PR = "r19"
 
 DEPENDS += " \
 	touchlink-apps \
@@ -47,6 +47,7 @@ DEPENDS += " \
 	python3-phue-native \
 	python3-paho-mqtt-native \
 	python3-urllib3-native \
+	libunwind \
 "
 
 SRCREV = "${GIT_APPS_REV}"
@@ -65,6 +66,8 @@ require recipes-qt/qt5/qt5.inc
 PYTHON_BASEVERSION = "3.5"
 PREFERRED_VERSION_python3 = "3.5.3"
 PREFERRED_VERSION_python-native = "3.5.3"
+
+EXTRA_QMAKEVARS_PRE += "INCLUDEPATH+=${STAGING_INCDIR} LIBS+=-L${STAGING_LIBDIR}"
 
 inherit python-dir pythonnative
 
@@ -89,6 +92,7 @@ FILES_${PN} += "${datadir}"
 RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
     qtsvg-plugins \
     gstreamer1.0 \
+	libunwind \
 	"
 
 pkg_postinst_${PN} () {
