@@ -105,6 +105,7 @@ DEPENDS = " \
  	zipgateway \
  	zware \
  	iotivity \
+    zwave-nvm-converter \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cachetools-native \
@@ -175,6 +176,7 @@ RDEPENDS_${PN} = "\
 	python3-phue \
  	iotivity-resource \
  	iotivity-bridging-plugins \
+    zwave-nvm-converter \
  	breakpad \
 "
 
