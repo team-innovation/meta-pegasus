@@ -42,7 +42,7 @@ S = "${WORKDIR}"
 # End notice
 
 INITSCRIPT_NAME = "zwave-program"
-INITSCRIPT_PARAMS = "start 08 S."
+INITSCRIPT_PARAMS = "start 08 S ."
 
 do_compile() {
     :

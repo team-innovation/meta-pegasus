@@ -11,8 +11,8 @@ PKGR_${PN}-pcamd = "${PR}${PCAMD_PREPEND}${PCAMD_REVISION}"
 PR = "r7"
 
 do_compile_prepend() {
-	# compile pcamd C code
-	oe_runmake -C ${S}/code/pcamd/libpcam SYSTEM="SLIMLINE" 
+
+	make -C ${S}/code/pcamd/libpcam SYSTEM="SLIMLINE" 
 }
 
 do_install_append () {

@@ -10,6 +10,9 @@ INITSCRIPT_PACKAGES += "${PN}-netd"
 INITSCRIPT_NAME_${PN}-netd = "netd"
 INITSCRIPT_PARAMS_${PN}-netd = "start 26 2 3 4 5 ."
 
+RDEPENDS_${PN}-netd = "\
+	python3-pycrypto \
+	"
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/netd/
         ${RSYNC_CMD} ${S}/code/netd/ ${D}/${INSTALL_DIR}/netd/

@@ -26,7 +26,7 @@ inherit pkgconfig cmake python-dir pythonnative update-rc.d
 
 # Create runlevel links
 INITSCRIPT_NAME = "zwaved"
-INITSCRIPT_PARAMS = "start 30 5"
+INITSCRIPT_PARAMS = "start 30 5 ."
 
 do_package_qa() {
     echo "Skipping QA ..."
