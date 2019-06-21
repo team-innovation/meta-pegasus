@@ -38,25 +38,43 @@ generate_cert() {
 }
 
 create_thumbnail_links() {
-	if [ ! -h $HTTPROOT/thumbnails ]; then
-		echo "Create thumbnails symlink..."		
-		ln -sf /tmp/thumbnails $HTTPROOT/thumbnails
-        fi
+	ln -sfn /tmp/thumbnails $HTTPROOT/thumbnails
+
+	mkdir -p /tmp/thumbnails
+	chown nobody /tmp/thumbnails
+	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/thumbnails/.htpasswd
 }
 
 create_clips_links() {
-	if [ ! -h $HTTPROOT/clips ]; then
-		echo "Create clips symlink..."
-		ln -sf /media/clips $HTTPROOT/clips
-        fi
+	ln -sfn /media/clips $HTTPROOT/clips
+
+	mkdir -p /media/clips
+	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/clips/.htpasswd
 }
 
 create_slupdate_links() {
-	if [ ! -h $HTTPROOT/update ]; then
-		echo "Create update symlink..."
-		ln -sf /media/extra/update $HTTPROOT/update
-        fi
+	ln -sfn /media/extra/update $HTTPROOT/update
 }
+
+
+create_fullframes_links() {
+	echo "Create frames symlink..."
+	ln -sfn /tmp/fullframes $HTTPROOT/fullframes
+
+	mkdir -p /tmp/fullframes
+	chown nobody /tmp/fullframes
+	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/fullframes/.htpasswd
+}
+
+create_upload_links() {
+	echo "Create clips symlink..."
+	ln -sfn /media/clips/ftp $HTTPROOT/upload_clips
+
+	mkdir -p /media/clips/ftp
+	chown nobody /media/clips/ftp
+	ln -sf $HTTPROOT/.htpasswd $HTTPROOT/upload_clips/.htpasswd
+}
+
 
 case "$1" in
     start)
@@ -78,6 +96,8 @@ case "$1" in
 	create_thumbnail_links
 	create_clips_links
 	create_slupdate_links
+	create_fullframes_links
+	create_upload_links
 
 	start-stop-daemon -S -b -m -p ${PIDFILE} -x $DAEMON -- $ARGS
 	echo "$NAME."

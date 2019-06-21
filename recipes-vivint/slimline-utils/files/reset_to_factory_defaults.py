@@ -14,13 +14,12 @@ cgitb.enable()
 sys.path.insert(0, "/opt/2gig/procmand/proxies/python")
 sys.path.insert(0, "/opt/2gig/procmand")
 
-
 class RestoreHelper(EventLoop):
     def __init__(self):
-        super().__init__(self.on_exit)
+        super().__init__()
         self.procmand = None
         self.form = cgi.FieldStorage()
-        self.ssid = self.form.getvalue("reset", "")
+        self.reset = self.form.getvalue("reset", "")
 
     def setup(self):
         self.__client = RpcClient("procmand")
@@ -36,26 +35,22 @@ class RestoreHelper(EventLoop):
             self.connect_to_panel()
 
     def connect_to_panel(self):
+        self.procmand.reset_to_factory_defaults()
+        os._exit(0)
+
+try:
+    pid = os.fork()
+    if pid:
         print("Content-type: text/html")
-        print("<html><head><title>Reseting</title></head><body><Connecting></body></html>")
-        sys.stdout.flush()
-        os.close(sys.stdout.fileno())
+        print("")
+        print("<html><head><title>Reseting</title></head><body>Reseting</body></html>")
+        sys.exit(0)
+except OSError:
+    sys.exit(1)
 
-        try:
-            pid = os.fork()
-            if pid:
-                sys.exit(0)
-            
-            time.sleep(1)
-            os.setsid()
-
-            self.procmand.reset_to_factory_defaults()
-            os._exit(0)
-        except OSError as e:
-            sys.exit(1)
-
-    def on_exit(self):
-        pass
+os.setsid()
+sys.stdout.flush()
+os.close(sys.stdout.fileno())
 
 rh = RestoreHelper()
 rh.run()

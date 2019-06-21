@@ -63,12 +63,8 @@ do_install_append() {
 }
 
 pkg_postinst_ontarget_civetweb() {
-	if [ "x$D" = "x" ]; then
-		if [ ! -f /srv/www/.htpasswd ]; then
-			civetweb -A /srv/www/.htpasswd vivint.panel admin admin
-		fi
-	else
-		exit 1
+	if [ ! -f /srv/www/.htpasswd ]; then
+		civetweb -A /srv/www/.htpasswd vivint.panel admin admin
 	fi
 }
 

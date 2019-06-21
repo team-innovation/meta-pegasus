@@ -36,12 +36,11 @@ do_install_append () {
 	install -m 0600 "${WORKDIR}/updated.logrotate" "${D}${sysconfdir}/logrotate.d/updated" 
 }
 
-pkg_postinst_${PN}-updated () {
+pkg_postinst_ontarget_${PN} () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for updated
 #
 
-if [ x"$D" = "x" ]; then
      logging()
      {
         if busybox ps | grep psplash | grep -qv grep
@@ -120,9 +119,6 @@ if [ x"$D" = "x" ]; then
         logging "Copied $old_root_ssh_config to /home/root/"
     fi
 
-else
-    exit 1
-fi
 }
 
 

@@ -74,6 +74,9 @@ MISC_DEPENDS = "\
 
 PYTHON_EXTRA_DEPENDS = "\
 	python3-brisa \
+	python3-certifi \
+	python3-urllib3 \
+	python3-sentry-sdk \
 	python3-jsonschema \
 	python3-mixpanel \
 	python3-mmap \

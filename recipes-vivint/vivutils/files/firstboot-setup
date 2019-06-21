@@ -64,7 +64,7 @@ umntbootscript()
 
 mntbootscriptrw()
 {
-	mount ${BSPART} -o remount,rw ||
+	mount ${BSPART} -o remount,rw,sync ||
 		carp "unable to mount ${BSPART} read/write"
 }
 
@@ -88,8 +88,10 @@ bootscrcheck() {
 bootscrupdate() {
 	mntbootscriptrw
 	cp /boot/boot.scr /media/bootscript/boot.scr
+	sync
 	mntbootscriptro
 	true
+
 }
 
 # is there a serial number file
