@@ -8,6 +8,7 @@ SRC_URI = "${KERNEL_SRC};branch=${GIT_KERNEL_BRANCH}\
 	   file://defconfig"
 FILESEXTRAPATHS_prepend := "${THISDIR}/:"
 PV = "4.14.78-+git${SRCPV}"
+SRCBRANCH = "kernel-4.14"
 
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
