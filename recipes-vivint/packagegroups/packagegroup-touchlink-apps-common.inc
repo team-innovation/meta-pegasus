@@ -26,6 +26,7 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-utils \
 	touchlink-apps-modemd-proxies \
 	touchlink-simlock \
+	voiceaudio \
 "
 
 QT5_DEPENDS = "\

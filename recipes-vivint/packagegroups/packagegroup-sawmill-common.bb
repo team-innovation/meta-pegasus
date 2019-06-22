@@ -86,6 +86,8 @@ RDEPENDS_${PN} = " \
 	util-linux \
 	vim \
 	webrtc-audio-processing \
+	panel-audio-test \
+	pa-test \
 	wps-sh \
 	xdelta3 \
 	xz \
