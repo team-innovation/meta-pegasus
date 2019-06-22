@@ -60,28 +60,28 @@ do_install_append () {
     ${RSYNC_CMD} ${S}/code/sundance/services/ ${D}/${INSTALL_DIR}/sundance/services/
     ${RSYNC_CMD} ${S}/code/sundance/rulecore/ ${D}/${INSTALL_DIR}/sundance/rulecore/
     ${RSYNC_CMD} ${S}/code/sundance/vivint_generated/ ${D}/${INSTALL_DIR}/sundance/vivint_generated/
-    cp -a ${S}/code/sundance/sundance.pyc ${D}/${INSTALL_DIR}/sundance/
-    cp -a ${S}/code/sundance/sundance_conf.json ${D}/${INSTALL_DIR}/sundance/
-    cp -a ${S}/code/sundance/sundance_log.json ${D}/${INSTALL_DIR}/sundance/
+    install -m 755 ${S}/code/sundance/sundance.pyc ${D}/${INSTALL_DIR}/sundance/
+    install -m 755 ${S}/code/sundance/sundance_conf.json ${D}/${INSTALL_DIR}/sundance/
+    install -m 755 ${S}/code/sundance/sundance_log.json ${D}/${INSTALL_DIR}/sundance/
     chmod +x ${D}/${INSTALL_DIR}/sundance/sundance.pyc
 
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
-    cp -a ${S}/code/sundance/build/lib.linux-x86_64-3.5/iotivity_client.cpython-35m-arm-linux-gnueabihf.so ${D}/${libdir}/${PYTHON_DIR}/site-packages
+    install -m 755 ${S}/code/sundance/build/lib.linux-x86_64-3.5/iotivity_client.cpython-35m-arm-linux-gnueabihf.so ${D}/${libdir}/${PYTHON_DIR}/site-packages
 
     install -d ${D}/${prefix}/local/etc
-    cp -a ${S}/code/sundance/zwave_cmd_class.cfg ${D}/${prefix}/local/etc
+    install -m 644 ${S}/code/sundance/zwave_cmd_class.cfg ${D}/${prefix}/local/etc
 
     install -d ${D}/${prefix}/local/etc
-    cp -a ${S}/code/sundance/zwave_device_rec.txt ${D}/${prefix}/local/etc
+    install -m 644 ${S}/code/sundance/zwave_device_rec.txt ${D}/${prefix}/local/etc
 
     install -d ${D}/${prefix}/local/sbin
-    cp -a ${S}/code/sundance/plugins/plugin_server_current ${D}/${prefix}/local/sbin
+    install -m 755 ${S}/code/sundance/plugins/plugin_server_current ${D}/${prefix}/local/sbin
     
     install -d ${D}/${prefix}/local/sbin
-    cp -a ${S}/code/sundance/plugins/plugin_server_legacy ${D}/${prefix}/local/sbin
+    install -m 755 ${S}/code/sundance/plugins/plugin_server_legacy ${D}/${prefix}/local/sbin
     
     install -d ${D}/${libdir}
-    cp -a ${S}/code/sundance/plugins/hue/libhueplugin.so ${D}/${libdir}
+    install -m 755 ${S}/code/sundance/plugins/hue/libhueplugin.so ${D}/${libdir}
     
     install -d ${D}/${libdir}
 }
