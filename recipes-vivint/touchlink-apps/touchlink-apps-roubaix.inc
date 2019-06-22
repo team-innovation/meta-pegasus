@@ -23,7 +23,7 @@ do_install_append (){
         rm -rf ${D}/${INSTALL_DIR}/roubaix/roubaix.py
 }
 
-pkg_postinst_ontarget_${PN}-roubaix () {
+pkg_postinst_ontarget_${PN}() {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for roubaix 
 #

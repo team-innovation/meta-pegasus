@@ -86,11 +86,10 @@ do_install_append () {
     install -d ${D}/${libdir}
 }
 
-pkg_postinst_ontarget_${PN}-sundance () {
+pkg_postinst_ontarget_${PN} () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for sundance
 #
-if [ x"$D" = "x" ]; then
      logging()
      {
         if busybox ps | grep psplash | grep -qv grep
@@ -129,9 +128,6 @@ if [ x"$D" = "x" ]; then
             logging "Removing all error log in /media/extra/log..."
             rm -f /media/extra/log/*_error.log*
     fi
-else
-    exit 1
-fi
 }
 
 FILES_${PN}-sundance-proxies = "\

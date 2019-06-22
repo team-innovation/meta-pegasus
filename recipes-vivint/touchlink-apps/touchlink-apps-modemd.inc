@@ -16,7 +16,7 @@ do_install_append () {
 	chmod +x ${D}/${INSTALL_DIR}/modemd/modemd.pyc
 }
 
-pkg_postinst_ontarget_${PN}-modemd () {
+pkg_postinst_ontarget_${PN} () {
 #!/bin/bash -e
 # Post install to flash the modem to default carrier on WallSly
 # then check configuration and get SIM Ids
