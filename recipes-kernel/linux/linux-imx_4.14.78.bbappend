@@ -1,4 +1,4 @@
-GIT_KERNEL_BRANCH = "sumo"
+GIT_KERNEL_BRANCH = "vivint/kernel-4.14"
 GIT_KERNEL_SERVER = "${GIT_SERVER}"
 GIT_KERNEL_PROTOCOL = "ssh"
 GIT_KERNEL_REV = "${AUTOREV}"
@@ -7,7 +7,7 @@ KERNEL_SRC = "git://${GIT_KERNEL_SERVER}/linux-imx;protocol=${GIT_KERNEL_PROTOCO
 SRC_URI = "${KERNEL_SRC};branch=${GIT_KERNEL_BRANCH}\
 	   file://defconfig"
 FILESEXTRAPATHS_prepend := "${THISDIR}/:"
-PV = "4.9.88-+git${SRCPV}"
+PV = "4.14.78-+git${SRCPV}"
 
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
