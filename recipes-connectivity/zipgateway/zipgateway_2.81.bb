@@ -32,9 +32,6 @@ do_install_append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwaved ${D}${sysconfdir}/init.d
 
-    #Temporary measure to prevent accidental zipgateway usage
-    mv ${D}${sysconfdir}/init.d/zipgateway ${D}${sysconfdir}/init.d/zipgateway_DO_NOT_RUN 
-
     # Create runlevel links
     update-rc.d -r ${D} zwaved start 30 5 .
 }
