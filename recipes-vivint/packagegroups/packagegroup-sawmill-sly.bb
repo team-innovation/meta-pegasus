@@ -11,6 +11,7 @@ RDEPENDS_${PN} += " \
 	easy-rsa \
 	fabric-go \
 	lxfp \
+	graphviz \
 	openvpn \
 	openwrt-mt7620 \
 	openwrt-rt3352 \
@@ -19,6 +20,7 @@ RDEPENDS_${PN} += " \
 	psoc-fw-wallsly \
 	qflash \
 	mighty-gecko-fw-wallsly \
+	nm-pkgs \
 	sly-utils \
 	sly-version \
 	wallsly-version \
@@ -36,9 +38,10 @@ RDEPENDS_${PN} += " \
 	mfr-audio-test-wallsly \
 	mfr-piezo-test \
 	asr-parse \
-  mosquitto \
-  python3-paho-mqtt \
-  python3-ubus \
-  telegraf \
+        mosquitto \
+        python3-paho-mqtt \
+        python3-ubus \
+        telegraf \
+	vis \
 "
 

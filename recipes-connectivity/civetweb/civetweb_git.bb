@@ -9,11 +9,12 @@ PV = "1.11+git${SRCPV}"
 SRC_URI = "git://github.com/civetweb/civetweb.git \
            file://fix-build-1-11.patch \
 	   file://CivetWeb.conf \
+	   file://CivetWeb-DevMode.conf \
 	   file://init \
            "
 
 S = "${WORKDIR}/git"
-PR = "r8"
+PR = "r12"
 
 inherit update-rc.d 
 INITSCRIPT_NAME = "civetweb"
@@ -56,6 +57,7 @@ BBCLASSEXTEND = "native"
 do_install_append() {
 	install -d ${D}${sysconfdir}/civetweb
 	install -m 644 ${WORKDIR}/CivetWeb.conf ${D}${sysconfdir}/civetweb
+	install -m 644 ${WORKDIR}/CivetWeb-DevMode.conf ${D}${sysconfdir}/civetweb
 	install -d ${D}${sysconfdir}/init.d
 	install -m 755 ${WORKDIR}/init ${D}${sysconfdir}/init.d/civetweb
 
