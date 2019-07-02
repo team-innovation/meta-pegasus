@@ -17,17 +17,9 @@ do_install_append () {
 }
 
 pkg_postinst_ontarget_${PN} () {
-#!/bin/bash -e
-# Post install to flash the modem to default carrier on WallSly
-# then check configuration and get SIM Ids
-#
-if [ x"$D" = "x" ]
-then
+
     /usr/local/bin/mfr_modem_test.py
-else
-    echo "Not flashing modem"
-    exit 1
-fi
+
 }
 
 FILES_${PN}-modemd-proxies = "\

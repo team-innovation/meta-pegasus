@@ -11,9 +11,14 @@ MODULE = "lock"
 2GIG_DIR = "opt/2gig"
 S = "${WORKDIR}/git/code/SimLock"
 
+GIT_SIMLOCK_SERVER ?= "${GIT_SERVER}"
 GIT_SIMLOCK_REV ?= "${AUTOREV}"
+GIT_SIMLOCK_PROTOCOL ?= "ssh"
+GIT_SIMLOCK_BRANCH ?= "master"
+
 SRCREV = "${GIT_SIMLOCK_REV}"
-SRC_URI = "git://git@${GIT_SERVER}/${MODULE};protocol=ssh"
+SRC_URI = "git://${GIT_SIMLOCK_SERVER}/${MODULE};protocol=${GIT_SIMLOCK_PROTOCOL};branch=${GIT_SIMLOCK_BRANCH}"
+
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 TARGET_CC_ARCH += "${LDFLAGS}"

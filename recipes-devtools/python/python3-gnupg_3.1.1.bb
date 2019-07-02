@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=a2749dd4bc0d891475a1f9d619c3bda5"
 SRCNAME = "gnupg"
 PR = "ml1"
 
-SRC_URI = "https://files.pythonhosted.org/packages/96/6c/21f99b450d2f0821ff35343b9a7843b71e98de35192454606435c72991a8/gnupg-2.3.1.tar.gz"
+SRC_URI = "https://files.pythonhosted.org/packages/96/6c/21f99b450d2f0821ff35343b9a7843b71e98de35192454606435c72991a8/gnupg-3.1.1.tar.gz"
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 

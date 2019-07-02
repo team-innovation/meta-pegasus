@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# networkmodule	This shell will reboot the network module
+#               when panel is reboot or shutdown
+#
+
+RETVAL=0
+
+start() {
+    echo -n "Do nothing"
+}
+
+stop() {
+    echo -n "Power cycle network module"
+    echo 1 > /sys/class/netm-ctl/spi3/pulse_power
+}
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $RETVAL

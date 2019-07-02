@@ -106,6 +106,7 @@ DEPENDS = " \
  	zipgateway \
  	zware \
  	iotivity \
+    zwave-nvm-converter \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cachetools-native \
@@ -178,6 +179,7 @@ RDEPENDS_${PN} = "\
 	python3-phue \
  	iotivity-resource \
  	iotivity-bridging-plugins \
+    zwave-nvm-converter \
  	breakpad \
 "
 
@@ -319,10 +321,7 @@ do_install_append() {
 }
 
 pkg_postinst_ontarget_${PN} () {
-#!/bin/sh -e
-# Post install to make sure we have the correct setup 
-#
-if [ x"$D" = "x" ]; then
+
      logging()
      {
         if busybox ps | grep psplash | grep -qv grep
@@ -350,9 +349,6 @@ if [ x"$D" = "x" ]; then
         rm -f /media/extra/log/*error.log*
     fi
 
-else
-    exit 1
-fi
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
