@@ -21,7 +21,6 @@ RPROVIDES_${PN} = " \
 
 RDEPENDS_${PN} = " \
 	firmware-imx \
-	gst-fsl-plugin \
 	gstreamer1.0-plugins-bad \
 	gstreamer1.0-plugins-bad-videoparsersbad \
 	gstreamer1.0-plugins-base \
