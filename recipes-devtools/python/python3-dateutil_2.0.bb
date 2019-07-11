@@ -6,6 +6,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=fa9d2e9d9366cd8d539240d9416d8465"
 SRCNAME = "python-dateutil"
 PR = "ml"
 
+DEPENDS += "python3 python3-native python3-setuptools-native"
+
 SRC_URI = " \
 	http://labix.org/download/python-dateutil/${SRCNAME}-${PV}.tar.gz \
 "
