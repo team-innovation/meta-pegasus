@@ -9,7 +9,7 @@ DEPENDS = ""
 PR = "r1"
 PV = "6.71+git${SRCPV}"
 
-SRCREV = "${AUTOREV}"
+SRCREV = "fd053ed88625ba7817e4307483b772cafd3730d4"
 SRCBRANCH = "master"
 
 GIT_ZWAVE_SERVER ?= "${GIT_SERVER}"
