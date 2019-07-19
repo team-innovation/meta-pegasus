@@ -10,7 +10,7 @@ RDEPENDS_${PN} = "bridge-utils"
 PR = "r1"
 PV = "2.81+git${SRCPV}"
 
-SRCREV = "${AUTOREV}"
+SRCREV = "57c10010537b2b77f7ee27be6f72905b5984fc61"
 SRCBRANCH = "master"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
