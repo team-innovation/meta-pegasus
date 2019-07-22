@@ -21,7 +21,7 @@ GIT_WALLSLY_UBOOT_BRANCH = "wallsly-imx"
 GIT_WALLSLY_UBOOT_REV ?= "${AUTOREV}"
 GIT_WALLSLY_UBOOT_PROTOCOL ?= "ssh"
 
-SRC_URI = "git://${GIT_WALLSLY_UBOOT_SERVER}/uboot-imx;protocol=${GIT_WALLSLY_UBOOT_PROTOCOL};branch=${GIT_WALLSLY_UBOOT_BRANCH} \
+SRC_URI = "git://${GIT_WALLSLY_UBOOT_SERVER}/uboot-imx-wallsly;protocol=${GIT_WALLSLY_UBOOT_PROTOCOL};branch=${GIT_WALLSLY_UBOOT_BRANCH} \
            file://fix-build-for-gcc7.patch \
            "
 
