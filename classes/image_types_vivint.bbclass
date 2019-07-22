@@ -91,6 +91,8 @@ export P2SZ = "8MiB"
 export P3SZ = "8MiB"
 export ROOTFSSZ = "1586MiB"
 
+COMPRESS_CMD_xz = "xz -f -9 --extreme -k -c ${XZ_COMPRESSION_LEVEL} ${XZ_THREADS} --check=${XZ_INTEGRITY_CHECK} ${IMAGE_NAME}.rootfs.${type} > ${IMAGE_NAME}.rootfs.${type}.xz"
+
 ## nnnK, nnnM, nnnG to bytes
 #
 kmgtobytes() {
