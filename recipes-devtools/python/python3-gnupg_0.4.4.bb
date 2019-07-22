@@ -3,7 +3,7 @@ SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "BSD-2-Clause"
 SRCNAME = "python-gnupg"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=5b3cbf3c3220969afbf461f4a6ac97c9"
+LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=b0b7ac63b60085b23fa9f7e1951daa1d"
 PR = "ml1"
 
 DEPENDS += "python3"
@@ -17,8 +17,7 @@ BBCLASSEXTEND = "native"
 NATIVE_INSTALL_WORKS = "1"
 
 inherit setuptools3 python3-dir
-
-SRC_URI[md5sum] = "27415bead227e8c6906900b7c777120c"
-SRC_URI[sha256sum] = "ffdfad1824fbde8ab94c50e08040edd6a82b4095c187994954471a38c45a094a"
+SRC_URI[md5sum] = "c5d54f5a1bafc412f9b5a03ee06cb82e"
+SRC_URI[sha256sum] = "45daf020b370bda13a1429c859fcdff0b766c0576844211446f9266cae97fb0e"
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
