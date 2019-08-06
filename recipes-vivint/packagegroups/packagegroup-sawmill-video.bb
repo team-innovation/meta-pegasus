@@ -32,6 +32,7 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-base-typefindfunctions \
 	gstreamer1.0-plugins-base-videoconvert \
 	gstreamer1.0-plugins-base-videotestsrc \
+	gstreamer1.0-plugins-base-videoscale \
 	gstreamer1.0-plugins-base-volume \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0-plugins-good-imagefreeze \
@@ -45,6 +46,8 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-good-udp \
 	gstreamer1.0-plugins-good-wavenc \
 	gstreamer1.0-plugins-good-wavparse \
+	gstreamer1.0-plugins-good-videofilter \
+	gstreamer1.0-plugins-good-autodetect \
 	gstreamer1.0-rtsp-server \
 	imx-gst1.0-plugin \
 	imx-gst1.0-plugin-gplay \
