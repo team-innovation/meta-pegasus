@@ -165,7 +165,7 @@
          self.transmitter_thread.start()
  
      def stop(self):
-@@ -168,53 +181,55 @@
+@@ -168,53 +181,58 @@
  
      def dump_port_settings(self):
          sys.stderr.write("\n--- Settings: %s  %s,%s,%s,%s\n" % (
@@ -229,7 +229,10 @@
 -                        sys.stdout.write(data)
 +                        if data != b'':
 +#                             sys.stdout.write(ascii(data))
-+                             sys.stdout.write(str(data,'ascii'))
++                             try:
++                                 sys.stdout.write(str(data,'ascii'))
++                             except UnicodeDecodeError as ex:
++                                 print(data)
                  elif self.repr_mode == 1:
                      # escape non-printable, let pass newlines
 -                    if self.convert_outgoing == CONVERT_CRLF and data in '\r\n':
@@ -248,7 +251,7 @@
                          sys.stdout.write('\n')
                      else:
                          sys.stdout.write(repr(data)[1:-1])
-@@ -224,9 +239,9 @@
+@@ -224,9 +242,9 @@
                  elif self.repr_mode == 3:
                      # escape everything (hexdump)
                      for character in data:
@@ -260,7 +263,7 @@
              self.alive = False
              # would be nice if the console reader could be interruptted at this
              # point...
-@@ -234,15 +249,17 @@
+@@ -234,15 +252,17 @@
  
  
      def writer(self):
@@ -282,7 +285,7 @@
                  except KeyboardInterrupt:
                      c = '\x03'
                  if menu_active:
-@@ -269,7 +286,7 @@
+@@ -269,7 +289,7 @@
                                      self.serial.flush()
                                      sys.stderr.write('.')   # Progress indicator.
                                  sys.stderr.write('\n--- File %s sent ---\n' % filename)
@@ -291,7 +294,7 @@
                                  sys.stderr.write('--- ERROR opening file %s: %s ---\n' % (filename, e))
                          console.setup()
                      elif c in '\x08hH?':                    # CTRL+H, h, H, ? -> Show help
-@@ -306,7 +323,43 @@
+@@ -306,7 +326,43 @@
                          sys.stderr.write('--- line feed %s ---\n' % (
                              LF_MODES[self.convert_outgoing],
                          ))
@@ -336,7 +339,7 @@
                      elif c in 'bB':                         # B -> change baudrate
                          sys.stderr.write('\n--- Baudrate: ')
                          sys.stderr.flush()
-@@ -314,7 +367,7 @@
+@@ -314,7 +370,7 @@
                          backup = self.serial.baudrate
                          try:
                              self.serial.baudrate = int(sys.stdin.readline().strip())
@@ -345,7 +348,7 @@
                              sys.stderr.write('--- ERROR setting baudrate: %s ---\n' % (e,))
                              self.serial.baudrate = backup
                          else:
-@@ -367,12 +420,12 @@
+@@ -367,12 +423,12 @@
                  elif c == '\n':
                      self.serial.write(self.newline)         # send newline character(s)
                      if self.echo:
@@ -361,7 +364,7 @@
                          sys.stdout.flush()
          except:
              self.alive = False
-@@ -388,7 +441,7 @@
+@@ -388,7 +444,7 @@
  
      parser.add_option("-p", "--port",
          dest = "port",
@@ -370,7 +373,7 @@
          default = None
      )
  
-@@ -543,7 +596,7 @@
+@@ -543,7 +599,7 @@
              convert_outgoing=convert_outgoing,
              repr_mode=options.repr_mode,
          )
@@ -379,7 +382,7 @@
          sys.stderr.write("could not open port %r: %s\n" % (port, e))
          sys.exit(1)
  
-@@ -574,7 +627,10 @@
+@@ -574,7 +630,10 @@
          miniterm.rts_state = options.rts_state
  
      miniterm.start()
