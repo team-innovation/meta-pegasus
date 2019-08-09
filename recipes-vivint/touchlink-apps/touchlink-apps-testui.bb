@@ -59,6 +59,9 @@ DEPENDS += " \
         python3-idna-native \
         python3-phue-native \
         python3-paho-mqtt-native \
+	python3-urllib3-native \
+	python3-chardet-native \
+	python3-certifi-native \
 "
 
 PYTHON_BASEVERSION = "3.5"

@@ -155,6 +155,9 @@ DEPENDS = " \
 	python3-idna-native \
 	python3-asn1crypto-native \
 	python3-pycparser-native \
+	python3-urllib3-native \
+	python3-chardet-native \
+	python3-certifi-native \
 	breakpad \
     	variant-lite \
 	taocpp-json \

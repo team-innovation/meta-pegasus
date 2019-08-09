@@ -41,8 +41,6 @@ QT5_DEPENDS = "\
 "
 
 QT5_PKGS = "\
-	libqt5declarative5 \
-	libqt5xmlpatterns5 \
 	mtdev \
 	qtbase	\
 	qtbase-plugins	\
