@@ -39,7 +39,6 @@ RDEPENDS_${PN} = " \
 	python3-setuptools \
 	python3-grpcio \
 	python3-idle \
-	python3-importlib \
 	python3-intelhex \
 	python3-jinja2 \
 	python3-json \
@@ -62,15 +61,12 @@ RDEPENDS_${PN} = " \
 	python3-pyalsaaudio \
 	python3-pyopenssl \
 	python3-pytz \
-	python3-re \
 	python3-resource \
 	python3-setproctitle \
 	python3-shell \
 	python3-sip \
 	python3-sqlite3 \
-	python3-subprocess \
 	python3-terminal \
-	python3-textutils \
 	python3-threading \
 	python3-tkinter \
 	python3-toolz \
