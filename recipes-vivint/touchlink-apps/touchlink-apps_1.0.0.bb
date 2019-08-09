@@ -165,7 +165,6 @@ DEPENDS = " \
 RDEPENDS_${PN} = "\
 	bash \
 	python3-intelhex \
-	python3-subprocess \
 	python3-pyserial \
 	python3-pyalsaaudio \
 	python3-pytz \
