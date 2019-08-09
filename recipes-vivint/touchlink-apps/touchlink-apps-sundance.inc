@@ -86,7 +86,7 @@ do_install_append () {
     install -d ${D}/${libdir}
 }
 
-pkg_postinst_ontarget_${PN} () {
+pkg_postinst_ontarget_${PN}-sundance () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for sundance
 #

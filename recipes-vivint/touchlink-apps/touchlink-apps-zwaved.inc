@@ -21,7 +21,7 @@ do_install_append () {
 	chmod 0755 ${D}/${INSTALL_DIR}/zwaved/scripts/*
 }
 
-pkg_postinst_ontarget_${PN}() {
+pkg_postinst_ontarget_${PN}-zwaved () {
 #!/bin/sh -e
 # Post install to setup the home id directories
 #

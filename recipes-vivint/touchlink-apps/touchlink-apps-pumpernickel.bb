@@ -89,7 +89,7 @@ RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
     gstreamer1.0 \
 	"
 
-pkg_postinst_ontarget_${PN} () {
+pkg_postinst_ontarget_${PN}-pumpernickel () {
 
 	echo "Removing old pumpernickel.log1|2|3|4|5"
 	rm -f /var/log/pumpernickel.log1

@@ -36,7 +36,7 @@ do_install_append () {
 	install -m 0600 "${WORKDIR}/updated.logrotate" "${D}${sysconfdir}/logrotate.d/updated" 
 }
 
-pkg_postinst_ontarget_${PN} () {
+pkg_postinst_ontarget_${PN}-updated () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for updated
 #

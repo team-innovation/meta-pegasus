@@ -16,7 +16,7 @@ do_install_append () {
 	chmod +x ${D}/${INSTALL_DIR}/modemd/modemd.pyc
 }
 
-pkg_postinst_ontarget_${PN} () {
+pkg_postinst_ontarget_${PN}-modemd () {
 
     /usr/local/bin/mfr_modem_test.py
 
