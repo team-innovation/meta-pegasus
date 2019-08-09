@@ -1,4 +1,4 @@
-DESCRIPTION = "pytz brings the Olson tz database into Python"
+SUMMARY = "pytz brings the Olson tz database into Python"
 HOMEPAGE = "http://pytz.sourceforge.net"
 SECTION = "devel/python"
 PRIORITY = "optional"
@@ -7,12 +7,8 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=39ea92752a35cf67d8a885d8e3af3c69"
 SRCNAME = "pytz"
 PR = "r4"
 
-SRC_URI = "http://pypi.python.org/packages/p/pytz/pytz-${PV}.zip \
-	   "
-
-S = "${WORKDIR}/${SRCNAME}-${PV}"
-
-inherit setuptools3 python3-dir
+PYPI_PACKAGE_EXT = "zip"
+inherit setuptools3 pypi
 
 RDEPENDS_${PN} = "\
   python3-core \
@@ -22,7 +18,6 @@ RDEPENDS_${PN} = "\
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
 
-NATIVE_INSTALL_WORKS = "1"
 
 SRC_URI[md5sum] = "f89bde8a811c8a1a5bac17eaaa94383c"
 SRC_URI[sha256sum] = "f5c056e8f62d45ba8215e5cb8f50dfccb198b4b9fbea8500674f3443e4689589"

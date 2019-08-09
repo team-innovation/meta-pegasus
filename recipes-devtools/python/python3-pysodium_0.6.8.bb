@@ -1,4 +1,4 @@
-DESCRIPTION = "Python wrapper for libsodium"
+SUMMARY = "Python wrapper for libsodium"
 SECTION = "devel/python"
 LICENSE = "BSD"
 
@@ -15,8 +15,6 @@ S = "${WORKDIR}/pysodium-${PV}"
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
 
-NATIVE_INSTALL_WORKS = "1"
-
 RDEPENDS_${PN} = "libsodium"
 
-inherit setuptools3 python3-dir
+inherit setuptools3 

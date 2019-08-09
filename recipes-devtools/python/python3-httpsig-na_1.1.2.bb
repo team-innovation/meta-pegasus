@@ -19,6 +19,4 @@ RDEPENDS_${PN} = "python3-pysodium"
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
 
-NATIVE_INSTALL_WORKS = "1"
-
-inherit setuptools3 python3-dir
+inherit setuptools3 

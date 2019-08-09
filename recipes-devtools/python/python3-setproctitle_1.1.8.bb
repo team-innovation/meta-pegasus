@@ -1,4 +1,4 @@
-DESCRIPTION = "Set Proc Title Support for Python"
+SUMMARY = "Set Proc Title Support for Python"
 SECTION = "devel/python"
 PRIORITY = "optional"
 LICENSE = "PSF"
@@ -9,22 +9,10 @@ PR = "ml2"
 SRC_URI = "https://pypi.python.org/packages/source/s/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
   file://setproctitle_33.py"
 
-S = "${WORKDIR}/${SRCNAME}-${PV}"
-
-inherit setuptools3 python3-dir
-
-DEPENDS += "python3"
-
-RDEPENDS_${PN} = "python3-core"
+inherit setuptools3 pypi
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
-
-NATIVE_INSTALL_WORKS = "1"
-
-do_package_qa() {
-    echo "Skipping QA ..."
-}
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
@@ -34,4 +22,3 @@ do_install_prepend() {
 SRC_URI[md5sum] = "728f4c8c6031bbe56083a48594027edd"
 SRC_URI[sha256sum] = "b564cf6488217c7a4632a9fe646fc3a3bea2f9712b4e667e9632b870d1a58211"
 
-INSANE_SKIP_${PN} = "True"
