@@ -5,5 +5,5 @@ diff -ruN speedtest-cli-orig/speedtest_cli.py speedtest-cli/speedtest_cli.py
 -#!/usr/bin/env python
 +#!/usr/bin/env python3
  # -*- coding: utf-8 -*-
- # Copyright 2012-2014 Matt Martz
+ # Copyright 2012-2016 Matt Martz
  # All Rights Reserved.

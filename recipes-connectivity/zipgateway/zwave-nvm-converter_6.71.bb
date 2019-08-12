@@ -2,7 +2,7 @@ SUMMARY = "Zwave NVM Converter"
 HOMEPAGE = "http://zts.sigmadesigns.com"
 SECTION = "network"
 LICENSE = "CLOSED"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
+LIC_FILES_CHKSUM = "file://../zware_1_20/LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
 
 DEPENDS = ""
 

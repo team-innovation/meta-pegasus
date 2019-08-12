@@ -29,8 +29,8 @@ do_compile() {
 
 do_install() {
     install -d ${D}${bindir}
-    cp -a ${S}/zsync ${D}${bindir}
-    cp -a ${S}/zsyncmake ${D}${bindir}
+    install -m 755 ${S}/zsync ${D}${bindir}
+    install -m 755 ${S}/zsyncmake ${D}${bindir}
 }
 
 FILES_${PN} = "${bindir}/zsync \
