@@ -30,6 +30,7 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-base-tcp \
 	gstreamer1.0-plugins-base-ogg \
 	gstreamer1.0-plugins-base-opus \
+	gstreamer1.0-plugins-bad-opusparse \
 	gstreamer1.0-plugins-base-typefindfunctions \
 	gstreamer1.0-plugins-base-videoconvert \
 	gstreamer1.0-plugins-base-videotestsrc \
