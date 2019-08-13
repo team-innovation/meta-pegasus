@@ -2,7 +2,7 @@ DESCRIPTION = "Pulseaudio Meta package w/ initscript et. al."
 SECTION = "audio"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r13"
+PR = "r14"
 
 RDEPENDS_${PN} = "\
   pulseaudio-module-alsa-sink \
@@ -57,10 +57,6 @@ do_install() {
          sed -i -e s:resample-method=sinc-fastest:resample-method=trivial: ${D}${sysconfdir}/init.d/pulseaudio
     fi
     install -m 755 ${WORKDIR}/procman.d/* ${D}/${sysconfdir}/procman.d
-
-    # Symlink this until we get pulse fixed correctly
-    install -d ${D}/home/root
-    ln -sf /.config ${D}/home/root/.config
 
     install -d ${D}${sysconfdir}/logrotate.d
     install -m 0600 "${WORKDIR}/pulse.logrotate" "${D}${sysconfdir}/logrotate.d/pulse"

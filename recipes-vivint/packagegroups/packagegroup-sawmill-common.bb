@@ -20,7 +20,7 @@ RDEPENDS_${PN} = " \
 	gnupg \
 	iotivity-resource \
 	iotivity-bridging-plugins \
-	libsodium18 \
+	libsodium \
 	logrotate \
 	lookbusy \
 	packagegroup-sawmill-debugtools \
