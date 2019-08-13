@@ -115,7 +115,7 @@ pkg_postinst_ontarget_${PN}-updated () {
     old_root_ssh_config=$previous_bootmount/home/root/.ssh
     if [ -d $old_root_ssh_config ]
     then
-        install $old_root_ssh_config /home/root/
+        cp -a $old_root_ssh_config /home/root/
         logging "Copied $old_root_ssh_config to /home/root/"
     fi
 

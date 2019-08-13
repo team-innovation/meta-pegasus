@@ -647,7 +647,7 @@ if __name__ == "__main__":
         else:
             print("Unknown firmware version {} - can't update".format(firmware_version))
             modem.power_down()
-           quit()
+            quit()
 
         if not result:
             print("Error updating firmware - exiting")
