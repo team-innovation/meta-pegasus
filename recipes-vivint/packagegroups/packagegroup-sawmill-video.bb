@@ -8,17 +8,6 @@ PR = "r20"
 
 inherit packagegroup
 
-RPROVIDES_${PN} = " \
-	libg2d0.8 \
-	libglib-2.0-utils \
-	libgstapp-1.0 \
-	libgstaudio-1.0 \
-	libgstpbutils-1.0 \
-	libgstvideo-1.0 \
-	libgudev-1.0-0 \
-	libopus0 \
-"
-
 RDEPENDS_${PN} = " \
 	firmware-imx \
 	gstreamer1.0-plugins-bad \
@@ -61,7 +50,6 @@ RDEPENDS_${PN} = " \
 	ffmpeg \
 	imx-codec \
 	imx-parser \
-	libglib-2.0-utils \
 	libgstcodecparsers-1.0-0 \
 	libgstriff-1.0-0 \
 	libgstrtp-1.0-0 \
@@ -69,6 +57,6 @@ RDEPENDS_${PN} = " \
 	libgstrtspserver-1.0-0 \
 	libgstsdp-1.0-0 \
 	libgsturidownloader-1.0-0 \
-	libopus0 \
+	libopus \
 	civetweb \
 "
