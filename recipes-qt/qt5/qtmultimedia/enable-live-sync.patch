@@ -1,0 +1,14 @@
+diff -rupN orig/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp git/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp
+--- orig/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp	2019-08-13 13:26:42.672070440 -0600
++++ git/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp	2019-08-13 14:02:20.217464562 -0600
+@@ -1645,8 +1645,8 @@ void QGstreamerPlayerSession::playbinNot
+         qDebug() << "Current source is a non-live source";
+ #endif
+ 
+-    if (self->m_videoSink)
+-        g_object_set(G_OBJECT(self->m_videoSink), "sync", !self->m_isLiveSource, NULL);
++    //if (self->m_videoSink)
++    //    g_object_set(G_OBJECT(self->m_videoSink), "sync", !self->m_isLiveSource, NULL);
+ 
+     gst_object_unref(source);
+ }

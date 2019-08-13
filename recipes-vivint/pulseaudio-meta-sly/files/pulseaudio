@@ -22,10 +22,10 @@ RESAMPLE_METHOD=src-linear
 
 start() {
     echo -n "Starting audio server: "
-    start-stop-daemon -S $START_STOP_OPTS -x /usr/bin/pulseaudio -- \ 
+    start-stop-daemon -S $START_STOP_OPTS -x /usr/bin/pulseaudio -- \
     --system --disallow-exit --disallow-module-loading \
-    --log-target=file:/var/log/pulse.log --high-priority --realtime \ 
-    --no-cpu-limit --exit-idle-time=-1 --log-time -vvv --log-meta \ 
+    --log-target=file:/var/log/pulse.log --high-priority --realtime \
+    --no-cpu-limit --exit-idle-time=-1 --log-time -vvv --log-meta \
     --log-backtrace=5 --log-level=4 --resample-method=$RESAMPLE_METHOD \
     -nF /etc/pulse/session
 
