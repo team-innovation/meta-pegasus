@@ -220,27 +220,27 @@ do_compile() {
                 exit 1
         fi
 
+
+	if [ ${LOCK_PORTS} ] ; then
+		bbnote "Found setting to LOCK_PORTS - locking daemon servers"
+		python3 ${S}/code/utils/lock_daemon_servers.py lock ${S}/code
+	else
+	    bbnote "daemon servers remain unlocked"
+	fi
+	if [ ${REDUCE_LOGS} ] ; then
+		bbnote "Found setting to REDUCE_LOGS - seting log level to INFO"
+		python3 ${S}/code/utils/tune_logging_for_release.py INFO ${S}/code
+	else
+	    bbnote "logging remains verbose"
+	fi
+
 	# generate proxies
 	if [ ${UPDATE_STRING_TABLE} ] ; then
 			bbnote "This is a buildbot build"
-		        ${S}/scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER}
-			if [ ${LOCK_PORTS} ] ; then
-				bbnote "Found setting to LOCK_PORTS - locking daemon servers"
-				python3 ${S}/code/utils/lock_daemon_servers.py lock ${S}/code
-			else
-			    bbnote "daemon servers remain unlocked"
-			fi
-			if [ ${REDUCE_LOGS} ] ; then
-				bbnote "Found setting to REDUCE_LOGS - seting log level to INFO"
-				python3 ${S}/code/utils/tune_logging_for_release.py INFO ${S}/code
-			else
-			    bbnote "logging remains verbose"
-			fi
-			bbnote "Copy string_table.py to ${GIT_STRINGS_SERVER}"
-			cp ${S}/code/sundance/proxies/cloud/sundance_proxies/string_table.py ${GIT_STRINGS_SERVER}
+		        ${S}/scripts/generate_all_proxies.py --allow-new-entries		
 	else
 	        bbnote "This is NOT a buildbot build"
-	        ${S}/scripts/generate_all_proxies.py --generate_string_table ${GIT_STRINGS_SERVER} --verbose
+	        ${S}/scripts/generate_all_proxies.py --verbose
 	fi
 
 	# generate .pyc files
