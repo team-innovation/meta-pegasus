@@ -13,14 +13,14 @@ SCR_MNT = "/media/bootscript"
 COMPATIBLE_MACHINE = "imx6dl-slimline"
 
 GIT_UBOOT_SERVER = "${GIT_SERVER}"
-GIT_UBOOT_BRANCH = "slimline-next"
+GIT_UBOOT_BRANCH = "slimline_sumo"
 GIT_UBOOT_PROTOCOL = "ssh"
 GIT_UBOOT_REV = "${AUTOREV}"
 
 SRC_URI = "git://${GIT_UBOOT_SERVER}/uboot-imx;protocol=${GIT_UBOOT_PROTOCOL};branch=${GIT_UBOOT_BRANCH}"
 SRCREV = "${GIT_UBOOT_REV}"
 
-PV = "v2016.03+git${SRCPV}"
+PV = "v2018.03+git${SRCPV}"
 inherit deploy
 
 S = "${WORKDIR}/git"
