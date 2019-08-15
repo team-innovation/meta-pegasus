@@ -15,16 +15,15 @@ KERNEL_SRC = "git://${GIT_KERNEL_SERVER}/linux-imx;protocol=${GIT_KERNEL_PROTOCO
 SRC_URI = "${KERNEL_SRC};branch=${GIT_KERNEL_BRANCH}"
 
            
-PR = "r23"
-PV = "4.14.98+git${SRCPV}"
+PR = "r1"
+PV = "4.14.x"
 
 do_deploy_prepend() {
     install -d ${DEPLOY_DIR_IMAGE}
     install  arch/arm/boot/zImage ${DEPLOY_DIR_IMAGE}/zImage_mfgtool
 }
-
-require linux-imx_${PV}.bb
-require linux-mfgtool.inc
+require linux-vivint_${PV}.bb
+require recipes-kernel/linux/linux-mfgtool.inc
 
 KERNEL_IMAGE_BASE_NAME[vardepsexclude] = "DATETIME"
 MODULE_IMAGE_BASE_NAME[vardepsexclude] = "DATETIME"
