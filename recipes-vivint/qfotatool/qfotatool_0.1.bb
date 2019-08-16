@@ -15,7 +15,7 @@ do_compile() {
 
 do_install() {
 	install -d ${D}/usr/local/bin
-	install -m 0755 ${S}/dfotatool ${D}/usr/local/bin/dfotatool
+	install -m 0755 ${S}/qfotatool ${D}/usr/local/bin/qfotatool
 }
 
 FILES_${PN}-dbg = "/usr/src/debug /usr/local/bin/.debug"
