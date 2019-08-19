@@ -87,6 +87,7 @@ RDEPENDS_${PN} = " \
 	webrtc-audio-processing \
 	panel-audio-test \
 	pa-test \
+	pa-test-simple \
 	wps-sh \
 	xdelta3 \
 	xz \
