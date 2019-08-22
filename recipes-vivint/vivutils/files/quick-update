@@ -995,7 +995,7 @@ get_file() {
 	# return curl exit code
 
 	[ $debug -eq 0 ] || writelog "get_file $1"
-	(cd $update_dir && curl -O "$1")
+	(cd $update_dir && curl -L -O "$1")
 	result="$?"
 	[ $debug -eq 0 ] || writelog "curl file result is '$result'"
 
