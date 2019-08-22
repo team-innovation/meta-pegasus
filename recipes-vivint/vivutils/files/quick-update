@@ -990,15 +990,14 @@ image_checksum() {
 
 get_file() {
 
-	# Get a remote file using wget
+	# Get a remote file
 	# parameter 1: web server URL of the file
-	# return wget exit code
+	# return curl exit code
 
 	[ $debug -eq 0 ] || writelog "get_file $1"
-	wget -P $update_dir $1
-	#wget -P $update_dir $1 2> /dev/null
+	(cd $update_dir && curl -O "$1")
 	result="$?"
-	[ $debug -eq 0 ] || writelog "wget file result is '$result'"
+	[ $debug -eq 0 ] || writelog "curl file result is '$result'"
 
 	if [ $result -ne 0 ]; then
 
@@ -1032,14 +1031,14 @@ get_file() {
 			prompt "delete all files in $update_dir to free space and retry the download"
 			[ $update_dir == "/media/extra/update/" ] && rm $update_dir*
 			
-			# retry wget, image and manifest
+			# retry download of image and manifest
 			retry_count=$((retry_count+1))
 			[ $retry_count -lt 5 ] && get_file $(dirname $1)/$manifest && get_file $1 || usage "exceeded get_file retry count.$errors"
 		fi
 
 		# check the result again in case this was a retry
 		if [ $result -ne 0 ]; then
-			usage "$result Failed to wget $1 exit code $result,$errors"
+			usage "$result Failed to download $1 exit code $result,$errors"
 		fi
 	fi
 	return $result # to satisfy caller's conditional construct
@@ -1047,7 +1046,7 @@ get_file() {
 
 get_latest() {
 
-	# Get a the latest remote file using wget
+	# Get a the latest remote file
 	# parameter 1: name of file to get from latest build location
 
 	[ $debug -eq 0 ] || writelog "get_latest $latest_url$1"
