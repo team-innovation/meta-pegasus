@@ -561,7 +561,7 @@ url_update() {
 
 	# get the manifest to verify image integrity
 	[ $debug -eq 0 ] || writelog "which_manifest"
-	manifest=$(which_manifest)
+	manifest=$(which_manifest "$1")
 	[ -z $manifest ] && usage "This device is \"$device\" please run this script on target device,$errors"
 
 	#if there already exists a manifest locally, assume it is stale and just delete it
@@ -790,7 +790,7 @@ extract_to_inactive() {
 	# parameter 1: local path to update image
 
 	[ $debug -eq 0 ] || writelog "extract_to_inactive"
-	writelog "Extractng $(basename $1) to $inactive_part Please wait..."
+	writelog "Extracting $(basename $1) to $inactive_part Please wait..."
 
 	if [[ $(basename $1) =~ ^.*\.xz$ ]] && [ $(which xz 2>/dev/null) ]; then
 		flags="-xJf"
@@ -853,14 +853,22 @@ which_inactive() {
 }
 
 which_manifest() {
-
-	# Figure out which manifest to use
 	# return the manifest name
 
-	[ $device == "wallsly" ] && echo "slyupdt.txt"
-	[ $device == "slimline" ] && echo "slimupdt.txt"
-	[ $device == "touchlink" ] && echo "2gigupdt.txt"
-	[ $device == "other" ] || [ $device == "unknown" ] && echo ""
+	local MANIFEST
+	[ $device == "wallsly" ] && MANIFEST="slyupdt"
+	[ $device == "slimline" ] && MANIFEST="slimupdt"
+	[ $device == "touchlink" ] && MANIFEST="2gigupdt"
+	if [ $device == "other" ] || [ $device == "unknown" ] ; then
+		echo ""
+		return
+	fi
+	if [[ "$1" =~ \.xz$ ]] ; then
+		MANIFEST="${MANIFEST}-xz.txt"
+	else
+		MANIFEST="${MANIFEST}.txt"
+	fi
+	echo "$MANIFEST"
 }
 
 maybe_delete_manifest() {
