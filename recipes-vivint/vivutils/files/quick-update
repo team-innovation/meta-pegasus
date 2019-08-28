@@ -793,9 +793,9 @@ extract_to_inactive() {
 	writelog "Extracting $(basename $1) to $inactive_part Please wait..."
 
 	if [[ $(basename $1) =~ ^.*\.xz$ ]] && [ $(which xz 2>/dev/null) ]; then
-		flags="-xJf"
+		exbin="xz"
 	elif [[ $(basename $1) =~ ^.*\.bz2$ ]] && [ $(which bzip2 2>/dev/null) ]; then
-		flags="-xjf"
+		exbin="bzip2"
 	else
 		writelog "Unsupported archive format $1"
 		exit 1
@@ -803,10 +803,10 @@ extract_to_inactive() {
 		
 	if [ $(which pv) ]; then
 		[ $debug -eq 0 ] || writelog "pv is installed"
-		pv $1 | tar $flags - -C $inactive_part
+		pv -eptrbf -i 1.0 -B 131072 $1 | $exbin -d -c | tar -C $inactive_part -x
 	else
 		[ $debug -eq 0 ] || writelog "pv is not installed"
-		tar -C $inactive_part -v $flags $1
+		$exbin -d -c $1 | tar -C $inactive_part -x -v
 	fi
 
 	status=$?
