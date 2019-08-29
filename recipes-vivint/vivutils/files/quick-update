@@ -903,6 +903,20 @@ set_inactive_version() {
 	[ $debug -eq 0 ] || writelog "inactive version is $inactive_version"
 }
 
+# Test file names:
+# sly-qt5-image-imx6dl-slimline-3.19.4.staging.28619.rootfs.tar.xz
+# slimline-qt5-image-imx6dl-slimline-3.19.4.sta-ging.28619.rootfs.tar.bz2
+# slimline-qt5-image-imx6dl-slimline-3.19.4.staging.28619.rootfs.tar.gz
+# slimline-qt5-image-imx6dl-slimline-3.19.4.stagi-ng.28619.rootfs.tar.xz
+# slimline-usb-image-update-3.19.4.staging.28619.sha256 -> undefined
+# slimline-usb-image-update-3.19.4.staging.28619.zip -> undefined
+# sly-qt5-image-imx6dl-slimline-3.19.4.staging.28619.rootfs.tar.bz2
+# sly-qt5-image-imx6dl-slimline-3.19.4.staging.28619.rootfs.tar.gz
+# sly-qt5-image-imx6dl-slimline-3.19.4.staging.28619.rootfs.tar.xz
+# sly-usb-image-update-3.19.4.staging.28619.sha256 -> undefined
+# sly-usb-image-update-3.19.4.staging.28619.zip -> undefined
+# touchlink-qte-image-glibc-ipk-3.19.4.stag_ing.28619-touchlink.rootfs.tar.bz2
+# touchlink-qte-image-glibc-ipk-3.19.4.stag-ing.28619-touchlink.rootfs.tar.xz
 get_version_from_image_name() {
 	# Get the update version from the given image name
 	#   - to avoid dependency on manifest
@@ -912,7 +926,7 @@ get_version_from_image_name() {
 	v="$1"
 	rootfsmatcher="rootfs[.]tar[.](xz|bz2|gz)$"
 	if [[ $v =~ $rootfsmatcher ]]; then
-		v=$(echo "$v" | sed -E -e 's/^.*(slimline|glibc-ipk)-//' -e 's/.rootfs.tar.*$//')
+		v=$(echo "$v" | sed -E -e 's/^.*(slimline|glibc-ipk)-//' -e 's/(-touchlink)?.rootfs.tar.*$//')
 		echo "$v"
 	else
 		echo "undefined"
