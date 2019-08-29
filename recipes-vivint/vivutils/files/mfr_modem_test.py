@@ -731,48 +731,36 @@ class QuectelEG91:
         self._device.close_serial_port()
         self._device.serial_gpio_enable(False)
 
-    def reflash_modem(self, carrier, force_flash=True, current_version=None):
+    def reflash_modem(self, force_flash=True, current_version=None):
         file_list = glob.glob("/var/lib/firmware/Quectel/*")
         firmware_file = None
         if file_list:
             firmware_file = file_list[0]
         else:
-            print("Error reflashing modem - invalid carrier specified, or no firmware files found in /var/lib/firmware/Quectel")
+            print("Error reflashing modem - no firmware files found in /var/lib/firmware/Quectel")
             return False
 
         if firmware_file:
             # close the serial port
             self._device.close_serial_port()
 
-            flash_proc = subprocess.Popen(["/usr/bin/qfotatool", "-p", "/dev/ttyUSB4", "-f", firmware_file], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            time.sleep(25)
+            flash_proc = subprocess.Popen(["/usr/local/bin/qfotatool", "-p", "/dev/ttyUSB4", "-f", firmware_file], bufsize=-1)
+            time.sleep(10)
 
             try:
-                stdout, stderr = flash_proc.communicate(timeout=900)
+                stdout, stderr = flash_proc.communicate()
 
-                # check stdout for completion string
-                if stdout:
-                    stdout = stdout.decode("utf-8")
-
-                    # check result
-                    if "Fota update succesful" in stdout:
-                        # flash has completed
-                        print("Success flashing file {}".format(firmware_file))
-                        if self._device.open_serial_port("/dev/ttyUSB4"):
-                            return True
-                    else:
-                        print("Flash operation failed!")
-                        print(stdout)
-                else:
-                    print("Flash operation completed with no output")
-                    print(stdout)
+                if flash_proc.returncode == 0:
+                    # flash has completed
+                    print("Success flashing file {}".format(firmware_file))
                     if self._device.open_serial_port("/dev/ttyUSB4"):
                         return True
-            except subprocess.TimeoutExpired:
+                else:
+                    print("Flash operation failed with error {}".format(flash_proc.returncode))
+                    return False
+            except Exception as exception:
                 # otherwise poll to see if the app is done
-                result = flash_proc.poll()
-                if result is not None:
-                    print("Flash program complete - no stdout")
+                print("Exception running flash program: {}".format(exception))
         else:
             print("Error reflashing modem - no firmware files found in /var/lib/firmware/Quectel")
             return False
