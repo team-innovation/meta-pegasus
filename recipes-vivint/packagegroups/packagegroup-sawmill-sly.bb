@@ -35,6 +35,7 @@ RDEPENDS_${PN} += " \
 	touchlink-sierra-firmware-hl7588-a \
 	touchlink-sierra-firmware-hl7588-v \
 	touchlink-quectel-firmware-eg91-f \
+	touchlink-quectel-firmware-eg91-version \
 	vaudio-wallsly \
 	mfr-audio-test-wallsly \
 	mfr-piezo-test \

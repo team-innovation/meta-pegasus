@@ -592,7 +592,7 @@ class QuectelEG91:
         self._device.write_command('AT+QMBNCFG="AutoSel",1')
         if current_sim != "1":
             print("Switching to SIM2...")
-            self.select_sim(1)
+            self.select_sim(1, reboot=False)
 
         return imei, sim1, sim2
 
@@ -640,7 +640,7 @@ class QuectelEG91:
 
         return ""
 
-    def select_sim(self, sim_number):
+    def select_sim(self, sim_number, reboot=True):
         try:
             if self._device._serial_port is not None:
                 self._device.write_command("AT+QDSIM={}".format(sim_number))
@@ -650,6 +650,10 @@ class QuectelEG91:
                     self.reset(connect=True)
             else:
                 print("Error: Serial port is not open")
+
+            # close serial and reboot modem then wait for modem to be ready again
+            if reboot:
+                self.reset()
 
         except Exception as exception:
             print("Error selecting SIM {}: {}".format(sim_number, exception))
@@ -687,6 +691,8 @@ class QuectelEG91:
                         return ccid
             else:
                 print("Error: Serial port is not open")
+        else:
+            print("Error: SIM not ready")
 
         return ""
 
@@ -732,7 +738,7 @@ class QuectelEG91:
         self._device.serial_gpio_enable(False)
 
     def reflash_modem(self, force_flash=True, current_version=None):
-        file_list = glob.glob("/var/lib/firmware/Quectel/*")
+        file_list = glob.glob("/var/lib/firmware/Quectel/*.zip")
         firmware_file = None
         if file_list:
             firmware_file = file_list[0]
@@ -781,15 +787,22 @@ def is_upgrade_needed(current_version, device_id):
             file_list = glob.glob("/var/lib/firmware/Sierra/*SWIMCB71XX-VC*.fls")
             if not file_list:
                 file_list = glob.glob("/var/lib/firmware/Sierra/*SWIMCB71XX.V.*.fls")
+        if len(file_list) > 0:
+            file_list.sort()
+            file_version = file_list[-1]
+        else:
+            return False
     elif device_id is 3:    #Quectel
-        file_list = glob.glob("/var/lib/firmware/Quectel/*")
-
-    if len(file_list) > 0:
-        file_list.sort()
-        file_version = file_list[-1]
-        # If the file exists, then an upgrade is needed
-    else:
-        return False
+        if os.path.exists('/var/lib/firmware/Quectel/version'):
+            with open("/var/lib/firmware/Quectel/version", "r") as content_file:
+                file_version = content_file.read().strip("\n")
+            if current_version == file_version:
+                return False
+            else:
+                file_list = glob.glob("/var/lib/firmware/Quectel/*.zip")
+                if len(file_list) == 0:
+                    print("Quectel firmware image is missing")
+                    file_version = ""
 
     if file_version:
         print("Modem firmware update detected from {} to {}".format(current_version, file_version))
@@ -868,12 +881,6 @@ if __name__ == "__main__":
                 quit()
         elif device_id is 3:    # Quectel
             result = modem.reflash_modem()
-            if result:
-                # delete the firmware file so that we know it has been completed
-                try:
-                    shutil.rmtree(FIRMWARE_FOLDER + "/Quectel")
-                except:
-                    pass
 
         if result:
             print("Modem firmware update successful")
