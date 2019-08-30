@@ -20,14 +20,18 @@ active_version="undefined"
 inactive_version="undefined"
 update_version="undefined"
 errors="" # default comma delimeted usage errors string
-wallsly_image=*"sly-qt5-image-imx6dl-slimline"*".tar.bz2"
-slimline_image=*"slimline-qt5-image-imx6dl-slimline"*".tar.bz2"
-touchlink_image=*"touchlink-qte-image-glibc-ipk"*".tar.bz2"
+wallsly_image=*"sly-qt5-image-imx6dl-slimline"*".tar."*
+slimline_image=*"slimline-qt5-image-imx6dl-slimline"*".tar."*
+touchlink_image=*"touchlink-qte-image-glibc-ipk"*".tar."*
 device="undefined" # default device
 product="a Vivint product" # default product
 version_file="version"
 logfile="/media/extra/update/.update_status"
 #logfile="/media/extra/update/.update_status_test" # TODO TEST logfile
+
+# To debug, uncomment the next 2 lines:
+#export PS4='+(${BASH_SOURCE}:${LINENO}):'
+#set -x
 
 main() {
 	
@@ -561,7 +565,7 @@ url_update() {
 
 	# get the manifest to verify image integrity
 	[ $debug -eq 0 ] || writelog "which_manifest"
-	manifest=$(which_manifest)
+	manifest=$(which_manifest "$1")
 	[ -z $manifest ] && usage "This device is \"$device\" please run this script on target device,$errors"
 
 	#if there already exists a manifest locally, assume it is stale and just delete it
@@ -790,14 +794,23 @@ extract_to_inactive() {
 	# parameter 1: local path to update image
 
 	[ $debug -eq 0 ] || writelog "extract_to_inactive"
-	writelog "Extractng $(basename $1) to $inactive_part Please wait..."
+	writelog "Extracting $(basename $1) to $inactive_part Please wait..."
+
+	if [[ $(basename $1) =~ ^.*\.xz$ ]] && [ $(which xz 2>/dev/null) ]; then
+		exbin="xz"
+	elif [[ $(basename $1) =~ ^.*\.bz2$ ]] && [ $(which bzip2 2>/dev/null) ]; then
+		exbin="bzip2"
+	else
+		writelog "Unsupported archive format $1"
+		exit 1
+	fi
 		
 	if [ $(which pv) ]; then
 		[ $debug -eq 0 ] || writelog "pv is installed"
-		pv $1 | tar -xjf - -C $inactive_part
+		pv -eptrbf -i 1.0 -B 131072 $1 | $exbin -d -c | tar -C $inactive_part -x
 	else
 		[ $debug -eq 0 ] || writelog "pv is not installed"
-		tar -C $inactive_part -xjvf $1
+		$exbin -d -c $1 | tar -C $inactive_part -x -v
 	fi
 
 	status=$?
@@ -844,14 +857,22 @@ which_inactive() {
 }
 
 which_manifest() {
-
-	# Figure out which manifest to use
 	# return the manifest name
 
-	[ $device == "wallsly" ] && echo "slyupdt.txt"
-	[ $device == "slimline" ] && echo "slimupdt.txt"
-	[ $device == "touchlink" ] && echo "2gigupdt.txt"
-	[ $device == "other" ] || [ $device == "unknown" ] && echo ""
+	local MANIFEST
+	[ $device == "wallsly" ] && MANIFEST="slyupdt"
+	[ $device == "slimline" ] && MANIFEST="slimupdt"
+	[ $device == "touchlink" ] && MANIFEST="2gigupdt"
+	if [ $device == "other" ] || [ $device == "unknown" ] ; then
+		echo ""
+		return
+	fi
+	if [[ "$1" =~ \.xz$ ]] ; then
+		MANIFEST="${MANIFEST}-xz.txt"
+	else
+		MANIFEST="${MANIFEST}.txt"
+	fi
+	echo "$MANIFEST"
 }
 
 maybe_delete_manifest() {
@@ -882,18 +903,34 @@ set_inactive_version() {
 	[ $debug -eq 0 ] || writelog "inactive version is $inactive_version"
 }
 
+# Test file names:
+# sly-qt5-image-imx6dl-slimline-3.19.4.staging.28619.rootfs.tar.xz
+# slimline-qt5-image-imx6dl-slimline-3.19.4.sta-ging.28619.rootfs.tar.bz2
+# slimline-qt5-image-imx6dl-slimline-3.19.4.staging.28619.rootfs.tar.gz
+# slimline-qt5-image-imx6dl-slimline-3.19.4.stagi-ng.28619.rootfs.tar.xz
+# slimline-usb-image-update-3.19.4.staging.28619.sha256 -> undefined
+# slimline-usb-image-update-3.19.4.staging.28619.zip -> undefined
+# sly-qt5-image-imx6dl-slimline-3.19.4.staging.28619.rootfs.tar.bz2
+# sly-qt5-image-imx6dl-slimline-3.19.4.staging.28619.rootfs.tar.gz
+# sly-qt5-image-imx6dl-slimline-3.19.4.staging.28619.rootfs.tar.xz
+# sly-usb-image-update-3.19.4.staging.28619.sha256 -> undefined
+# sly-usb-image-update-3.19.4.staging.28619.zip -> undefined
+# touchlink-qte-image-glibc-ipk-3.19.4.stag_ing.28619-touchlink.rootfs.tar.bz2
+# touchlink-qte-image-glibc-ipk-3.19.4.stag-ing.28619-touchlink.rootfs.tar.xz
 get_version_from_image_name() {
-
 	# Get the update version from the given image name
 	#   - to avoid dependency on manifest
 	# parameter 1: image name
 	# return the version
-    
-	v=""
-	[ $device == "wallsly" ] && v=$(cut -c31- <<< $1) && v=$(rev <<< $v) && v=$(cut -c16- <<< $v) && v=$(rev <<< $v)
-	[ $device == "slimline" ] && v=$(cut -c36- <<< $1) && v=$(rev <<< $v) && v=$(cut -c16- <<< $v) && v=$(rev <<< $v)
-	[ $device == "touchlink" ] && v=$(cut -c31- <<< $1) && v=$(rev <<< $v) && v=$(cut -c26- <<< $v) && v=$(rev <<< $v)
-	echo $v
+
+	v="$1"
+	rootfsmatcher="rootfs[.]tar[.](xz|bz2|gz)$"
+	if [[ $v =~ $rootfsmatcher ]]; then
+		v=$(echo "$v" | sed -E -e 's/^.*(slimline|glibc-ipk)-//' -e 's/(-touchlink)?.rootfs.tar.*$//')
+		echo "$v"
+	else
+		echo "undefined"
+	fi
 }
 
 get_update_image_name() {
@@ -973,15 +1010,14 @@ image_checksum() {
 
 get_file() {
 
-	# Get a remote file using wget
+	# Get a remote file
 	# parameter 1: web server URL of the file
-	# return wget exit code
+	# return curl exit code
 
 	[ $debug -eq 0 ] || writelog "get_file $1"
-	wget -P $update_dir $1
-	#wget -P $update_dir $1 2> /dev/null
+	(cd $update_dir && curl -L -O "$1")
 	result="$?"
-	[ $debug -eq 0 ] || writelog "wget file result is '$result'"
+	[ $debug -eq 0 ] || writelog "curl file result is '$result'"
 
 	if [ $result -ne 0 ]; then
 
@@ -1015,14 +1051,14 @@ get_file() {
 			prompt "delete all files in $update_dir to free space and retry the download"
 			[ $update_dir == "/media/extra/update/" ] && rm $update_dir*
 			
-			# retry wget, image and manifest
+			# retry download of image and manifest
 			retry_count=$((retry_count+1))
 			[ $retry_count -lt 5 ] && get_file $(dirname $1)/$manifest && get_file $1 || usage "exceeded get_file retry count.$errors"
 		fi
 
 		# check the result again in case this was a retry
 		if [ $result -ne 0 ]; then
-			usage "$result Failed to wget $1 exit code $result,$errors"
+			usage "$result Failed to download $1 exit code $result,$errors"
 		fi
 	fi
 	return $result # to satisfy caller's conditional construct
@@ -1030,7 +1066,7 @@ get_file() {
 
 get_latest() {
 
-	# Get a the latest remote file using wget
+	# Get a the latest remote file
 	# parameter 1: name of file to get from latest build location
 
 	[ $debug -eq 0 ] || writelog "get_latest $latest_url$1"
@@ -1082,7 +1118,9 @@ check_image_name_wallsly() {
 	if [[ $1 == $wallsly_image ]]; then
 		[ $debug -eq 0 ] || writelog "GOOD image name for a $product - $1"
 	else
-		usage "BAD image name \"$1\" for $product,$errors"; fi
+		echo "Invalid image name \"$1\" for $product,$errors"
+		exit 1
+	fi
 }
 
 check_image_name_slimline() {
@@ -1094,7 +1132,9 @@ check_image_name_slimline() {
 	if [[ $1 == $slimline_image ]]; then
 		[ $debug -eq 0 ] || writelog "GOOD image name for a $product - $1"
 	else
-		usage "BAD image name \"$1\" for $product,$errors"; fi
+		echo "Invalid image name \"$1\" for $product,$errors"
+		exit 1
+	fi
 }
 
 check_image_name_touchlink() {
@@ -1106,7 +1146,9 @@ check_image_name_touchlink() {
 	if [[ $1 == $touchlink_image ]]; then
 		[ $debug -eq 0 ] || writelog "GOOD image name for a $product - $1"
 	else
-		usage "BAD image name \"$1\" for $product,$errors"; fi
+		echo "Invalid image name \"$1\" for $product,$errors"
+		exit 1
+	fi
 }
 
 version() {
