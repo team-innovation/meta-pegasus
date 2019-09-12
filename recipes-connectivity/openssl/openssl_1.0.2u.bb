@@ -43,8 +43,8 @@ SRC_URI += "file://find.pl;subdir=${BP}/util/ \
             file://openssl.patch \
             file://openssl_ld.patch \
            "
-SRC_URI[md5sum] = "98ec4e085962689b91d25e1dcdfc14a2"
-SRC_URI[sha256sum] = "cabd5c9492825ce5bd23f3c3aeed6a97f8142f606d893df216411f07d1abab96"
+SRC_URI[md5sum] = "cdc2638f789ecc2db2c91488265686c1"
+SRC_URI[sha256sum] = "ecd0c6ffb493dd06707d38b14bb4d8c2288bb7033735606569d8f90f89669d16"
 
 PACKAGES =+ "${PN}-engines \
             ${PN}-engines-dbg \

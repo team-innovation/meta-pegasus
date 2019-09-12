@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=097f805837700cfac572ac274cd38124"
 DEPENDS += "python3 python3-cffi python3-asn1crypto python3-pycparser"
 RDEPENDS_${PN} = "python3-six"
 
-PR = "r1"
+PR = "r2"
 
 SRCNAME = "cryptography"
 SRC_URI = "https://files.pythonhosted.org/packages/69/ed/5e97b7f54237a9e4e6291b6e52173372b7fa45ca730d36ea90b790c0059a/${SRCNAME}-${PV}.tar.gz"

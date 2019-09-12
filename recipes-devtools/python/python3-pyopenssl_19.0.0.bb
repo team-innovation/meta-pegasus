@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57"
 DEPENDS += "python3 python3-cryptography"
 RDEPENDS_${PN} = "python3-six"
 
-PR = "r0"
+PR = "r1"
 
 SRCNAME = "pyOpenSSL"
 SRC_URI = "https://files.pythonhosted.org/packages/40/d0/8efd61531f338a89b4efa48fcf1972d870d2b67a7aea9dcf70783c8464dc/${SRCNAME}-${PV}.tar.gz"

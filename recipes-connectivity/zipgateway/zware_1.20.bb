@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
 
 DEPENDS = "python-native openssl"
 
-PR = "r1"
+PR = "r2"
 PV = "1.20+git${SRCPV}"
 
 SRCREV = "3d9a65b72d54beb67a446bdaf5d2ecda91c4ae04"
