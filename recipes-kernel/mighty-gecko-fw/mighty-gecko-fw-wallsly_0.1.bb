@@ -9,8 +9,3 @@ SINK_FW_NAME = "wallsly-mighty-gecko.fw"
 SINK_FW_FCC_NAME = "railtest_efr32.fw"
 SINK_FW_HEX_NAME = "git/wallsly/panel_sink.hex"
 SINK_FW_FCC_HEX_NAME = "git/wallsly/railtest_efr32.hex"
-
-SINK_FLEX_FW_NAME = "wallsly-flex-gecko.fw"
-SINK_FLEX_FW_FCC_NAME = "railtest_efr32_flex1_uart.fw"
-SINK_FLEX_FW_HEX_NAME = "git/wallsly/panel_sink_flex1_uart.hex"
-SINK_FLEX_FW_FCC_HEX_NAME = "git/wallsly/railtest_efr32_flex1_uart.hex"

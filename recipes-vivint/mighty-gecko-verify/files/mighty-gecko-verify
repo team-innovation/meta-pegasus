@@ -37,28 +37,9 @@ mighty_gecko_verify()
 	else
 		test -f /sys/class/mighty_gecko/swd0/access &&
 			echo 1 > /sys/class/mighty_gecko/swd0/access
-		
-		board_rev=$(cat /sys/class/board_info/board_info/board_rev)
-		max_mighty_gecko_rev=13
-		if [ "$board_rev" -gt "$max_mighty_gecko_rev" ]; then
-			if [ -f /etc/procman.d/test_ui ]; then
-				echo "Board revision number is $board_rev; Loading FFC firmware for FLEX gecko..."
-				echo "railtest_efr32_flex1_uart.fw" > /sys/class/mighty_gecko/swd0/fw_path
-			else
-				echo "Board revision number is $board_rev; Loading wallsly-flex-gecko.fw for FLEX gecko..."
-				echo "wallsly-flex-gecko.fw" > /sys/class/mighty_gecko/swd0/fw_path
-			fi
-		else
-			if [ -f /etc/procman.d/test_ui ]; then
-				echo "Board revision number is $board_rev; Loading FFC firmware for MIGHTY gecko..."
-				echo "railtest_efr32.fw" > /sys/class/mighty_gecko/swd0/fw_path
-			else
-				echo "Board revision number is $board_rev; Loading wallsly-mighty-gecko.fw for MIGHTY gecko..."
-				echo "wallsly-mighty-gecko.fw" > /sys/class/mighty_gecko/swd0/fw_path
-			fi
-			
+		if [ -f /etc/procman.d/test_ui ]; then
+			echo "railtest_efr32.fw" > /sys/class/mighty_gecko/swd0/fw_path
 		fi
-		
 		echo 1 > /sys/class/mighty_gecko/swd0/doall &&
 			touch /tmp/mightygeckofwverified
 		test -f /sys/class/mighty_gecko/swd0/access &&
