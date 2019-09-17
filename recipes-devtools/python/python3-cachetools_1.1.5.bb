@@ -6,6 +6,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=96c958336b659af4dad628356c5e43b6"
 SRCNAME = "cachetools"
 PR = "r1"
 
+DEPENDS += "python3 python3-native python3-setuptools-native"
+
 SRC_URI = " \
 	https://pypi.python.org/packages/source/c/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
 "

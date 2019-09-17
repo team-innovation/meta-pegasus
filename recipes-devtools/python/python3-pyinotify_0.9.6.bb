@@ -21,6 +21,5 @@ NATIVE_INSTALL_WORKS = "1"
 
 inherit setuptools3 python3-dir
 
-SRC_URI[md5sum] = "b922aecb0ac532cfc51ab674e5f2e94c"
-SRC_URI[sha256sum] = "447b01feaf25a2ad36e4101b583a8212bd701d5c34e330dd62dd9f32ba149aa6"
-
+SRC_URI[md5sum] = "8e580fa1ff3971f94a6f81672b76c406"
+SRC_URI[sha256sum] = "9c998a5d7606ca835065cdabc013ae6c66eb9ea76a00a1e3bc6e0cfe2b4f71f4"

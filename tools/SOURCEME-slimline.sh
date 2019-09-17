@@ -65,12 +65,14 @@ function whitewash_int {
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE SLIMLINE_VERSION"
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE BY_PASS_UNIT_TEST"
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE UPDATE_STRING_TABLE"
+	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE BUILD_TYPE"
 	export BB_ENV_EXTRAWHITE
 }
 
 # if already set up then we just run the setup-environment script
 test -d ${BUILD_DIR} &&
 	sed -i '/GIT_SERVER/d' ${BUILD_DIR}/conf/local.conf && 
+	sed -i '/BUILD_TYPE/d' ${BUILD_DIR}/conf/local.conf &&
 	sed -i '/GIT_APPS_TAG/d' ${BUILD_DIR}/conf/local.conf &&
 	sed -i '/GIT_APPS_REV/d' ${BUILD_DIR}/conf/local.conf && 
     sed -i '/GIT_APPS_BRANCH/d' ${BUILD_DIR}/conf/local.conf && 
