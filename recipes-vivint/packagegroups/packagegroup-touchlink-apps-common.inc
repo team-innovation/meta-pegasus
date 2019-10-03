@@ -37,6 +37,7 @@ QT5_DEPENDS = "\
     	libopenvg-imx \
     	imx-gpu-g2d \
 	python3-pyopengl \
+	touchlink-qt5-profile \
 	touchlink-ssl-profile \
 "
 
