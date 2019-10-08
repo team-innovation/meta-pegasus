@@ -1,4 +1,4 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
-PR = "3"
+PR = "r3"
 
 SRC_URI += "file://variableresolution.patch"

@@ -1,0 +1,17 @@
+diff -rupN gst1.0-fsl-plugins-4.0.3/plugins/aiurdemux/aiurdemux.c gst1.0-fsl-plugins/plugins/aiurdemux/aiurdemux.c
+--- gst1.0-fsl-plugins-4.0.3/plugins/aiurdemux/aiurdemux.c	2019-09-03 11:19:23.129059629 -0600
++++ gst1.0-fsl-plugins/plugins/aiurdemux/aiurdemux.c	2019-09-03 11:18:32.493464993 -0600
+@@ -2254,6 +2254,13 @@ static void aiurdemux_parse_audio (GstAi
+             stream->info.audio.n_channels, stream->info.audio.rate,stream->bitrate);
+       }
+         break;
++      case AUDIO_PCM_MULAW:
++	codec = "PCM";
++	mime =
++	    g_strdup_printf
++            ("audio/x-mulaw, channels=(int)%ld, rate=(int)%ld,bitrate=(int)%ld",
++            stream->info.audio.n_channels, stream->info.audio.rate,stream->bitrate);
++	break;
+       case AUDIO_REAL:
+         switch (stream->codec_sub_type) {
+           case REAL_AUDIO_RAAC:
