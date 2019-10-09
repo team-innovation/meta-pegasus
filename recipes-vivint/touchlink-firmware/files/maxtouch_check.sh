@@ -16,7 +16,11 @@ check_and_set() {
 	mxtusr=$(mxt-app -R -T 38)
 	mxtpar=$(echo $mxtusr | xxd -p -r)
 	mxtmfg="NA"
-        if [ "$mxtfam" = '166' ]; then
+        if [ "${mxtusr:0:5}" = "0B 0E" ]; then
+                echo "Setting BOE panel"
+                mxt-app --load /lib/firmware/maxtouch-wallsly_boe.cfg
+		mxtmfg="BOE"
+        elif [ "${mxtpar:0:2}" = "ND" ]; then
                 echo "Setting NVD panel"
                 mxt-app --load /lib/firmware/maxtouch-wallsly_nvd.cfg
 		mxtmfg="NVD"
@@ -28,6 +32,16 @@ check_and_set() {
                 echo "Setting Haier panel"
                 mxt-app --load /lib/firmware/maxtouch-wallsly_haier.cfg
 		mxtmfg="Haier"
+	elif [ "$mxtfam" = '166' ]; then
+		if [ "$mxtver" = "V1.0.AB" ]; then
+			echo "Setting NVD panel"
+			mxt-app --load /lib/firmware/maxtouch-wallsly_nvd.cfg
+			mxtmfg="NVD"
+		elif [ "$mxtver" = "V1.0.AA" ]; then
+			echo "Setting BOE panel"
+			mxt-app --load /lib/firmware/maxtouch-wallsly_boe.cfg
+			mxtmfg="BOE"
+		fi
 	else
 		mxt-app --load /lib/firmware/maxtouch-wallsly_haier.cfg
 		source /etc/profile.d/qt5.sh
