@@ -8,7 +8,7 @@ LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 GIT_UBOOT_SERVER = "${GIT_SERVER}"
-GIT_UBOOT_BRANCH = "slimline_sumo"
+GIT_UBOOT_BRANCH = "slimline-imx"
 GIT_UBOOT_PROTOCOL = "ssh"
 GIT_UBOOT_REV = "${AUTOREV}"
 UBOOT_MACHINE = "mx6dlslimline_defconfig"
@@ -25,6 +25,6 @@ LOCALVERSION ?= "-${SRCBRANCH}"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(mx6)"
 
-PV = "2018.03+git${SRCPV}"
-PR = "r1"
+PV = "2017.03+git${SRCPV}"
+PR = "r18"
 

@@ -17,11 +17,12 @@ PROVIDES = "${PN}"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 GIT_WALLSLY_UBOOT_SERVER ?= "${GIT_SERVER}"
-GIT_WALLSLY_UBOOT_BRANCH = "wallsly_sumo"
+GIT_WALLSLY_UBOOT_BRANCH = "wallsly-imx"
 GIT_WALLSLY_UBOOT_REV ?= "${AUTOREV}"
 GIT_WALLSLY_UBOOT_PROTOCOL ?= "ssh"
 
 SRC_URI = "git://${GIT_WALLSLY_UBOOT_SERVER}/uboot-imx-wallsly;protocol=${GIT_WALLSLY_UBOOT_PROTOCOL};branch=${GIT_WALLSLY_UBOOT_BRANCH} \
+           file://fix-build-for-gcc7.patch \
            "
 
 S = "${WORKDIR}/git"
@@ -34,7 +35,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "(mx6)"
 
 SRCREV = "${GIT_WALLSLY_UBOOT_REV}"
-PV = "2018.03+git${SRCPV}"
+PV = "2017.03+git${SRCPV}"
 PR = "r1"
 
 do_compile_append() {
