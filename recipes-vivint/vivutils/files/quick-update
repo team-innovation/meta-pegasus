@@ -233,6 +233,17 @@ evaluate_options() {
 	maybe_run_update
 }
 
+network_module_prepare() {
+	mode=$(sqlite3 /media/extra/db/netd.db "select value from property where name='network_operation_mode';")
+	[ "$mode" = 6 ] && {
+		local netd_run_state=$(procman status | grep netd | awk '{print $2}')
+		[ "$netd_run_state" = "running" ] && {
+			writelog "clearing less aggressive recovery for mesh nodes"
+			send_net_router_command 'netv clear less_aggressive_recovery all' > /dev/null
+		}
+	}
+}
+
 maybe_run_update() {
 
 	# collect any usage errors; a comma delimeted string
@@ -255,6 +266,9 @@ maybe_run_update() {
 	[ $clean -gt 0 ] || [ $switch -gt 0 ] || [ $latest -gt 0 ] ||
 		[ $sysimage ] || [ $url ] || [ $netimage ] ||
 		usage "Please provide at least one valid option,$errors"
+
+	# allow the network module to get ready
+	network_module_prepare
 
 	# If there is a valid set of option(s) run the update - overrides are handled here
 	[ $switch -gt 0 ] && switch_partition
