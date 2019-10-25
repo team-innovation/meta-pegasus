@@ -1,5 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
-PR_append = "-2"
+PR_append = "-3"
 SRC_URI_append = " file://rc_mxc_vivint.S file://rc_gs.S"
 
 do_install_append() {
