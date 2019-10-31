@@ -119,7 +119,7 @@ int pReadLine(int fd, char * buffer, int pBufLen)
         return(READ_EXCEPT);
     } /* endif */
 
-    /* nul terminate the string and see if we got an OK response */
+    /* null terminate the string and see if we got an OK response */
     *lPtr = '\0';
 
     if (strstr(buffer, "\nOK") != (char *)NULL) {
@@ -194,13 +194,14 @@ void qsleep(int millsec)
 int main(int argc,char *argv[])
 {
 
-    int opt,gFd;
+    int opt,gFd,n;
     char sFile[256];
     char sPort[256];
     char sCommand[128];
     char sBuffer[256];
     char c[4 * 1024];
     size_t temp,progress,size,iRe,nFileSize;
+    size_t progress_step = 10;
 
     bzero(sFile,sizeof(sFile));
     bzero(sPort,sizeof(sPort));
@@ -211,7 +212,7 @@ int main(int argc,char *argv[])
         switch(opt)
         {
             case 'f':
-            if(!access(optarg,0)==0)
+	    if(access(optarg,0) != 0)
             {
                 printf("ERROR:File not found\n");
                 return 1;
@@ -219,7 +220,7 @@ int main(int argc,char *argv[])
             memcpy(sFile,optarg,strlen(optarg));
             break;
             case 'p':
-            if(!access(optarg,0)==0)
+	    if(access(optarg,0) != 0)
             {
                 printf("ERROR:Port not found\n");
                 return 1;
@@ -238,7 +239,7 @@ int main(int argc,char *argv[])
         printf("ERROR:Missing port parameter\n");
         return 1;
     }
-    //get file size
+    /* get file size */
     FILE* pFile = fopen(sFile,"rb");
     if(pFile==NULL)
     {
@@ -249,8 +250,8 @@ int main(int argc,char *argv[])
     size = ftell(pFile);
     fseek(pFile,0,SEEK_SET);
 
-    printf("Input file size: %zu\n", size);
-    //open port
+    printf("Input file size: %zu bytes\n", size);
+    /* open port */
     gFd=pOpenPort(sPort);
     if(gFd==-1)
     {
@@ -258,14 +259,16 @@ int main(int argc,char *argv[])
         return 1;
     }
 
-    printf("Uploading file to modem...\n");
+    printf("Deleting any existing update directory...\n");
     sprintf(sCommand,"AT+QFDEL=\"Update\"");
     pSendCommand(gFd,sCommand);
     bzero(sCommand,sizeof(sCommand));
     pReadReply(gFd,sBuffer,sizeof(sBuffer));
 
-    sprintf(sCommand,"AT+QFUPL=\"UFS:Update\",%lu",size);
+    printf("Uploading file to modem...\n");
+    sprintf(sCommand,"AT+QFUPL=\"UFS:Update\",%lu", size);
     pSendCommand(gFd,sCommand);
+    nFileSize = 0;
     if(pReadReply(gFd,sBuffer,sizeof(sBuffer))==0)
     {
         while(!feof(pFile))
@@ -282,12 +285,13 @@ int main(int argc,char *argv[])
             progress = temp / size;
             if(progress == 100)
             {
-                printf( "progress : %zu%% finished (%zu bytes)\n", progress, nFileSize);
+		printf( "upload progress : %zu%% finished (%zu bytes)\n", progress, nFileSize);
             }
-            else
+	    else if (progress >= progress_step)
             {
-                printf( "progress : %zu%% finished (%zu bytes)\r", progress, nFileSize);
-            }
+		printf( "upload progress : %zu%% finished (%zu bytes)\n", progress, nFileSize);
+		progress_step += 10;
+	    }
         }
         usleep(10000);
     }
@@ -298,19 +302,23 @@ int main(int argc,char *argv[])
         return 1;
     }
 
+    printf("Starting update...\n");
     bzero(sCommand,sizeof(sCommand));
     sprintf(sCommand,"at+qfotadl=\"/data/ufs/Update\"");
     pSendCommand(gFd,sCommand);
     pReadReply(gFd,sBuffer,sizeof(sBuffer));
     pClosePort(gFd);
-    while(1)
+
+    printf("Waiting for port to close...\n");
+    for(n = 0; n < 60; n++)
     {
-        if(!(access(sPort,0)==0))
+	if(access(sPort,0)!=0)
             break;
         sleep(1);
     }
     sleep(10);
 
+    printf("Opening port to check update progress...\n");
     gFd=pOpenPort(sPort);
     if(gFd==-1)
     {
@@ -322,13 +330,15 @@ int main(int argc,char *argv[])
     pClosePort(gFd);
     sleep(15);
 
-    while(1)
+    printf("Waiting for port after status check...\n");
+    for(n = 0; n < 60; n++)
     {
         if(access(sPort,F_OK)==0)
             break;
         sleep(1);
     }
 
+    printf("Opening port to check final status...\n");
     gFd=pOpenPort(sPort);
     bzero(sCommand,sizeof(sCommand));
     sprintf(sCommand,"at+qgmr");
@@ -336,12 +346,14 @@ int main(int argc,char *argv[])
     if(gFd!=-1)
         pReadReply(gFd,sBuffer,sizeof(sBuffer));
 
-    // Clear the UFS folder
+    /* Clear the UFS folder */
+    printf("Cleaning up after update...\n");
     sprintf(sCommand,"AT+QFDEL=\"Update\"");
     pSendCommand(gFd,sCommand);
     bzero(sCommand,sizeof(sCommand));
     pReadReply(gFd,sBuffer,sizeof(sBuffer));
     fclose(pFile);
 
+    printf("Firmware update completed\n");
     return 0;
 }
