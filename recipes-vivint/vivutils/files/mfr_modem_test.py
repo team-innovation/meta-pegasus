@@ -92,13 +92,13 @@ class ModemDevice:
         if self._serial_port:
             return
 
-        #print("Opening serial port {}...".format(serial_port))
-        # make sure serial port is ready (file link exists) - give it up to 10 seconds
-        for n in range(0, 20):
+        print("Opening serial port {}...".format(serial_port))
+        # make sure serial port is ready (file link exists) - give it up to 30 seconds
+        for n in range(0, 30):
             if os.path.exists(serial_port):
                 break
             else:
-                time.sleep(0.5)
+                time.sleep(1)
 
         if os.path.exists(serial_port):
             self._serial_port = Serial(port=serial_port, baudrate=baud_rate, timeout=timeout)
@@ -739,13 +739,11 @@ class QuectelEG91:
 
     def reflash_modem(self, force_flash=True, current_version=None):
         file_list = glob.glob("/var/lib/firmware/Quectel/*.zip")
-        firmware_file = None
-        if file_list:
-            firmware_file = file_list[0]
-        else:
+        if len(file_list) == 0:
             print("Error reflashing modem - no firmware files found in /var/lib/firmware/Quectel")
             return False
 
+        firmware_file = file_list[0]
         if firmware_file:
             # close the serial port
             self._device.close_serial_port()
@@ -816,7 +814,6 @@ if __name__ == "__main__":
     FIRMWARE_FOLDER = "/var/lib/firmware"
     modem = None
     update_firmware = False
-    is_quectel = False
 
     # open the device and determine modem type
     device = ModemDevice()
@@ -829,7 +826,6 @@ if __name__ == "__main__":
     port_name = AT_PORT_HL7588
     if device_id == 3:
         port_name = AT_PORT_EG91
-        is_quectel = True
         # delete sierra firmware files
         try:
             shutil.rmtree(FIRMWARE_FOLDER + "/Sierra")
@@ -844,15 +840,28 @@ if __name__ == "__main__":
 
     if not device.open_serial_port(port_name):
         # reset and try again
+        print("Modem not responding - trying hard reset...")
         if not device.reset_hard(port_name):
-            print("Error: Modem is not responding")
+            print("Error: Modem is not responding - Quitting.")
             device.turn_off()
             quit()
 
-    # get the modem type
-    device.write_command("AT+CGMM")
-    device_name = device.read_result()
-    print("Device ID: {}".format(device_name))
+    # check for modem response
+    found_ok = False
+    for n in range(5):
+        device.write_command("AT")
+        result = device.read_result()
+        if result and "OK" in result:
+            found_ok = True
+            break
+        else:
+            time.sleep(2)
+
+    if not found_ok:
+        print("Modem is not responding")
+        device.turn_off()
+        quit()
+
     if device_id == 1:
         print("Found Sierra HL7588 modem")
         modem = SierraHL7588(device)
@@ -870,6 +879,7 @@ if __name__ == "__main__":
 
     update_firmware = is_upgrade_needed(firmware_version, device_id)
     if update_firmware:
+        result = None
         if device_id is 1:      # Sierra
             if "SWIMCB71XX.A." in firmware_version or "SWIMCB71XX-AIM" in firmware_version:
                 result = modem.reflash_modem(CARRIER_ATT)

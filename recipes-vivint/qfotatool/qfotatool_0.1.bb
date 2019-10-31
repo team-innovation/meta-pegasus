@@ -2,7 +2,7 @@ SUMMARY = "Quectel FOTA Tool"
 DESCRIPTION = "Tool for performing local FOTA firmware updates"
 SECTION = "base"
 LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = "file://DTool.c;md5=fbcd3a67045963559e7094b6356afaa0"
+LIC_FILES_CHKSUM = "file://DTool.c;md5=d7f4db8ca2427e38c83206cbb3ea3bbb"
 PR = "r1"
 
 SRC_URI = "file://DTool.c"
