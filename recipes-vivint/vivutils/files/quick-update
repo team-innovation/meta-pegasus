@@ -236,8 +236,8 @@ evaluate_options() {
 network_module_prepare() {
 	mode=$(sqlite3 /media/extra/db/netd.db "select value from property where name='network_operation_mode';")
 	[ "$mode" = 6 ] && {
-		local netd_run_state=$(procman status | grep netd | awk '{print $2}')
-		[ "$netd_run_state" = "running" ] && {
+		local netd_pid=$(pgrep netd)
+		[ -n "$netd_pid" ] && {
 			writelog "clearing less aggressive recovery for mesh nodes"
 			send_net_router_command 'netv clear less_aggressive_recovery all' > /dev/null
 		}
