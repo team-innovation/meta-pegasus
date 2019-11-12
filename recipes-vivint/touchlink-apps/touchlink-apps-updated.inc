@@ -34,6 +34,7 @@ do_install_append () {
         chmod +x ${D}/${INSTALL_DIR}/updated/updated.pyc
 	install -d "${D}${sysconfdir}/logrotate.d"
 	install -m 0600 "${WORKDIR}/updated.logrotate" "${D}${sysconfdir}/logrotate.d/updated" 
+	install -m 0600 "${WORKDIR}/segfault.logrotate" "${D}${sysconfdir}/logrotate.d/segfault" 
 }
 
 pkg_postinst_ontarget_${PN}-updated () {
@@ -127,5 +128,6 @@ FILES_${PN}-updated = "\
 	${sysconfdir}/init.d/updated		\
 	${sysconfdir}/procman.d/updated	\
 	${sysconfdir}/logrotate.d/updated	\
+	${sysconfdir}/logrotate.d/segfault	\
        "
 
