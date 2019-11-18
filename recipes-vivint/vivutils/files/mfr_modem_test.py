@@ -14,6 +14,7 @@ SIM_TELUS_PREFIX = "8912"
 
 class ModemDevice:
     def __init__(self):
+        self._serial_port_name = ""
         self._serial_port = None
         self._last_command = None
 
@@ -77,31 +78,36 @@ class ModemDevice:
 
     def turn_on(self):
         self.serial_gpio_access()
-        if not self.serial_gpio_is_enabled():
-            self.serial_gpio_enable(False)
-            self.serial_gpio_enable(True)
-            return True
-        return False
+        self.serial_gpio_enable(False)
+        self.serial_gpio_enable(True)
+        return True
 
     def turn_off(self):
         self.serial_gpio_access()
         self.serial_gpio_enable(False)
         return True
 
-    def open_serial_port(self, serial_port="/dev/ttyACM0", baud_rate=115200, timeout=5):
-        if self._serial_port:
-            return
+    def set_serial_port(self, port_name):
+        self._serial_port_name = port_name
 
-        print("Opening serial port {}...".format(serial_port))
+    def open_serial_port(self):
+        if self._serial_port:
+            return True
+
+        if not self._serial_port_name:
+            print("Error: Trying to open serial port with no serial port name configured.")
+            return False
+
+        #print("Opening serial port {}...".format(serial_port))
         # make sure serial port is ready (file link exists) - give it up to 30 seconds
-        for n in range(0, 30):
-            if os.path.exists(serial_port):
+        for n in range(0, 60):
+            if os.path.exists(self._serial_port_name):
                 break
             else:
-                time.sleep(1)
+                time.sleep(0.5)
 
-        if os.path.exists(serial_port):
-            self._serial_port = Serial(port=serial_port, baudrate=baud_rate, timeout=timeout)
+        if os.path.exists(self._serial_port_name):
+            self._serial_port = Serial(port=self._serial_port_name, baudrate=115200, timeout=5)
             return True
 
         return False
@@ -111,6 +117,16 @@ class ModemDevice:
         if self._serial_port:
             self._serial_port.close()
             self._serial_port = None
+
+    def wait_for_port_closed(self, timeout=30):
+        time_expired = time.monotonic() + timeout
+        while os.path.exists(self._serial_port_name) and time.monotonic() < time_expired:
+            time.sleep(1)
+
+        if os.path.exists(self._serial_port_name):
+            return False
+
+        return True
 
     def write_command(self, command):
         if not self._serial_port:
@@ -166,21 +182,21 @@ class ModemDevice:
         self._serial_port.timeout = orig_timeout
         return result_buffer.decode("utf-8")
 
-    def reset_hard(self, port_name="/def/ttyACM0"):
+    def reset_hard(self):
         self.close_serial_port()
         self.serial_gpio_access()
         self.serial_gpio_reset(False)
         time.sleep(1)
         self.serial_gpio_reset(True)
         time.sleep(5)
-        if self.open_serial_port(port_name):
+        if self.open_serial_port():
             time.sleep(5)
             return True
 
         return False
 
-#-----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
 class SierraHL7588:
 
     def __init__(self, device):
@@ -201,27 +217,24 @@ class SierraHL7588:
 
     def get_firmware_version(self):
         try:
-            if self._device._serial_port is not None:
-                self._device.write_command("AT+CGMR")
-                buffer = self._device.read_result()
+            self._device.write_command("AT+CGMR")
+            buffer = self._device.read_result()
 
-                if len(buffer) == 0:
-                    return ""
+            if len(buffer) == 0:
+                return ""
 
-                # strip the command down to just the returned version
-                tuples = buffer.split("\r\n")
+            # strip the command down to just the returned version
+            tuples = buffer.split("\r\n")
 
-                tuple_num = 0
-                for tuple in tuples:
-                    if tuple == "OK":
-                        break
-                    else:
-                        tuple_num += 1
+            tuple_num = 0
+            for tuple in tuples:
+                if tuple == "OK":
+                    break
+                else:
+                    tuple_num += 1
 
-                if tuple_num > 1:
-                    return tuples[tuple_num - 2]
-            else:
-                print("Error: Serial port is not open")
+            if tuple_num > 1:
+                return tuples[tuple_num - 2]
 
         except Exception as exception:
             print("Error reading version: {}".format(exception))
@@ -245,60 +258,54 @@ class SierraHL7588:
             current_sim = self.get_sim()
 
         if current_sim == "1":
-            sim1 = self.get_iccid("1")
+            sim1 = self.get_iccid()
             self.select_sim(2, wait=True)
         else:
-            sim2 = self.get_iccid("2")
+            sim2 = self.get_iccid()
             self.select_sim(1, wait=True)
 
         current_sim = self.get_sim()
         if current_sim == "1":
-            sim1 = self.get_iccid("1")
+            sim1 = self.get_iccid()
         else:
-            sim2 = self.get_iccid("2")
+            sim2 = self.get_iccid()
 
         return imei, sim1, sim2
 
     def get_imei(self):
         try:
-            if self._device._serial_port is not None:
-                self._device.write_command("AT+CGSN")
-                buffer = self._device.read_result()
+            self._device.write_command("AT+CGSN")
+            buffer = self._device.read_result()
 
-                if len(buffer) == 0:
-                    return ""
+            if len(buffer) == 0:
+                return ""
 
-                # strip the command down to just the returned version
-                tuples = buffer.split("\r\n")
+            # strip the command down to just the returned version
+            tuples = buffer.split("\r\n")
 
-                tuple_num = 0
-                for tuple in tuples:
-                    if tuple == "OK":
-                        break
-                    else:
-                        tuple_num += 1
+            tuple_num = 0
+            for tuple in tuples:
+                if tuple == "OK":
+                    break
+                else:
+                    tuple_num += 1
 
-                if tuple_num > 1:
-                    return tuples[tuple_num - 2]
-            else:
-                print("Error: Serial port is not open")
+            if tuple_num > 1:
+                return tuples[tuple_num - 2]
 
         except Exception as exception:
             print("Error reading IMEI: {}".format(exception))
 
         return ""
 
-
     def get_sim(self):
         try:
-            if self._device._serial_port is not None:
-                self._device.write_command("AT+KSIMSEL?")
-                buffer = self._device.read_result()
-
-                tuples = buffer.split("\r\n")
-                for tuple in tuples:
-                    if "+KSIMSEL: " in tuple:
-                        return tuple[10:].split(",")[0]
+            self._device.write_command("AT+KSIMSEL?")
+            buffer = self._device.read_result()
+            tuples = buffer.split("\r\n")
+            for tuple in tuples:
+                if "+KSIMSEL: " in tuple:
+                    return tuple[10:].split(",")[0]
         except Exception as exception:
             print("Error reading SIM {}: {}".format(sim_number, exception))
 
@@ -306,54 +313,46 @@ class SierraHL7588:
 
     def select_sim(self, sim_number, wait=True):
         try:
-            if self._device._serial_port is not None:
-                print("Switching to SIM{}...".format(sim_number))
-                self._device.write_command("AT+KSIMSEL={}".format(sim_number))
-                buffer = self._device.read_result()
+            print("Switching to SIM{}...".format(sim_number))
+            self._device.write_command("AT+KSIMSEL={}".format(sim_number))
+            buffer = self._device.read_result()
 
-                if "OK" in buffer and wait:
-                    self.wait_for_ready()
-            else:
-                print("Error: Serial port is not open")
+            if "OK" in buffer and wait:
+                self.wait_for_ready()
 
         except Exception as exception:
             print("Error selecting SIM {}: {}".format(sim_number, exception))
 
-    def get_iccid(self, sim_number):
-        #print("Getting ICCID for sim {}...".format(sim_number))
+    def get_iccid(self):
         for n in range(3):
             try:
-                if self._device._serial_port:
-                    self._device.write_command("AT+CCID")
-                    buffer = self._device.read_result()
+                self._device.write_command("AT+CCID")
+                buffer = self._device.read_result()
 
-                    if "SIM NOT INSERTED" in buffer:
-                        return None
+                if "SIM NOT INSERTED" in buffer:
+                    return None
 
-                    if "ERROR" in buffer:
-                        # wait a few seconds and try again
-                        time.sleep(5)
-                        continue
+                if "ERROR" in buffer:
+                    # wait a few seconds and try again
+                    time.sleep(5)
+                    continue
 
-                    # strip the command down to just the returned version
-                    tuples = buffer.split("\r\n")
+                # strip the command down to just the returned version
+                tuples = buffer.split("\r\n")
 
-                    for tuple in tuples:
-                        if "+CCID: " in tuple:
-                            ccid = tuple[7:]
+                for tuple in tuples:
+                    if "+CCID: " in tuple:
+                        ccid = tuple[7:]
 
-                            # we get all zeros, it just didn't read correctly, try again
-                            if ccid == "00000000000000000000":
-                                time.sleep(5)
-                                continue
+                        # we get all zeros, it just didn't read correctly, try again
+                        if ccid == "00000000000000000000":
+                            time.sleep(5)
+                            continue
 
-                            #print("SIM {} CCID: {}".format(sim_number, tuple[7:]))
-                            return ccid
-                else:
-                    print("Error: Serial port is not open")
+                        return ccid
 
             except Exception as exception:
-                print("Error reading SIM {}: {}".format(sim_number, exception))
+                print("Error reading SIM: {}".format(exception))
                 self.reset_hard()
 
         return ""
@@ -374,24 +373,20 @@ class SierraHL7588:
 
     def reset(self, connect=True):
         try:
-            if self._device._serial_port is not None:
-                #print("Resetting modem...")
-                self._device.write_command("AT+CFUN=1,1")
-                self._device.read_result()
-                self._device.close_serial_port()
-                if connect:
-                    time.sleep(7)
-                    if self._device.open_serial_port("/dev/ttyACM0"):
-                        self.wait_for_nvbackup()
-                        return True
-                    else:
-                        print("Modem did not respond - exiting")
-                        return False
-                else:
+            #print("Resetting modem...")
+            self._device.write_command("AT+CFUN=1,1")
+            self._device.read_result()
+            self._device.close_serial_port()
+            if connect:
+                time.sleep(7)
+                if self._device.open_serial_port():
+                    self.wait_for_nvbackup()
                     return True
+                else:
+                    print("Modem did not respond - using hard reset")
+                    return self.reset_hard()
             else:
-                print ("Serial port is not open - using hard reset")
-                return self.reset_hard()
+                return True
         except:
             pass
 
@@ -404,7 +399,7 @@ class SierraHL7588:
         time.sleep(1)
         self._device.serial_gpio_reset(True)
         time.sleep(5)
-        if self._device.open_serial_port("/dev/ttyACM0"):
+        if self._device.open_serial_port():
             self.wait_for_nvbackup()
             return True
 
@@ -452,26 +447,7 @@ class SierraHL7588:
         print("Failed to verify NVRAM backup completion")
         return False
 
-    def reflash_modem(self, carrier, force_flash=True, current_version=None):
-        file_list = []
-        if carrier == CARRIER_ATT:
-            file_list = glob.glob("/var/lib/firmware/Sierra/*SWIMCB71XX-AIM*.fls")
-            if not file_list:
-                file_list = glob.glob("/var/lib/firmware/Sierra/*.A.*.fls")
-        elif carrier == CARRIER_VERIZON:
-            file_list = glob.glob("/var/lib/firmware/Sierra/*-VC*.fls")
-            if not file_list:
-                file_list = glob.glob("/var/lib/firmware/Sierra/*.V.*.fls")
-
-        firmware_file = None
-        if file_list:
-            # sort the list so if we have multiple files, we'll get the latest at the end of the list
-            file_list.sort()
-            firmware_file = file_list[-1]
-        else:
-            print("Error reflashing modem - invalid carrier specified, or no firmware files found in /var/lib/firmware/Sierra")
-            return False
-
+    def reflash_modem(self, firmware_file, force_flash=True, current_version=None):
         if firmware_file:
             flash_proc = subprocess.Popen(["/usr/bin/swdltool", firmware_file], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             time.sleep(5)
@@ -488,8 +464,6 @@ class SierraHL7588:
                 if stdout:
                     stdout = stdout.decode("utf-8")
 
-                    #print(stdout)
-
                     # check result
                     if "failed" in stdout:
                         print("Flash operation failed!")
@@ -498,13 +472,13 @@ class SierraHL7588:
                     elif "Firmware download successful" in stdout:
                         # flash has completed
                         print("Success flashing file {}".format(firmware_file))
-                        if self._device.open_serial_port("/dev/ttyACM0"):
+                        if self._device.open_serial_port():
                             self.wait_for_nvbackup()
                             return True
                 else:
                     print("Flash operation completed with no output")
                     print(stdout)
-                    if self._device.open_serial_port("/dev/ttyACM0"):
+                    if self._device.open_serial_port():
                         self.wait_for_nvbackup()
                         return True
             except subprocess.TimeoutExpired:
@@ -518,13 +492,14 @@ class SierraHL7588:
 
         return False
 
-#-----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
 class QuectelEG91:
 
     def __init__(self, device):
         self._device = device
         self._last_command = None
+        self._orig_sim = 1
 
     def wait_for_ready(self):
         result_buffer = self._device.monitor(timeout=10)
@@ -534,28 +509,38 @@ class QuectelEG91:
         return False
 
     def get_firmware_version(self):
-        try:
-            if self._device._serial_port is not None:
-                self._device.write_command("AT+QGMR")
-                buffer = self._device.read_result()
-
-                if len(buffer) == 0:
-                    return ""
-
-                # strip the command down to just the returned version
-                tuples = buffer.split("\r\n")
-
-                tuple_num = 0
-                for tuple in tuples:
-                    if tuple == "OK":
+        def _get_output(output, command, prefix=None):
+            lines = output.split("\r\n")
+            for line in lines:
+                if len(line) > 0:
+                    if line == command:
+                        continue
+                    elif prefix:
+                        if line.startswith(prefix):
+                            return line[len(prefix):]
+                    elif line == "OK":
                         break
                     else:
-                        tuple_num += 1
+                        return line
+            return ""
 
-                if tuple_num > 1:
-                    return tuples[tuple_num - 2]
-            else:
-                print("Error: Serial port is not open")
+        try:
+            # first get sim selection, so we know what SIM to return to if we reflash
+            self._orig_sim = self.get_sim()
+            print("Module is on SIM{}".format(self._orig_sim))
+
+            # Get version and sub-version
+            self._device.write_command("AT+QGMR")
+            version = self._device.read_result()
+            version = _get_output(version, "AT+QGMR\r")
+
+            self._device.write_command("AT+CSUB")
+            csub = self._device.read_result()
+            csub = _get_output(csub, "AT+CSUB\r", prefix="SubEdition: ")
+
+            if len(version) == 0 or len(csub) == 0:
+                return ""
+            return "{}-{}".format(version, csub)
 
         except Exception as exception:
             print("Error reading version: {}".format(exception))
@@ -567,74 +552,73 @@ class QuectelEG91:
         sim1 = None
         sim2 = None
 
+        current_sim = self.get_sim()
+
         # Take module out of auto mode so we won't try registering on Verizon
         self._device.write_command('AT+QMBNCFG="AutoSel",0')
+        self._device.read_result()
         self._device.write_command('AT+QMBNCFG="Select","VoLTE-ATT"')
+        self._device.read_result()
 
-        current_sim = self.get_sim()
-
-        if current_sim == "0":
-            sim1 = self.get_iccid("0")
-            print("Switching to SIM2...")
+        if current_sim in ["0", 0]:
+            sim1 = self.get_iccid()
+            print("SIM0 ICCID: {}, Switching to SIM1...".format(sim1))
             self.select_sim(1)
+            current_sim = "1"
+            sim2 = self.get_iccid()
+            print("SIM1 ICCID: {}".format(sim2))
         else:
-            sim2 = self.get_iccid("1")
-            print("Switching to SIM1...")
+            sim2 = self.get_iccid()
+            print("SIM1 ICCID: {}, Switching to SIM0...".format(sim2))
             self.select_sim(0)
+            current_sim = "0"
+            sim1 = self.get_iccid()
+            print("SIM0 ICCID: {}".format(sim1))
 
-        current_sim = self.get_sim()
-        if current_sim == "0":
-            sim1 = self.get_iccid("0")
-        else:
-            sim2 = self.get_iccid("1")
-
-        print("Restoring auto select mode and changing to SIM2...")
+        print("Restoring auto select mode...")
         self._device.write_command('AT+QMBNCFG="AutoSel",1')
-        if current_sim != "1":
-            print("Switching to SIM2...")
-            self.select_sim(1, reboot=False)
+        self._device.read_result()
+
+        if int(current_sim) != int(self._orig_sim):
+            print("Restoring SIM selection to SIM{}...".format(self._orig_sim))
+            self.select_sim(self._orig_sim, reboot=False)
 
         return imei, sim1, sim2
 
     def get_imei(self):
         try:
-            if self._device._serial_port is not None:
-                self._device.write_command("AT+CGSN")
-                buffer = self._device.read_result()
+            self._device.write_command("AT+CGSN")
+            buffer = self._device.read_result()
 
-                if len(buffer) == 0:
-                    return ""
+            if len(buffer) == 0:
+                return ""
 
-                # strip the command down to just the returned version
-                tuples = buffer.split("\r\n")
+            # strip the command down to just the returned version
+            tuples = buffer.split("\r\n")
 
-                tuple_num = 0
-                for tuple in tuples:
-                    if tuple == "OK":
-                        break
-                    else:
-                        tuple_num += 1
+            tuple_num = 0
+            for tuple in tuples:
+                if tuple == "OK":
+                    break
+                else:
+                    tuple_num += 1
 
-                if tuple_num > 1:
-                    return tuples[tuple_num - 2]
-            else:
-                print("Error: Serial port is not open")
+            if tuple_num > 1:
+                return tuples[tuple_num - 2]
 
         except Exception as exception:
             print("Error reading IMEI: {}".format(exception))
 
         return ""
 
-
     def get_sim(self):
         try:
-            if self._device._serial_port is not None:
-                self._device.write_command("AT+QDSIM?")
-                buffer = self._device.read_result()
-                tuples = buffer.split("\r\n")
-                for tuple in tuples:
-                    if "+QDSIM: " in tuple:
-                        return tuple[8:].split(",")[0]
+            self._device.write_command("AT+QDSIM?")
+            buffer = self._device.read_result()
+            tuples = buffer.split("\r\n")
+            for tuple in tuples:
+                if "+QDSIM: " in tuple:
+                    return tuple[8:]
         except Exception as exception:
             print("Error reading SIM {}: {}".format(sim_number, exception))
 
@@ -642,55 +626,43 @@ class QuectelEG91:
 
     def select_sim(self, sim_number, reboot=True):
         try:
-            if self._device._serial_port is not None:
-                self._device.write_command("AT+QDSIM={}".format(sim_number))
-                buffer = self._device.read_result()
+            self._device.write_command("AT+QDSIM={}".format(sim_number))
+            buffer = self._device.read_result()
 
-                if "OK" in buffer:
+            if "OK" in buffer:
+                if reboot:
                     self.reset(connect=True)
-            else:
-                print("Error: Serial port is not open")
-
-            # close serial and reboot modem then wait for modem to be ready again
-            if reboot:
-                self.reset()
-
         except Exception as exception:
             print("Error selecting SIM {}: {}".format(sim_number, exception))
 
-    def get_iccid(self, sim_number):
-        #print("Getting ICCID for sim {}...".format(sim_number))
+    def get_iccid(self):
         # make sure sim is ready
         ready = False
         for n in range(3):
-            if self._device._serial_port:
-                self._device.write_command("AT+CPIN?")
-                buffer = self._device.read_result()
-                if "+CPIN: READY" in buffer:
-                    ready = True
-                    break
-                else:
-                    time.sleep(5)
+            self._device.write_command("AT+CPIN?")
+            buffer = self._device.read_result()
+            if "+CPIN: READY" in buffer:
+                ready = True
+                break
+            else:
+                time.sleep(5)
 
         if ready:
-            if self._device._serial_port:
-                self._device.write_command("AT+CCID")
-                buffer = self._device.read_result()
+            self._device.write_command("AT+CCID")
+            buffer = self._device.read_result()
 
-                if "ERROR" in buffer:
-                    # wait a few seconds and try again
-                    time.sleep(5)
-                    return ""
+            if "ERROR" in buffer:
+                # wait a few seconds and try again
+                time.sleep(5)
+                return ""
 
-                # strip the command down to just the returned version
-                tuples = buffer.split("\r\n")
+            # strip the command down to just the returned version
+            tuples = buffer.split("\r\n")
 
-                for tuple in tuples:
-                    if "+CCID: " in tuple:
-                        ccid = tuple[7:]
-                        return ccid
-            else:
-                print("Error: Serial port is not open")
+            for tuple in tuples:
+                if "+CCID: " in tuple:
+                    ccid = tuple[7:]
+                    return ccid
         else:
             print("Error: SIM not ready")
 
@@ -698,24 +670,20 @@ class QuectelEG91:
 
     def reset(self, connect=True):
         try:
-            if self._device._serial_port is not None:
-                #print("Resetting modem...")
-                self._device.write_command("AT+CFUN=1,1")
-                self._device.read_result()
-                self._device.close_serial_port()
-                if connect:
-                    time.sleep(25)
-                    if self._device.open_serial_port("/dev/ttyUSB4"):
-                        self.wait_for_ready()
-                        return True
-                    else:
-                        print("Modem did not respond - exiting")
-                        return False
-                else:
+            #print("Resetting modem...")
+            self._device.write_command("AT+CFUN=1,1")
+            self._device.read_result()
+            self._device.close_serial_port()
+            if connect:
+                time.sleep(25)
+                if self._device.open_serial_port():
+                    self.wait_for_ready()
                     return True
+                else:
+                    print("Modem did not respond - using hard reset")
+                    return self.reset_hard()
             else:
-                print ("Serial port is not open - using hard reset")
-                return self.reset_hard()
+                return True
         except:
             pass
 
@@ -728,51 +696,77 @@ class QuectelEG91:
         time.sleep(1)
         self._device.serial_gpio_reset(True)
         time.sleep(5)
-        if self._device.open_serial_port("/dev/ttyUSB4"):
+        if self._device.open_serial_port():
             return True
 
         return False
 
     def power_down(self):
-        self._device.close_serial_port()
-        self._device.serial_gpio_enable(False)
+        print("Powering modem off...")
+        try:
+            for n in range(5):
+                self._device.write_command("AT+QPOWD")
+                buffer = self._device.read_result()
+                if "OK" in buffer:
+                    break
+                else:
+                    time.sleep(2)
+            buffer = self._device.read_result(timeout=12)
+            if "POWERED DOWN" in buffer:
+                print("Device powered down")
+        except:
+            print("Power off request failed - forcing power off")
 
-    def reflash_modem(self, force_flash=True, current_version=None):
-        file_list = glob.glob("/var/lib/firmware/Quectel/*.zip")
-        if len(file_list) == 0:
-            print("Error reflashing modem - no firmware files found in /var/lib/firmware/Quectel")
-            return False
+        self._device.turn_off()
 
-        firmware_file = file_list[0]
+    def reflash_modem(self, firmware_file, force_flash=True, current_version=None):
         if firmware_file:
             # close the serial port
             self._device.close_serial_port()
 
-            flash_proc = subprocess.Popen(["/usr/local/bin/qfotatool", "-p", "/dev/ttyUSB4", "-f", firmware_file], bufsize=-1)
+            flash_proc = subprocess.Popen(["/usr/local/bin/qfotatool", "-p", "/dev/ttyUSB4", "-f", "/var/lib/firmware/Quectel/"+firmware_file], bufsize=-1)
             time.sleep(10)
+            result = False
 
             try:
-                stdout, stderr = flash_proc.communicate()
-
+                flash_proc.communicate(timeout=1800)
                 if flash_proc.returncode == 0:
                     # flash has completed
                     print("Success flashing file {}".format(firmware_file))
-                    if self._device.open_serial_port("/dev/ttyUSB4"):
-                        return True
+                    if self._device.open_serial_port():
+                        result = True
                 else:
                     print("Flash operation failed with error {}".format(flash_proc.returncode))
-                    return False
             except Exception as exception:
                 # otherwise poll to see if the app is done
                 print("Exception running flash program: {}".format(exception))
+
+            if result:
+                return True
+
+            # if there was an error upgrading the modem, then the modem may reboot up to 5 times.  We won't be able to
+            # send "AT and get OK until it's done.
+            for n in range(5):
+                try:
+                    if self._device.wait_for_port_closed():
+                        if self._device.open_serial_port():
+                            # try sending AT
+                            self._device.write_command("AT")
+                            buffer = self._device.read_result(timeout=1)
+                            if buffer and "OK" in output:
+                                return False
+                            else:
+                                self._device.close_serial_port()
+                except:
+                    self._device.close_serial_port()
         else:
             print("Error reflashing modem - no firmware files found in /var/lib/firmware/Quectel")
             return False
 
         return False
 
-#-----------------------------------------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------------------------------------
 def is_upgrade_needed(current_version, device_id):
     file_version = ""
     file_list = []
@@ -788,24 +782,27 @@ def is_upgrade_needed(current_version, device_id):
         if len(file_list) > 0:
             file_list.sort()
             file_version = file_list[-1]
+            print("Sierra HL7588 firmware update detected from {} to {}".format(current_version, file_version))
+            return True, file_version
         else:
-            return False
+            return False, None
     elif device_id is 3:    #Quectel
         if os.path.exists('/var/lib/firmware/Quectel/version'):
+            upgrade_file = ""
             with open("/var/lib/firmware/Quectel/version", "r") as content_file:
-                file_version = content_file.read().strip("\n")
+                version_text = content_file.read().strip("\n")
+                version_elements = version_text.split(",")
+                ver_from = version_elements[0]
+                file_version = version_elements[1]
+                upgrade_file = version_elements[2]
             if current_version == file_version:
-                return False
-            else:
-                file_list = glob.glob("/var/lib/firmware/Quectel/*.zip")
-                if len(file_list) == 0:
-                    print("Quectel firmware image is missing")
-                    file_version = ""
+                return False, None
+            elif current_version == ver_from:
+                print("Quectel EG91 firmware update detected from {} to {}".format(current_version, file_version))
+                return True, upgrade_file
 
-    if file_version:
-        print("Modem firmware update detected from {} to {}".format(current_version, file_version))
-        return True
-    return False
+    return False, None
+
 
 if __name__ == "__main__":
     MODEM_IDS_FILE = "/media/extra/conf/modemids"
@@ -823,39 +820,50 @@ if __name__ == "__main__":
 
     # get device id
     device_id = device.serial_gpio_get_id()
-    port_name = AT_PORT_HL7588
     if device_id == 3:
-        port_name = AT_PORT_EG91
+        device.set_serial_port(AT_PORT_EG91)
+        is_quectel = True
         # delete sierra firmware files
         try:
             shutil.rmtree(FIRMWARE_FOLDER + "/Sierra")
         except:
             pass
     else:
+        device.set_serial_port(AT_PORT_HL7588)
         # delete quectel firmware files
         try:
             shutil.rmtree(FIRMWARE_FOLDER + "/Quectel")
         except:
             pass
 
-    if not device.open_serial_port(port_name):
+    if not device.open_serial_port():
         # reset and try again
-        print("Modem not responding - trying hard reset...")
-        if not device.reset_hard(port_name):
-            print("Error: Modem is not responding - Quitting.")
+        if not device.reset_hard():
+            print("Error: Modem is not responding")
             device.turn_off()
             quit()
 
     # check for modem response
+    print("Checking for modem response...")
     found_ok = False
     for n in range(5):
-        device.write_command("AT")
-        result = device.read_result()
-        if result and "OK" in result:
-            found_ok = True
-            break
-        else:
-            time.sleep(2)
+        try:
+            device.write_command("AT")
+            result = device.read_result()
+            if result and "OK" in result:
+                found_ok = True
+                break
+            else:
+                time.sleep(2)
+        except:
+            print("Modem may have rebooted - trying to open serial again...")
+            device.close_serial_port()
+            time.sleep(20)
+            if device.open_serial_port():
+                print("serial port open - trying again")
+            else:
+                print("Modem still not responding - resetting and trying again")
+                device.reset_hard()
 
     if not found_ok:
         print("Modem is not responding")
@@ -877,34 +885,55 @@ if __name__ == "__main__":
     firmware_version = modem.get_firmware_version()
     print("Current firmware version is {}".format(firmware_version))
 
-    update_firmware = is_upgrade_needed(firmware_version, device_id)
+    update_firmware, update_file = is_upgrade_needed(firmware_version, device_id)
     if update_firmware:
-        result = None
         if device_id is 1:      # Sierra
             if "SWIMCB71XX.A." in firmware_version or "SWIMCB71XX-AIM" in firmware_version:
-                result = modem.reflash_modem(CARRIER_ATT)
+                result = modem.reflash_modem(update_file)
             elif "SWIMCB71XX.V." in firmware_version or "SWIMCB71XX-VC" in firmware_version:
-                result = modem.reflash_modem(CARRIER_VERIZON)
+                result = modem.reflash_modem(update_file)
             else:
                 print("Unknown firmware version {} - can't update".format(firmware_version))
                 modem.power_down()
                 quit()
         elif device_id is 3:    # Quectel
-            result = modem.reflash_modem()
+            result = modem.reflash_modem(update_file)
 
         if result:
             print("Modem firmware update successful")
         else:
             print("Error updating firmware")
+            # modem may be rebooting - wait for a bit before trying to open it
+            device.close_serial_port()
+            time.sleep(15)
+            if not device.open_serial_port():
+                if not device.reset_hard():
+                    print("Unable to open serial port - exiting")
+                    quit()
     else:
         print("Modem firmware is up to date")
 
     if os.path.exists(MODEM_IDS_FILE):
         print("Modemids file found, exiting.")
     else:
-        print("Reading modem serial number and SIM IDs...")
-        # read SIM ICCIDs
-        imei, sim1, sim2 = modem.read_ids()
+        imei = ""
+        sim1 = ""
+        sim2 = ""
+        for n in range(3):
+            try:
+                print("Reading modem serial number and SIM IDs...")
+                # read SIM ICCIDs
+                imei, sim1, sim2 = modem.read_ids()
+                break
+            except:
+                print("Modem may have rebooted - trying to open serial again...")
+                device.close_serial_port()
+                time.sleep(20)
+                if device.open_serial_port():
+                    print("serial port open - trying again")
+                else:
+                    print("Modem still not responding - resetting and trying again")
+                    device.reset_hard()
 
         # set values to blank instead of None
         if not imei:
