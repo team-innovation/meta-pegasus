@@ -408,7 +408,7 @@ int main(int argc, char *argv[])
 		       else
 		       {
 		    	   total += written;
-                   fprintf(stderr, "@Total recorded bytes %d\n", total);
+                   //fprintf(stderr, "@Total recorded bytes %d\n", total);
                    if(total >= filesize_threshold)                   
                    {            
                     fprintf(stderr, "Closing file %s\n", filename); 
