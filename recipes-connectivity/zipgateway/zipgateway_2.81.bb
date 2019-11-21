@@ -10,7 +10,7 @@ RDEPENDS_${PN} = "bridge-utils"
 PR = "r1"
 PV = "2.81+git${SRCPV}"
 
-SRCREV = "827f8e4187885c4b73e177944bde91a4501e4ac7"
+SRCREV = "ff67a5d02e4e5abd6a480b324488ff577e088845"
 SRCBRANCH = "master"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
@@ -39,6 +39,7 @@ do_install_append() {
 FILES_${PN} += "${prefix}/local/sbin/zipgateway"
 FILES_${PN} += "${prefix}/local/sbin/udprelay"
 FILES_${PN} += "${prefix}/local/etc/zipgateway.cfg"
+FILES_${PN} += "${prefix}/local/etc/zipgateway_provisioning_list.cfg"
 FILES_${PN} += "${prefix}/local/etc/zipgateway.tun"
 FILES_${PN} += "${prefix}/local/etc/zipgateway.fin"
 FILES_${PN} += "${prefix}/local/etc/ZIPR.x509_1024.pem"
