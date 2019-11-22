@@ -37,13 +37,14 @@ QT5_DEPENDS = "\
 	libgles2-mx6 \
     	libopenvg-mx6 \
     	imx-gpu-viv-g2d \
-	imx-gpu-viv-kernel \
 	python3-pyopengl \
 	touchlink-qt5-profile \
 	touchlink-ssl-profile \
 "
 
 QT5_PKGS = "\
+	libqt5declarative5 \
+	libqt5xmlpatterns5 \
 	mtdev \
 	qtbase	\
 	qtbase-fonts-pfa  \

@@ -4,10 +4,20 @@ DESCRIPTION = "touchlink video packages, imx firmware, gst plugins, etc"
 LICENSE = "MIT"
 LICENSE_FLAGS_WHITELIST = "commercial license"
 
-PR = "r21"
+PR = "r20"
 
 inherit packagegroup
 
+RPROVIDES_${PN} = " \
+	libg2d0.8 \
+	libglib-2.0-utils \
+	libgstapp-1.0 \
+	libgstaudio-1.0 \
+	libgstpbutils-1.0 \
+	libgstvideo-1.0 \
+	libgudev-1.0-0 \
+	libopus0 \
+"
 
 RDEPENDS_${PN} = " \
 	firmware-imx \
@@ -39,20 +49,30 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-good-wavenc \
 	gstreamer1.0-plugins-good-wavparse \
 	gstreamer1.0-rtsp-server \
-	gst1.0-fsl-plugin \
-	gst1.0-fsl-plugin-gplay \
-	gst1.0-fsl-plugin-grecorder \
+        gstreamer-imx \
+        gstreamer-imx-imxaudio \
+        gstreamer-imx-imxeglvivsink \
+        gstreamer-imx-imxg2d \
+        gstreamer-imx-imxipu \
+        gstreamer-imx-imxpxp \
+        gstreamer-imx-imxv4l2videosrc \
+        gstreamer-imx-imxvpu \
+        gstreamer-imx-meta \
 	imx-lib \
 	ffmpeg \
 	libfslcodec \
 	libfslparser \
+	libglib-2.0-utils \
 	libgstcodecparsers-1.0-0 \
+	libgstimxblitter0 \
+	libgstimxcommon0 \
+	libgstimxcompositor0 \
 	libgstriff-1.0-0 \
 	libgstrtp-1.0-0 \
 	libgstrtsp-1.0-0 \
 	libgstrtspserver-1.0-0 \
 	libgstsdp-1.0-0 \
 	libgsturidownloader-1.0-0 \
-	libopus \
+	libopus0 \
 	civetweb \
 "

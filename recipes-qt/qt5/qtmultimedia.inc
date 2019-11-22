@@ -2,7 +2,7 @@ require qt5.inc
 
 # There are no LGPLv3-only licensed files in this component.
 
-DEPENDS += "qtdeclarative gst1.0-fsl-plugin"
+DEPENDS += "qtdeclarative"
 
 PACKAGECONFIG ??= "${@bb.utils.contains('DISTRO_FEATURES', 'alsa', 'alsa', '', d)} \
                    ${@bb.utils.contains('DISTRO_FEATURES', 'pulseaudio', 'pulseaudio', '', d)}"
@@ -32,5 +32,4 @@ SRC_URI += "\
     file://enable-live-sync.patch \
     file://qtlatency.patch \
     file://gst-empty-frame.patch \
-    file://imxdmabuf.patch \
 "
