@@ -13,7 +13,7 @@ PR = "r3"
 DEPENDS="libusb1"
 
 
-SRC_URI = "git://github.com/atmel-maxtouch/obp-utils.git;protocol=git \
+SRC_URI = "git://github.com/atmel-maxtouch/obp-utils.git;protocol=https \
            file://obp-utils-makefile.patch \
           "
 SRC_URI[md5sum] = "a86b93c9e7c81f1108598f4e7d81dee2"
