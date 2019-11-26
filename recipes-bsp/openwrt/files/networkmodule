@@ -11,6 +11,9 @@ start() {
 }
 
 stop() {
+    echo "Stop network WiFi"
+    /opt/2gig/utils/send_net_router_command "netv stop wifi"
+    sleep 5
     echo -n "Power cycle network module"
     echo 1 > /sys/class/netm-ctl/spi3/pulse_power
 }

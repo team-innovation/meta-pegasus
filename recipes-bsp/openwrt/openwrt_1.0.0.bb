@@ -12,7 +12,8 @@ SRC_URI_append = "git://${GIT_ARTIFACTS_SERVER}/artifacts;protocol=${GIT_ARTIFAC
 inherit update-rc.d
 
 INITSCRIPT_NAME = "networkmodule"
-INITSCRIPT_PARAMS = "stop 89 0 6 ."
+INITSCRIPT_PARAMS = "stop 16 0 6 ."
+
 PACKAGES = "${PN}-rt3352 \
             ${PN}-mt7620 \
 	    "
