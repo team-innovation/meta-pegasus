@@ -7,7 +7,7 @@ DESCRIPTION = "OpenWrt RT3352/MT7620 Network Module"
 HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 
-PR = "r70"
+PR = "r71"
 PV = "${SRCPV}"
 
 RT3352_uImage = "RT3352_uImage"
