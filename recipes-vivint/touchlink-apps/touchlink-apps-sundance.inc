@@ -30,6 +30,14 @@ export HOST_SYS
 export STATIC_LIB_DIR
 
 do_compile_prepend() {
+    export ZWAVE_300_SERIES
+    # Build plugin_server
+    cd ${S}/code/sundance/plugins
+    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib
+    # Build plugin_server_legacy
+    cd ${S}/code/sundance/plugins
+    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib ZWAVE_300_SERIES=TRUE
+
     # Build extensions
     cd ${S}/code/sundance
     BUILD_SYS=${BUILD_SYS} HOST_SYS=${HOST_SYS} STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib \
@@ -62,7 +70,8 @@ do_install_append () {
     chmod +x ${D}/${INSTALL_DIR}/sundance/sundance.pyc
 
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
-    cp -a ${S}/code/sundance/build/lib.linux-x86_64-3.5/iotivity_client.cpython-35m-arm-linux-gnueabihf.so ${D}/${libdir}/${PYTHON_DIR}/site-packages
+    cp -a ${S}/code/sundance/build/lib.linux-x86_64-3.5/iotivity_current.cpython-35m-arm-linux-gnueabihf.so ${D}/${libdir}/${PYTHON_DIR}/site-packages
+    cp -a ${S}/code/sundance/build/lib.linux-x86_64-3.5/iotivity_legacy.cpython-35m-arm-linux-gnueabihf.so ${D}/${libdir}/${PYTHON_DIR}/site-packages
 
     install -d ${D}/${prefix}/local/etc
     cp -a ${S}/code/sundance/zwave_cmd_class.cfg ${D}/${prefix}/local/etc
@@ -70,11 +79,11 @@ do_install_append () {
     install -d ${D}/${prefix}/local/etc
     cp -a ${S}/code/sundance/zwave_device_rec.txt ${D}/${prefix}/local/etc
 
-    install -d ${D}/${prefix}/local/sbin
-    cp -a ${S}/code/sundance/plugins/plugin_server_current ${D}/${prefix}/local/sbin
+    install -d ${D}/${libdir}
+    cp -a ${S}/code/sundance/plugins/libplugin_server_legacy.so ${D}/${libdir}
     
-    install -d ${D}/${prefix}/local/sbin
-    cp -a ${S}/code/sundance/plugins/plugin_server_legacy ${D}/${prefix}/local/sbin
+    install -d ${D}/${libdir}
+    cp -a ${S}/code/sundance/plugins/libplugin_server_current.so ${D}/${libdir}
     
     install -d ${D}/${libdir}
     cp -a ${S}/code/sundance/plugins/hue/libhueplugin.so ${D}/${libdir}
@@ -146,14 +155,12 @@ FILES_${PN}-sundance = "\
 	${INSTALL_DIR}/sundance/vivint_generated/*	\
 	${INSTALL_DIR}/sundance/sundance*	\
 	${sysconfdir}/init.d/sundance		\
-	${sysconfdir}/init.d/plugin_server		\
 	${sysconfdir}/init.d/mpm_client		\
 	${sysconfdir}/procman.d/sundance	\
-	${sysconfdir}/procman.d/plugin_server	\
     ${prefix}/local/etc/zwave_cmd_class.cfg \
     ${prefix}/local/etc/zwave_device_rec.txt \
-    ${prefix}/local/sbin/plugin_server_legacy \
-    ${prefix}/local/sbin/plugin_server_current \
+    ${libdir}/libplugin_server_legacy.so \
+    ${libdir}/libplugin_server_current.so \
     ${libdir}/libhueplugin.so \
     ${libdir}/libnestplugin.so \
 	"

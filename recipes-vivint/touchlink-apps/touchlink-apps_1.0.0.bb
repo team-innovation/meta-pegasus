@@ -208,13 +208,6 @@ RDEPENDS_${PN} = "\
 
 do_compile() {
     export HAS_BREAKPAD
-    export ZWAVE_300_SERIES
-    # Build plugin_server
-    cd ${S}/code/sundance/plugins
-    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
-    # Build plugin_server_legacy
-    cd ${S}/code/sundance/plugins
-    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE ZWAVE_300_SERIES=TRUE
     # Build hue plugin
     cd ${S}/code/sundance/plugins/hue
     oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
