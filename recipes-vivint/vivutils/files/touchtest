@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo 1 > /dev/vivint/psoc/backlights/bl_backlight_blank
+source /etc/profile.d/qt5.sh
 export FB_MULTI_BUFFER=2
 qmlfile=/tmp/touchtest.qml
 
@@ -8,6 +8,23 @@ pidof pumpernickel &> /dev/null
 if [ $? == 0 ];
 then
 	procman stop pumpernickel 2>&1 /dev/null &
+fi
+
+if grep -q wallsly /proc/device-tree/compatible; then
+	echo 0 > /sys/iodbus/lcd/lcd_power_off/value
+	mxtfam=$(mxt-app -i | grep Family | awk '{print $2}')
+	mxtver=$(mxt-app -i | grep Firmware | awk '{print $6}')
+	if [ "$mxtfam" = '166' ]; then
+		if [ "$mxtver" = "V1.0.AB" ]; then
+			mxt-app --load /lib/firmware/maxtouch-wallsly_nvd.cfg
+		elif [ "$mxtver" = "V1.0.AA" ]; then
+			mxt-app --load /lib/firmware/maxtouch-wallsly_boe.cfg
+		fi
+	else
+		mxt-app --load  /lib/firmware/maxtouch-wallsly_haier.cfg
+	fi
+else
+	echo 1 > /sys/class/i2c-dev/i2c-3/device/3-0034/backlights/bl_backlight_blank
 fi
 
 S=$(cat <<EOF
@@ -26,6 +43,7 @@ Window {
     property bool top_left_touched: false
     property bool bottom_right_touched: false
     property int test_timeout: 1
+    property int order: 1
 
     Item {
         Timer {
@@ -60,9 +78,15 @@ Window {
            onClicked: {
                parent.color = 'green'
                top_left_touched = true
+	       if (order < 4) {
+	           order = order + 2
+	       }
                if (bottom_right_touched) {                                                                             
-                   console.log("PASSED!")
-                   //Qt.quit()
+		   if (order == 4) {
+		       console.log("REVERSED!")
+		   } else {
+	   	       console.log("PASSED!")
+		   }
                }
            }
        }
@@ -83,9 +107,15 @@ Window {
            onClicked: {
                parent.color = 'green'
                bottom_right_touched = true
+	       if (order < 4 ) {
+	           order = order * 2
+	       }
                if (top_left_touched) {
-                   console.log("PASSED!")
-                   //Qt.quit()
+		   if (order == 4) {
+		       console.log("REVERSED!")
+		   } else {
+                       console.log("PASSED!")
+		   }
                }
            }
        }
@@ -102,6 +132,18 @@ EOF
 )
 
 echo -e "$S" > $qmlfile
-/usr/bin/qt5/qmlscene $qmlfile
+ret=$(/usr/bin/qt5/qmlscene $qmlfile 2>&1)
+if [ "$ret" == "qml: REVERSED!" ]; then
+	if [ "$mxtfam" = '166' ]; then
+		echo "qml: FAILED!"
+	else
+		mxt-app --load /lib/firmware/maxtouch-wallsly_tianma.cfg
+		mxt-app --reset
+		echo "qml: PASSED!"
+	fi
+else
+	echo $ret
+fi
+
 rm $qmlfile 
 unset FB_MULTI_BUFFER

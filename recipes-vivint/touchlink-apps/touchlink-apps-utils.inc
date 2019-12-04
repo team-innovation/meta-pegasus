@@ -7,7 +7,7 @@ UTILS_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-utils = "${PR}${UTILS_PREPEND}${UTILS_REVISION}"
 
 DEPENDS += "python3-core python3"
-RDEPENDS_touchlink-apps-utils += "python3-core python3"
+RDEPENDS_touchlink-apps-utils += "python3-core python3 bash"
 
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/utils/

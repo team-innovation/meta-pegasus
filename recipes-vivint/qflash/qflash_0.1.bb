@@ -9,7 +9,8 @@ PR = "1.3.2"
 SRC_URI = "file://Quectel_QFlash.tar.gz"
 
 DEPENDS = ""
-
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+TARGET_CC_ARCH += "${LDFLAGS}"
 S = "${WORKDIR}"
 
 do_compile() {
@@ -20,5 +21,3 @@ do_install() {
 	install -d ${D}/usr/bin
 	install -m 0755 ${S}/qflash ${D}/usr/bin/qflash
 }
-
-INSANE_SKIP_${PN} = "ldflags"

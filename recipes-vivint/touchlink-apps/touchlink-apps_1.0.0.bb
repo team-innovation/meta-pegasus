@@ -181,19 +181,12 @@ RDEPENDS_${PN} = "\
 	python3-phue \
  	iotivity-resource \
  	iotivity-bridging-plugins \
-    zwave-nvm-converter \
+    	zwave-nvm-converter \
  	breakpad \
 "
 
 do_compile() {
     export HAS_BREAKPAD
-    export ZWAVE_300_SERIES
-    # Build plugin_server
-    cd ${S}/code/sundance/plugins
-    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
-    # Build plugin_server_legacy
-    cd ${S}/code/sundance/plugins
-    oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE ZWAVE_300_SERIES=TRUE
     # Build hue plugin
     cd ${S}/code/sundance/plugins/hue
     oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
@@ -241,7 +234,7 @@ do_compile() {
 	# generate proxies
 	if [ ${UPDATE_STRING_TABLE} ] ; then
 			bbnote "This is a buildbot build"
-		        ${S}/scripts/generate_all_proxies.py --allow-new-entries		
+		        ${S}/scripts/generate_all_proxies.py --allow-new-entries
 	else
 	        bbnote "This is NOT a buildbot build"
 	        ${S}/scripts/generate_all_proxies.py --verbose

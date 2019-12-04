@@ -9,44 +9,55 @@
 # Short-Description: Make sure the correct screen configuration is loaded 
 ### END INIT INFO
 
-alias mxt-app="mxt-app -d i2c-dev:2-004a"
-
 check_and_set() {
     if grep -q wallsly /proc/device-tree/compatible; then
-        mxtfam=$(mxt-app -d i2c-dev:2-004a -i | grep Family | awk '{print $2}')
-        mxtver=$(mxt-app -d i2c-dev:2-004a -i | grep Family | awk '{print $6}')
-	    mxtusr=$(mxt-app -d i2c-dev:2-004a -R -T 38)
-        mxtpar=$(echo $mxtusr | xxd -p -r)
-    	mxtmfg="NA"
-        if [ "$mxtfam" = '166' ]; then
+	mxtfam=$(mxt-app -i | grep Family | awk '{print $2}')
+	mxtver=$(mxt-app -i | grep Firmware | awk '{print $6}')
+	mxtusr=$(mxt-app -R -T 38)
+	mxtpar=$(echo $mxtusr | xxd -p -r)
+	mxtmfg="NA"
+        if [ "${mxtusr:0:5}" = "0B 0E" ]; then
+                echo "Setting BOE panel"
+                mxt-app --load /lib/firmware/maxtouch-wallsly_boe.cfg
+		mxtmfg="BOE"
+        elif [ "${mxtpar:0:2}" = "ND" ]; then
                 echo "Setting NVD panel"
-                mxt-app -d i2c-dev:2-004a --load /lib/firmware/maxtouch-wallsly_nvd.cfg
-	    mxtmfg="NVD"
+                mxt-app --load /lib/firmware/maxtouch-wallsly_nvd.cfg
+		mxtmfg="NVD"
         elif [ "${mxtpar:0:2}" = "TA" ]; then
 		echo "Setting Tianma panel"
-		mxt-app -d i2c-dev:2-004a --load /lib/firmware/maxtouch-wallsly_tianma.cfg
-	    mxtmfg="Tianma"
+		mxt-app --load /lib/firmware/maxtouch-wallsly_tianma.cfg 
+		mxtmfg="Tianma"
 	elif [ "${mxtusr:0:11}" = "01 15 06 04" ]; then
                 echo "Setting Haier panel"
-                mxt-app -d i2c-dev:2-004a --load /lib/firmware/maxtouch-wallsly_haier.cfg
-	    mxtmfg="Haier"
+                mxt-app --load /lib/firmware/maxtouch-wallsly_haier.cfg
+		mxtmfg="Haier"
+	elif [ "$mxtfam" = '166' ]; then
+		if [ "$mxtver" = "V1.0.AB" ]; then
+			echo "Setting NVD panel"
+			mxt-app --load /lib/firmware/maxtouch-wallsly_nvd.cfg
+			mxtmfg="NVD"
+		elif [ "$mxtver" = "V1.0.AA" ]; then
+			echo "Setting BOE panel"
+			mxt-app --load /lib/firmware/maxtouch-wallsly_boe.cfg
+			mxtmfg="BOE"
+		fi
 	else
-		mxt-app -d i2c-dev:2-004a --load /lib/firmware/maxtouch-wallsly_haier.cfg
+		mxt-app --load /lib/firmware/maxtouch-wallsly_haier.cfg
 		source /etc/profile.d/qt5.sh
 		echo 0 > /sys/iodbus/lcd/lcd_power_off/value
 		/usr/local/bin/touchcheck
 		if [ "$?" -eq "1" ]; then
 			echo "Setting Tianma panel"
-			mxt-app -d i2c-dev:2-004a --load /lib/firmware/maxtouch-wallsly_tianma.cfg
+			mxt-app --load /lib/firmware/maxtouch-wallsly_tianma.cfg
 		else
 			echo "Setting Haier panel"
-			mxt-app -d i2c-dev:2-004a --load /lib/firmware/maxtouch-wallsly_haier.cfg
+			mxt-app --load /lib/firmware/maxtouch-wallsly_haier.cfg
 		fi
 	fi
-    elif grep -q slimline /proc/device-tree/compatible; then
-	    mxtmfg="Haier"
-		mxtver=$(mxt-app -d i2c-dev:2-004a -i | grep Family | awk '{print $6}')
-        mxt-app -d i2c-dev:1-004a --load /lib/firmware/maxtouch-slimline.cfg
+    else
+	mxtmfg="Haier"
+	mxtver=$(mxt-app -i | grep Firmware | awk '{print $6}')
     fi
 
 	boot_dir=/media/bootscript

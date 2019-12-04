@@ -28,8 +28,8 @@ do_install() {
     install -d ${D}/${sysconfdir}/init.d
     install -m 0755 ${S}/mfg_test ${D}/${sysconfdir}/init.d/mfg_test
     install -d ${D}/srv/www/cgi-bin
-    install -m 0700 ${S}/connect_to_ap.py ${D}/srv/www/cgi-bin
-    install -m 0700 ${S}/reset_to_factory_defaults.py ${D}/srv/www/cgi-bin
+    install -m 0755 ${S}/connect_to_ap.py ${D}/srv/www/cgi-bin
+    install -m 0755 ${S}/reset_to_factory_defaults.py ${D}/srv/www/cgi-bin
     install -m 0644 ${S}/udhcpd.conf ${D}${sysconfdir}
     install -d ${D}/var/lib/misc
     install -m 0644 ${S}/udhcpd.leases ${D}/var/lib/misc
