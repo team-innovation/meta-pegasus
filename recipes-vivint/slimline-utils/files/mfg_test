@@ -49,8 +49,14 @@ then
     done
 fi
 
+#TODO: Need this reviewed but fixes debug mode on panel.
 # verify signature
 import_key
+
+if [ -d "/home/root/.gnupg" ]
+then
+        mkdir "/home/root/.gnupg"
+fi
 
 test_script=$(find /media -name run_mfg_test_slimline.sh)
 if [ -z $test_script ]
