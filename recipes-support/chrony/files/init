@@ -1,0 +1,44 @@
+#!/bin/sh
+set -e
+
+PIDFILE=/var/run/chronyd.pid
+
+test -x /usr/sbin/chronyd || exit 0
+if [ ! -f /etc/chrony.conf ]; then
+    platform=`strings /proc/device-tree/compatible |	\
+            grep vivint |				\
+	    head -n 1 |					\
+	    cut -d"," -f2`
+
+    test -f /etc/chrony.conf.$platform || exit 0
+    ln -s /etc/chrony.conf.$platform /etc/chrony.conf
+fi
+
+case "$1" in
+    start)
+        echo "Starting chrony server: chronyd"
+        start-stop-daemon -S -p $PIDFILE -x /usr/sbin/chronyd
+        echo "done."
+        ;;
+    
+    stop)
+        echo -n "Stopping chrony server: chronyd"
+        start-stop-daemon -K -p $PIDFILE -x /usr/sbin/chronyd
+        echo "."
+        ;;
+
+    restart)
+        echo -n "Restarting chrony server: chronyd"
+        start-stop-daemon -K -p $PIDFILE --oknodo -x /usr/sbin/chronyd
+        sleep 2
+        start-stop-daemon -S -p $PIDFILE -x /usr/sbin/chronyd
+        echo "."
+        ;;
+
+    *)
+        echo "Usage: /etc/init.d/chrony {start|stop|restart}"
+        exit 1
+esac
+
+exit 0
+

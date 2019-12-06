@@ -1,0 +1,7 @@
+port 0
+cmdport 0
+local stratum 11
+driftfile /etc/chrony.drift
+dumpdir /var/log/chrony
+dumponexit
+acquisitionport 123
