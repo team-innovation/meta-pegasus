@@ -1,0 +1,14 @@
+diff -rupN Python-3.5.3/configure.ac Python/configure.ac
+--- Python-3.5.3/configure.ac	2018-06-21 13:40:16.518784296 -0600
++++ Python/configure.ac	2018-06-21 11:13:27.603797184 -0600
+@@ -4826,8 +4826,8 @@ int main()
+ }
+ ]])],
+ [ac_cv_working_tzset=yes],
+-[ac_cv_working_tzset=no],
+-[ac_cv_working_tzset=no])])
++[ac_cv_working_tzset=yes],
++[ac_cv_working_tzset=yes])])
+ AC_MSG_RESULT($ac_cv_working_tzset)
+ if test "$ac_cv_working_tzset" = yes
+ then
