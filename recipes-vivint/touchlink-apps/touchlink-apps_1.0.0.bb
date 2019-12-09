@@ -62,7 +62,7 @@ require touchlink-apps-pyftpd.inc
 
 DISTRO_PR = ".1"
 
-PR = "ml117"
+PR = "ml119"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -89,7 +89,7 @@ PREFERRED_VERSION_iotivity = "2.0.0"
 inherit autotools update-rc.d python3-dir python3native
 
 RSYNC_CMD = "rsync -azv --no-o --no-g --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage \
-             --exclude=_user_conf"
+             --exclude=_user_conf --exclude=.pytest_cache"
 
 
 FRAMEWORK_DIR = "${PYTHON_SITEPACKAGES_DIR}"
@@ -103,19 +103,36 @@ DEPENDS = " \
 	gstreamer1.0-plugins-base \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0 \
+	python3-setuptools-native \
+        python3-aiodns-native \
+        python3-aioconsole-native \
+        python3-aiohttp-native \
+        python3-async-generator-native \
+        python3-async-timeout-native \
+        python3-atomicwrites-native \
+        python3-attrs-native \
  	zipgateway \
  	zware \
  	iotivity \
-    zwave-nvm-converter \
+    	zwave-nvm-converter \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cachetools-native \
+	python3-cchardet-native \
 	python3-cherrypy-native \
+	python3-cstruct-native \
+        python3-coverage-native \
+        python3-certifi-native \
 	python3-cython-native \
 	python3-dateutil-native \
 	python3-gnupg-native \
 	python3-grpcio-native \
 	python3-grpcio-tools-native \
+	python3-pycares-native \
+        python3-multidict-native \
+        python3-terminaltables-native \
+        python3-idna-native \
+        python3-idna-ssl-native \
 	python3-googleapis-common-protos-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
@@ -124,43 +141,57 @@ DEPENDS = " \
 	python3-mock-native \
 	python3-msgpack-native \
 	python3-native \
+	python3-nose-native \
+        python3-pathlib2-native \
+        python3-paho-mqtt-native \
 	python3-pexpect-native \
+	python3-phue-native \
+        python3-pluggy-native \
 	python3-protobuf-native \
 	python3-ptyprocess-native \
 	python3-psutil-native \
 	python3-pyalsaaudio-native \
 	python3-pycrypto-native \
 	python3-pyftpdlib-native \
+	python3-pytest-native \
+        python3-pytest-asyncio-native \
+        python3-pytest-cov-native \
 	python3-pyinotify-native \
 	python3-pyserial-native \
+	python3-pysodium-native \
+        python3-py-native \
 	python3-pytz-native \
 	python3-requests-native \
+	python3-easydict-native \
 	python3-six-native \
 	python3-setproctitle-native \
 	python3-soco-native \
 	python3-sparsedict-native \
+	python3-sentry-sdk-native \
+        python3-toolz-native \
 	python3-transitions-native \
-	python3-phue-native \
-	python3-paho-mqtt-native \
-	python3-nose-native \
-	python3-coverage-native \
-	python3-cachetools-native \
-	python3-pysodium-native \
+	python3-typing-extensions-native \
+        python3-uvloop-native \
+        python3-wheel-native \
+        python3-urllib3-native \
 	python3-xmltodict-native \
+	python3-yarl-native \
 	rsync-native \
 	libsodium-native \
 	python3-pyopenssl-native \
 	python3-cryptography-native \
 	python3-cffi-native \
-	python3-idna-native \
 	python3-asn1crypto-native \
 	python3-pycparser-native \
-	python3-urllib3-native \
 	python3-chardet-native \
 	python3-certifi-native \
 	breakpad \
     	variant-lite \
 	taocpp-json \
+	zipgateway \
+        zware \
+        iotivity \
+        zwave-nvm-converter \
 "
 
 
@@ -175,8 +206,6 @@ RDEPENDS_${PN} = "\
 	python3-setproctitle \
 	python3-soco \
         python3-jsonschema \
-	python3-brisa \
-	python3-idna \
 	python3-sparsedict \
 	python3-phue \
  	iotivity-resource \
@@ -193,7 +222,7 @@ do_compile() {
     # Build nest plugin
     cd ${S}/code/sundance/plugins/nest
     oe_runmake STATIC_LIB_DIR=${STAGING_DIR_TARGET}/usr/lib HAS_BREAKPAD=TRUE
-	
+
     export PYTHONPATH=${S}/code/sundance/services/devices/generated/grpc:$PYTHONPATH
 
         #verify that the syntax for all JSON files in embedded-apps is correct

@@ -42,20 +42,20 @@ do_compile() {
 }
 
 do_install() {
-	mkdir -p ${D}/opt/2gig/ssl_certs
-	cp ${WORKDIR}/ca-certificates-subset.crt ${D}/opt/2gig/ssl_certs/
-	cp ${WORKDIR}/cacert.pem ${D}/opt/2gig/ssl_certs/ca-certificates.crt
-	cp ${WORKDIR}/ts ${D}/opt/2gig/ssl_certs
-	mkdir -p ${D}/etc/ssl
+	install -d ${D}/opt/2gig/ssl_certs
+	install -m 0644 ${WORKDIR}/ca-certificates-subset.crt ${D}/opt/2gig/ssl_certs/
+	install -m 0644 ${WORKDIR}/cacert.pem ${D}/opt/2gig/ssl_certs/ca-certificates.crt
+	install -m 0644 ${WORKDIR}/ts ${D}/opt/2gig/ssl_certs
+	install -d ${D}/etc/ssl
+	install -d ${D}/etc/ssl/certs
 	# /media/extra/ssl_certs gets created at post-install time. For now /etc/ssl/certs will be a dangling symlink
 	ln -sf /media/extra/ssl_certs ${D}/etc/ssl/certs
 }
 
-pkg_postinst_${PN} () {
+pkg_postinst_ontarget_${PN} () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for sundance
 #
-if [ x"$D" = "x" ]; then
     DEFAULT_CERTS_DIR=/opt/2gig/ssl_certs
     MEDIA_DIR=/media/extra
     MEDIA_SSL_CERT_DIR=$MEDIA_DIR/ssl_certs
@@ -78,10 +78,7 @@ if [ x"$D" = "x" ]; then
         # so that the property doesn't showing the wrong
         # certificate_bundle_version_sha224_base64 to the platform.
         /bin/rm -f $MEDIA_DIR/ssl_certs.tar
-fi
-else
-    exit 1
-fi
+    fi
 }
 
 FILES_${PN} = "/opt/2gig/ssl_certs/* /etc/ssl/certs"

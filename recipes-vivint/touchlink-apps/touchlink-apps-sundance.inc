@@ -19,13 +19,9 @@ RDEPENDS_${PN}-sundance = "\
 	python3-mmap \
 	python3-soco \
         python3-jsonschema \
-	python3-brisa \
-    python3-httpsig-na \
-    zipgateway \
-    bash \
-    iotivity \
-    iotivity-resource \
-    iotivity-bridging-plugins \
+    	python3-httpsig-na \
+    	zipgateway \
+    	bash \
 	"
 
 inherit distutils3
@@ -149,14 +145,14 @@ FILES_${PN}-sundance = "\
 	${sysconfdir}/init.d/sundance		\
 	${sysconfdir}/init.d/mpm_client		\
 	${sysconfdir}/procman.d/sundance	\
-    ${prefix}/local/etc/zwave_cmd_class.cfg \
-    ${prefix}/local/etc/zwave_device_rec.txt \
-    ${libdir}/libplugin_server_legacy.so \
-    ${libdir}/libplugin_server_current.so \
-    ${libdir}/libhueplugin.so \
-    ${libdir}/libnestplugin.so \
-    ${libdir}/liboc.so \
-    ${libdir}/liboctbstack.so \
+    	${prefix}/local/etc/zwave_cmd_class.cfg \
+    	${prefix}/local/etc/zwave_device_rec.txt \
+    	${libdir}/libplugin_server_legacy.so \
+    	${libdir}/libplugin_server_current.so \
+    	${libdir}/libhueplugin.so \
+    	${libdir}/libnestplugin.so \
+    	${libdir}/liboc.so \
+    	${libdir}/liboctbstack.so \
 	"
 
              

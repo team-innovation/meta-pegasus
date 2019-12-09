@@ -7,13 +7,14 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode qtdeclarative-native"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r14"
+PR = "r19"
 
 DEPENDS += " \
 	touchlink-apps \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cherrypy-native \
+	python3-certifi-native \	
 	python3-dateutil-native \
 	python3-gnupg-native \
 	python3-grpcio-native \
@@ -43,11 +44,12 @@ DEPENDS += " \
 	python3-setproctitle-native \
 	python3-soco-native \
 	python3-sparsedict-native \
+	python3-sentry-sdk-native \
+        python3-toolz-native \
 	python3-phue-native \
 	python3-paho-mqtt-native \
 	python3-urllib3-native \
 	python3-chardet-native \
-	python3-certifi-native \
 "
 
 SRCREV = "${GIT_APPS_REV}"
@@ -66,6 +68,8 @@ require recipes-qt/qt5/qt5.inc
 PYTHON_BASEVERSION = "3.5"
 PREFERRED_VERSION_python3 = "3.5.3"
 PREFERRED_VERSION_python-native = "3.5.3"
+
+EXTRA_QMAKEVARS_PRE += "INCLUDEPATH+=${STAGING_INCDIR} LIBS+=-L${STAGING_LIBDIR}"
 
 inherit python3-dir python3native
 
