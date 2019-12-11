@@ -12,10 +12,10 @@ SCR_MNT = "/media/bootscript"
 
 COMPATIBLE_MACHINE = "imx6dl-slimline"
 
-GIT_UBOOT_SERVER = "${GIT_SERVER}"
-GIT_UBOOT_BRANCH = "slimline-next"
-GIT_UBOOT_PROTOCOL = "ssh"
-GIT_UBOOT_REV = "${AUTOREV}"
+GIT_UBOOT_SERVER ?= "${GIT_SERVER}"
+GIT_UBOOT_BRANCH ?= "slimline-imx"
+GIT_UBOOT_PROTOCOL ?= "ssh"
+GIT_UBOOT_REV ?= "${AUTOREV}"
 
 SRC_URI = "git://${GIT_UBOOT_SERVER}/uboot-imx;protocol=${GIT_UBOOT_PROTOCOL};branch=${GIT_UBOOT_BRANCH}"
 SRCREV = "${GIT_UBOOT_REV}"
