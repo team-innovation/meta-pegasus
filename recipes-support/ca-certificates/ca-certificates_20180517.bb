@@ -47,7 +47,6 @@ do_install() {
 	install -m 0644 ${WORKDIR}/cacert.pem ${D}/opt/2gig/ssl_certs/ca-certificates.crt
 	install -m 0644 ${WORKDIR}/ts ${D}/opt/2gig/ssl_certs
 	install -d ${D}/etc/ssl
-	install -d ${D}/etc/ssl/certs
 	# /media/extra/ssl_certs gets created at post-install time. For now /etc/ssl/certs will be a dangling symlink
 	ln -sf /media/extra/ssl_certs ${D}/etc/ssl/certs
 }
