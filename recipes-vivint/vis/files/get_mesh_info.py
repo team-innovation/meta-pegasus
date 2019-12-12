@@ -163,7 +163,10 @@ class SSHToNetworkModule(CustomSSH):
 
         return result
 
-    def can_ping(self, address):
+    def can_ping(self, address=None):
+        if address is None:
+            address = self._server
+
         if address:
             import subprocess
             ret_code = subprocess.call(['ping', '-c', '1', address])
@@ -651,7 +654,7 @@ class NetworkModuleInfo:
                     pass
         return rows
 
-    def _parse_station_info(self, result, dhcpdump=None):
+    def _parse_station_info(self, result, dhcpdump=None, arp=None):
         stations = []
         if result is not None and len(result) > 0:
             lines = result.split('\n')
@@ -676,6 +679,19 @@ class NetworkModuleInfo:
                                     station_info['ip'] = d_entry['ip']
                                     station_info['hostname'] = d_entry['name']
                                     break
+
+                        if 'ip' not in station_info:
+                            if arp:
+                                for a_entry in arp:
+                                    if a_entry['mac'] == station_info['mac']:
+                                        station_info['ip'] = a_entry['ip']
+                                        if a_entry['hostname'] != '?':
+                                            station_info['hostname'] = a_entry['hostname']
+                                        else:
+                                            station_info['hostname'] = a_entry['mac']
+                                        break
+
+                        # TODO - Use arp if we do not find it in the dhcpdump
                     except IndexError:
                         pass
                 elif station_info and line:
@@ -878,7 +894,7 @@ class NetworkModuleInfo:
 
         wlan_mac = s._server_mac
         self.logger.debug('IFCONFIG on NM {} - {}'.format(s._server, wlan_mac))
-        for iface in ['br-lan', 'wlan0', 'wlan1']:
+        for iface in ['br-lan', 'wlan0', 'wlan1', 'wlan1-1']:
             data = {}
             try:
                 data['iface'] = iface
@@ -942,11 +958,18 @@ Interface wlan1
         rows = _parse_iw_info(result)
         return rows
 
-    def get_ap_station_info(self, s, dhcpdump=None):
+    def get_ap_station_info(self, s, dhcpdump=None, arp=None):
         result = s.execute_cmd('iw wlan1 station dump', strip_cmd=False)
         wlan_mac = s._server_mac
         self.logger.debug('STA ON AP {} - {}'.format(s._server, wlan_mac))
-        rows = self._parse_station_info(result, dhcpdump)
+        rows = self._parse_station_info(result, dhcpdump, arp)
+        result = s.execute_cmd('ifconfig wlan1-1', strip_cmd=False)
+        if 'Device not found' not in result:
+            result = s.execute_cmd('iw wlan1-1 station dump', strip_cmd=False)
+            rows0 = self._parse_station_info(result, dhcpdump, arp)
+            for r in rows0:
+                rows.append(r)
+
         self.logger.debug(rows)
         if len(rows) > 0:
             rows2 = self.get_iw_info(s)
@@ -1196,8 +1219,11 @@ Interface wlan1
                     msg = 'Getting MESH NODE INFO {} - {}'.format(s1._server, wlan_mac)
                     line = "-" * len(msg)
                     self.logger.debug('\n{}\n{}'.format(msg, line))
+                    # Get arp info from node
+                    arp = self.get_arp_info(s1)
+                    mesh_map[wlan_mac]['arp'] = arp
                     # Get Mesh node STA info from AP
-                    sta = self.get_ap_station_info(s1, self.dhcpdump)
+                    sta = self.get_ap_station_info(s1, self.dhcpdump, arp)
                     if len(sta):
                         self.logger.info('\tFound {} STA'.format(len(sta)))
                     mesh_map[wlan_mac]['sta_on_ap'] = sta
@@ -1209,9 +1235,6 @@ Interface wlan1
                     # Get Mesh node path
                     mpath = self.get_mesh_path_info(s1)
                     mesh_map[wlan_mac]['mesh_path'] = mpath
-                    # Get arp info from node
-                    arp = self.get_arp_info(s1)
-                    mesh_map[wlan_mac]['arp'] = arp
                     # Get iwinfo for both radios
                     iw = self.get_iwinfo(s1)
                     mesh_map[wlan_mac]['iwinfo'] = iw
@@ -1483,6 +1506,7 @@ class PanelSystemInfo:
 
     def get_camera_info(self):
         j = {}
+        k = {}
         try:
             import requests
             r = requests.post('http://{}:8080/camera_device/'.format(self.address))
@@ -1502,6 +1526,38 @@ class PanelSystemInfo:
                     mac = cam['properties']['camera_mac_address']
 
                 cam['properties']['camera_mac_address'] = mac.lower()
+
+            r = requests.post('http://{}:8080/lgit_poe_wifi_device/'.format(self.address))
+            k = json.loads(r.content.decode())
+            for cam_lg in k:
+                # Fix up MAC address
+                try:
+                    m = cam_lg['properties']['mac_address']
+                    if ':' not in m:
+                        #  fancy way to add : to the MAC
+                        mac = ':'.join([m[i: i + 2] for i in range(0, len(m), 2)])
+                    else:
+                        mac = m
+                except:
+                    mac = cam_lg['properties']['mac_address']
+
+                cam_lg['properties']['camera_mac_address'] = mac.lower()
+
+                cam_lg['properties']['connected_ssid'] = ''
+                cam_lg['properties']['wireless_link_quality'] = ''
+                try:
+                    cam_lg['properties']['wireless_signal_level'] = cam_lg['properties']['rssi']
+                    # Match up the camera name to the bridge so we can also show the IP of the camera in the name.
+                    for cam in j:
+                        if cam_lg['properties']['name'].startswith(cam['properties']['name']):
+                            cam_lg['properties']['name'] = '{} [{}]'.format(cam['properties']['name'], cam['properties']['camera_ip_address'])
+                            break
+                except:
+                    pass
+
+            # Append the list of LG bridges to the camera list (j).
+            for item in k:
+                j.append(item)
         except:
             pass
         return j
@@ -1531,6 +1587,31 @@ class PanelSystemInfo:
             pass
         return j
 
+    def get_slim_line_info(self):
+        j = {}
+        try:
+            import requests
+            r = requests.post('http://{}:8080/slim_line_device/'.format(self.address))
+            # print(r.content)
+            import json
+            j = json.loads(r.content.decode())
+            for cam in j:
+                # Fix up MAC address
+                try:
+                    m = cam['properties']['panel_mac_address']
+                    if ':' not in m:
+                        #  fancy way to add : to the MAC
+                        mac = ':'.join([m[i: i + 2] for i in range(0, len(m), 2)])
+                    else:
+                        mac = m
+                except:
+                    mac = cam['properties']['panel_mac_address']
+
+                cam['properties']['panel_mac_address'] = mac.lower()
+        except:
+            pass
+        return j
+
 def on_touchlink():
     uname = platform.uname()
     is_linux = "linux" in sys.platform
@@ -1540,7 +1621,8 @@ def on_touchlink():
 def main(use_ssdp=True):
     node_list = []
     p = PanelSystemInfo()
-    j = p.get_camera_info()
+    camera_info = p.get_camera_info()
+    panel_info = p.get_slim_line_info()
     # pprint(j)
     #
     # for cam in j:
@@ -1566,7 +1648,10 @@ def main(use_ssdp=True):
     print("------------------------------------------------------------------------------")
     dest_dir = '/srv/www/network' if on_touchlink() else '/tmp'
     with open('{}/tmp_cam.dat'.format(dest_dir), 'w') as f:
-        pprint(j, f)
+        pprint(camera_info, f)
+
+    with open('{}/tmp_panel.dat'.format(dest_dir), 'w') as f:
+        pprint(panel_info, f)
 
     with open('{}/tmp.dat'.format(dest_dir), 'w') as f:
         pprint(data, f)
