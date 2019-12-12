@@ -7,12 +7,15 @@ SECTION = "base"
 LICENSE = "MIT" 
 LIC_FILES_CHKSUM = "file://LICENSE-MIT;md5=d147f14c7e6b7edc53fc9053bef1e483"
 
-PR = "r5"
+PR = "r7"
 
 DEPENDS="vivutils"
 
 SRC_URI = "https://github.com/almende/vis/archive/v${PV}.tar.gz \
 	file://networkDot.html \
+	file://oui.csv \
+	file://node_map.html \
+	file://svglib.js \
 	file://graph_me.cgi \
 	file://iperf_me.cgi \
 	file://build_dot_graph.py \
@@ -25,6 +28,9 @@ SERVER_ROOT = "/srv/www/network"
 
 FILES_${PN} = "${SERVER_ROOT}/vis/* \
 ${SERVER_ROOT}/cgi-bin/* \
+${SERVER_ROOT}/oui.csv \
+${SERVER_ROOT}/svglib.js \
+${SERVER_ROOT}/node_map.html \
 /usr/bin/*"
 
 do_configure[noexec] = "1"
@@ -37,6 +43,9 @@ do_install() {
 	install -d ${D}/usr/bin
 	cp -a --no-preserve=ownership ${S}/* ${D}/${SERVER_ROOT}/vis
         install -m 0755 ${WORKDIR}/networkDot.html ${D}/${SERVER_ROOT}/vis/test
+        install -m 0755 ${WORKDIR}/oui.csv ${D}/${SERVER_ROOT}
+        install -m 0755 ${WORKDIR}/svglib.js ${D}/${SERVER_ROOT}
+        install -m 0755 ${WORKDIR}/node_map.html ${D}/${SERVER_ROOT}
         install -m 0755 ${WORKDIR}///graph_me.cgi ${D}/${SERVER_ROOT}/cgi-bin
         install -m 0755 ${WORKDIR}///iperf_me.cgi ${D}/${SERVER_ROOT}/cgi-bin
         install -m 0755 ${WORKDIR}///build_dot_graph.py ${D}/usr/bin
