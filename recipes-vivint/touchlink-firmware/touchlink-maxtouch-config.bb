@@ -1,7 +1,7 @@
 DESCRIPTION = "Maxtouch configuration files"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
-PR = "r7"
+PR = "r8"
 
 RDEPENDS_${PN} += "bash"
 FIRMWARE_sly = "maxtouch-sly.cfg"
