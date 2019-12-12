@@ -4,6 +4,7 @@ inherit meta
 
 LICENSE = "CLOSED"
 
+DEPENDS += "rsync-native"
 DEPLOY_DIR_MFG = "${DEPLOY_DIR}/mfgkit"
 
 latest() {
