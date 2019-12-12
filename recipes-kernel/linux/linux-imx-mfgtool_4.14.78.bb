@@ -38,6 +38,15 @@ do_compile_prepend() {
    cd -
 
 }
+# copy zImage to deploy directory
+# update uImage with defconfig ane git info in name
+# this is since build script can build multiple ways
+# and will overwrite previous builds
+
+do_deploy_append () {
+    install -d ${DEPLOY_DIR_IMAGE}
+    install  arch/arm/boot/zImage ${DEPLOY_DIR_IMAGE}/zImage_mfgtool
+}
 
 KERNEL_IMAGE_BASE_NAME[vardepsexclude] = "DATETIME"
 MODULE_IMAGE_BASE_NAME[vardepsexclude] = "DATETIME"
