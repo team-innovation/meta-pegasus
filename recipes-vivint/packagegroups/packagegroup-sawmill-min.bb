@@ -13,7 +13,6 @@ inherit packagegroup
 
 RDEPENDS_${PN} = " \
 	chrony \
-	chronyc \
 	dosfstools \
 	e2fsprogs-dumpe2fs \
 	e2fsprogs-resize2fs \
