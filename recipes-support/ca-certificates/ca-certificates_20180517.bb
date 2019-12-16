@@ -20,9 +20,7 @@ SRC_URI = "http://updateseng.vivint.com/innovation/downloads/cacert.pem \
 SRC_URI[md5sum] = "8d35a5cef6ce28da07867a0712558067"
 SRC_URI[sha256sum] = "4943df7f17fb2105e94a5d5ab0384ede066b42d7bb03ee4ec025dd81fb29fb64"
 
-do_config() {
-:
-}
+do_config[noexec] = "1"
 
 do_compile() {
 	echo >> ${WORKDIR}/cacert.pem
@@ -46,9 +44,9 @@ do_install() {
 	install -m 0644 ${WORKDIR}/ca-certificates-subset.crt ${D}/opt/2gig/ssl_certs/
 	install -m 0644 ${WORKDIR}/cacert.pem ${D}/opt/2gig/ssl_certs/ca-certificates.crt
 	install -m 0644 ${WORKDIR}/ts ${D}/opt/2gig/ssl_certs
-	install -d ${D}/etc/ssl
+	install -d ${D}/etc/ssl/certs
 	# /media/extra/ssl_certs gets created at post-install time. For now /etc/ssl/certs will be a dangling symlink
-	ln -sf /media/extra/ssl_certs ${D}/etc/ssl/certs
+	ln -sfn /media/extra/ssl_certs ${D}/etc/ssl/certs
 }
 
 pkg_postinst_ontarget_${PN} () {
