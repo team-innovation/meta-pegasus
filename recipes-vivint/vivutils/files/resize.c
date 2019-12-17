@@ -29,7 +29,8 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
-#define TIMEOUT 10
+#define TIMEOUT 20
+#define ESC	"\033"
 
 static struct termios saved_tio;
 static int ttyfd;
@@ -44,9 +45,7 @@ static void ttyraw(void)
 		exit(1);
 	}
 	cfmakeraw(&tio);
-	tio.c_iflag = ICRNL|IXANY;
-	tio.c_oflag = OPOST|ONLCR;
-	tio.c_cflag = CREAD|CS8|HUPCL;
+	tio.c_iflag = ICRNL|IXANY; tio.c_oflag = OPOST|ONLCR; tio.c_cflag = CREAD|CS8|HUPCL;
 	tio.c_cc[VMIN] = 1;
 	tio.c_cc[VTIME] = 0;
 	cfsetispeed(&tio, cfgetispeed(&saved_tio));
@@ -77,8 +76,10 @@ static void getsize_timeout(int sig)
 
 static int getsize(int *pcols, int *plines)
 {
-	char *outstr = "\0337\033[r\033[999;999H\033[6n\0338";
+	char *outstr = ESC"7"ESC"[r"ESC"[999;999H"ESC"[6n";
 	int len = strlen(outstr);
+	char *endstr = ESC"8";
+	int endlen = strlen(endstr);
 	unsigned char c;
 	enum parsestate state;
 	int cols, lines;
@@ -98,7 +99,7 @@ static int getsize(int *pcols, int *plines)
 		read(ttyfd, &c, 1);
 		switch (state) {
 		case PARSE_PRECSI:
-			if (c == '\033')
+			if (c == *ESC)
 				state = PARSE_CSI;
 			break;
 		case PARSE_CSI:
@@ -125,6 +126,8 @@ static int getsize(int *pcols, int *plines)
 	} while (c != 'R');
 	*pcols = cols;
 	*plines = lines;
+
+	write(ttyfd, endstr, endlen);
 
 	memset((char *) &it, 0, sizeof(struct itimerval));
 	setitimer(ITIMER_REAL, &it, (struct itimerval *) NULL);

@@ -31,6 +31,8 @@ SRC_URI = "\
 	   file://mfr_modem_test.py \
 	   file://nfctest.c \
 	   file://pcamtest \
+	   file://resize.c \
+           file://resize.sh \
 	   file://serialnumset \
 	   file://set-u-boot-part \
 	   file://simplesuspend \
@@ -65,6 +67,7 @@ TARGET_CC_ARCH += "${LDFLAGS}"
 S = "${WORKDIR}"
 
 do_compile() {
+	${CC} resize.c -o resize
 	${CC} nfctest.c -o nfctest
 }
 
@@ -76,6 +79,7 @@ do_install() {
 	install -m 0755 ${S}/firstboot-setup ${D}/usr/local/bin
 	install -m 0755 ${S}/gadgetsetup ${D}/usr/local/bin
 	install -m 0755 ${S}/hwrevset ${D}/usr/local/bin
+	install -m 0755 ${S}/resize ${D}/usr/local/bin
 	install -m 0755 ${S}/nfctest ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
 	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
@@ -120,6 +124,9 @@ do_install() {
 	install -m 0755 ${S}/bootgadgets.sh ${D}/${sysconfdir}/init.d/bootgadgets.sh
 	update-rc.d -r ${D} bootgadgets.sh start 34 S .
 
+	install -d ${D}/${sysconfdir}/profile.d
+        install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
+	
 	install -d ${D}/home/root/
 }
 

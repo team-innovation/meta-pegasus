@@ -44,9 +44,6 @@ do_install() {
 	install -m 0644 ${WORKDIR}/ca-certificates-subset.crt ${D}/opt/2gig/ssl_certs/
 	install -m 0644 ${WORKDIR}/cacert.pem ${D}/opt/2gig/ssl_certs/ca-certificates.crt
 	install -m 0644 ${WORKDIR}/ts ${D}/opt/2gig/ssl_certs
-	install -d ${D}/etc/ssl/certs
-	# /media/extra/ssl_certs gets created at post-install time. For now /etc/ssl/certs will be a dangling symlink
-	ln -sfn /media/extra/ssl_certs ${D}/etc/ssl/certs
 }
 
 pkg_postinst_ontarget_${PN} () {
@@ -76,9 +73,13 @@ pkg_postinst_ontarget_${PN} () {
         # certificate_bundle_version_sha224_base64 to the platform.
         /bin/rm -f $MEDIA_DIR/ssl_certs.tar
     fi
+
+    # Use our certs as the dfeault certs
+    mv /etc/ssl/certs /etc/ssl/certs_other
+    ln -sf /media/extra/ssl_certs /etc/ssl/certs
 }
 
-FILES_${PN} = "/opt/2gig/ssl_certs/* /etc/ssl/certs"
+FILES_${PN} = "/opt/2gig/ssl_certs/*"
 
 PACKAGE_ARCH = "all"
 PACKAGES = "${PN}"
