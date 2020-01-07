@@ -35,8 +35,6 @@ pkg_postinst_${PN}() {
 if [ x"$D" = "x" ]; then
 
     if [ ! -h /usr/lib/python3.5/site-packages/pytz ]; then
-	rm -rf /usr/lib/python3.5/site-packages/pytz 
-	cd /usr/lib/python3.5/site-packages && ln -s /usr/lib/python3.5/site-packages/pytz-2017.2-py3.5.egg/pytz pytz
         rm -rf /usr/lib/python3.5/site-packages/pytz/zoneinfo
 
         if [ -e /usr/share/zoneinfo ]; then
