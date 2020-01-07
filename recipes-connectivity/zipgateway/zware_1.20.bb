@@ -9,7 +9,7 @@ DEPENDS = "python-native openssl"
 PR = "r1"
 PV = "1.20+git${SRCPV}"
 
-SRCREV = "827f8e4187885c4b73e177944bde91a4501e4ac7"
+SRCREV = "3d9a65b72d54beb67a446bdaf5d2ecda91c4ae04"
 SRCBRANCH = "master"
 
 GIT_ZWARE_SERVER ?= "${GIT_SERVER}"
@@ -21,7 +21,7 @@ S = "${WORKDIR}/git/zware_1_20/src/zwave/hcapi"
 
 do_compile() {
     cd ${S}
-    oe_runmake TARGET_PLATFORM=VIVINT_SLY
+    oe_runmake TARGET_PLATFORM=VIVINT_SLY_DEBUG
 }
 
 do_install_append() {
