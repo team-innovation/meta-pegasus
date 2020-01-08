@@ -16,7 +16,7 @@
 
 	<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%">
 	     <g id="viewport" transform="matrix(1,0,0,1,0,0)">
-	     <image xlink:href="dot.svg" width="100%" height="100%"/>    
+	     <image class="NO-CACHE" xlink:href="dot.svg" width="100%" height="100%"/>    
 	     </g>
 	</svg>
 	<!--
@@ -27,6 +27,14 @@
 	<hr>
 		     <image src="mesh_dot.svg"  width="1000" height="1000"/>    
 	-->
+        <script>
+	        var nods = document.getElementsByClassName('NO-CACHE');
+       	 	for (var i = 0; i < nods.length; i++)
+       	 	{
+       	   		nods[i].attributes['xlink:href'].value += "?a=" + Math.random();
+       	 	}
+        </script>
+
 </body>
 
         <script type="text/javascript" src="svglib.js" ></script>
