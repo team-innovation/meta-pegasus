@@ -568,8 +568,7 @@ class NetworkModuleInfo:
                         # If we get here we think we found a IP
                         ip_last = ip.split('.')[-1]
                         if not ip_last in node_list:
-                            if ip_last not in node_list:
-                                node_list.append(ip_last)
+                            node_list.append(ip_last)
             s.close()
 
         return node_list
