@@ -503,17 +503,23 @@ class NetworkModuleInfo:
                             yofi_nodes.append(address)
 
                 def exit_now():
-                    for i in yofi_nodes:
-                        node_list.append(i.split('.')[-1])
                     sys.exit(0)
 
-                loop = EventLoop()
+                def on_exit_callback():
+                    for i in yofi_nodes:
+                        node_ip = i.split('.')[-1]
+                        if node_ip not in node_list:
+                            node_list.append(node_ip)
+
+                loop = EventLoop(on_exit_callback)
                 ssdp = SsdpServer(ssdp_callback)
                 if not on_touchlink():
                     ssdp.SSDP_UUID_PATH = '/tmp/ssdp-uuid'
 
                 ssdp.search(search_target)
-
+                DelayedCall(2, ssdp.search, search_target)
+                DelayedCall(2, ssdp.search, search_target)
+                DelayedCall(2, ssdp.search, search_target)
                 DelayedCall(10, exit_now)
                 loop.run()
 
@@ -543,6 +549,9 @@ class NetworkModuleInfo:
                 node_health = s.execute_cmd('netv mhealth')
                 print(node_health)
                 lines = node_health.split('\r\n')
+                node_health = s.execute_cmd('netv get mchan24')
+                print(node_health)
+                lines += node_health.split('\r\n')
                 for line in lines:
                     if line.startswith('node'):
                         a = line.split()
@@ -559,7 +568,8 @@ class NetworkModuleInfo:
                         # If we get here we think we found a IP
                         ip_last = ip.split('.')[-1]
                         if not ip_last in node_list:
-                            node_list.append(ip_last)
+                            if ip_last not in node_list:
+                                node_list.append(ip_last)
             s.close()
 
         return node_list
