@@ -13,6 +13,7 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-audmgrd \
 	touchlink-apps-cloudd \
 	touchlink-apps-dbapd \
+	touchlink-apps-flashpolicyd \
 	touchlink-apps-httpd \
 	touchlink-apps-mmpd \
 	touchlink-apps-modemd \

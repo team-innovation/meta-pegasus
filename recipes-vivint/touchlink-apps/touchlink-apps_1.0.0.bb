@@ -40,6 +40,7 @@ require touchlink-apps-dbapd.inc
 require touchlink-apps-procmand.inc
 require touchlink-apps-favicon.inc
 require touchlink-apps-global-conf.inc
+require touchlink-apps-flashpolicyd.inc
 require touchlink-apps-mmpd.inc
 
 #roubaix
@@ -392,6 +393,7 @@ PACKAGES = " \
 	${PN}-cloudd          \
 	${PN}-dbapd        \
 	${PN}-favicon \
+	${PN}-flashpolicyd   \
 	${PN}-global-conf \
 	${PN}-httpd \
 	${PN}-iod   \
