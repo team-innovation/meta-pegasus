@@ -13,7 +13,7 @@ if [ ! -e $RUNNING ] ; then
 	/etc/init.d/httpd start
 	sleep 4
     }
-    /usr/bin/python3 /usr/bin/get_mesh_info.py &> /var/log/get_mesh_info.log
+#    /usr/bin/python3 /usr/bin/get_mesh_info.py &> /var/log/get_mesh_info.log
     /usr/bin/python3 /usr/bin/build_dot_graph.py &> /var/log/build_dot_graph.log
 
     # If httpd was not running we we stop it
