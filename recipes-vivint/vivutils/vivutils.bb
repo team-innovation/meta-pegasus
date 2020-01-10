@@ -31,6 +31,7 @@ SRC_URI = "\
 	   file://mfr_modem_test.py \
 	   file://nfctest.c \
 	   file://pcamtest \
+           file://resize.sh \
 	   file://serialnumset \
 	   file://set-u-boot-part \
 	   file://simplesuspend \
@@ -120,6 +121,9 @@ do_install() {
 	install -m 0755 ${S}/bootgadgets.sh ${D}/${sysconfdir}/init.d/bootgadgets.sh
 	update-rc.d -r ${D} bootgadgets.sh start 34 S .
 
+	install -d ${D}/${sysconfdir}/profile.d
+        install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
+	
 	install -d ${D}/home/root/
 }
 
