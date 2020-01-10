@@ -28,7 +28,6 @@ pkg_postinst_ontarget_${PN}() {
 #
 
     if [ ! -h /usr/lib/python3.5/site-packages/pytz ]; then
-	cd /usr/lib/python3.5/site-packages && ln -s /usr/lib/python3.5/site-packages/pytz-2017.2-py3.5.egg/pytz pytz
         rm -rf /usr/lib/python3.5/site-packages/pytz/zoneinfo
 
         if [ -e /usr/share/zoneinfo ]; then
