@@ -9,7 +9,7 @@ DEPENDS += "python3"
 
 SRCREV = "f1c1c55ae40c1514ff5c075e06da934b4f374916"
 PV = "1.0.0rc1+gitr${SRCREV}"
-SRC_URI = "git://github.com/nnemkin/sparsedict.git;protocol=git;branch=master"
+SRC_URI = "git://github.com/nnemkin/sparsedict.git;protocol=https;branch=master"
 S = "${WORKDIR}/git"
 
 # Allows us to create a native package for staging in OE
