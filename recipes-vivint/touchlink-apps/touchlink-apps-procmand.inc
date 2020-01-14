@@ -40,6 +40,7 @@ do_install_append() {
 FILES_${PN}-procmand = "\
        ${INSTALL_DIR}/procmand/*   \
 	${sysconfdir}/init.d/procmand		\
+	${sysconfdir}/procman.d/syslogd		\
        /usr/local/bin/procman	\
        "
 

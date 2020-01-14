@@ -36,7 +36,7 @@ except ImportError:
     print('Must be a 3.7 or earlier panel build')
     pprint = print
 
-from get_mesh_info import NetworkModuleInfo, PanelSystemInfo
+from get_mesh_info import NetworkModuleInfo, PanelSystemInfo, on_touchlink
 
 
 class BuildDotFile:
@@ -16555,6 +16555,9 @@ class BuildDotFile:
     • HOLDING—In the HOLDING state, the finite state machine is closing the mesh peering instance with 
     the peer mesh STA or the candidate peer mesh STA. 
     '''
+
+    SRV_ROOT_PATH = "/srv/www/network"
+
     def __init__(self, show_ap_nodes=False, show_clusters=False):
         self.show_ap_nodes = show_ap_nodes
         self.show_clusters = show_clusters
@@ -16579,7 +16582,41 @@ class BuildDotFile:
                                    'OPN_RCVD': 'dashed',
                                    'CNF_RCVD': 'dashed'}
 
+    def find_mac(self, _mac):
+        import csv
+        import os
+
+        result = None
+        if ':' in _mac:
+            _mac = _mac.replace(':', '')
+        umac = _mac.upper()
+
+        oui_file_base = 'oui.csv'
+        oui_file = os.path.join(BuildDotFile.SRV_ROOT_PATH, oui_file_base)
+        if not os.path.exists(oui_file):
+            oui_file = oui_file_base
+            if not os.path.exists(oui_file):
+                    return result
+
+        with open(oui_file, encoding='utf-8') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                _mac = row[1]
+                name = row[2].upper()
+
+                if umac.startswith(_mac):
+                    oui_mac = ':'.join(_mac[i:i + 2] for i in range(0, 6, 2))
+                    result = (oui_mac, name)
+                    break
+
+        return result
+
     def make_var(self, i):
+        """
+        Make a variable to be used in the dot syntax.
+        :param i:
+        :return:
+        """
         s = chr(ord('a') + (i % 27))
         ret = s if i < 27 else s * int(i / 27)
         return ret
@@ -16589,35 +16626,79 @@ class BuildDotFile:
             for cam in self.cam_info:
                 if cam['properties']['camera_mac_address'] == mac:
                     return '{}\n{}'.format(cam['properties']['name'], cam['class'])
+
+        if self.panel_info:
+            for panel in self.panel_info:
+                if panel['properties']['panel_mac_address'] == mac:
+                    return '{}\n{}'.format(panel['properties']['name'], panel['class'])
         return name
 
-    def get_device_conneted_ssid(self, mac):
+    def get_device_connected_ssid(self, mac):
         if self.cam_info:
             for cam in self.cam_info:
                 if cam['properties']['camera_mac_address'] == mac:
                     return '{}\n{}'.format(cam['properties']['connected_ssid'], cam['class'])
+
+        if self.panel_info:
+            for panel in self.panel_info:
+                if panel['properties']['panel_mac_address'] == mac:
+                    return '{}\n{}'.format(panel['properties']['panel_wifinetwork_ssid'], panel['class'])
         return ""
+
+    def get_device_wireless_signal(self, mac):
+        try:
+            if self.cam_info:
+                for cam in self.cam_info:
+                    if cam['properties']['camera_mac_address'] == mac:
+                        return int('{}'.format(cam['properties']['wireless_signal_level']))
+
+            if self.panel_info:
+                for panel in self.panel_info:
+                    if panel['properties']['panel_mac_address'] == mac:
+                        return int('{}'.format(panel['properties']['panel_signal_strength_dBm']))
+        except ValueError:
+                pass
+        return -999
+
+    def get_device_wireless_link_quality(self, mac):
+        try:
+            if self.cam_info:
+                for cam in self.cam_info:
+                    if cam['properties']['camera_mac_address'] == mac:
+                        return '{}'.format(cam['properties']['wireless_link_quality'])
+
+            # if self.panel_info:
+            #     for panel in self.panel_info:
+            #         if panel['properties']['panel_mac_address'] == mac:
+            #             return int('{}'.format(panel['properties']['panel_signal_strength_dBm']))
+        except ValueError:
+                pass
+        return 'NA'
 
     def get_name(self, mac):
         try:
-            for a in  self.dhcpdump:
+            for a in self.dhcpdump:
                 if a['mac'][:-3] == mac[:-3]:
                     n = self.get_device_name(a['mac'], a['name'])
-                    if a['mac'][-2:] == hex(int(mac[-2:], 16) + 1)[-2:] or a['mac'][-2:] == hex(int(mac[-2:], 16) - 1)[-2:]:
+                    if a['mac'][-2:] == hex(int(mac[-2:], 16) + 1)[-2:] or a['mac'][-2:] == hex(int(mac[-2:], 16) - 1)[-2:] or a['mac'][-2:] == hex(int(mac[-2:], 16))[-2:]:
                         # For now we just look for the name repeater as this how a node shows up in the dhcp list
                         if n == 'repeater':
-                            if len(a['mac']) == 17:
-                                n = 'YOFI-MESH-'+a['mac'][-8:]
-                    return '{}\n{}\n[{}]'.format(a['ip'], a['mac'], n)
+                            result = self.find_mac(a['mac'])
+                            if isinstance(result, tuple):
+                                oui, vendor = result
+                                n = vendor + '-' + a['mac'][-8:]
+                        return '{}\n{}\n[{}]'.format(a['ip'], a['mac'], n)
 
                 elif a['mac'][3:-3] == mac[3:-3] and a['mac'][0] == mac[0]:
                     n = self.get_device_name(a['mac'], a['name'])
-                    if a['mac'][-2:] == hex(int(mac[-2:], 16) + 1)[-2:] or a['mac'][-2:] == hex(int(mac[-2:], 16) - 1)[-2:]:
+                    if a['mac'][-2:] == hex(int(mac[-2:], 16) + 1)[-2:] or a['mac'][-2:] == hex(int(mac[-2:], 16) - 1)[-2:] or a['mac'][-2:] == hex(int(mac[-2:], 16))[-2:]:
                         # For now we just look for the name repeater as this how a node shows up in the dhcp list
                         if n == 'repeater':
-                            if len(a['mac']) == 17:
-                                n = 'YOFI-MESH-'+a['mac'][-8:]
-                    return '{}\n{}\n[{}]'.format(a['ip'], a['mac'], n)
+                            result = self.find_mac(a['mac'])
+                            if isinstance(result, tuple):
+                                oui, vendor = result
+                                n = vendor + '-' + a['mac'][-8:]
+                        return '{}\n{}\n[{}]'.format(a['ip'], a['mac'], n)
 
             print('Did not find MAC in dhcp table search arp entries...')
             if self.mesh_data:
@@ -16629,6 +16710,11 @@ class BuildDotFile:
                     n = self.get_device_name(a['mac'], a['hostname'])
                     if n == '?':
                         n = a['mac']
+                        result = self.find_mac(a['mac'])
+                        if isinstance(result, tuple):
+                            oui, vendor = result
+                            n = vendor + '-' + a['mac'][-8:]
+
                     if a['mac'][:-3] == mac[:-3]:
                         return '{}\n{}\n[{}]'.format(a['ip'], a['mac'], n)
 
@@ -16700,11 +16786,12 @@ class BuildDotFile:
 
         return style, color
 
-    def create_node_map_signals(self, mesh_data, cam_info=None):
+    def create_node_map_signals(self, mesh_data, cam_info=None, panel_info=None):
         import re
         self.sub_graph_sta_to_ap = {}
         self.dhcpdump = []
         self.cam_info = cam_info if cam_info is not None else {}
+        self.panel_info = panel_info if panel_info is not None else {}
 
         i = 0
         labels = {}
@@ -16775,8 +16862,12 @@ class BuildDotFile:
                 for s in sta:
                     # Each STA in the list
                     s_lower = s['mac'].lower()
-                    _ssid = self.get_device_conneted_ssid(s_lower)
-                    _name = self.get_name(s_lower) + "\n SSID: " + _ssid if len(_ssid) > 0 else self.get_name(s_lower)
+                    _ssid = self.get_device_connected_ssid(s_lower)
+                    if len(_ssid) > 0:
+                        _name = self.get_name(s_lower) + "\n SSID: " + _ssid
+                    else:
+                        _name = self.get_name(s_lower)
+                    # Store a label for the station (using the station mac as a key)
                     labels[s_lower] = {'var': self.make_var(i), 'attr': 'color=blue shape=oval regular=false', 'name': _name}
                     i += 1
 
@@ -16826,6 +16917,20 @@ class BuildDotFile:
                         # Group the nodes in a sub graph
                         self.sub_graph_sta_to_ap[k_lower] += '{} -> {} {};\n'.format(labels[k_lower]['var'], labels[m]['var'], attr)
 
+                        # Get signals from sundance database for the cameras perspective.
+                        sig = self.get_device_wireless_signal(m)
+                        link_quality = self.get_device_wireless_link_quality(m)
+                        sig_str = '{}\n{}'.format('{} dbm'.format(sig), link_quality)
+                        styl, colr = self.wifi_style_color(sig)
+                        if s['associated'] == 'no' or s['authenticated'] == 'no' or s['authorized'] == 'no':
+                            styl = 'dashed,arrowhead = dot'
+                        elif s['associated'] == 'yes' and (s['authenticated'] == 'no' or s['authorized'] == 'no'):
+                            styl = 'dotted'
+                        attr1 = 'style = {},color = {}'.format(styl, colr)
+                        attr = '[ {},label = "{}"]'.format(attr1, sig_str)
+                        # Group the nodes in a sub graph
+                        self.sub_graph_sta_to_ap[k_lower] += '{} -> {} {};\n'.format(labels[m]['var'], labels[k_lower]['var'],  attr)
+
             # Neighboring Mesh Nodes
             mesh = n['mesh_neighbors']
             for mn in mesh:
@@ -16868,6 +16973,10 @@ class BuildDotFile:
         #         names += ' {}'.format(labels[a]['var'])
         #     data += '{{ rank=same; {} }}'.format(names)
 
+        # Add date and time of we run the graph
+        import datetime
+#        data += '// title\r\nlabeloc="top";\r\nlabel="{}";'.format(datetime.datetime.today())
+        data += '// title\r\ngraph [ labeloc="top", label="{}", fontsize=40 ];'.format(datetime.datetime.today())
 
         chart = BuildDotFile.DOT_GRAPH_STR.format(label_str, data)
         print(chart)
@@ -16876,9 +16985,10 @@ class BuildDotFile:
 
 def main():
     import subprocess
-    j = {}
+    import os
     p = PanelSystemInfo()
-    j = p.get_camera_info()
+    camera_info = p.get_camera_info()
+    panel_info = p.get_slim_line_info()
 
     # for cam in j:
     #     print()
@@ -16900,6 +17010,17 @@ def main():
 
     # pprint(data)
 
+    if on_touchlink():
+        srv_root = BuildDotFile.SRV_ROOT_PATH
+        srv_test_dir = os.path.join(srv_root, "vis/test")
+    else:
+        srv_root = '/tmp'
+        srv_test_dir = srv_root
+
+    outfile1 = os.path.join(srv_test_dir, "tmp.dot")
+    outfile2 = os.path.join(srv_test_dir, "tmp2.dot")
+    outfile3 = os.path.join(srv_test_dir, "tmp3.dot")
+
     with open('/tmp/tmp.dat', 'w') as f:
         pprint(data, f)
         # import json
@@ -16908,31 +17029,32 @@ def main():
 
     # Grouping all nodes
     dot = BuildDotFile(show_clusters=True, show_ap_nodes=True)
-    dot_data = dot.create_node_map_signals(data, j)
-    with open('/tmp/tmp.dot', 'w') as f:
+    dot_data = dot.create_node_map_signals(data, camera_info, panel_info)
+    with open(outfile1, 'w') as f:
         f.write(dot_data)
 
     # No grouping all nodes
     dot2 = BuildDotFile(show_clusters=False, show_ap_nodes=True)
-    dot_data = dot2.create_node_map_signals(data, j)
-    with open('/tmp/tmp2.dot', 'w') as f:
+    dot_data = dot2.create_node_map_signals(data, camera_info, panel_info)
+    with open(outfile2, 'w') as f:
         f.write(dot_data)
 
     # Mesh nodes only
     dot3 = BuildDotFile(show_clusters=False, show_ap_nodes=False)
-    dot_data = dot3.create_node_map_signals(data, j)
-    with open('/tmp/tmp3.dot', 'w') as f:
+    dot_data = dot3.create_node_map_signals(data, camera_info, panel_info)
+    with open(outfile3, 'w') as f:
         f.write(dot_data)
 
-    a = subprocess.Popen('/usr/bin/xdot /tmp/tmp2.dot', shell=True)
-    a.wait()
+    if not on_touchlink():
+        a = subprocess.Popen('/usr/bin/xdot /tmp/tmp2.dot', shell=True)
+        a.wait()
 
 
 def main2(main_panel_ip='192.168.7.195'):
     import subprocess
     import os
 
-    srv_root = "/srv/www/network"
+    srv_root = BuildDotFile.SRV_ROOT_PATH
     srv_test_dir = os.path.join(srv_root, "vis/test")
 
     def load(file):
@@ -16954,14 +17076,16 @@ def main2(main_panel_ip='192.168.7.195'):
 
     if main_panel_ip is not None:
         data = download("tmp.dat")
-        j = download("tmp_cam.dat")
+        camera_info = download("tmp_cam.dat")
+        panel_info = download("tmp_panel.dat")
 
         outfile1 = "/tmp/tmp.dot"
         outfile2 = "/tmp/tmp2.dot"
         outfile3 = "/tmp/tmp3.dot"
     else:
         data = load(os.path.join(srv_root, "tmp.dat"))
-        j = load(os.path.join(srv_root, "tmp_cam.dat"))
+        camera_info = load(os.path.join(srv_root, "tmp_cam.dat"))
+        panel_info = download(os.path.join(srv_root, "tmp_panel.dat"))
 
         outfile1 = os.path.join(srv_test_dir, "tmp.dot")
         outfile2 = os.path.join(srv_test_dir, "tmp2.dot")
@@ -16969,20 +17093,20 @@ def main2(main_panel_ip='192.168.7.195'):
 
     # Grouping all nodes
     dot = BuildDotFile(show_clusters=True, show_ap_nodes=True)
-    dot_data = dot.create_node_map_signals(data, j)
+    dot_data = dot.create_node_map_signals(data, camera_info, panel_info)
 
     with open(outfile1, 'w') as f:
         f.write(dot_data)
 
     # No grouping all nodes
     dot2 = BuildDotFile(show_clusters=False, show_ap_nodes=True)
-    dot_data = dot2.create_node_map_signals(data, j)
+    dot_data = dot2.create_node_map_signals(data, camera_info, panel_info)
     with open(outfile2, 'w') as f:
         f.write(dot_data)
 
     # Mesh nodes only
     dot3 = BuildDotFile(show_clusters=False, show_ap_nodes=False)
-    dot_data = dot3.create_node_map_signals(data, j)
+    dot_data = dot3.create_node_map_signals(data, camera_info, panel_info)
     with open(outfile3, 'w') as f:
         f.write(dot_data)
 
@@ -17031,6 +17155,6 @@ def main3():
     a.wait()
 
 if __name__ == '__main__':
-    #main()
-    main2(None)
+    main()
+    #main2(None)
 
