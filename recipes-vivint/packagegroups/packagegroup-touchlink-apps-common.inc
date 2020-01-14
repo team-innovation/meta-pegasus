@@ -82,6 +82,7 @@ PYTHON_EXTRA_DEPENDS = "\
 	python3-mmap \
 	python3-multiprocessing \
 	python3-requests \
+	python3-requests-toolbelt \
 	python3-six \
 	python3-soco \
 	python3-sparsedict \

@@ -163,6 +163,7 @@ DEPENDS = " \
         python3-py-native \
 	python3-pytz-native \
 	python3-requests-native \
+	python3-requests-toolbelt-native \
 	python3-easydict-native \
 	python3-six-native \
 	python3-setproctitle-native \
