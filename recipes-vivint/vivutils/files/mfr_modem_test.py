@@ -729,7 +729,8 @@ class QuectelEG91:
             result = False
 
             try:
-                flash_proc.communicate(timeout=1800)
+                # wait up to 12 minutes for the flash to complete.
+                flash_proc.communicate(timeout=720)
                 if flash_proc.returncode == 0:
                     # flash has completed
                     print("Success flashing file {}".format(firmware_file))
