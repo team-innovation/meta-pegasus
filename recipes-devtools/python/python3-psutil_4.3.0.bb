@@ -11,7 +11,7 @@ DEPENDS += "python3"
 #SRC_URI = "git://github.com/thelinuxdude/python-pulseaudio.git;protocol=git;branch=pa-4.0"
 
 SRC_URI = " \
-	git://github.com/giampaolo/psutil.git;protocol=git;tag=release-${PV}"
+	git://github.com/giampaolo/psutil.git;protocol=git;protocol=https;tag=release-${PV}"
 S = "${WORKDIR}/git"
 
 # Allows us to create a native package for staging in OE
