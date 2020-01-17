@@ -11,7 +11,7 @@ DEPENDS += "python3 python3-pytz python3-dateutil"
 
 SRCREV = "ed74538f0a3adfb2898721e66b34ea9463f5cfc8"
 PV = "1.0.0rc1+gitr${SRCREV}"
-SRC_URI = "git://github.com/mithro/python-datetime-tz.git;protocol=git;branch=master"
+SRC_URI = "git://github.com/mithro/python-datetime-tz.git;protocol=https;branch=master"
 S = "${WORKDIR}/git"
 
 # Allows us to create a native package for staging in OE
