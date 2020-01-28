@@ -754,7 +754,7 @@ class QuectelEG91:
                             # try sending AT
                             self._device.write_command("AT")
                             buffer = self._device.read_result(timeout=1)
-                            if buffer and "OK" in output:
+                            if buffer and "OK" in buffer:
                                 return False
                             else:
                                 self._device.close_serial_port()
