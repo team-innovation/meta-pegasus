@@ -3,7 +3,7 @@
 DESCRIPTION = "Packages needed for network debug"
 LICENSE = "MIT"
 
-PR = "6"
+PR = "7"
 
 inherit packagegroup
 
@@ -28,5 +28,6 @@ RDEPENDS_${PN} += " \
 	lsof \
 	netcat \
 	tcpdump \
+	mmc-utils \
 	${@base_contains('BUILD_TYPE', 'dbg','${DEBUG_PACKAGES}', '', d)} \
 "
