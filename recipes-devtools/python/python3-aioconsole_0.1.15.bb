@@ -6,16 +6,16 @@ LIC_FILES_CHKSUM = "file://README.rst;md5=7272a2301b319f360c9b583cc9020fa7"
 
 DEPENDS += "python3"
 
-PR = "r2"
+PR = "r3"
 SRCNAME = "aioconsole"
 
-SRC_URI = "https://files.pythonhosted.org/packages/83/4d/392f687992516a71eee1bad90002714938ad82d4bec455f34d0bf86b2e12/${SRCNAME}-${PV}.tar.gz"
+SRC_URI = "https://files.pythonhosted.org/packages/c4/68/56b09bf94aff8e02a6080493b3f85bdf7ddea7e4f264e6a90a158e064898/${SRCNAME}-${PV}.tar.gz"
 
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
-SRC_URI[md5sum] = "019845651ddd50d119c3222a5d20e142"
-SRC_URI[sha256sum] = "8c009bb38b67beb018f301e1e032f78dc4ab86dab5c8a782462cb16adde94e76"
+SRC_URI[md5sum] = "918caf70f00a3fbc8a61cd74579da1c4"
+SRC_URI[sha256sum] = "498e567805b74c1ecf4501d28e48727e8e77af8d6a0b8f1b7aa9a4842e02743d"
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"

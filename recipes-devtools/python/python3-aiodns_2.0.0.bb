@@ -8,9 +8,9 @@ DEPENDS += "python3"
 
 PR = "r2"
 SRCNAME = "aiodns"
-SRC_URI[md5sum] = "b0fb02275cafcbe5ad531c72ba950615"
-SRC_URI[sha256sum] = "d67e14b32176bcf3ff79b5d47c466011ce4adeadfa264f7949da1377332a0449"
-SRC_URI = "https://files.pythonhosted.org/packages/7e/1b/f01e4d3502d1364e4df66e477c333bccac2361740e5688b9bc1826cc08bd/${SRCNAME}-${PV}.tar.gz"
+SRC_URI[md5sum] = "3e121f9eb7ef3ba3556ba7ec28c6f63a"
+SRC_URI[sha256sum] = "815fdef4607474295d68da46978a54481dd1e7be153c7d60f9e72773cd38d77d"
+SRC_URI = "https://files.pythonhosted.org/packages/30/2e/b86ce168485b68d40c6a810838669deacf0abf41845c383659c2b613e69f/${SRCNAME}-${PV}.tar.gz"
 
 SRCREV ="${AUTOREV}"
 S = "${WORKDIR}/${SRCNAME}-${PV}"
