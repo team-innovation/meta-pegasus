@@ -6,7 +6,7 @@ PR = "r2"
 
 #SRC_URI = "https://download.libsodium.org/libsodium/releases/${BPN}-${PV}.tar.gz"
 SRCREV = "342f209cbe1c1c05330b832abf5b6d39f698e685"
-SRC_URI = "git://github.com/jedisct1/libsodium.git"
+SRC_URI = "git://github.com/jedisct1/libsodium.git;protocol=https"
 
 S = "${WORKDIR}/git"
 
