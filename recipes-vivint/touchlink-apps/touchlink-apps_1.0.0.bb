@@ -137,7 +137,6 @@ DEPENDS = " \
 	python3-mock-native \
 	python3-msgpack-native \
 	python3-native \
-	python3-nose-native \
 	python3-pathlib2-native \
 	python3-paho-mqtt-native \
 	python3-pexpect-native \
@@ -272,13 +271,11 @@ do_compile() {
 		skip="true"
 	else
 		export PYTHONPATH=${STAGING_DIR}/${BUILD_SYS}/usr/lib/${PYTHON_DIR}/site-packages:$PYTHONPATH
-		nosetests_bin="${STAGING_DIR}/${BUILD_SYS}/usr/bin/nosetests-3.5"
-
 	fi
 
 	if [ ${skip} = "false" ]; then
 		set -x
-		${S}/scripts/python_test_coverage.py --nosetests ${nosetests_bin}
+		${S}/scripts/python_test_coverage.py
 
 	   	# building documentation
 		#make -C ${S}/docs html
