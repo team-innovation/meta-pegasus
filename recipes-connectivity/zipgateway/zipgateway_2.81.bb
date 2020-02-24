@@ -43,12 +43,7 @@ do_install_append() {
 
 FILES_${PN} += "${prefix}/local/sbin/zipgateway"
 FILES_${PN} += "${prefix}/local/sbin/udprelay"
-FILES_${PN} += "${prefix}/local/etc/zipgateway.cfg"
-FILES_${PN} += "${prefix}/local/etc/zipgateway.tun"
-FILES_${PN} += "${prefix}/local/etc/zipgateway.fin"
-FILES_${PN} += "${prefix}/local/etc/ZIPR.x509_1024.pem"
-FILES_${PN} += "${prefix}/local/etc/ZIPR.key_1024.pem"
-FILES_${PN} += "${prefix}/local/etc/Portal.ca_x509.pem"
+FILES_${PN} += "${prefix}/local/etc/*"
 FILES_${PN} += "${sysconfdir}/init.d/zwaved"
 FILES_${PN} += "${sysconfdir}/rcS.d/*zwaved"
 FILES_${PN} += "${prefix}/local/man/man3/zipgateway.3"
