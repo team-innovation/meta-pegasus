@@ -79,7 +79,6 @@ RDEPENDS_${PN} = "python3-unittest \
                   python3-pprint \
                   python3-pickle \
                   python3-shell \
-                  python3-nose \
                   python3-doctest \
                   python3-datetime \
                   python3-misc \
