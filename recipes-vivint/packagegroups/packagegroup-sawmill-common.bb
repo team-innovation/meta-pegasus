@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "48"
+PR = "49"
 
 inherit packagegroup
 
@@ -33,6 +33,7 @@ RDEPENDS_${PN} = " \
 	python3-async-timeout \
 	python3-atomicwrites \
 	python3-attrs \
+	python3-bson \
 	python3-cachetools \
 	python3-cchardet \
 	python3-cffi \
