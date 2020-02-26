@@ -62,7 +62,7 @@ require touchlink-apps-pyftpd.inc
 
 DISTRO_PR = ".1"
 
-PR = "ml120"
+PR = "ml121"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -112,6 +112,7 @@ DEPENDS = " \
 	python3-atomicwrites-native \
 	python3-attrs-native \
 	python3-bcrypt-native \
+	python3-bson-native \
 	python3-cachetools \
 	python3-cachetools-native \
 	python3-cchardet-native \
