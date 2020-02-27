@@ -5,4 +5,5 @@ PR = "r38"
 SRC_URI += "file://vivintbusybox.cfg \
 	    file://0001-allow-bootchartd-to-run-longer-than-one-minute.patch \
 	    "
+SRC_URI_remove = "file://CVE-2011-5325.patch"
 
