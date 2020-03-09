@@ -173,7 +173,6 @@ DEPENDS = " \
         python3-toolz-native \
 	python3-transitions-native \
 	python3-typing-extensions-native \
-	python3-typing-native \
         python3-uvloop-native \
         python3-wheel-native \
         python3-urllib3-native \
