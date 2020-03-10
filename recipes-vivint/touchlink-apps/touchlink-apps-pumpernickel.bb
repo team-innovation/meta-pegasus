@@ -7,14 +7,20 @@ SECTION = "SOMETHING"
 DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode qtdeclarative-native"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r19"
+PR = "r20"
 
 DEPENDS += " \
 	touchlink-apps \
+	python3-aiohttp-native \
+	python3-yarl-native \
+	python3-attrs-native \
+	python3-async-timeout-native \
+	python3-multidict-native \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cherrypy-native \
 	python3-certifi-native \	
+	python3-requests-toolbelt-native \
 	python3-dateutil-native \
 	python3-gnupg-native \
 	python3-grpcio-native \
@@ -50,6 +56,7 @@ DEPENDS += " \
 	python3-paho-mqtt-native \
 	python3-urllib3-native \
 	python3-chardet-native \
+	python3-idna-ssl-native \
 "
 
 SRCREV = "${GIT_APPS_REV}"
