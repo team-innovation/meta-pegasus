@@ -605,6 +605,9 @@ class NetworkModuleInfo:
                 ret = s.login_network_module(addr, 2020)
 
             if ret:
+                import re
+                regex = r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'
+
                 uptime = s.execute_cmd('uptime')
                 print(uptime)
                 node_health = s.execute_cmd('netv mhealth')
@@ -614,7 +617,16 @@ class NetworkModuleInfo:
                     if line.startswith('node'):
                         a = line.split()
                         mac = a[1]
-                        ip = a[2]
+                        if re.match(regex, mac) and len(a) <= 2:
+                            # found an IP not a mac, there is a bug in yofid that it will not report
+                            # a mac, just [node IP] not [node MAC IP]
+                            ip = mac
+                        elif len(a) == 3:
+                            ip = a[2]
+                        else:
+                            continue
+
+                        # If we get here we think we found a IP
                         ip_last = ip.split('.')[-1]
                         if not ip_last in node_list:
                             node_list.append(ip_last)
@@ -1103,6 +1115,12 @@ Interface wlan1
         result = s.execute_cmd('uci -q get vivint.@globals[0].platform').strip()
         return result
 
+    def get_version(self, s):
+        result = s.execute_cmd('cat /etc/os-release  | grep BUILD_ID').strip()
+        key, val = result.split('=')
+        result = val.strip('"')
+        return result
+
     def get_uuid(self, s):
         result = s.execute_cmd('netv get uuid').strip()
         return result
@@ -1186,6 +1204,7 @@ Interface wlan1
                 ret = s1.login_network_module(addr2)
                 if ret is False:
                     s1.close()
+                    time.sleep(1)
                     s1 = SSHToNetworkModule()
                     ret = s1.login_network_module(addr2, 2020)
                 if ret:
@@ -1193,6 +1212,11 @@ Interface wlan1
                     wlan_mac = s1._server_mac
                     mesh_map[wlan_mac] = {}
                     mesh_map[wlan_mac]['platform'] = self.get_platform(s1)
+                    try:
+                        mesh_map[wlan_mac]['version'] = self.get_version(s1)
+                    except :
+                        mesh_map[wlan_mac]['version'] = ''
+
                     uuid = self.get_uuid(s1)
                     if uuid:
                         mesh_map[wlan_mac]['uuid'] = uuid
@@ -1460,6 +1484,17 @@ Interface wlan1
             except Exception as ex:
                 pass
 
+    def get_module_local_ip(self):
+        try:
+            con_cmd = NMCmdConsoleClass(rate=57600)
+            module_ip = con_cmd.execute_command("ifconfig br-lan | grep Bcast | awk '{print $2}'|cut -d':' -f2")
+            con_cmd.close()
+            return module_ip
+        except Exception :
+            print('Failed to get IP')
+
+        return ''
+
     def fix_up_netd_database(self, list_of_panels):
         for j in list_of_panels:
             addr2 = '172.16.10.{}'.format(j)
@@ -1636,6 +1671,10 @@ def main(use_ssdp=True):
     node_list = NetworkModuleInfo.find_nodes(use_ssdp)
 
     nm = NetworkModuleInfo(node_list)
+
+    result = nm.get_module_local_ip()
+    with open('/tmp/module_ip.txt', 'w') as f:
+        f.write(result)
 
     # nm.fix_up_netd_database([100])
 
