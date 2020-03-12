@@ -1,19 +1,14 @@
 #!/bin/bash
 set -x
 
-DEBUG=yes
-#DEBUG=no
 QUIET=no
-SCRIPTNAME=$(basename $BASH_SOURCE)
+SCRIPTNAME=$(basename "${BASH_SOURCE[0]}")
 set -e
 
 echo "$SCRIPTNAME"
 
-BOARDNAME=slimline
-DRIVE=/dev/mmcblk0
+modprobe board_info
 BSPART=/dev/mmcblk0p3
-BOOTNUM1ROOTPART=/dev/mmcblk0p5
-BOOTNUM2ROOTPART=/dev/mmcblk0p6
 
 # Utility functions
 carp() {
@@ -119,12 +114,12 @@ serialnumwarn() {
 # Utility functions to enable/disable writing to eMMC boot partitions
 emmcrw() {
 	local num=$1
-	echo 0 > /sys/block/mmcblk0boot${num}/force_ro
+	echo 0 > /sys/block/mmcblk0boot"${num}"/force_ro
 }
 
 emmcro() {
 	local num=$1
-	echo 1 > /sys/block/mmcblk0boot${num}/force_ro
+	echo 1 > /sys/block/mmcblk0boot"${num}"/force_ro
 }
 
 # slimline and sly share a common u-boot binary
@@ -145,7 +140,7 @@ ubootbinary() {
 # Is u-boot in boot partition same version as one in rootfs
 ubootcheck() {
 	vold=$(strings /dev/mmcblk0boot0 | grep "U-Boot.20")
-	vnew=$(strings $(ubootbinary) | grep "U-Boot.20")
+	vnew=$(strings "$(ubootbinary)" | grep "U-Boot.20")
 	test "$vold" = "$vnew"
 }
 
@@ -153,7 +148,7 @@ ubootcheck() {
 ubootupdate() {
 	emmcrw 0
 	dd if=/dev/zero of=/dev/mmcblk0boot0 bs=1024 count=2048
-	dd if=$(ubootbinary) of=/dev/mmcblk0boot0 bs=512 seek=2
+	dd if="$(ubootbinary)" of=/dev/mmcblk0boot0 bs=512 seek=2
 	sync
 	emmcro 0
 
@@ -241,7 +236,7 @@ MMC_BOOT_CONFIG_VAL=8
 # Utility function to grab a matching field
 boot_info_field() {
 	local match=$1;
-	sed -n s/$match//p ${mmcbootconfigdir}/boot_info
+	sed -n s/"$match"//p "${mmcbootconfigdir}"/boot_info
 }
 
 # see above
@@ -262,9 +257,9 @@ mmcbootbitsset() {
 	emmcrw 0
 	emmcrw 1
 	usleep 500000
-	echo ${MMC_BOOT_BUS_VAL} > ${mmcbootconfigdir}/boot_bus_config
+	echo ${MMC_BOOT_BUS_VAL} > "${mmcbootconfigdir}"/boot_bus_config
 	usleep 500000
-	echo ${MMC_BOOT_CONFIG_VAL} > ${mmcbootconfigdir}/boot_config
+	echo ${MMC_BOOT_CONFIG_VAL} > "${mmcbootconfigdir}"/boot_config
 	usleep 500000
 	emmcro 0
 	emmcro 1
@@ -376,9 +371,9 @@ succeed_or()
 		return
 	dothis=$2
 	info "${checkcmd} failed... calling ${dothis}" &&
-	must_succeed ${dothis}
+	must_succeed "${dothis}"
 	info "verifying with ${checkcmd}"
-	must_succeed ${checkcmd}
+	must_succeed "${checkcmd}"
 }
 
 fusecheck || {
@@ -386,17 +381,32 @@ fusecheck || {
 	export FACTORYFIRSTBOOT="true"
 }
 
+function chk_board()
+{
+	local result
+	read result </sys/class/board_info/board_info/board_rev
+	case "$result" in
+		13)
+			echo "C00"
+			;;
+		*)
+			echo "000"
+			;;
+	esac
+}
+
 function chk_rev()
 {
-        local result=$(fw_printenv board)
-        case "${result##*=}" in
-                WallSly-net|WallSly-v3|WallSly-v4|WallSly-v6)
-                        echo "8.19"
-                        ;;
-                *)
-                        echo "A.0"
-                        ;;
-        esac
+	local result
+	read result </sys/class/board_info/board_info/board_rev
+	case "$result" in
+		9|10|11|12|13)
+			echo "8.19"
+			;;
+		*)
+			echo "A.0"
+			;;
+	esac
 }
 
 addboardmodelfromdevtree() {
@@ -409,11 +419,8 @@ addboardmodelfromdevtree() {
 		echo 'export SH_BOARD_MODEL="28-600052-001"' >> $pit &&
 		return
 	is_wallsly &&
-	        grep -q 28-FIX-ME $pit &&
-        	if [ $? -eq 0 ]; then
-                	sed --in-place '/28-FIX-ME/d' $pit
-	        fi 
-        	echo "export WS_BOARD_MODEL="28-600060-001-$(chk_rev)"" >> $pit  &&
+		sed --in-place '/28-FIX-ME/d' $pit &&
+	    	echo export WS_BOARD_MODEL=28-600060-001-"$(chk_rev)" >> $pit  &&
 		return
 }
 
@@ -427,11 +434,8 @@ addboardrevfromdevtree() {
 		echo 'export SH_BOARD_REV="V-SH1-A0"' >> $pit &&
 		return
 	is_wallsly &&
-	        grep -q V-FIX-ME $pit &&
-        	if [ $? -eq 0 ]; then
-                	sed --in-place '/V-FIX-ME/d' $pit
-	        fi 
-        	echo "export WS_BOARD_REV="VS-SH2000-000-Rev-$(chk_rev)"" >> $pit &&
+		sed --in-place '/V-FIX-ME/d' $pit &&
+		echo export WS_BOARD_REV=VS-SH2000-"$(chk_board)"-Rev-"$(chk_rev)" >> $pit &&
 		return
 }
 
@@ -440,11 +444,13 @@ panelinfoboardmodelcheck() {
 	pit="/media/bootscript/panelinfo.txt"
 
 	test -f $pit ||
-		return $(false)
-	grep -q FIX-ME $pit
-	if [ $? -eq 0 ]; then
+		return "$(false)"
+
+	BMODEL="28-600060-001-$(chk_rev)"
+
+	if ! grep -q "$BMODEL" "$pit"; then
 		mntbootscriptrw
-		addboardmodelfromdevtree
+		sed --in-place '/_BOARD_MODEL/d' $pit
 		mntbootscriptro
 	fi
 	grep -q _BOARD_MODEL $pit
@@ -455,11 +461,13 @@ panelinfoboardrevcheck() {
 	pit="/media/bootscript/panelinfo.txt"
 
 	test -f $pit ||
-		return $(false)
-	grep -q FIX-ME $pit
-	if [ $? -eq 0 ]; then
+		return "$(false)"
+
+	BREV="VS-SH2000-$(chk_board)-Rev-$(chk_rev)"
+
+	if ! grep -q "$BREV" "$pit"; then
 		mntbootscriptrw
-		addboardrevfromdevtree
+		sed --in-place '/_BOARD_REV/d' $pit
 		mntbootscriptro
 	fi
 	grep -q _BOARD_REV $pit
@@ -468,8 +476,6 @@ panelinfoboardrevcheck() {
 panelinfoboardmodelupdate() {
 	pit="/media/bootscript/panelinfo.txt"
 	mntbootscriptrw
-	grep -v .._BOARD_MODEL $pit > /tmp/panelinfo.new
-	mv /tmp/panelinfo.new $pit
 	addboardmodelfromdevtree
 	mntbootscriptro
 }
@@ -477,8 +483,6 @@ panelinfoboardmodelupdate() {
 panelinfoboardrevupdate() {
 	pit="/media/bootscript/panelinfo.txt"
 	mntbootscriptrw
-	grep -v .._BOARD_rev $pit > /tmp/panelinfo.new
-	mv /tmp/panelinfo.new $pit
 	addboardrevfromdevtree
 	mntbootscriptro
 }
