@@ -10,7 +10,7 @@ RDEPENDS_${PN} = "bridge-utils"
 PR = "r1"
 PV = "7.11.02+git${SRCPV}"
 
-SRCREV = "c2f3d18cf47c9a6771f21de4785617ef0fa7c791"
+SRCREV = "31e1b565421966d4486489cb0712339ba7bb5726"
 SRCBRANCH = "master"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
@@ -40,6 +40,8 @@ do_install_append() {
 
     # Create runlevel links
     update-rc.d -r ${D} zwaved start 30 5 .
+    
+    rm -f ${D}/${prefix}/local/etc/zipgateway_node_identify_rpi3b+_led.sh
 }
 
 FILES_${PN} += "${prefix}/local/sbin/zipgateway"
@@ -60,6 +62,9 @@ FILES_${PN} += "${prefix}/local/bin/zgw_import.sh"
 FILES_${PN} += "${prefix}/local/bin/zgw_restore"
 FILES_${PN} += "${prefix}/local/bin/zw_nvm_converter"
 FILES_${PN} += "${prefix}/local/bin/zw_programmer"
+
+FILES_${PN}-dbg += "${prefix}/local/bin/.debug"
+FILES_${PN}-dbg += "${prefix}/local/sbin/.debug"
 
 RPROVIDES_${PN} = "zipgateway"
 
