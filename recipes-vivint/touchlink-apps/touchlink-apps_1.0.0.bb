@@ -133,7 +133,7 @@ DEPENDS = " \
 	python3-googleapis-common-protos-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
-	python3-jsonschema \
+	python3-jsonschema-native \
 	python3-markupsafe-native \
 	python3-mixpanel-native \
 	python3-mock-native \
