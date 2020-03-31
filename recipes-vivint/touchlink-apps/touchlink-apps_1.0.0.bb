@@ -137,7 +137,7 @@ DEPENDS = " \
 	python3-markupsafe-native \
 	python3-mixpanel-native \
 	python3-mock-native \
-	python3-more-itertools \
+	python3-more-itertools-native \
 	python3-msgpack-native \
 	python3-native \
 	python3-pathlib2-native \
