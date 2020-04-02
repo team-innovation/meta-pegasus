@@ -1,9 +1,9 @@
 DESCRIPTION = "RCS thermostat firmware"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
-PR = "r18"
+PR = "r20"
 
-FIRMWARE_MSP430 = "EV2-ZWAVE_0156_5448_0001_5449_12b2_00.31.hex"
+FIRMWARE_MSP430 = "EV2-ZWAVE_0156_5448_0001_5449_1b9c_00.33.hex"
 
 FIRMWARE_DIR = "/var/lib/firmware/zwave"
 
