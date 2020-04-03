@@ -12,7 +12,8 @@ SRC_URI = "${SOURCEFORGE_MIRROR}/watchdog/watchdog-${PV}.tar.gz \
            file://fixsepbuild.patch \
 	   file://fix-ping-failure.patch \
 	   file://watchdog-init.patch \
-	   file://watchdog-conf.patch"
+	   file://watchdog-conf.patch \
+	   file://watchdog.logrotate"
 
 SRC_URI[md5sum] = "5b2dba0c593942f4acc100bca0d560c4"
 SRC_URI[sha256sum] = "620b2f49e9879f2e85c73d4c1f422f9101e6b38e824fea2414befd8bb6866ad1"
@@ -27,4 +28,7 @@ RRECOMMENDS_${PN} = "kernel-module-softdog"
 
 do_install_append() {
 	install -D ${S}/redhat/watchdog.init ${D}/${sysconfdir}/init.d/watchdog.sh
+
+	install -d ${D}${sysconfdir}/logrotate.d
+	install -m 0600 "${WORKDIR}/watchdog.logrotate" "${D}${sysconfdir}/logrotate.d/watchdog"
 }
