@@ -16989,9 +16989,11 @@ class BuildDotFile:
 def main():
     import subprocess
     import os
+
     p = PanelSystemInfo()
     camera_info = p.get_camera_info()
     panel_info = p.get_slim_line_info()
+    node_password_list = p.retrieve_nodes_password()
 
     # for cam in j:
     #     print()
@@ -17008,7 +17010,7 @@ def main():
     # node_list = [254, 136, 196, 103, 148]
     # node_list = [254, 135, 196, 103, 148, 160] # home (home_mesh_with_two_panels_removed_added_two_nodes.png)
     #node_list = [254, 135, 103, 160]  # home now with nodes
-    n = NetworkModuleInfo(node_list)
+    n = NetworkModuleInfo(node_list, password_list=node_password_list)
     data = n.mesh_node_info_map()
 
     # pprint(data)
