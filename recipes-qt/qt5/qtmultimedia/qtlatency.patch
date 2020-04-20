@@ -5,7 +5,7 @@ diff -rupN qtmultimedia-opensource-src-5.4.1/src/plugins/gstreamer/mediaplayer/q
       m_videoProbe(0),
       m_audioProbe(0),
       m_volume(100),
-+     m_latency(200),
++     m_latency(300),
       m_playbackRate(1.0),
       m_muted(false),
       m_audioAvailable(false),
