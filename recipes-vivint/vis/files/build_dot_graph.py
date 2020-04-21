@@ -36,6 +36,36 @@ except ImportError:
     print('Must be a 3.7 or earlier panel build')
     pprint = print
 
+try:
+    import sys
+    sys.path.insert(0, "/opt/2gig/utils/")
+    import signal_color_helper
+
+    def _wifi_style_color(sig):
+        return signal_color_helper.wifi_style_color(sig)
+except ImportError:
+    def _wifi_style_color(sig):
+        style = 'solid'
+        color = 'red'
+        if sig <= -69:
+            color = 'red'
+        if sig > -90 and sig <= -80:
+            # Not good
+            style = 'dashed'
+        elif sig <= -90:
+            # Unusable
+            style = 'dotted'
+        elif sig >= -70 and sig <= -66:
+            color = 'orange'
+        elif sig >= -67 and sig < -45:
+            color = 'yellowgreen'#'orange'
+        elif sig >= -45:
+            color = 'green'
+        else:
+            color = 'black'
+
+        return style, color
+
 from get_mesh_info import NetworkModuleInfo, PanelSystemInfo, on_touchlink
 
 
@@ -16758,7 +16788,7 @@ class BuildDotFile:
                 name = 'cluster_{}'.format(r.replace(':',''))
                 clusters += '''subgraph {} {{
                 node [style=filled,color=white];
-                style=filled;
+		style=filled;
                 color=lightgrey;
                 label = "2.4 Network [{}]\nAP {}";
                 {}
@@ -16766,25 +16796,7 @@ class BuildDotFile:
         return clusters
 
     def wifi_style_color(self, sig):
-        style = 'solid'
-        if sig <= -74:
-            color = 'red'
-            if sig > -90 and sig <= -80:
-                # Not good
-                style = 'dashed'
-            elif sig < -90:
-                # Unusable
-                style = 'dotted'
-        elif sig >= -74 and sig <= -68:
-            color = 'orange'
-        elif sig >= -67 and sig < -45:
-            color = 'yellowgreen'#'orange'
-        elif sig >= -45:
-            color = 'green'
-        else:
-            color = 'black'
-
-        return style, color
+        return _wifi_style_color(sig)
 
     def create_node_map_signals(self, mesh_data, cam_info=None, panel_info=None):
         import re
