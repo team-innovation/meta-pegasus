@@ -8,12 +8,15 @@ SRC_URI += "file://procman.d    \
            file://dh1024.pem  \
            file://server.crt  \
            file://server.key    \ 
+           file://openvpn.logrotate \
 	"
 
 do_install_append() {
     install -d ${D}/${sysconfdir}/init.d
     install -d ${D}/${sysconfdir}/procman.d
+    install -d ${D}/${sysconfdir}/logrotate.d
     install -m 755 ${WORKDIR}/openvpn ${D}/${sysconfdir}/init.d
+    install -m 0600 "${WORKDIR}/openvpn.logrotate" "${D}${sysconfdir}/logrotate.d/openvpn"
 
     install -m 755 ${WORKDIR}/server.conf ${D}/${sysconfdir}/openvpn
     install -m 755 ${WORKDIR}/ca.crt ${D}/${sysconfdir}/openvpn

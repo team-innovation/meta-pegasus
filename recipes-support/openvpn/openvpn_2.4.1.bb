@@ -7,7 +7,7 @@ DEPENDS = "lzo openssl iproute2 ${@base_contains('DISTRO_FEATURES', 'pam', 'libp
 
 inherit autotools systemd
 
-PR = "r5"
+PR = "r6"
 
 SRC_URI = "http://swupdate.openvpn.org/community/releases/openvpn-${PV}.tar.gz \
            file://openvpn \
