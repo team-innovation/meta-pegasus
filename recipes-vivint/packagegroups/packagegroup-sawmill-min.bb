@@ -7,7 +7,7 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "20"
+PR = "21"
 
 inherit packagegroup
 
@@ -38,4 +38,5 @@ RDEPENDS_${PN} = " \
 	util-linux-sfdisk \
 	vivutils \
 	wallsly-modules \
+	mmc-utils \
 "
