@@ -4,7 +4,7 @@
 
 # Core protocols
 #load-module module-simple-protocol-tcp
-load-module module-native-protocol-unix
+load-module module-native-protocol-unix auth-anonymous=1
 load-module module-cli-protocol-unix
 #load-module module-cli-protocol-tcp
 

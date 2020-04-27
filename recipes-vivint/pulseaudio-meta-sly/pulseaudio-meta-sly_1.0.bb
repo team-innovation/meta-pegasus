@@ -60,10 +60,6 @@ do_install() {
     fi
     install -m 755 ${WORKDIR}/procman.d/* ${D}/${sysconfdir}/procman.d
 
-    # Symlink this until we get pulse fixed correctly
-    install -d ${D}/home/root
-    ln -sf /.config ${D}/home/root/.config
-
     install -d ${D}${sysconfdir}/logrotate.d
     install -m 0600 "${WORKDIR}/pulse.logrotate" "${D}${sysconfdir}/logrotate.d/pulse"
 }

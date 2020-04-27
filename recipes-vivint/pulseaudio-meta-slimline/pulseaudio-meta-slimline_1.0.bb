@@ -58,10 +58,6 @@ do_install() {
     fi
     install -m 755 ${WORKDIR}/procman.d/* ${D}/${sysconfdir}/procman.d
 
-    # Symlink this until we get pulse fixed correctly
-    install -d ${D}/home/root
-    ln -sf /.config ${D}/home/root/.config
-
     install -d ${D}${sysconfdir}/logrotate.d
     install -m 0600 "${WORKDIR}/pulse.logrotate" "${D}${sysconfdir}/logrotate.d/pulse"
 }
@@ -93,8 +89,6 @@ CONFFILES_${PN} = "\
   ${sysconfdir}/pulse/asound.conf.pulseaudio-meta-slimline \
   ${sysconfdir}/pulse/daemon.conf.pulseaudio-meta-slimline \
 "
-
-FILES_${PN} += " /home/root/.config"
 
 # At the time the postinst runs, dbus might not be setup so only restart if running
 pkg_postinst_hal () {
