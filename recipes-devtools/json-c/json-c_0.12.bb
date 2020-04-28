@@ -29,4 +29,6 @@ do_configure_prepend() {
     rm -f ${S}/config.status
 }
 
+EXTRA_OECONF = "--disable-werror"
+
 BBCLASSEXTEND = "native nativesdk"
