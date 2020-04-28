@@ -21,7 +21,7 @@ S = "${WORKDIR}/git/zware_1_20/src/zwave/hcapi"
 
 do_compile() {
     cd ${S}
-    oe_runmake TARGET_PLATFORM=VIVINT_SLY
+    oe_runmake TARGET_PLATFORM=VIVINT_SLY_DEBUG
 }
 
 do_install_append() {

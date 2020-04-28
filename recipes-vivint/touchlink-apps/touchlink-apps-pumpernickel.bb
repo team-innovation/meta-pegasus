@@ -57,6 +57,7 @@ DEPENDS += " \
 	python3-urllib3-native \
 	python3-chardet-native \
 	python3-idna-ssl-native \
+	libunwind \
 "
 
 SRCREV = "${GIT_APPS_REV}"
@@ -101,6 +102,7 @@ FILES_${PN} += "${datadir}"
 RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
     qtsvg-plugins \
     gstreamer1.0 \
+	libunwind \
 	"
 
 pkg_postinst_ontarget_${PN}-pumpernickel () {

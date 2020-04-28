@@ -26,7 +26,7 @@ MV=/bin/mv
 CP=/bin/cp
 RM=/bin/rm
 RMDIR=/bin/rmdir
-SLIMLINESIZE=50M
+SLIMLINESIZE=30M
 
 logging()
 {

@@ -65,12 +65,14 @@ function whitewash_int {
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE SLIMLINE_VERSION"
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE BY_PASS_UNIT_TEST"
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE UPDATE_STRING_TABLE"
+	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE BUILD_TYPE"
 	export BB_ENV_EXTRAWHITE
 }
 
 # if already set up then we just run the setup-environment script
 test -d ${BUILD_DIR} &&
 	sed -i '/GIT_SERVER/d' ${BUILD_DIR}/conf/local.conf && 
+	sed -i '/BUILD_TYPE/d' ${BUILD_DIR}/conf/local.conf &&
 	sed -i '/GIT_APPS_TAG/d' ${BUILD_DIR}/conf/local.conf &&
 	sed -i '/GIT_APPS_REV/d' ${BUILD_DIR}/conf/local.conf && 
     sed -i '/GIT_APPS_BRANCH/d' ${BUILD_DIR}/conf/local.conf && 
@@ -79,6 +81,8 @@ test -d ${BUILD_DIR} &&
     sed -i '/PRSERV_HOST/d'  ${BUILD_DIR}/conf/local.conf && 
     sed -i '/DISTRO_FEATURES_remove/d' ${BUILD_DIR}/conf/local.conf && 
     sed -i '/IMAGE_INSTALL_remove/d' ${BUILD_DIR}/conf/local.conf && 
+    sed -i '/CONNECTIVITY_CHECK_URIS/d' {BUILD_DIR}/conf/local.conf && 
+   	echo "CONNECTIVITY_CHECK_URIS = \"https://www.example.com\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "DISTRO_FEATURES_remove = \"x11 wayland directfb bluetooth zeroconf\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "IMAGE_INSTALL_remove = \" packagegroup-fsl-bluez5-tools\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_SERVER ?= \"git@source.vivint.com:7999/em\"" >> ${BUILD_DIR}/conf/local.conf &&
@@ -126,6 +130,10 @@ grep -q DISTRO_FEATURES_remove ./conf/local.conf ||
 
 grep -q IMAGE_INSTALL_remove ./conf/local.conf ||
     echo "IMAGE_INSTALL_remove=\" packagegroup-fsl-bluez5-tools\"" \
+        >> ./conf/local.conf
+
+grep -q CONNECTIVITY_CHECK_URIS ./conf/local.conf ||
+    echo "CONNECTIVITY_CHECK_URIS=\" https://www.example.com\"" \
         >> ./conf/local.conf
 
 sed '/iotivity-resource/d' ./conf/local.conf

@@ -24,7 +24,7 @@ do_install () {
 	install -m 0755 ${WORKDIR}/udhcpc_wlan0 ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/wps.sh ${D}/usr/local/bin
 	install -m 0755 ${WORKDIR}/stop_wps.sh ${D}/usr/local/bin
-    install -m 0755 ${WORKDIR}/network_conf_verify ${D}${sysconfdir}/init.d
+    	install -m 0755 ${WORKDIR}/network_conf_verify ${D}${sysconfdir}/init.d
 }
 
 FILES_${PN} += "/usr/local/bin/*"

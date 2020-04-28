@@ -52,6 +52,7 @@ validate_public_key()
     fi
 
     echo "Public key checksum is" $(md5sum /media/extra/conf/vivintbuild_gpg.pub | cut -c1-32)
+    [ ! -d "$HOME"/.gnupg ] && mkdir -p "$HOME"/.gnupg
 }
 
 rm_roubaix_logs()

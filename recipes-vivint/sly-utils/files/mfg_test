@@ -49,14 +49,6 @@ then
     done
 fi
 
-# verify signature
-import_key
-
-if [ -d "/home/root/.gnupg" ]
-then
-	mkdir "/home/root/.gnupg"
-fi
-
 test_script=$(find /media -name run_mfg_test_sly.sh)
 if [ -z $test_script ]
 then
@@ -64,6 +56,8 @@ then
 	exit 0
 fi
 
+# verify signature
+import_key
 
 for i in 1 2
 do

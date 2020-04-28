@@ -36,14 +36,17 @@ do_install_append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwaved ${D}${sysconfdir}/init.d
 
-    #Temporary measure to prevent accidental zipgateway usage
-    mv ${D}${sysconfdir}/init.d/zipgateway ${D}${sysconfdir}/init.d/zipgateway_DO_NOT_RUN 
-
 }
 
 FILES_${PN} += "${prefix}/local/sbin/zipgateway"
 FILES_${PN} += "${prefix}/local/sbin/udprelay"
-FILES_${PN} += "${prefix}/local/etc/*"
+FILES_${PN} += "${prefix}/local/etc/zipgateway.cfg"
+FILES_${PN} += "${prefix}/local/etc/zipgateway_provisioning_list.cfg"
+FILES_${PN} += "${prefix}/local/etc/zipgateway.tun"
+FILES_${PN} += "${prefix}/local/etc/zipgateway.fin"
+FILES_${PN} += "${prefix}/local/etc/ZIPR.x509_1024.pem"
+FILES_${PN} += "${prefix}/local/etc/ZIPR.key_1024.pem"
+FILES_${PN} += "${prefix}/local/etc/Portal.ca_x509.pem"
 FILES_${PN} += "${sysconfdir}/init.d/zwaved"
 FILES_${PN} += "${sysconfdir}/rcS.d/*zwaved"
 FILES_${PN} += "${prefix}/local/man/man3/zipgateway.3"

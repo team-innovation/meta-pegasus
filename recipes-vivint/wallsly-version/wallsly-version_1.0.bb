@@ -4,7 +4,7 @@ DESCRIPTION = "WallSly Version Information"
 SECTION = "wallsly"
 LICENSE = "CLOSED"
 DEPENDS = ""
-
+PV = "${DISTRO_VERSION}"
 PR = "r5"
 
 SRC_URI =	"file://lsb_release_wallsly \
@@ -27,8 +27,8 @@ INITSCRIPT_PARAMS = "start 04 S ."
 GIT_APPS_SERVER ?= "${GIT_SERVER}"
 GIT_APPS_PROTOCOL ?= "ssh"
 GIT_STRINGS_SERVER ?= "/home/localRepos/constants/boilerplate/python"
-SRC_URI += "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL};branch=${SRCBRANCH}" 
 
+SRC_URI += "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL};branch=${SRCBRANCH}" 
 
 do_compile[noexec] = "1"
 
@@ -41,7 +41,7 @@ do_install() {
 	# version
 	install -d ${D}${sysconfdir}
 	echo "${WALLSLY_NAME} ${DISTRO_VERSION}" > ${D}${sysconfdir}/wallsly-version
-    echo "Cellular: A.01" >> ${D}${sysconfdir}/wallsly-version
+	echo "Cellular: A.01" >> ${D}${sysconfdir}/wallsly-version
 	echo "$(date '+Build Date: %m/%d/%Y')" >> ${D}${sysconfdir}/wallsly-version
 	echo "Repo manifest: ${REPO_MANIFEST}" >> ${D}${sysconfdir}/wallsly-version
 	echo "OE branch: ${GIT_META_VIVINT_BRANCH%)}" >> ${D}${sysconfdir}/wallsly-version
@@ -70,4 +70,3 @@ do_install() {
 	install -d ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/brand.sh ${D}${sysconfdir}/init.d
 }
-

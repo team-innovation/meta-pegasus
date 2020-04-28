@@ -59,7 +59,7 @@ PermitRootLogin yes
 
 # To disable tunneled clear text passwords, change to no here!
 #PasswordAuthentication yes
-#PermitEmptyPasswords no
+PermitEmptyPasswords yes
 
 # Change to no to disable s/key passwords
 #ChallengeResponseAuthentication yes
@@ -95,7 +95,7 @@ PermitRootLogin yes
 #PrintLastLog yes
 #TCPKeepAlive yes
 #UseLogin no
-#UsePrivilegeSeparation yes
+UsePrivilegeSeparation yes
 #PermitUserEnvironment no
 Compression no
 ClientAliveInterval 15
