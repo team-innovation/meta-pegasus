@@ -7,7 +7,7 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "20"
+PR = "22"
 
 inherit packagegroup
 
@@ -32,8 +32,6 @@ RDEPENDS_${PN} = " \
 	strace \
 	u-boot-fw-utils \
 	u-boot-script-slimline \
-	u-boot-slimline \
-	u-boot-wallsly \
 	util-linux-mkfs \
 	util-linux-sfdisk \
 	vivutils \

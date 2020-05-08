@@ -38,6 +38,10 @@ is_wallsly() {
 	grep -q vivint,wallsly "/proc/device-tree/compatible"
 }
 
+is_brazen() {
+	grep -q vivint,brazen "/proc/device-tree/compatible"
+}
+
 #
 # The bootscript and serial number are in the bootscript partition
 #
@@ -134,6 +138,10 @@ ubootbinary() {
 	is_wallsly &&
 		echo "/boot/u-boot-wallsly.imx" &&
 		return
+	is_brazen &&
+		echo "/boot/u-boot-brazen.imx" &&
+		return
+
 	carp "unsupported platform looking for u-boot binary"
 }
 
@@ -422,6 +430,11 @@ addboardmodelfromdevtree() {
 		sed --in-place '/28-FIX-ME/d' $pit &&
 	    	echo export WS_BOARD_MODEL=28-600060-001-"$(chk_rev)" >> $pit  &&
 		return
+	is_brazen &&
+		sed --in-place '/28-FIX-ME/d' $pit &&
+		echo export BRAZEN_BOARD_MODEL=28-600060-001-"$(chk_rev)" >> $pit  &&
+		return
+
 }
 
 addboardrevfromdevtree() {
@@ -437,6 +450,11 @@ addboardrevfromdevtree() {
 		sed --in-place '/V-FIX-ME/d' $pit &&
 		echo export WS_BOARD_REV=VS-SH2000-"$(chk_board)"-Rev-"$(chk_rev)" >> $pit &&
 		return
+	is_brazen &&
+		sed --in-place '/V-FIX-ME/d' $pit &&
+		echo export BRAZEN_BOARD_REV=VS-SH2000-"$(chk_board)"-Rev-"$(chk_rev)" >> $pit &&
+		return
+
 }
 
 panelinfoboardmodelcheck() {

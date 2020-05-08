@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r98"
+PR = "r99"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -59,6 +59,7 @@ SRC_URI = "\
 	   file://wallslyscreentest \
 	   file://netm-macaddrs.py \
 	   file://ssid-verify.py \
+	   file://convert-panel \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -111,6 +112,7 @@ do_install() {
 	install -m 0755 ${S}/wallslyscreentest ${D}/usr/local/bin
 	install -m 0755 ${S}/netm-macaddrs.py ${D}/usr/local/bin
 	install -m 0755 ${S}/ssid-verify.py ${D}/usr/local/bin
+	install -m 0755 ${S}/convert-panel ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
@@ -139,8 +141,12 @@ if [ "x$D" != "x" ]; then
 fi
 
 # Overwrite existing files.
-if grep -q wallsly /proc/device-tree/compatible; then
-	rm /usr/local/bin/mfr_audio_test.py 
+platform=$(strings /proc/device-tree/compatible |
+        grep vivint |
+        sed s/^vivint,//)
+
+if [ "$platform" == "wallsly" ] || [ "$platform" == "brazen" ]; then
+	rm -f /usr/local/bin/mfr_audio_test.py
 	cp /usr/local/bin/mfr-audio-test-wallsly    /usr/local/bin/mfr-audio-test
 	cp /usr/local/bin/vaudio-wallsly    /usr/local/bin/vaudio
 fi

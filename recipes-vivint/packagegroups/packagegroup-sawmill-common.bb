@@ -117,5 +117,4 @@ RDEPENDS_${PN} = " \
 	wps-sh \
 	xdelta3 \
 	xz \
-    touchlink-maxtouch-config \
 "

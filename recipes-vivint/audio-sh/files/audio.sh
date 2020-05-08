@@ -207,7 +207,7 @@ platform=$(strings /proc/device-tree/compatible |
         sed s/^vivint,//)
 	echo $platform " reported to audio.sh"
 
-if [ "$platform" == "wallsly" ]; then
+if [ "$platform" == "wallsly" ] || [ "$platform" == "brazen" ]; then
 	init_wallsly
 elif [ "$platform" == "sly" ]; then
 	init_slimline

@@ -1,11 +1,11 @@
 # Copyright (C) 2015 Vivint, Inc.
 
-DESCRIPTION = "primary aka sly touchlink apps packages, framework, roubaix, etc"
+DESCRIPTION = "Brazen system packages"
 LICENSE = "MIT"
 
-PR = "r34"
+PR = "r2"
 
-require packagegroup-touchlink-apps-common.inc
+require packagegroup-touchlink-apps-base.inc
 
 
 RDEPENDS_${PN} += " \
@@ -16,15 +16,10 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-httpd \
 	touchlink-apps-mmpd \
 	touchlink-apps-modemd \
-	touchlink-apps-netd \
 	touchlink-apps-pyftpd \
-	touchlink-apps-rf915d \
 	touchlink-apps-rtspd \
-	touchlink-apps-sundance \
 	touchlink-apps-test-daemon \
 	touchlink-apps-videod \
 	touchlink-apps-webd \
 	touchlink-apps-zwaved \
-	touchlink-apps-test-ui \
-	touchlink-apps-testui \
-"
+	"

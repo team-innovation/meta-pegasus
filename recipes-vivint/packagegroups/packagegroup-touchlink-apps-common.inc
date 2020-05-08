@@ -1,32 +1,16 @@
 # Copyright (C) 2015 Vivint, Inc.
 
-inherit packagegroup
+require packagegroup-touchlink-apps-base.inc
 
 VIVINT_APPS_COMMON = "\
-	touchlink-apps-favicon \
-	touchlink-apps-framework \
-	touchlink-apps-global-conf \
-	touchlink-apps-iod \
 	touchlink-apps-launcherd \
-	touchlink-apps-netd \
-	touchlink-apps-procmand \
 	touchlink-apps-qml-framework \
 	touchlink-apps-qml-framework-images-controls \
 	touchlink-apps-qml-framework-images-controls-shared \
-	touchlink-apps-audmgrd \
 	touchlink-apps-pumpernickel \
 	touchlink-apps-initpumpernickel \
 	touchlink-apps-roubaix-services \
-	touchlink-apps-sound-wav-chimes \
-	touchlink-apps-ssdpd \
-	touchlink-apps-sundance-proxies \
-	touchlink-apps-listenerd-proxies \
-	touchlink-apps-updated \
 	touchlink-apps-usage-analytics \
-	touchlink-apps-utils \
-	touchlink-apps-modemd-proxies \
-	touchlink-simlock \
-	voiceaudio \
 "
 
 QT5_DEPENDS = "\
@@ -40,7 +24,6 @@ QT5_DEPENDS = "\
     	imx-gpu-viv-kernel \
 	python3-pyopengl \
 	touchlink-qt5-profile \
-	touchlink-ssl-profile \
 "
 
 QT5_PKGS = "\
@@ -65,42 +48,17 @@ QT5_PKGS = "\
 	tslib tslib-calibrate tslib-tests \
 "
 
-PULSE_DEPENDS = "python3-pulseaudio \
-		"
 TOUCHSCREEN_DEPENDS = "libinput \
 	evtest \
+	touchlink-maxtouch-config \
 "
 
 DISPLAY_DEPENDS = "\
 	imagemagick \
 "
 
-MISC_DEPENDS = "\
-	ppp \
-	socat \
-	live555-openrtsp \
-	nfc-util \
-"
 
-PYTHON_EXTRA_DEPENDS = "\
-	python3-brisa \
-	python3-certifi \
-	python3-urllib3 \
-	python3-sentry-sdk \
-	python3-jsonschema \
-	python3-mixpanel \
-	python3-mmap \
-	python3-multiprocessing \
-	python3-requests \
-	python3-requests-toolbelt \
-	python3-six \
-	python3-soco \
-	python3-sparsedict \
-	python3-phue \
-	python3-transitions \
-"
-
-RDEPENDS_${PN} = " \
+RDEPENDS_${PN} += " \
 	${DISPLAY_DEPENDS} \
 	${MISC_DEPENDS} \
 	${PULSE_DEPENDS} \

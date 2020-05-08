@@ -101,6 +101,10 @@ is_wallsly() {
 	grep -q vivint,wallsly "/proc/device-tree/compatible"
 }
 
+is_brazen() {
+	grep -q vivint,brazen "/proc/device-tree/compatible"
+}
+
 # slimline and sly share a common u-boot binary
 # wallsly has a specific version
 ubootbinary() {
@@ -113,6 +117,10 @@ ubootbinary() {
 	is_wallsly &&
 		echo "/boot/u-boot-wallsly.imx" &&
 		return
+	is_brazen &&
+		echo "/boot/u-boot-brazen.imx" &&
+		return
+
 	carp "unsupported platform looking for u-boot binary"
 }
 

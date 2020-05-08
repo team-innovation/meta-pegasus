@@ -18,6 +18,11 @@ then
 	device="This is Smart Hub V2!"
 fi
 
+if [[ `uname -a | cut -d' ' -f2` == "imx6dl-brazen" ]]
+then
+	device="This is Brazen"
+fi
+
 if [[ $device == '' ]]
 then
 	echo "Panel type unknown. Now exiting..."

@@ -2,7 +2,7 @@ DESCRIPTION = "Pulseaudio Meta package w/ initscript et. al."
 SECTION = "audio"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r16"
+PR = "r17"
 
 RDEPENDS_${PN} = "\
   pulseaudio-module-alsa-sink \
@@ -81,7 +81,12 @@ if grep audio /etc/group; then
 fi
 
 # Overwrite existing configfiles, yuck!
-if grep -q wallsly /proc/device-tree/compatible; then
+
+platform=$(strings /proc/device-tree/compatible |
+        grep vivint |
+        sed s/^vivint,//)
+
+if [ "$platform" == "wallsly" ] || [ "$platform" == "brazen" ]; then
 	cp /etc/pulse/session.pulseaudio-meta-wallsly /etc/pulse/session
 else
 	cp /etc/pulse/session.pulseaudio-meta-sly /etc/pulse/session

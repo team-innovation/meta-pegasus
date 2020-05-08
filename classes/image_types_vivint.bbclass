@@ -82,6 +82,7 @@ export SECTOR_SIZE = "512"
 # == 6.866GiB
 # == 7031.25MiB
 # round down to 7000MiB
+#
 export IMAGESZ = "7000MiB"
 
 # disk and partition sizes; could change but changes in other places

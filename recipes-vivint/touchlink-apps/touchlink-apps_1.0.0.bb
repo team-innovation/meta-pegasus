@@ -5,7 +5,7 @@
 # last thing is to add the new package name to the PACKAGES = in this file.
 ####
 
-DESCRIPTION = "2gig Touchlink Apps"
+DESCRIPTION = "Vivint Touchlink Apps"
 LICENSE = "CLOSED"
 require touchlink-apps-audmgrd.inc
 require touchlink-apps-sundance.inc
@@ -42,7 +42,6 @@ require touchlink-apps-procmand.inc
 require touchlink-apps-favicon.inc
 require touchlink-apps-global-conf.inc
 require touchlink-apps-mmpd.inc
-require touchlink-apps-listenerd.inc
 
 #roubaix
 require touchlink-apps-roubaix-services.inc
@@ -419,8 +418,6 @@ PACKAGES = " \
 	${PN}-vocabulary    \
 	${PN}-webd  \
 	${PN}-zwaved        \
-	${PN}-listenerd-proxies      \
-	${PN}-listenerd      \
 	${PN}-sound-wav-chimes \
 	${PN} \
 "

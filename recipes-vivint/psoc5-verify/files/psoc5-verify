@@ -8,7 +8,7 @@ platform=$(strings /proc/device-tree/compatible |
 	grep vivint |
 	sed s/^vivint,//)
 
-if [ "$platform" == "wallsly" ]; then
+if [ "$platform" == "wallsly" ] || [ "$platform" == "brazen" ]; then
 	monpwr_module=monpwr_wall
 	monpwr_devlink=/sys/bus/i2c/devices/1-0034
 elif [ "$platform" == "sly" ]; then

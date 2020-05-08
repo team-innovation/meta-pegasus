@@ -2,18 +2,19 @@
 DESCRIPTION = "packages needed just for slimline"
 LICENSE = "MIT"
 
-PR = "r8"
+PR = "r9"
 
 inherit packagegroup
 
 RDEPENDS_${PN} += " \
+	u-boot-slimline \
 	hostapd \
-    crda \
+	crda \
 	psoc-fw-slimline \
 	slimline-utils \
 	slimline-version \
-    mosquitto-clients \
-    openvpn \
-    telegraf \
+	mosquitto-clients \
+        openvpn \
+        telegraf \
 "
 
