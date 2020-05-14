@@ -21,3 +21,5 @@ BBCLASSEXTEND = "native"
 NATIVE_INSTALL_WORKS = "1"
 
 inherit setuptools3 python3-dir
+
+RDEPENDS_${PN} = "python3-chardet python3-urllib3"
