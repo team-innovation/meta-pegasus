@@ -20,7 +20,6 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-sound-wav-chimes \
 	touchlink-apps-ssdpd \
 	touchlink-apps-sundance-proxies \
-	touchlink-apps-listenerd-proxies \
 	touchlink-apps-updated \
 	touchlink-apps-usage-analytics \
 	touchlink-apps-utils \

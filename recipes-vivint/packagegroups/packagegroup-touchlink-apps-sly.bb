@@ -21,7 +21,6 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-rf915d \
 	touchlink-apps-rtspd \
 	touchlink-apps-sundance \
-	touchlink-apps-listenerd \
 	touchlink-apps-test-daemon \
 	touchlink-apps-videod \
 	touchlink-apps-webd \
