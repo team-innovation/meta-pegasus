@@ -3,10 +3,10 @@
 DESCRIPTION = "Brazen system packages"
 LICENSE = "MIT"
 
-PR = "r2"
+PR = "r3"
 
 require packagegroup-touchlink-apps-base.inc
-
+require packagegroup-touchlink-qt-brazen.inc
 
 RDEPENDS_${PN} += " \
 	touchlink-apps-345d \
