@@ -1,17 +1,14 @@
-DESCRIPTION = "Brazen qt5 image."
+DESCRIPTION = "Brazen Base image."
 LICENSE = "MIT"
-PR = "r2"
+PR = "r1"
 IMAGE_FEATURES += "package-management" 
 
 DEPENDS += "zip-native"
 IMAGE_INSTALL_append = "\
 	${CORE_IMAGE_BASE_INSTALL} \
 	packagegroup-sawmill-common \
-	packagegroup-touchlink-apps-brazen \
 	packagegroup-sawmill-brazen \
 	packagegroup-sawmill-video \
-        touchlink-apps-pumpernickel \
-        touchlink-apps-initpumpernickel \
 	alsa-utils-aplay \
 	pulseaudio-meta-sly \
 	audio-sh \

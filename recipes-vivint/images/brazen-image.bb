@@ -1,8 +1,9 @@
-DESCRIPTION = "Blazen image."
+DESCRIPTION = "Brazen image."
 LICENSE = "MIT"
 PR = "r1"
 IMAGE_FEATURES += "package-management" 
 
+DEPENDS += "zip-native"
 IMAGE_INSTALL_append = "\
 	${CORE_IMAGE_BASE_INSTALL} \
 	packagegroup-sawmill-common \

@@ -9,6 +9,9 @@ PKGR_${PN}-framework = "${PR}${FRAMEWORK_PREPEND}${FRAMEWORK_REVISION}"
 RDEPENDS_${PN}-framework = "\
         python3-dateutil \
         python3-sparsedict \
+	iotivity \
+	iotivity-resource \
+	iotivity-bridging-plugins \
 	"
 
 do_install_append () {

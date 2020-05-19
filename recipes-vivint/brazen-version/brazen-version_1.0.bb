@@ -19,6 +19,10 @@ RPROVIDES_${PN} = "brazen-version"
 
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
+inherit update-rc.d
+
+INITSCRIPT_NAME = "brand.sh"
+INITSCRIPT_PARAMS = "start 04 S ."
 
 GIT_APPS_SERVER ?= "${GIT_SERVER}"
 GIT_APPS_PROTOCOL ?= "ssh"
@@ -65,5 +69,4 @@ do_install() {
 
 	install -d ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/brand.sh ${D}${sysconfdir}/init.d
-	update-rc.d -r ${D} brand.sh start 04 S .
 }
