@@ -74,7 +74,7 @@ do_install_append () {
 
 	# dvrd library and binary
         install -d ${D}/${INSTALL_DIR}/lib
-        cp -a ${S}/code/dvrd/libdvr/libdvr.so ${D}/${INSTALL_DIR}/lib
+        install ${S}/code/dvrd/libdvr/libdvr.so ${D}/${INSTALL_DIR}/lib
 
 	# remove dvr libdvr dir
         rm -rf ${D}/${INSTALL_DIR}/dvrd/libdvr

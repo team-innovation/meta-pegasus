@@ -12,13 +12,15 @@ inherit packagegroup
 #   then add it to packagegroup-sawmill-min not here.
 RDEPENDS_${PN} = " \
 	alsa-utils \
+	imx-gpu-viv-demos \
+	imx-gpu-viv-tools \
 	ca-certificates \
 	civetweb \
 	cronie \
 	gnupg \
 	iotivity-resource \
 	iotivity-bridging-plugins \
-	libsodium18 \
+	libsodium \
 	logrotate \
 	lookbusy \
 	packagegroup-sawmill-debugtools \
@@ -27,15 +29,14 @@ RDEPENDS_${PN} = " \
 	python3-asn1crypto \
 	python3-asyncio \
 	python3-aioconsole \
-	python3-aiodns \
-	python3-aiohttp \
-	python3-async-generator \
-	python3-async-timeout \
-	python3-atomicwrites \
-	python3-attrs \
-	python3-bson \
+        python3-aiodns \
+        python3-aiohttp \
+        python3-async-generator \
+        python3-async-timeout \
+        python3-atomicwrites \
+        python3-attrs \
 	python3-cachetools \
-	python3-cchardet \
+	python3-cchardet \	
 	python3-cffi \
 	python3-compile \
 	python3-cryptography \
@@ -44,13 +45,13 @@ RDEPENDS_${PN} = " \
 	python3-cstruct \
 	python3-cython \
 	python3-gdbm \
+	python3-setuptools \
 	python3-grpcio \
 	python3-idna \
-	python3-idna-ssl \
-	python3-pycares \
-	python3-terminaltables \
+        python3-idna-ssl \
+        python3-pycares \
+        python3-terminaltables \
 	python3-idle \
-	python3-importlib \
 	python3-intelhex \
 	python3-jinja2 \
 	python3-json \
@@ -75,24 +76,20 @@ RDEPENDS_${PN} = " \
 	python3-pyserial \
 	python3-pyssh-ctypes \
 	python3-pytest \
-	python3-pytest-asyncio \
-	python3-pytest-cov \
+        python3-pytest-asyncio \
+        python3-pytest-cov \
 	python3-pyalsaaudio \
 	python3-py \
 	python3-pyopenssl \
 	python3-pytz \
-	python3-re \
 	python3-resource \
 	python3-setproctitle \
-	python3-setuptools \
 	python3-shell \
 	python3-sip \
 	python3-sqlite3 \
-	python3-subprocess \
 	python3-terminal \
 	python3-typing \
-	python3-typing-extensions \
-	python3-textutils \
+        python3-typing-extensions \
 	python3-threading \
 	python3-tkinter \
 	python3-toolz \
@@ -101,7 +98,7 @@ RDEPENDS_${PN} = " \
 	python3-unixadmin \
 	python3-numbers \
 	python3-wheel \
-	python3-yarl \
+        python3-yarl \
 	pv \
 	speedtest-cli \
 	sqlite3 \

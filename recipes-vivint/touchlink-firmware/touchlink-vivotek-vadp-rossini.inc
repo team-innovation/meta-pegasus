@@ -14,17 +14,11 @@ do_unpack() {
 	cp ${DL_DIR}/${VADP_MODULE_NAME} ${WORKDIR}
 }
 
-do_patch() {
-	:
-}
+do_patch[noexec] = "1"
 
-do_configure() {
-	:
-}
+do_configure[noexec] = "1"
 
-do_compile() {
-	:
-}
+do_compile[noexec] = "1"
 
 do_install() {
      install -d ${D}/${FIRMWARE_DIR}

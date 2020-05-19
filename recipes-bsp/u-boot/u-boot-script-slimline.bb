@@ -2,7 +2,8 @@ DESCRIPTION = "U-Boot Script - Boot loader scripts loaded by u-boot for Slimline
 HOMEPAGE = "http://www.vivint.com"
 SECTION = "bootloaders"
 PRIORITY = "optional"
-LICENSE = "Closed"
+LICENSE = "GPLv2+"
+LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 DEPENDS = "u-boot-mkimage-native"
 UBOOT_SCRIPT = "boot.scr"
@@ -13,13 +14,14 @@ SCR_MNT = "/media/bootscript"
 COMPATIBLE_MACHINE = "imx6dl-slimline"
 
 GIT_UBOOT_SERVER ?= "${GIT_SERVER}"
-GIT_UBOOT_BRANCH ?= "develop"
+GIT_UBOOT_BRANCH ?= "slimline-imx"
 GIT_UBOOT_PROTOCOL ?= "ssh"
 GIT_UBOOT_REV ?= "${AUTOREV}"
 
 SRC_URI = "git://${GIT_UBOOT_SERVER}/uboot-imx;protocol=${GIT_UBOOT_PROTOCOL};branch=${GIT_UBOOT_BRANCH}"
 SRCREV = "${GIT_UBOOT_REV}"
 
+PV = "v2016.03+git${SRCPV}"
 inherit deploy
 
 S = "${WORKDIR}/git"

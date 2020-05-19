@@ -93,7 +93,6 @@ test -d ${BUILD_DIR} &&
 	echo "UPDATESENG ?= \"updateseng.vivint.com/innovation\"" >> ${BUILD_DIR}/conf/local.conf &&
     echo "PRSERV_HOST = \"localhost:0\"" >> ${BUILD_DIR}/conf/local.conf &&
 	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
-	grep -q oe-meta-go ${BUILD_DIR}/conf/bblayers.conf &&
 	grep -q meta-oic ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
 	whitewash_int &&
@@ -114,10 +113,6 @@ source ./fsl-setup-release.sh -b ${BUILD_DIR}
 
 grep -q meta-vivint ./conf/bblayers.conf ||
 	echo "BBLAYERS += \" \${BSPDIR}/sources/meta-vivint \"" \
-		>> ./conf/bblayers.conf
-
-grep -q oe-meta-go ./conf/bblayers.conf ||
-	echo "BBLAYERS += \" \${BSPDIR}/sources/oe-meta-go \"" \
 		>> ./conf/bblayers.conf
 
 grep -q meta-oic ./conf/bblayers.conf ||

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 if [ ! -e /media/extra/serial_lock ]; then
     if [ -e /sys/class/tty/ttyGS0 ]; then

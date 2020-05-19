@@ -6,14 +6,10 @@ LIC_FILES_CHKSUM = "\
    file://LICENSE;md5=9df70e0e8d4e7a719b31d430c2e41447 \
 "
 
-DEPENDS += "python3"
-
-inherit setuptools3 python3-dir
+inherit setuptools3 
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
-
-NATIVE_INSTALL_WORKS = "1"
 
 SRCNAME = "python-pulseaudio"
 PR = "ml7"
@@ -23,10 +19,6 @@ SRCREV = "6ed0449c51967c49b16096bfe41631458807916d"
 SRC_URI = "git://github.com/thelinuxdude/python-pulseaudio.git;protocol=https;branch=pa-10.0 \
 "
 S = "${WORKDIR}/git"
-
-do_install_prepend() {
-    install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
-}
 
 RDEPENDS_${PN} = "\
   python3-ctypes \

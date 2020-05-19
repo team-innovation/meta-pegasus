@@ -4,14 +4,14 @@ SECTION = "network"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 
-DEPENDS = "python-native libusb openssl flex"
+DEPENDS = "python-native libusb libxml2-native libxslt-native openssl flex"
 RDEPENDS_${PN} = "bridge-utils"
 
 PR = "r1"
 PV = "2.81+git${SRCPV}"
 
-SRCREV = "3d9a65b72d54beb67a446bdaf5d2ecda91c4ae04"
-SRCBRANCH = "master"
+SRCREV = "c8f6bfb62a737414d6bdd373d8328f70cb93c909"
+SRCBRANCH = "vivint_sumo"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
 GIT_ZGATE_PROTOCOL ?= "ssh"
@@ -22,7 +22,11 @@ SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_P
 
 S = "${WORKDIR}/git/zipgateway-2.81.0-Source/usr/local"
 
-inherit pkgconfig cmake python-dir pythonnative
+inherit pkgconfig cmake python-dir pythonnative update-rc.d
+
+# Create runlevel links
+INITSCRIPT_NAME = "zwaved"
+INITSCRIPT_PARAMS = "start 30 5 ."
 
 do_package_qa() {
     echo "Skipping QA ..."
@@ -32,19 +36,14 @@ do_install_append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwaved ${D}${sysconfdir}/init.d
 
-    # Create runlevel links
-    update-rc.d -r ${D} zwaved start 30 5 .
+    #Temporary measure to prevent accidental zipgateway usage
+    mv ${D}${sysconfdir}/init.d/zipgateway ${D}${sysconfdir}/init.d/zipgateway_DO_NOT_RUN 
+
 }
 
 FILES_${PN} += "${prefix}/local/sbin/zipgateway"
 FILES_${PN} += "${prefix}/local/sbin/udprelay"
-FILES_${PN} += "${prefix}/local/etc/zipgateway.cfg"
-FILES_${PN} += "${prefix}/local/etc/zipgateway_provisioning_list.cfg"
-FILES_${PN} += "${prefix}/local/etc/zipgateway.tun"
-FILES_${PN} += "${prefix}/local/etc/zipgateway.fin"
-FILES_${PN} += "${prefix}/local/etc/ZIPR.x509_1024.pem"
-FILES_${PN} += "${prefix}/local/etc/ZIPR.key_1024.pem"
-FILES_${PN} += "${prefix}/local/etc/Portal.ca_x509.pem"
+FILES_${PN} += "${prefix}/local/etc/*"
 FILES_${PN} += "${sysconfdir}/init.d/zwaved"
 FILES_${PN} += "${sysconfdir}/rcS.d/*zwaved"
 FILES_${PN} += "${prefix}/local/man/man3/zipgateway.3"

@@ -2,7 +2,7 @@ DESCRIPTION = "Pulseaudio Meta package w/ initscript et. al."
 SECTION = "audio"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r13"
+PR = "r14"
 
 RDEPENDS_${PN} = "\
   pulseaudio-module-alsa-sink \
@@ -58,21 +58,14 @@ do_install() {
     fi
     install -m 755 ${WORKDIR}/procman.d/* ${D}/${sysconfdir}/procman.d
 
-    # Symlink this until we get pulse fixed correctly
-    install -d ${D}/home/root
-    ln -sf /.config ${D}/home/root/.config
-
     install -d ${D}${sysconfdir}/logrotate.d
     install -m 0600 "${WORKDIR}/pulse.logrotate" "${D}${sysconfdir}/logrotate.d/pulse"
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-pkg_postinst_${PN} () {
-#!/bin/sh
-if [ "x$D" != "x" ]; then
-        exit 1
-fi
+pkg_postinst_ontarget_${PN} () {
+
 
 if grep audio /etc/group; then
 	grep pulse /etc/group || addgroup pulse
@@ -97,11 +90,9 @@ CONFFILES_${PN} = "\
 FILES_${PN} += " /home/root/.config"
 
 # At the time the postinst runs, dbus might not be setup so only restart if running
-pkg_postinst_hal () {
-        # can't do this offline
-        if [ "x$D" != "x" ]; then
-                exit 1
-        fi
+pkg_postinst_ontarget_hal () {
+
+
 
         grep haldaemon ${sysconfdir}/group || addgroup haldaemon
         grep haldaemon ${sysconfdir}/passwd || adduser --disabled-password --system --home /var/run/hald --no-create-home haldaemon --ingroup haldaemon -g HAL

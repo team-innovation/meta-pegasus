@@ -1,4 +1,4 @@
-DESCRIPTION = "Transitions - A lightweight, object-oriented finite state machine implementation"
+SUMMARY = "Transitions - A lightweight, object-oriented finite state machine implementation"
 HOMEPAGE = "https://github.com/pytransitions/transitions"
 SECTION = "devel/python"
 LICENSE = "MIT"
@@ -17,6 +17,4 @@ S = "${WORKDIR}/${SRCNAME}"
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
 
-NATIVE_INSTALL_WORKS = "1"
-
-inherit setuptools3 python3-dir
+inherit setuptools3 

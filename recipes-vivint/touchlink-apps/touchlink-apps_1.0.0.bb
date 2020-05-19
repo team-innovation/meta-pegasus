@@ -86,10 +86,10 @@ PREFERRED_VERSION_python3 = "3.5.3"
 PREFERRED_VERSION_python-native = "3.5.3"
 PREFERRED_VERSION_iotivity = "2.0.0"
 
-inherit autotools update-rc.d python3-dir pythonnative
+inherit autotools update-rc.d python3-dir python3native
 
-RSYNC_CMD = "rsync -azv --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage --exclude=_user_conf \
-	     --exclude=.pytest_cache"
+RSYNC_CMD = "rsync -azv --no-o --no-g --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage \
+             --exclude=_user_conf --exclude=.pytest_cache"
 
 FRAMEWORK_DIR = "${PYTHON_SITEPACKAGES_DIR}"
 INSTALL_DIR = "/opt/2gig"
@@ -111,7 +111,6 @@ DEPENDS = " \
 	python3-atomicwrites-native \
 	python3-attrs-native \
 	python3-bcrypt-native \
-	python3-bson-native \
 	python3-cachetools \
 	python3-cachetools-native \
 	python3-cchardet-native \
@@ -173,12 +172,15 @@ DEPENDS = " \
 	python3-urllib3-native \
 	python3-xmltodict-native \
 	python3-yarl-native \
+	rsync-native \
 	libsodium-native \
 	python3-pyopenssl-native \
 	python3-cryptography-native \
 	python3-cffi-native \
 	python3-asn1crypto-native \
 	python3-pycparser-native \
+	python3-chardet-native \
+	python3-certifi-native \
 	breakpad \
 	variant-lite \
 	taocpp-json \
@@ -191,8 +193,8 @@ DEPENDS = " \
 
 
 RDEPENDS_${PN} = "\
+	bash \
 	python3-intelhex \
-	python3-subprocess \
 	python3-pyserial \
 	python3-pyalsaaudio \
 	python3-pytz \
@@ -204,7 +206,7 @@ RDEPENDS_${PN} = "\
 	python3-phue \
  	iotivity-resource \
  	iotivity-bridging-plugins \
-    zwave-nvm-converter \
+    	zwave-nvm-converter \
  	breakpad \
 "
 
@@ -322,7 +324,7 @@ do_runstrip() {
 do_install () {
         # Install init.d scripts
 	install -d ${D}/${sysconfdir}/init.d/
-	cp -a ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
+	install -m 0755 ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
 }
 
 do_install_append() {
@@ -338,11 +340,8 @@ do_install_append() {
     rm -f ${D}/${sysconfdir}/init.d/zwaved
 }
 
-pkg_postinst_${PN} () {
-#!/bin/sh -e
-# Post install to make sure we have the correct setup 
-#
-if [ x"$D" = "x" ]; then
+pkg_postinst_ontarget_${PN} () {
+
      logging()
      {
         if busybox ps | grep psplash | grep -qv grep
@@ -370,9 +369,6 @@ if [ x"$D" = "x" ]; then
         rm -f /media/extra/log/*error.log*
     fi
 
-else
-    exit 1
-fi
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"

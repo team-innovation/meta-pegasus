@@ -1,0 +1,125 @@
+diff '--exclude=.git' -rupN 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/multimedia/configure.json mediasrc/src/multimedia/configure.json
+--- 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/multimedia/configure.json	2019-10-16 19:15:18.468919711 +0000
++++ mediasrc/src/multimedia/configure.json	2019-10-16 18:34:50.222226820 +0000
+@@ -10,6 +10,7 @@
+             "alsa": "boolean",
+             "gstreamer": { "type": "optionalString", "values": [ "no", "yes", "0.10", "1.0" ] },
+             "pulseaudio": "boolean",
++            "gstreamer_allocator": "boolean",
+             "mediaplayer-backend": { "type": "string", "values": [ "directshow", "wmf" ] },
+             "wmf-backend": { "type": "void", "name": "mediaplayer-backend", "value": "wmf" }
+         }
+@@ -91,6 +92,18 @@
+                 { "libs": "-lgstphotography-1.0" }
+             ]
+         },
++        "gstreamer_allocator": {
++            "label": "GStreamer i.MX allocator",
++            "export": "gstreamer_allocator",
++            "test": {
++                "include": "gst/allocators/gstallocatorphymem.h"
++            },
++            "use": "gstreamer_1_0",
++            "sources": [
++                { "type": "pkgConfig",
++                  "args": "gstreamer-allocators-1.0" }
++            ]
++        },
+         "libresourceqt5": {
+             "label": "libresourceqt5",
+             "test": "resourcepolicy",
+@@ -232,6 +245,11 @@
+             "condition": "(features.gstreamer_1_0 && libs.gstreamer_photography_1_0) || (features.gstreamer_0_10 && libs.gstreamer_photography_0_10)",
+             "output": [ "privateFeature" ]
+         },
++        "gstreamer_allocator": {
++            "label": "GStreamer i.MX allocator",
++            "condition": "(features.gstreamer_1_0 && libs.gstreamer_allocator)",
++            "output": [ "privateFeature" ]
++        },
+         "gpu_vivante": {
+             "label": "Vivante GPU",
+             "condition": "features.opengles2 && tests.gpu_vivante",
+diff '--exclude=.git' -rupN 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/multimedia/gsttools_headers/qgstvideobuffer_p.h mediasrc/src/multimedia/gsttools_headers/qgstvideobuffer_p.h
+--- 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/multimedia/gsttools_headers/qgstvideobuffer_p.h	2019-10-16 19:15:18.475586420 +0000
++++ mediasrc/src/multimedia/gsttools_headers/qgstvideobuffer_p.h	2019-10-16 16:38:07.541927172 +0000
+@@ -78,6 +78,7 @@ public:
+ 
+     ~QGstVideoBuffer();
+ 
++    GstBuffer *buffer() const { return m_buffer; }
+     MapMode mapMode() const override;
+ 
+ #if GST_CHECK_VERSION(1,0,0)
+diff '--exclude=.git' -rupN 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/multimedia/video/qvideoframe.cpp mediasrc/src/multimedia/video/qvideoframe.cpp
+--- 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/multimedia/video/qvideoframe.cpp	2019-10-16 19:15:18.478919775 +0000
++++ mediasrc/src/multimedia/video/qvideoframe.cpp	2019-10-16 16:30:14.402363953 +0000
+@@ -400,6 +400,11 @@ QVideoFrame::~QVideoFrame()
+ {
+ }
+ 
++QAbstractVideoBuffer *QVideoFrame::buffer() const
++{
++    return d->buffer;
++}
++
+ /*!
+     Identifies whether a video frame is valid.
+ 
+diff '--exclude=.git' -rupN 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/multimedia/video/qvideoframe.h mediasrc/src/multimedia/video/qvideoframe.h
+--- 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/multimedia/video/qvideoframe.h	2019-10-16 19:15:18.478919775 +0000
++++ mediasrc/src/multimedia/video/qvideoframe.h	2019-10-16 16:28:55.098537541 +0000
+@@ -119,6 +119,7 @@ public:
+     bool operator==(const QVideoFrame &other) const;
+     bool operator!=(const QVideoFrame &other) const;
+ 
++    QAbstractVideoBuffer *buffer() const;
+     bool isValid() const;
+ 
+     PixelFormat pixelFormat() const;
+diff '--exclude=.git' -rupN 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/plugins/videonode/imx6/imx6.pro mediasrc/src/plugins/videonode/imx6/imx6.pro
+--- 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/plugins/videonode/imx6/imx6.pro	2019-10-16 19:15:18.508919966 +0000
++++ mediasrc/src/plugins/videonode/imx6/imx6.pro	2019-10-16 17:07:55.243328207 +0000
+@@ -1,6 +1,11 @@
+ TARGET = imx6vivantevideonode
+ 
+-QT += multimedia-private qtmultimediaquicktools-private
++QT += multimedia-private qtmultimediaquicktools-private 
++
++qtConfig(gstreamer_allocator) {
++	QT+= multimediagsttools-private
++	QMAKE_USE += gstreamer_allocator
++}
+ 
+ HEADERS += \
+     qsgvivantevideonode.h \
+diff '--exclude=.git' -rupN 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp mediasrc/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp
+--- 5.10.1+gitAUTOINC+038716bb1f-r3/git/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp	2019-10-16 19:15:19.562260012 +0000
++++ mediasrc/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp	2019-10-16 18:50:38.903317964 +0000
+@@ -50,6 +50,13 @@
+ 
+ #include <unistd.h>
+
++#include <QtMultimedia/private/qtmultimediaglobal_p.h>
++#if QT_CONFIG(gstreamer_allocator) 
++#include "private/qgstvideobuffer_p.h"
++extern "C" {
++#include <gst/allocators/gstallocatorphymem.h>
++}
++#endif 
+
+ //#define QT_VIVANTE_VIDEO_DEBUG
+ 
+@@ -224,6 +231,12 @@ GLuint QSGVivanteVideoMaterial::vivanteM
+ #endif
+ 
+                 GLuint physical = ~0U;
++#if QT_CONFIG(gstreamer_allocator)		 
++                auto buffer = reinterpret_cast<QGstVideoBuffer *>(vF.buffer());
++                PhyMemBlock *meta = gst_buffer_query_phymem_block(buffer->buffer());
++                if (meta && meta->paddr)
++                    physical = (GLuint)(meta->paddr);
++#endif
+
+                 glBindTexture(GL_TEXTURE_2D, tmpTexId);
+                 glTexDirectVIVMap_LOCAL(GL_TEXTURE_2D,

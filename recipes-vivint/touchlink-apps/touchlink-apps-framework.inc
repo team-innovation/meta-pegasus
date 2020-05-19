@@ -21,4 +21,5 @@ do_install_append () {
 
 FILES_${PN}-framework = "\
 	${FRAMEWORK_DIR}/* \
+        ${libdir}/liboc.so \
 	"	

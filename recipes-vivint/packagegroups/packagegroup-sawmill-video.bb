@@ -8,17 +8,6 @@ PR = "r20"
 
 inherit packagegroup
 
-RPROVIDES_${PN} = " \
-	libg2d0.8 \
-	libglib-2.0-utils \
-	libgstapp-1.0 \
-	libgstaudio-1.0 \
-	libgstpbutils-1.0 \
-	libgstvideo-1.0 \
-	libgudev-1.0-0 \
-	libopus0 \
-"
-
 RDEPENDS_${PN} = " \
 	firmware-imx \
 	gstreamer1.0-plugins-bad \
@@ -29,50 +18,45 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-base-playback \
 	gstreamer1.0-plugins-base-tcp \
 	gstreamer1.0-plugins-base-ogg \
+	gstreamer1.0-plugins-base-opus \
+	gstreamer1.0-plugins-bad-opusparse \
 	gstreamer1.0-plugins-base-typefindfunctions \
 	gstreamer1.0-plugins-base-videoconvert \
 	gstreamer1.0-plugins-base-videotestsrc \
+	gstreamer1.0-plugins-base-videoscale \
 	gstreamer1.0-plugins-base-volume \
-	gstreamer1.0-plugins-bad-opus \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0-plugins-good-imagefreeze \
 	gstreamer1.0-plugins-good-isomp4 \
 	gstreamer1.0-plugins-good-jpeg \
 	gstreamer1.0-plugins-good-level \
 	gstreamer1.0-plugins-good-mulaw \
-	gstreamer1.0-plugins-good-pulse \
 	gstreamer1.0-plugins-good-rtp \
 	gstreamer1.0-plugins-good-rtpmanager \
 	gstreamer1.0-plugins-good-rtsp \
 	gstreamer1.0-plugins-good-udp \
-	gstreamer1.0-plugins-good-video4linux2 \
+	gstreamer1.0-plugins-base-gio \
 	gstreamer1.0-plugins-good-wavenc \
 	gstreamer1.0-plugins-good-wavparse \
+	gstreamer1.0-plugins-good-videofilter \
+	gstreamer1.0-plugins-good-autodetect \
+	gstreamer1.0-plugins-base-alsa \
+	gstreamer1.0-plugins-good-pulseaudio \
 	gstreamer1.0-rtsp-server \
-        gstreamer-imx \
-        gstreamer-imx-imxaudio \
-        gstreamer-imx-imxeglvivsink \
-        gstreamer-imx-imxg2d \
-        gstreamer-imx-imxipu \
-        gstreamer-imx-imxpxp \
-        gstreamer-imx-imxv4l2videosrc \
-        gstreamer-imx-imxvpu \
-        gstreamer-imx-meta \
+	imx-gst1.0-plugin \
+	imx-gst1.0-plugin-gplay \
+	imx-gst1.0-plugin-grecorder \
 	imx-lib \
 	ffmpeg \
-	libfslcodec \
-	libfslparser \
-	libglib-2.0-utils \
+	imx-codec \
+	imx-parser \
 	libgstcodecparsers-1.0-0 \
-	libgstimxblitter0 \
-	libgstimxcommon0 \
-	libgstimxcompositor0 \
 	libgstriff-1.0-0 \
 	libgstrtp-1.0-0 \
 	libgstrtsp-1.0-0 \
 	libgstrtspserver-1.0-0 \
 	libgstsdp-1.0-0 \
 	libgsturidownloader-1.0-0 \
-	libopus0 \
+	libopus \
 	civetweb \
 "

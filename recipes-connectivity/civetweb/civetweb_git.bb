@@ -64,13 +64,9 @@ do_install_append() {
 	install -d ${D}/srv/www
 }
 
-pkg_postinst_civetweb() {
-	if [ "x$D" = "x" ]; then
-		if [ ! -f /srv/www/.htpasswd ]; then
-			civetweb -A /srv/www/.htpasswd vivint.panel admin admin
-		fi
-	else
-		exit 1
+pkg_postinst_ontarget_${PN}() {
+	if [ ! -f /srv/www/.htpasswd ]; then
+		civetweb -A /srv/www/.htpasswd vivint.panel admin admin
 	fi
 }
 

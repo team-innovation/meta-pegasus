@@ -37,6 +37,10 @@ DEPENDS += " \
         python3-mock-native \
         python3-msgpack-native \
         python3-native \
+	python3-grpcio-native \
+	python3-grpcio-tools-native \
+	python3-googleapis-common-protos-native \
+	python3-protobuf-native \
         python3-pexpect-native \
         python3-ptyprocess-native \
         python3-psutil-native \
@@ -45,21 +49,26 @@ DEPENDS += " \
         python3-pyftpdlib-native \
         python3-pyinotify-native \
         python3-pyserial-native \
+        python3-pyopenssl-native \
         python3-pytz-native \
         python3-requests-native \
         python3-six-native \
         python3-setproctitle-native \
         python3-soco-native \
         python3-sparsedict-native \
+        python3-idna-native \
         python3-phue-native \
         python3-paho-mqtt-native \
+	python3-urllib3-native \
+	python3-chardet-native \
+	python3-certifi-native \
 "
 
 PYTHON_BASEVERSION = "3.5"
 PREFERRED_VERSION_python3 = "3.5.3"
 PREFERRED_VERSION_python-native = "3.5.3"
 
-inherit python-dir pythonnative
+inherit python3-dir python3native
 
 
 do_configure_prepend() {

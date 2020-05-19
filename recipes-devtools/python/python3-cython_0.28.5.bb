@@ -1,23 +1,54 @@
-DESCRIPTION = "Cython Compiler"
-HOMEPAGE = "http://cython.org"
+DESCRIPTION = "Cython is a language specially designed for writing Python extension modules. \
+It's designed to bridge the gap between the nice, high-level, easy-to-use world of Python \
+and the messy, low-level world of C."
 SECTION = "devel/python"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=e23fadd6ceef8c618fc1c65191d846fa"
-
-PR = "r1"
-PROVIDES = "python3-cython"
-
-SRC_URI = "https://files.pythonhosted.org/packages/21/89/ca320e5b45d381ae0df74c4b5694f1471c1b2453c5eb4bac3449f5970481/Cython-0.28.5.tar.gz"
+PYPI_PACKAGE = "Cython"
+BBCLASSEXTEND = "native nativesdk"
 
 SRC_URI[md5sum] = "0cb620e1259818e4ecc1a056e8c3a8be"
 SRC_URI[sha256sum] = "b64575241f64f6ec005a4d4137339fb0ba5e156e826db2fdb5f458060d9979e0"
 
-SRCNAME ="Cython-${PV}"
-S = "${WORKDIR}/${SRCNAME}"
+inherit pypi setuptools3
 
-# Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+RDEPENDS_${PN}_class-target += "\
+    ${PYTHON_PN}-misc \
+    ${PYTHON_PN}-netserver \
+    ${PYTHON_PN}-pkgutil \
+    ${PYTHON_PN}-pyparsing \
+    ${PYTHON_PN}-setuptools \
+    ${PYTHON_PN}-shell \
+    ${PYTHON_PN}-xml \
+"
 
-NATIVE_INSTALL_WORKS = "1"
+RDEPENDS_${PN}_class-nativesdk += "\
+    nativesdk-${PYTHON_PN}-misc \
+    nativesdk-${PYTHON_PN}-netserver \
+    nativesdk-${PYTHON_PN}-pkgutil \
+    nativesdk-${PYTHON_PN}-pyparsing \
+    nativesdk-${PYTHON_PN}-setuptools \
+    nativesdk-${PYTHON_PN}-shell \
+    nativesdk-${PYTHON_PN}-xml \
+"
 
-inherit setuptools3 python3-dir
+do_install_append() {
+	# Make sure we use /usr/bin/env python
+	for PYTHSCRIPT in `grep -rIl '^#!.*python' ${D}`; do
+		sed -i -e '1s|^#!.*|#!/usr/bin/env ${PYTHON_PN}|' $PYTHSCRIPT
+	done
+}
+RDEPENDS_${PN} += "\
+    python3-setuptools \
+"
+
+# running build_ext a second time during install fails, because Python
+# would then attempt to import cythonized modules built for the target
+# architecture.
+DISTUTILS_INSTALL_ARGS += "--skip-build"
+
+do_install_append() {
+    # rename scripts that would conflict with the Python 2 build of Cython
+    mv ${D}${bindir}/cython ${D}${bindir}/cython3
+    mv ${D}${bindir}/cythonize ${D}${bindir}/cythonize3
+    mv ${D}${bindir}/cygdb ${D}${bindir}/cygdb3

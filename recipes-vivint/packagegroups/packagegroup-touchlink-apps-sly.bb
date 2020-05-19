@@ -26,5 +26,4 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-webd \
 	touchlink-apps-zwaved \
 	touchlink-apps-test-ui \
-	touchlink-apps-testui \
 "

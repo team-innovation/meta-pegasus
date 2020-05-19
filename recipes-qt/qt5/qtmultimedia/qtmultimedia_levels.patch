@@ -1,121 +1,116 @@
-diff -rupN qtmultimedia/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp qtmultimedia-opensource-src-5.4.1/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp
---- qtmultimedia/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp	2019-03-12 08:30:09.658207425 -0600
-+++ qtmultimedia-opensource-src-5.4.1/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp	2019-03-12 08:59:18.660264380 -0600
-@@ -56,6 +56,8 @@
+diff -rupN orig/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp git/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp
+--- orig/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp	2019-08-09 15:11:44.654771193 -0600
++++ git/src/plugins/gstreamer/mediaplayer/qgstreamerplayersession.cpp	2019-08-13 13:26:42.672070440 -0600
+@@ -61,6 +61,8 @@
  #include <QtCore/qdir.h>
  #include <QtCore/qstandardpaths.h>
  
-+#include <math.h>
++#include <QtMath>
 +
  //#define DEBUG_PLAYBIN
  //#define DEBUG_VO_BIN_DUMP
  
-@@ -183,6 +184,8 @@ QGstreamerPlayerSession::QGstreamerPlaye
-         }
- #endif
+@@ -163,6 +165,8 @@ QGstreamerPlayerSession::QGstreamerPlaye
+         const QByteArray envAudioSink = qgetenv("QT_GSTREAMER_PLAYBIN_AUDIOSINK");
+         GstElement *audioSink = gst_element_factory_make(envAudioSink.isEmpty() ? "autoaudiosink" : envAudioSink, "audiosink");
          if (audioSink) {
-+	    GstElement * level = gst_element_factory_make( "level", "gulevelctrl" );
++			GstElement *level = gst_element_factory_make("level", "gulevelctrl");
 +
              if (usePlaybinVolume()) {
                  m_audioSink = audioSink;
                  m_volumeElement = m_playbin;
-@@ -190,9 +193,13 @@ QGstreamerPlayerSession::QGstreamerPlaye
-                 m_volumeElement = gst_element_factory_make("volume", "volumeelement");
+@@ -171,8 +175,13 @@ QGstreamerPlayerSession::QGstreamerPlaye
                  if (m_volumeElement) {
                      m_audioSink = gst_bin_new("audio-output-bin");
--
+ 
 -                    gst_bin_add_many(GST_BIN(m_audioSink), m_volumeElement, audioSink, NULL);
 -                    gst_element_link(m_volumeElement, audioSink);
-+		    if (level) {
-+                        gst_bin_add_many(GST_BIN(m_audioSink), m_volumeElement, level, audioSink, NULL);
-+                        gst_element_link_many( m_volumeElement, level, audioSink, NULL );
-+		    } else {
-+                        gst_bin_add_many(GST_BIN(m_audioSink), m_volumeElement, audioSink, NULL);
-+                        gst_element_link(m_volumeElement, audioSink);
-+		    }
++					if (level) {
++						gst_bin_add_many(GST_BIN(m_audioSink), m_volumeElement, level, audioSink, NULL);
++						gst_element_link_many(m_volumeElement, level, audioSink, NULL);
++					} else {
++						gst_bin_add_many(GST_BIN(m_audioSink), m_volumeElement, audioSink, NULL);
++						gst_element_link(m_volumeElement, audioSink);
++					}
  
                      GstPad *pad = gst_element_get_static_pad(m_volumeElement, "sink");
                      gst_element_add_pad(GST_ELEMENT(m_audioSink), gst_ghost_pad_new("sink", pad));
-@@ -203,6 +210,11 @@ QGstreamerPlayerSession::QGstreamerPlaye
+@@ -183,6 +192,11 @@ QGstreamerPlayerSession::QGstreamerPlaye
                  }
              }
  
-+	    if (level) {
-+		    g_object_set( level, "message", TRUE, NULL );
-+		    g_object_set( level, "interval", gint64( 250000000 ), NULL );
-+	    }
++			if (level) {
++				g_object_set(level, "message", TRUE, NULL);
++				g_object_set(level, "interval", gint64(250000000), NULL);
++			}
 +
              g_object_set(G_OBJECT(m_playbin), "audio-sink", m_audioSink, NULL);
              addAudioBufferProbe();
          }
-@@ -1064,7 +1076,69 @@ bool QGstreamerPlayerSession::processBus
+@@ -1041,8 +1055,64 @@ bool QGstreamerPlayerSession::processBus
+ 
              emit tagsChanged();
          } else if (GST_MESSAGE_TYPE(gm) == GST_MESSAGE_DURATION) {
-             updateDuration();
+-            updateDuration();
 -        }
-+        } else if (GST_MESSAGE_TYPE(gm) == GST_MESSAGE_ELEMENT) {
-+		const GstStructure *s = gst_message_get_structure(gm);
-+		const gchar *name = gst_structure_get_name(s);
-+		// Audio Levels, this is used to populate the metaData.peakValue
-+                // and metaData.averageLevel
-+		if (strcmp(name, "level") == 0) {
-+		    gint channels;
-+		    GstClockTime endtime;
-+		    gdouble rms_dB, peak_dB, decay_dB;
-+		    gdouble rms, peak;
-+		    const GValue *array_val;
-+		    const GValue *value;
-+		    GValueArray *rms_arr, *peak_arr, *decay_arr;
-+		    gint i;
++			updateDuration();
++		} else if (GST_MESSAGE_TYPE(gm) == GST_MESSAGE_ELEMENT) {
++			const GstStructure *s = gst_message_get_structure(gm);
++			const gchar *name = gst_structure_get_name(s);
++			// Audio Levels, this is used to populate the metaData.peakValue
++			// and metaData.averageLevel
++			if (strcmp(name, "level") == 0) {
++				gint channels;
++				GstClockTime endtime;
++				gdouble rms_dB, peak_dB, decay_dB;
++				gdouble rms, peak;
++				const GValue *array_val;
++				const GValue *value;
++				GValueArray *rms_arr, *peak_arr, *decay_arr;
++				gint i;
 +
-+		    if (!gst_structure_get_clock_time(s, "endtime", &endtime))
-+			    qWarning() << "Could not parse endtime";
-+		    
-+		    /* the values are packed into GValueArrays with the value per channel */
-+		    array_val = gst_structure_get_value(s, "rms");
-+		    rms_arr = (GValueArray *)g_value_get_boxed(array_val);
++				if (!gst_structure_get_clock_time(s, "endtime", &endtime))
++					qWarning() << "Could not parse endtime";
 +
-+		    array_val = gst_structure_get_value(s, "peak");
-+		    peak_arr = (GValueArray *)g_value_get_boxed(array_val);
++				/* the values are packed into GValueArrays with the value per channel */
++				array_val = gst_structure_get_value(s, "rms");
++				rms_arr = (GValueArray *)g_value_get_boxed(array_val);
 +
-+		    array_val = gst_structure_get_value(s, "decay");
-+		    decay_arr = (GValueArray *)g_value_get_boxed(array_val);
++				array_val = gst_structure_get_value(s, "peak");
++				peak_arr = (GValueArray *)g_value_get_boxed(array_val);
 +
-+		    /* we can get the number of channels as the length of any of the value
-+		    * arrays */
-+		    channels = rms_arr->n_values;
-+		    //qDebug() << "endtime: " << endtime << ", channels: "
-+                    //        << channels;
-+		    for (i = 0; i < channels; ++i) {
-+			// qDebug() << "channel " << i;
-+			value = g_value_array_get_nth(rms_arr, i);
-+			rms_dB = g_value_get_double(value);
++				array_val = gst_structure_get_value(s, "decay");
++				decay_arr = (GValueArray *)g_value_get_boxed(array_val);
 +
-+			value = g_value_array_get_nth(peak_arr, i);
-+			peak_dB = g_value_get_double(value);
-+			
-+			value = g_value_array_get_nth(decay_arr, i);
-+			decay_dB = g_value_get_double(value);
-+			//qDebug() << "    RMS: " << rms_dB << " dB, peak: " << peak_dB << " dB, decay:  " << decay_dB << " dB";
++				/* we can get the number of channels as the length of any of the value
++				 * arrays */
++				channels = rms_arr->n_values;
++				for (i = 0; i < channels; ++i) {
++					value = g_value_array_get_nth(rms_arr, i);
++					rms_dB = g_value_get_double(value);
 +
-+			rms = pow (10, rms_dB / 20);
-+			//qDebug() << "    normalized peak value: " << peak;
++					value = g_value_array_get_nth(peak_arr, i);
++					peak_dB = g_value_get_double(value);
 +
-+			peak = pow (10, peak_dB / 20);
-+                	//qDebug() << "    normalized peak value: " << peak;
++					value = g_value_array_get_nth(decay_arr, i);
++					decay_dB = g_value_get_double(value);
 +
-+			//  populate the metaData.peakValue = peak
-+                	m_tags.insert(QMediaMetaData::PeakValue.toUtf8(), QVariant(peak));
-+                	//  populate the metaData.averageLevel = rms
-+               	m_tags.insert(QMediaMetaData::AverageLevel.toUtf8(), QVariant(rms));
-+                	//  populate the metaData.channelCount = channels
-+        	        m_tags.insert(QMediaMetaData::ChannelCount.toUtf8(), QVariant(channels));
-+	
-+	                emit tagsChanged();
-+		    }
++					rms = qPow(10.0, rms_dB / 20.0);
 +
++					peak = qPow(10.0, peak_dB / 20.0);
++
++					//  populate the metaData.peakValue = peak
++					m_tags.insert(QMediaMetaData::PeakValue.toUtf8(), QVariant(peak));
++					//  populate the metaData.averageLevel = rms
++					m_tags.insert(QMediaMetaData::AverageLevel.toUtf8(), QVariant(rms));
++					//  populate the metaData.channelCount = channels
++					m_tags.insert(QMediaMetaData::ChannelCount.toUtf8(), QVariant(channels));
++
++					emit tagsChanged();
++				}
++
++			}
 +		}
-+	}
  
  #ifdef DEBUG_PLAYBIN
          if (m_sourceType == MMSSrc && qstrcmp(GST_OBJECT_NAME(GST_MESSAGE_SRC(gm)), "source") == 0) {

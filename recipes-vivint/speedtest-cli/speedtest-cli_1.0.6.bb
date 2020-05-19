@@ -25,10 +25,12 @@ do_install_prepend() {
 	install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
 }
 
-do_compile() {
-	:
-}
+do_configure[noexec] = "1"
+do_compile[noexec] = "1"
 
 do_install() {
-	cp -a ${WORKDIR}/speedtest-cli/* ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
+	install -m 644 ${WORKDIR}/speedtest-cli/speedtest-cli.1 ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
+	install -m 644 ${WORKDIR}/speedtest-cli/tox.ini ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
+	install -m 755 ${WORKDIR}/speedtest-cli/speedtest_cli.py ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
+	install -m 755 ${WORKDIR}/speedtest-cli/speedtest.py ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
 }

@@ -23,12 +23,10 @@ do_install_append (){
         rm -rf ${D}/${INSTALL_DIR}/roubaix/roubaix.py
 }
 
-pkg_postinst_${PN}-roubaix () {
+pkg_postinst_ontarget_${PN}-roubaix () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for roubaix 
 #
-if [ x"$D" = "x" ]; then
-
      logging()
      {
         if busybox ps | grep psplash | grep -qv grep
@@ -50,10 +48,6 @@ if [ x"$D" = "x" ]; then
             logging "Moving /media/extra/pointercal file to /media/extra/conf..."
             mv /media/extra/pointercal /media/extra/conf
     fi
-
-else
-    exit 1
-fi
 }
 
 FILES_${PN}-roubaix = "\

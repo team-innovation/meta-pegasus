@@ -15,9 +15,7 @@ SRC_URI += " \
 
 LICENSE = "CLOSED"
 
-do_compile() {
-	:
-}
+do_compile[noexec] = "1"
 
 do_install() {
     install -d "${D}/${bindir}"

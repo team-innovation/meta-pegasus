@@ -7,19 +7,13 @@ SRCNAME = "python-nfcpy"
 PR = "m1"
 
 SRCREV = "89816998694789617f1ef7461f3bce2e806cf69e9c9cc9cc3a2edf516de3"
-PV = "1.0.0"
-SRC_URI = "https://pypi.python.org/packages/0f/25/${SRCREV}/nfcpy-0.11.1.tar.gz \
-       file://nfcpy-2to3-plus-byte-manip-fixes.patch \
+SRC_URI += "file://nfcpy-2to3-plus-byte-manip-fixes.patch \
 "
-
-S = "${WORKDIR}/nfcpy-0.11.1"
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native"
 
-NATIVE_INSTALL_WORKS = "1"
-
-inherit setuptools3 python3-dir
+inherit setuptools3 pypi
 
 export HOST_SYS
 export BUILD_SYS
