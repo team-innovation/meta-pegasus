@@ -1518,7 +1518,7 @@ class PanelSystemInfo:
         k = {}
         try:
             import requests
-            r = requests.post('http://{}:8080/camera_device/'.format(self.address))
+            r = requests.get('http://{}:8080/camera_device/'.format(self.address))
             # print(r.content)
             import json
             j = json.loads(r.content.decode())
@@ -1536,7 +1536,7 @@ class PanelSystemInfo:
 
                 cam['properties']['camera_mac_address'] = mac.lower()
 
-            r = requests.post('http://{}:8080/lgit_poe_wifi_device/'.format(self.address))
+            r = requests.get('http://{}:8080/lgit_poe_wifi_device/'.format(self.address))
             k = json.loads(r.content.decode())
             for cam_lg in k:
                 # Fix up MAC address
@@ -1601,7 +1601,7 @@ class PanelSystemInfo:
         j = {}
         try:
             import requests
-            r = requests.post('http://{}:8080/slim_line_device/'.format(self.address))
+            r = requests.get('http://{}:8080/slim_line_device/'.format(self.address))
             # print(r.content)
             import json
             j = json.loads(r.content.decode())
