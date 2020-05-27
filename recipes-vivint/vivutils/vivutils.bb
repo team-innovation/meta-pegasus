@@ -3,7 +3,11 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
+<<<<<<< HEAD
 PR = "r99"
+=======
+PR = "r92"
+>>>>>>> 2ba03c578... Use mmc-utils to set boot partition
 
 DEPENDS_append = "update-rc.d-native"
 
