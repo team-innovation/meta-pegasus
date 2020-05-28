@@ -183,7 +183,7 @@ boot_info_field() {
 	local ret
 	local match=$1;
 	ret=$(mmc extcsd read /dev/mmcblk0 | sed -n "s/$match//p")
-	${ret%]}
+	echo ${ret%]}
 }
 
 # see above
