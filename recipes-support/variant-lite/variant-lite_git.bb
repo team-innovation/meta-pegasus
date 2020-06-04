@@ -7,6 +7,9 @@ PR = "r1"
 SRCREV = "b0aa7a4f6fcf0bcdbf01ecc426c6cb4856640a40"
 SRC_URI = "https://github.com/martinmoene/variant-lite.git"
 
+SRC_URI[md5sum] = "1776113256bbb48bccbfc90a283d5865"
+SRC_URI[sha256sum] = "604cbc3c02474fea28535a5078361a21f6cb06b56febfc62158e7857520cff5e"
+
 S = "${WORKDIR}/git"
 
 do_configure[noexec] = "1"
