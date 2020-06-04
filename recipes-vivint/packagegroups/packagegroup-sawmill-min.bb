@@ -7,7 +7,7 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "21"
+PR = "22"
 
 inherit packagegroup
 
@@ -26,7 +26,6 @@ RDEPENDS_${PN} = " \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
 	psoc5-verify \
-	mighty-gecko-verify \
 	slimline-modules \
 	sly-modules \
 	strace \

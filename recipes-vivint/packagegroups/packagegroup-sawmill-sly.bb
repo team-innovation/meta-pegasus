@@ -20,7 +20,6 @@ RDEPENDS_${PN} += " \
 	psoc-fw-wallsly \
 	qflash \
 	qfotatool \
-	mighty-gecko-fw-wallsly \
 	nm-pkgs \
 	sly-utils \
 	sly-version \

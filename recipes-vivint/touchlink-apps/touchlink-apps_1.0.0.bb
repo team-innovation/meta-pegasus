@@ -5,7 +5,7 @@
 # last thing is to add the new package name to the PACKAGES = in this file.
 ####
 
-DESCRIPTION = "2gig Touchlink Apps"
+DESCRIPTION = "Vivint Touchlink Apps"
 LICENSE = "CLOSED"
 require touchlink-apps-audmgrd.inc
 require touchlink-apps-sundance.inc
@@ -22,7 +22,6 @@ require touchlink-apps-test-daemon.inc
 require touchlink-apps-pcamd.inc
 require touchlink-apps-iod.inc
 require touchlink-apps-345d.inc
-require touchlink-apps-rf915d.inc
 require touchlink-apps-cloudd.inc
 require touchlink-apps-modemd.inc
 
@@ -61,7 +60,7 @@ require touchlink-apps-pyftpd.inc
 
 DISTRO_PR = ".1"
 
-PR = "ml121"
+PR = "ml122"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -380,7 +379,6 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 # otherwise we end up with empty proxy packages and the build will fail
 PACKAGES = " \
 	${PN}-345d          \
-    ${PN}-rf915d        \
 	${PN}-framework     \
 	${PN}-mmpd          \
 	${PN}-audmgrd   \
