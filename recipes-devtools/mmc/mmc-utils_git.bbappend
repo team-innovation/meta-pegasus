@@ -5,5 +5,5 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 PV = "0.2"
 
-SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/cjb/mmc-utils.git;protocol=git;branch=master \
+SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/cjb/mmc-utils.git;protocol=https;branch=master \
 	file://0001-mmc-utils-treat-FIRMWARE_VERSION-as-binary-field-ins.patch"

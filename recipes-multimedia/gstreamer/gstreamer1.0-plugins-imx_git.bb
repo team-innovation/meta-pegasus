@@ -17,7 +17,7 @@ PV = "0.13.0+git${SRCPV}"
 
 SRCBRANCH ?= "master"
 SRCREV = "889b8352ca09cd224be6a2f8d53efd59a38fa9cb"
-SRC_URI = "git://github.com/Freescale/gstreamer-imx.git;branch=${SRCBRANCH}"
+SRC_URI = "git://github.com/Freescale/gstreamer-imx.git;branch=${SRCBRANCH};protocol=https"
 
 S = "${WORKDIR}/git"
 

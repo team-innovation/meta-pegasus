@@ -7,7 +7,7 @@ DEPENDS = "imx-vpu"
 
 SRCBRANCH ?= "master"
 SRCREV = "81a2bbd85ef2aaa56243dbf63a7352ca1758099b"
-SRC_URI = "git://github.com/Freescale/libimxvpuapi.git;branch=${SRCBRANCH}"
+SRC_URI = "git://github.com/Freescale/libimxvpuapi.git;branch=${SRCBRANCH};protocol=https"
 
 S = "${WORKDIR}/git"
 
