@@ -13,7 +13,7 @@ PV = "v2013.07"
 
 PR = "r1"
 
-SRC_URI = "git://git.denx.de/u-boot.git;branch=master;protocol=git"
+SRC_URI = "git://git.denx.de/u-boot.git;branch=master;protocol=https"
 
 S = "${WORKDIR}/git"
 
