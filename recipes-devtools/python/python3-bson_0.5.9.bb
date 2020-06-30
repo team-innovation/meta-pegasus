@@ -10,4 +10,4 @@ SRC_URI[sha256sum] = "84a06dd1fa350d5814d9845abad982e8ac4c9768c4f41afeaa5fdb6d58
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native nativesdk"
 
-inherit pypi setuptools3
+inherit pypi setuptools3 python3-dir
