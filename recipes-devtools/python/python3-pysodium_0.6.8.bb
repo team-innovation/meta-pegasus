@@ -13,7 +13,7 @@ LIC_FILES_CHKSUM = "file://README.md;md5=f08e175d67ce47a2ea50bf12c7b60998"
 S = "${WORKDIR}/pysodium-${PV}"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 RDEPENDS_${PN} = "libsodium"
 

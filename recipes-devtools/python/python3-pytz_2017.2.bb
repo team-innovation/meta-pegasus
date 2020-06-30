@@ -16,7 +16,7 @@ RDEPENDS_${PN} = "\
 "
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 
 SRC_URI[md5sum] = "f89bde8a811c8a1a5bac17eaaa94383c"

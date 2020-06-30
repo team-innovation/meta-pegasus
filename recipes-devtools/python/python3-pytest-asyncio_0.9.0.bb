@@ -10,5 +10,5 @@ SRC_URI[md5sum] = "b28f308fcde244a53e5d82c807423de3"
 SRC_URI[sha256sum] = "fbd92c067c16111174a1286bfb253660f1e564e5146b39eeed1133315cf2c2cf"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 

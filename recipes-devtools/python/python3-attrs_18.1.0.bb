@@ -9,7 +9,7 @@ SRC_URI[sha256sum] = "e0d0eb91441a3b53dab4d9b743eafc1ac44476296a2053b6ca3af0b139
 inherit pypi setuptools3
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 RDEPENDS_${PN}_class-target += " \
     ${PYTHON_PN}-cryptography \

@@ -14,6 +14,6 @@ SRC_URI[sha256sum] = "a988718abfad80b6b157acce7bf130a30876d27603738ac39f14099324
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 inherit setuptools3 pypi

@@ -127,4 +127,4 @@ ALTERNATIVE_LINK_NAME[vim] = "${bindir}/vim"
 ALTERNATIVE_TARGET[xxd] = "${bindir}/xxd"
 ALTERNATIVE_LINK_NAME[xxd] = "${bindir}/xxd"
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"

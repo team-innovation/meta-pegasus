@@ -16,4 +16,4 @@ do_compile_prepend() {
 }
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"

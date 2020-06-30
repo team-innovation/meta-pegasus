@@ -21,7 +21,7 @@ SRC_URI[md5sum] = "14c23bbb1db72f6b8fe262b549203eb3"
 SRC_URI[sha256sum] = "c948c034d8997526011960db54f512756fb0b4be1b81140a15b4ef094c6594a4"
 
 # For usage in other recipes when compiling protobuf files (e.g. by grpcio-tools)
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 do_compile_prepend() {
 	

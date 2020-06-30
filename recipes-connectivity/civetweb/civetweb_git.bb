@@ -2,7 +2,7 @@ SUMMARY = "Civetweb embedded web server"
 HOMEPAGE = "https://github.com/civetweb/civetweb"
 
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://LICENSE.md;md5=6f28fdcba0dda735eed62bac6a397562"
+LIC_FILES_CHKSUM = "file://LICENSE.md;md5=50bd1d7f135b50d7e218996ba28d0d88"
 
 SRCREV = "4b440a339979852d5a51fb11a822952712231c23"
 PV = "1.12+git${SRCPV}"
@@ -10,10 +10,11 @@ SRC_URI = "git://github.com/civetweb/civetweb.git;protocol=https \
 	   file://CivetWeb.conf \
 	   file://CivetWeb-DevMode.conf \
 	   file://init \
+    	   file://fix-build-1-12.patch \
            "
 
 S = "${WORKDIR}/git"
-PR = "r12"
+PR = "r13"
 
 inherit update-rc.d 
 INITSCRIPT_NAME = "civetweb"
@@ -51,7 +52,7 @@ PACKAGECONFIG[server] = "-DCIVETWEB_INSTALL_EXECUTABLE=ON,-DCIVETWEB_INSTALL_EXE
 PACKAGECONFIG[ssl] = "-DCIVETWEB_ENABLE_SSL=ON -DCIVETWEB_SSL_OPENSSL_API_1_1=OFF -DCIVETWEB_ENABLE_SSL_DYNAMIC_LOADING=OFF,-DCIVETWEB_ENABLE_SSL=OFF,openssl (=1.0.2%),"
 PACKAGECONFIG[websockets] = "-DCIVETWEB_ENABLE_WEBSOCKETS=ON,-DCIVETWEB_ENABLE_WEBSOCKETS=OFF,"
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 do_install_append() {
 	install -d ${D}${sysconfdir}/civetweb

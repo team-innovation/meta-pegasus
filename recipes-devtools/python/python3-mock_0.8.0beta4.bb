@@ -9,7 +9,7 @@ SRC_URI = "http://${UPDATESENG}/downloads/mock-0.8.0beta4.tar.gz"
 S = "${WORKDIR}/mock-${PV}"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 inherit setuptools3 
 

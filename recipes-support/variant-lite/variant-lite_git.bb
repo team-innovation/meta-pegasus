@@ -19,4 +19,4 @@ do_install() {
 
 FILES_${PN} = "${includedir}/variant-lite/*"
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"

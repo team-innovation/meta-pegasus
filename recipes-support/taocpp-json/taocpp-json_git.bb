@@ -19,4 +19,4 @@ do_install() {
 
 FILES_${PN} = "${includedir}/taocpp-json/*"
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"

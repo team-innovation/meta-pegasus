@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=e7e2c6a927fea60b7e93d1c53ab6c43b"
 
 PYPI_PACKAGE = "async_generator"
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 inherit setuptools3 pypi
 

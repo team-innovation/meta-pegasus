@@ -7,8 +7,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=71c0ac4d86266533509aa0825b8d323c"
 LICENSE = "Artistic-2.0"
 PR = "r7"
 
-BBCLASSEXTEND = "native"
-NATIVE_INSTALL_WORKS = "1"
+BBCLASSEXTEND = "native nativesdk"
 
 SRC_URI = "http://${UPDATESENG}/downloads/zsync-${PV}.tar.bz2 \
 	file://0001-New-version-with-libcurl-updates-and-new-autotools.patch \

@@ -9,7 +9,7 @@ PYPI_PACKAGE = "python-gnupg"
 RDEPENDS_${PN} = "python3-core gnupg"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 inherit setuptools3 pypi python3-dir
 

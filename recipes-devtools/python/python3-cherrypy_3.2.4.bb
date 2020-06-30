@@ -12,7 +12,7 @@ PYPI_PACKAGE = "CherryPy"
 inherit setuptools3 pypi
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 # removed tutorial and test
 do_install_append() {

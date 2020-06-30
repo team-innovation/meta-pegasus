@@ -10,6 +10,6 @@ SRC_URI[md5sum] = "758cd44d3b2c6bf91bfc6f52b959afe1"
 SRC_URI[sha256sum] = "df022c94d1883f596b8004bc33a9ba7e6ad9a07a794c70061dd08370ca320fc6"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 inherit setuptools3 pypi

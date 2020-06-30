@@ -16,9 +16,7 @@ SRCREV ="${AUTOREV}"
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
-
-NATIVE_INSTALL_WORKS = "1"
+BBCLASSEXTEND = "native nativesdk"
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages

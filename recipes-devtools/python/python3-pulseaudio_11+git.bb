@@ -11,9 +11,7 @@ DEPENDS += "python3"
 inherit setuptools3 python3-dir
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
-
-NATIVE_INSTALL_WORKS = "1"
+BBCLASSEXTEND = "native nativesdk"
 
 SRCNAME = "python-pulseaudio"
 PR = "ml7"

@@ -24,9 +24,7 @@ DEPENDS_virtclass-native += "python3-native"
 RDEPENDS_${PN} = "python-core"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
-
-NATIVE_INSTALL_WORKS = "1"
+BBCLASSEXTEND = "native nativesdk"
 
 do_install_prepend() {
     install -d ${D}/opt/2gig/debug

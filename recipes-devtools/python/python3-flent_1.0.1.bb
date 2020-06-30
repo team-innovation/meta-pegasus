@@ -11,7 +11,7 @@ RDEPENDS_${PN} += "netperf (>= 2.6)"
 RDEPENDS_${PN} += "fping (>= 3.5)"  
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 INSANE_SKIP_${PN} = "installed-vs-shipped"
 

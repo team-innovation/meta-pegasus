@@ -70,4 +70,4 @@ do_install_append_class-native() {
 
 FILES_SOLIBSDEV_append = " ${libdir}/graphviz/lib*${SOLIBSDEV}"
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"

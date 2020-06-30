@@ -9,7 +9,7 @@ LIC_FILES_CHKSUM = "\
 inherit setuptools3 
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 SRCNAME = "python-pulseaudio"
 PR = "ml7"

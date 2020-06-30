@@ -9,9 +9,7 @@ LIC_FILES_CHKSUM = "\
 inherit setuptools3 
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
-
-NATIVE_INSTALL_WORKS = "1"
+BBCLASSEXTEND = "native nativesdk"
 
 PR = "ml7"
 PR_append = "+gitr${SRCREV}"

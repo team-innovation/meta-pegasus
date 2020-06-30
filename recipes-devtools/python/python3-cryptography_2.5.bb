@@ -56,7 +56,6 @@ FILES_${PN}-dbg += " \
 
 BBCLASSEXTEND = "native nativesdk"
 
-
 LDSHARED += "-pthread"
 
 SRC_URI += " \

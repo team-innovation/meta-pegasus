@@ -31,4 +31,4 @@ ALTERNATIVE_LINK_NAME[py.test] = "${bindir}/py.test"
 ALTERNATIVE_TARGET[py.test] = "${bindir}/py.test"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
