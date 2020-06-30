@@ -8,6 +8,7 @@ inherit packagegroup
 
 RDEPENDS_${PN} += " \
 	u-boot-slimline \
+	slimline-modules \
 	hostapd \
 	crda \
 	psoc-fw-slimline \

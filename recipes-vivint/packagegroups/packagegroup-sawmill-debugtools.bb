@@ -3,7 +3,7 @@
 DESCRIPTION = "Packages needed for network debug"
 LICENSE = "MIT"
 
-PR = "6"
+PR = "8"
 
 inherit packagegroup
 

@@ -9,6 +9,7 @@ require packagegroup-sawmill-sly-common.inc
 RDEPENDS_${PN} += " \
         u-boot-wallsly \
         u-boot-brazen \
+        mmc-utils \
 	acm-usb-v6 \
 	easy-rsa \
 	fabric-go \

@@ -403,9 +403,48 @@
       loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading device tree.</CMD>
 
     <CMD state="BootStrap" type="jump" >Jumping to OS image.</CMD>
-    </LIST>
+  </LIST>
+  <LIST name="Wallsly-Reflash-Save-Serial-Etc" desc="Reflash a Wallsly and prompt for serialnumber">
+    <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot-wallsly.imx">Loading U-boot</CMD>
 
-    <LIST name="Brazen-v1-Boot-to-shell" desc="Boot Brazen to shell in initramfs">
+    <CMD state="BootStrap" type="load" file="files/usb-reflash-boot.scr" address="0x11000000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Bootscript.</CMD>
+
+    <CMD state="BootStrap" type="load" file="files/zImage" address="0x12000000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Kernel.</CMD>
+
+    <CMD state="BootStrap" type="load" file="files/sly-image-mfgtool-initramfs-imx6dl-slimline.cpio.gz.u-boot" address="0x12C00000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Initramfs.</CMD>
+
+    <CMD state="BootStrap" type="load" file="files/imx6dl-wallsly-ldo.dtb" address="0x18000000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading device tree.</CMD>
+
+    <CMD state="BootStrap" type="jump" >Jumping to OS image.</CMD>
+
+    <CMD state="Updater" type="push" body="send" file="files/save-restore-serialnums.sh"/>
+    <CMD state="Updater" type="push" body="$ cp $FILE save-restore-serialnums.sh"/>
+    <CMD state="Updater" type="push" body="$ bash save-restore-serialnums.sh save">Saving serialnumbers, keys, skus ...</CMD>
+
+    <CMD state="Updater" type="push" body="send" file="files/slimline-emmc-prefs-init.sh"/>
+    <CMD state="Updater" type="push" body="$ cp $FILE slimline-emmc-prefs-init.sh"/>
+    <CMD state="Updater" type="push" body="$ bash slimline-emmc-prefs-init.sh">Partitioning eMMC</CMD>
+
+    <CMD state="Updater" type="push" body="$ mkdir -p /mnt/mmcblk0p5"/>
+    <CMD state="Updater" type="push" body="$ mount /dev/mmcblk0p5 /mnt/mmcblk0p5"/>
+    <CMD state="Updater" type="push" body="pipe tar -zxv -C /mnt/mmcblk0p5" file="files/sly-qt5-image-imx6dl-slimline.tar.gz">Sending and extracting rootfs</CMD>
+
+    <CMD state="Updater" type="push" body="$ mkdir -p /mnt/mmcblk0p7"/>
+    <CMD state="Updater" type="push" body="$ mount /dev/mmcblk0p7 /mnt/mmcblk0p7"/>
+    <CMD state="Updater" type="push" body="pipe tar -zxv -C /mnt/mmcblk0p7" file="files/media-extra.tar.gz">Sending and extracting media/extra</CMD>
+
+    <CMD state="Updater" type="push" body="send" file="files/slimline-emmc-postfs-init.sh"/>
+    <CMD state="Updater" type="push" body="$ cp $FILE slimline-emmc-postfs-init.sh"/>
+    <CMD state="Updater" type="push" body="$ bash slimline-emmc-postfs-init.sh">Running post-fsextract script</CMD>
+
+    <CMD state="Updater" type="push" body="$ bash save-restore-serialnums.sh restore">Restoring serialnumbers, keys, skus ...</CMD>
+  </LIST>
+
+  <LIST name="Brazen-v1-Boot-to-shell" desc="Boot Brazen to shell in initramfs">
     <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot-brazen.imx">Loading U-boot</CMD>
 
     <CMD state="BootStrap" type="load" file="files/binshell-boot.scr" address="0x11000000"
@@ -422,5 +461,4 @@
 
     <CMD state="BootStrap" type="jump" >Jumping to OS image.</CMD>
   </LIST>
-
 </UCL>

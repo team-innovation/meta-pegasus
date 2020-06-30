@@ -18,7 +18,6 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-modemd \
 	touchlink-apps-netd \
 	touchlink-apps-pyftpd \
-	touchlink-apps-rf915d \
 	touchlink-apps-rtspd \
 	touchlink-apps-sundance \
 	touchlink-apps-test-daemon \
