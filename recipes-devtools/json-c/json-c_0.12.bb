@@ -31,4 +31,6 @@ do_configure_prepend() {
 
 EXTRA_OECONF = "--disable-werror"
 
+CFLAGS += "-Wno-error"
+
 BBCLASSEXTEND = "native nativesdk"

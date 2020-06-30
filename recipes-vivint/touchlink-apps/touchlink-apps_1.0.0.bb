@@ -22,7 +22,6 @@ require touchlink-apps-test-daemon.inc
 require touchlink-apps-pcamd.inc
 require touchlink-apps-iod.inc
 require touchlink-apps-345d.inc
-require touchlink-apps-rf915d.inc
 require touchlink-apps-cloudd.inc
 require touchlink-apps-modemd.inc
 
@@ -61,7 +60,7 @@ require touchlink-apps-pyftpd.inc
 
 DISTRO_PR = ".1"
 
-PR = "ml121"
+PR = "ml122"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -132,12 +131,13 @@ DEPENDS = " \
 	python3-googleapis-common-protos-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
+	python3-jsonschema-native \
 	python3-markupsafe-native \
 	python3-mixpanel-native \
 	python3-mock-native \
+	python3-more-itertools-native \
 	python3-msgpack-native \
 	python3-native \
-	python3-nose-native \
         python3-pathlib2-native \
         python3-paho-mqtt-native \
 	python3-pexpect-native \
