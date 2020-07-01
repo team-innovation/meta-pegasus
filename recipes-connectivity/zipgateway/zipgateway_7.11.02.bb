@@ -22,7 +22,7 @@ SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_P
 
 S = "${WORKDIR}/git/zipgateway-7.11.02-Source/usr/local"
 
-inherit pkgconfig cmake python-dir pythonnative update-rc.d
+inherit pkgconfig cmake python3-dir python3native update-rc.d
 
 # Create runlevel links
 INITSCRIPT_NAME = "zwaved"
