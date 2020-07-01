@@ -16,6 +16,7 @@ DEPENDS += " \
 	python3-attrs-native \
 	python3-async-timeout-native \
 	python3-multidict-native \
+	python3-bson-native \
 	python3-bcrypt-native \
 	python3-cachetools \
 	python3-cherrypy-native \
