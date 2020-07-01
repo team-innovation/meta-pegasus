@@ -7,11 +7,11 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 DEPENDS = "python-native libusb libxml2-native libxslt-native openssl flex json-c"
 RDEPENDS_${PN} = "bridge-utils"
 
-PR = "r1"
+PR = "r2"
 PV = "7.11.02+git${SRCPV}"
 
-SRCREV = "7c501460593f1437d9599d331c39504e300c1950"
-SRCBRANCH = "master"
+SRCREV = "c2e2264693d910c372c678bb31773e25e6959a3d"
+SRCBRANCH = "v71102_sumo"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
 GIT_ZGATE_PROTOCOL ?= "ssh"
