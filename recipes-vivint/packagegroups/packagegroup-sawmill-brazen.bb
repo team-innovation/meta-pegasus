@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r3"
+PR = "r4"
 
 require packagegroup-sawmill-sly-common.inc
 
@@ -19,6 +19,7 @@ RDEPENDS_${PN} += " \
 	psoc-fw-sly \
 	psoc-fw-sly-fcc \
 	psoc-fw-wallsly \
+	wallsly-modules \
 	qflash \
 	qfotatool \
 	nm-pkgs \
