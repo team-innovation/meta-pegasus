@@ -102,6 +102,7 @@ DEPENDS = " \
         zware \
         iotivity \
         zwave-nvm-converter \
+	qtbase-native \
 "
 
 SRCREV = "${GIT_APPS_REV}"
