@@ -1,4 +1,4 @@
-GIT_KERNEL_BRANCH ?= "vivint/kernel-4.14"
+GIT_KERNEL_BRANCH ?= "feature/brazen_sumo"
 LOCALVERSION = "-1.0.0-slimline"
 GIT_KERNEL_SERVER ?= "${GIT_SERVER}"
 GIT_KERNEL_PROTOCOL ?= "ssh"
@@ -13,7 +13,7 @@ SRC_URI = "${KERNEL_SRC};branch=${GIT_KERNEL_BRANCH} \
 FILESEXTRAPATHS_prepend := "${THISDIR}/:" 
 DEFAULT_PREFERENCE = "1"
 
-SRCBRANCH = "sumo" 
+SRCBRANCH = "kernel-4.14" 
 
 PV = "4.14.78-+git${SRCPV}"
 PR = "r01"
@@ -33,3 +33,17 @@ do_compile_prepend() {
    oe_runmake mrproper
    cd -
 }
+
+# copy zImage to deploy directory
+# update uImage with defconfig ane git info in name
+# this is since build script can build multiple ways
+# and will overwrite previous builds
+
+do_deploy_append () {
+    install -d ${DEPLOY_DIR_IMAGE}
+    install  arch/arm/boot/zImage ${DEPLOY_DIR_IMAGE}/zImage_mfgtool
+}
+
+KERNEL_IMAGE_BASE_NAME[vardepsexclude] = "DATETIME"
+MODULE_IMAGE_BASE_NAME[vardepsexclude] = "DATETIME"
+do_package[vardepsexclude] = "DATETIME"

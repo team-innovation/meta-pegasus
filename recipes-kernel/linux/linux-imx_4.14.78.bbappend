@@ -9,7 +9,7 @@ i.MX Family Reference Boards. It includes support for many IPs such as GPU, VPU 
 
 DEPENDS += "lzop-native bc-native"
 
-GIT_KERNEL_BRANCH ?= "vivint/kernel-4.14"
+GIT_KERNEL_BRANCH ?= "feature/brazen_sumo"
 GIT_KERNEL_SERVER ?= "${GIT_SERVER}"
 GIT_KERNEL_PROTOCOL ?= "ssh"
 GIT_KERNEL_REV ?= "${AUTOREV}"
@@ -21,9 +21,9 @@ SRC_URI = "${KERNEL_SRC};branch=${GIT_KERNEL_BRANCH}\
 FILESEXTRAPATHS_prepend := "${THISDIR}/:"
 PV = "4.14.78-+git${SRCPV}"
 
-SRCBRANCH = "sumo"
+SRCBRANCH = "kernel-4.14"
 
-PR = "15"
+PR = "16"
 
 DO_CONFIG_V7_COPY = "yes"
 
