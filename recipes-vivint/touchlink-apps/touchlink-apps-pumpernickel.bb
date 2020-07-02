@@ -4,12 +4,12 @@ DESCRIPTION = "User interface for Vivint sky panels"
 HOMEPAGE = "http://www.vivintsky.com"
 LICENSE = "CLOSED"
 SECTION = "SOMETHING"
-DEPENDS = "qtdeclarative qtgraphicaleffects qtmultimedia qrencode qtdeclarative-native"
+DEPENDS = "qtbase qtdeclarative qtgraphicaleffects qtmultimedia qrencode qtbase-native qtdeclarative-native"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
 PR = "r20"
 
-DEPENDS = " \
+DEPENDS += " \
         gstreamer1.0-plugins-bad \
         gstreamer1.0-plugins-base \
         gstreamer1.0-plugins-good \
@@ -102,7 +102,6 @@ DEPENDS = " \
         zware \
         iotivity \
         zwave-nvm-converter \
-	qtbase-native \
 "
 
 SRCREV = "${GIT_APPS_REV}"
