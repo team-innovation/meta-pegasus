@@ -268,7 +268,7 @@ addmediaextrafs() {
     local start=$3
     local size=$4
     local extrad="${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.$fsname.d/"
-    local gzname="${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.tar.gz"
+    local gzname="${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.tar.bz2"
     mkdir -p $extrad/factory_image
     cp $gzname $extrad/factory_image
     dd if=/dev/zero \
