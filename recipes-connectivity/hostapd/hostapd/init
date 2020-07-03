@@ -11,12 +11,14 @@ set -e
 # source function library
 . /etc/init.d/functions
 
+
 delay_stop() {
 	count=0
 	while [ $count -lt 9 ] ; do
 	        if pidof $DAEMON >/dev/null; then
 	                sleep 1
 	        else
+			killall -9 udhcpd
 	                return 0
 	        fi
 		count=`expr $count + 1`
@@ -27,16 +29,31 @@ delay_stop() {
 
 case "$1" in
     start)
-    read macaddr </sys/class/net/wlan0/address
-    macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
-    sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
+	read macaddr </sys/class/net/wlan0/address
+	macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
+
+        platform=$(strings /proc/device-tree/compatible | grep vivint | sed s/^vivint,//)
+
+        if [ "$platform" == "brazen" ]; then
+	    ARGS="/etc/hostapd_hub.conf -B"
+	    sed -i "s/ssid=.*/ssid=VIVINT_HUB_(${macaddrup:9})/" /etc/hostapd_hub.conf
+        else
+	    sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
+	fi
 	echo -n "Starting $DESC: "
 	start-stop-daemon -S -x $DAEMON -- $ARGS
 	echo "$NAME."
+
+	### HACK - this probably need to be move to udhcpd but add it here for now
+	if [ "$platform" == "brazen" ]; then
+		touch /var/lib/misc/udhcpd.leases
+		udhcpd -I 192.168.10.100 /etc/udhcpd.conf
+	fi
 	;;
     stop)
 	echo -n "Stopping $DESC: "
 	start-stop-daemon -K --oknodo -x $DAEMON
+	killall -9 udhcpd
 	echo "$NAME."
 	;;
     restart)

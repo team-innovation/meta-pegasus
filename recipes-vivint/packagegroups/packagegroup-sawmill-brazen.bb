@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r5"
+PR = "r6"
 
 require packagegroup-sawmill-sly-common.inc
 
@@ -10,6 +10,7 @@ RDEPENDS_${PN} += " \
         u-boot-wallsly \
         u-boot-brazen \
 	brazen-version \
+	hostapd \
         mmc-utils \
 	graphviz \
 	openwrt-rt3352 \
