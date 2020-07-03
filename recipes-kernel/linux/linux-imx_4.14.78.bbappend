@@ -1,14 +1,3 @@
-# Copyright (C) 2013-2016 Freescale Semiconductor
-# Copyright 2017 NXP
-# Copyright 2018 (C) O.S. Systems Software LTDA.
-# Released under the MIT license (see COPYING.MIT for the terms)
-
-SUMMARY = "Linux Kernel provided and supported by NXP"
-DESCRIPTION = "Linux Kernel provided and supported by NXP with focus on \
-i.MX Family Reference Boards. It includes support for many IPs such as GPU, VPU and IPU."
-
-DEPENDS += "lzop-native bc-native"
-
 GIT_KERNEL_BRANCH ?= "feature/brazen_sumo"
 GIT_KERNEL_SERVER ?= "${GIT_SERVER}"
 GIT_KERNEL_PROTOCOL ?= "ssh"
@@ -20,18 +9,16 @@ SRC_URI = "${KERNEL_SRC};branch=${GIT_KERNEL_BRANCH}\
 	   file://defconfig"
 FILESEXTRAPATHS_prepend := "${THISDIR}/:"
 PV = "4.14.78-+git${SRCPV}"
-
 SRCBRANCH = "kernel-4.14"
 
-PR = "16"
+LICENSE = "GPLv2"
+LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
+
+PR = "17"
 
 DO_CONFIG_V7_COPY = "yes"
 
-DEFAULT_PREFERENCE = "1"
-
-COMPATIBLE_MACHINE = "(mx6|mx7)"
-
-do_configure_prepend() {
+do_copy_defconfig_prepend() {
    # copy latest defconfig slimline_defconfig to use
    install -m 0755 ${S}/arch/arm/configs/slimline_defconfig ${S}/.config
    install -m 0755 ${S}/arch/arm/configs/slimline_defconfig ${S}/../defconfig

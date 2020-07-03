@@ -28,6 +28,7 @@ RDEPENDS_${PN} = " \
 	packagegroup-core-ssh-openssh \
 	psoc5-verify \
 	mighty-gecko-verify \
+	mmc-utils \
 	slimline-modules \
 	sly-modules \
 	strace \

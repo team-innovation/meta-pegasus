@@ -5,7 +5,7 @@ LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 
 DEPENDS = "python-native libusb libxml2-native libxslt-native openssl flex json-c"
-RDEPENDS_${PN} = "bridge-utils"
+RDEPENDS_${PN} = "bridge-utils bash"
 
 PR = "r2"
 PV = "7.11.02+git${SRCPV}"
