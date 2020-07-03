@@ -13,7 +13,7 @@ SRC_URI = "${KERNEL_SRC};branch=${GIT_KERNEL_BRANCH} \
 FILESEXTRAPATHS_prepend := "${THISDIR}/:" 
 DEFAULT_PREFERENCE = "1"
 
-SRCBRANCH = "kernel-4.14" 
+SRCBRANCH = "feature/brazen_sumo" 
 
 PV = "4.14.78-+git${SRCPV}"
 PR = "r01"
