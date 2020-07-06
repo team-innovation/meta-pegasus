@@ -27,8 +27,7 @@ delay_stop() {
 	return 1
 }
 
-case "$1" in
-    start)
+setup() {
 	read macaddr </sys/class/net/wlan0/address
 	macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
 
@@ -40,6 +39,24 @@ case "$1" in
         else
 	    sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
 	fi
+
+}
+
+case "$1" in
+    start)
+	setup()
+	### HACK - maybe there a better way
+	if [ "$platform" == "brazen" ]; then
+		echo "Not auto start on Hub Plus"
+		exit 0	
+	fi
+
+	echo -n "Starting $DESC: "
+	start-stop-daemon -S -x $DAEMON -- $ARGS
+	echo "$NAME."
+	;;
+    manual_start)
+	setup()
 	echo -n "Starting $DESC: "
 	start-stop-daemon -S -x $DAEMON -- $ARGS
 	echo "$NAME."
@@ -47,9 +64,11 @@ case "$1" in
 	### HACK - this probably need to be move to udhcpd but add it here for now
 	if [ "$platform" == "brazen" ]; then
 		touch /var/lib/misc/udhcpd.leases
-		udhcpd -I 192.168.10.100 /etc/udhcpd.conf
+		udhcpd /etc/udhcpd.conf
+		ifconfig wlan0 192.168.10.100
 	fi
 	;;
+
     stop)
 	echo -n "Stopping $DESC: "
 	start-stop-daemon -K --oknodo -x $DAEMON
