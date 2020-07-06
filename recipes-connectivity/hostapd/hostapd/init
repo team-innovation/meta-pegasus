@@ -28,23 +28,25 @@ delay_stop() {
 }
 
 setup() {
-	read macaddr </sys/class/net/wlan0/address
+    read macaddr </sys/class/net/wlan0/address
+    read serialnum < /media/bootscript/serialnumber.txt
 	macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
+    platform=$(strings /proc/device-tree/compatible | grep vivint | sed s/^vivint,//)
+    password=$(echo -n $serialnum | sha256sum)
 
-        platform=$(strings /proc/device-tree/compatible | grep vivint | sed s/^vivint,//)
-
-        if [ "$platform" == "brazen" ]; then
+    if [ "$platform" == "brazen" ]; then
 	    ARGS="/etc/hostapd_hub.conf -B"
-	    sed -i "s/ssid=.*/ssid=VIVINT_HUB_(${macaddrup:9})/" /etc/hostapd_hub.conf
-        else
-	    sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
-	fi
+        sed -i "s/ssid=.*/ssid=VIVINT_HUB_${serialnum}/" /etc/hostapd_hub.conf
+        sed -i "s/wpa_passphrase=.*/wpa_passphrase=${password:0:63}/" /etc/hostapd_hub.conf
+    else
+        sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
+    fi
 
 }
 
 case "$1" in
     start)
-	setup()
+	setup
 	### HACK - maybe there a better way
 	if [ "$platform" == "brazen" ]; then
 		echo "Not auto start on Hub Plus"
@@ -56,7 +58,7 @@ case "$1" in
 	echo "$NAME."
 	;;
     manual_start)
-	setup()
+	setup
 	echo -n "Starting $DESC: "
 	start-stop-daemon -S -x $DAEMON -- $ARGS
 	echo "$NAME."

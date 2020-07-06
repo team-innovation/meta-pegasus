@@ -7,17 +7,19 @@ PR = "r6"
 require packagegroup-sawmill-sly-common.inc
 
 RDEPENDS_${PN} += " \
-        u-boot-wallsly \
-        u-boot-brazen \
+    u-boot-wallsly \
+    u-boot-brazen \
 	brazen-version \
 	hostapd \
-        mmc-utils \
+    zeroconf \
+    slimline-utils \
+    mmc-utils \
 	graphviz \
 	openwrt-rt3352 \
 	mighty-gecko-fw-wallsly \
 	mosquitto \
-        python3-paho-mqtt \
-        telegraf \
+    python3-paho-mqtt \
+    telegraf \
 	vis \
 "
 

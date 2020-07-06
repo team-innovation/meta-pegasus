@@ -14,6 +14,7 @@ do_install_append () {
 
 FILES_${PN}-httpd = "\
        ${INSTALL_DIR}/httpd/*   \
-	${sysconfdir}/init.d/httpd		\
+	${sysconfdir}/init.d/httpd \
+	${sysconfdir}/avahi/services/vivint-admin.service \
        "
 
