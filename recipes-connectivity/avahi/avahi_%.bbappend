@@ -7,3 +7,5 @@ do_install_append () {
     install -m 0644 ${WORKDIR}/avahi-daemon.conf ${D}${sysconfdir}
 }
 
+FILES_${PN} += "${sysconfdir}/avahi-daemon.conf"
+

@@ -12,7 +12,6 @@ RDEPENDS_${PN} += " \
 	brazen-version \
 	hostapd \
     zeroconf \
-    slimline-utils \
     mmc-utils \
 	graphviz \
 	openwrt-rt3352 \
