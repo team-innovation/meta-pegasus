@@ -14,7 +14,7 @@ GIT_AUDIO_REV ?= "${AUTOREV}"
 
 SRCREV = "${GIT_AUDIO_REV}"
 SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH}"
-RDEPENDS_${PN} = "libpulse-simple libpulse libasound libsndfile"
+RDEPENDS_${PN} = "libpulse-simple libpulse libasound"
 S = "${WORKDIR}/git/tonegen"
 do_compile() {
    oe_runmake
