@@ -106,6 +106,7 @@ DEPENDS = " \
 	python3-aiodns-native \
 	python3-aioconsole-native \
 	python3-aiohttp-native \
+	python3-aiohttp-sse-native \
 	python3-async-generator-native \
 	python3-async-timeout-native \
 	python3-atomicwrites-native \

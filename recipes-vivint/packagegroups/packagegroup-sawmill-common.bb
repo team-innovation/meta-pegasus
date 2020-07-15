@@ -29,6 +29,7 @@ RDEPENDS_${PN} = " \
 	python3-aioconsole \
 	python3-aiodns \
 	python3-aiohttp \
+	python3-aiohttp-sse \
 	python3-async-generator \
 	python3-async-timeout \
 	python3-atomicwrites \
