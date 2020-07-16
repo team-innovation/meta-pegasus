@@ -283,7 +283,6 @@ addmediaextrafs() {
 	bs=$(ctob 1) \
 	seek=$(btoc $start) \
 	count=$(btoc $size)
-
     :
 }
 
@@ -325,7 +324,7 @@ generate_slimline_emmc () {
     # p6, other rootfs, will be created/populated on first update
 
     # p7, media extra which needs a factory rootfs image tarball
-    addmediaextrafs media-extra MEDIAEXTRA $P7STRT $P7SZ
+    #addmediaextrafs media-extra MEDIAEXTRA $P7STRT $P7SZ
     :
 }
 

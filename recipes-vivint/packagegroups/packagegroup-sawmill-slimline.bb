@@ -17,5 +17,6 @@ RDEPENDS_${PN} += " \
 	mosquitto-clients \
         openvpn \
         telegraf \
+	vim \
 "
 

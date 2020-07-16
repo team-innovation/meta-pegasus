@@ -68,6 +68,12 @@ do_install_append_class-native() {
     install -m755 ${B}/lib/gvpr/mkdefs ${D}${bindir}
 }
 
+do_install_append(){
+    # remove pdf and html doc to save 4.9M
+    rm -rf ${D}${datadir}/graphviz/doc/pdf
+    rm -rf ${D}${datadir}/graphviz/doc/html
+}
+
 FILES_SOLIBSDEV_append = " ${libdir}/graphviz/lib*${SOLIBSDEV}"
 
 BBCLASSEXTEND = "native nativesdk"

@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r35"
+PR = "r36"
 
 require packagegroup-sawmill-sly-common.inc
 
@@ -18,5 +18,6 @@ RDEPENDS_${PN} += " \
         python3-paho-mqtt \
         telegraf \
 	vis \
+	vim \
 "
 

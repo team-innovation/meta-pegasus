@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "50"
+PR = "51"
 
 inherit packagegroup
 
@@ -107,7 +107,6 @@ RDEPENDS_${PN} = " \
 	tzdata \
 	tzdata-americas \
 	util-linux \
-	vim \
 	webrtc-audio-processing \
 	panel-audio-test \
 	pa-test \
