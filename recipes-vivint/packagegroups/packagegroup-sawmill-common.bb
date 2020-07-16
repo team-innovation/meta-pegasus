@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "51"
+PR = "52"
 
 inherit packagegroup
 
@@ -12,7 +12,6 @@ inherit packagegroup
 #   then add it to packagegroup-sawmill-min not here.
 RDEPENDS_${PN} = " \
 	alsa-utils \
-	imx-gpu-viv-demos \
 	imx-gpu-viv-tools \
 	ca-certificates \
 	civetweb \
@@ -76,9 +75,6 @@ RDEPENDS_${PN} = " \
 	python3-pyftpdlib \
 	python3-pyserial \
 	python3-pyssh-ctypes \
-	python3-pytest \
-        python3-pytest-asyncio \
-        python3-pytest-cov \
 	python3-pyalsaaudio \
 	python3-py \
 	python3-pyopenssl \

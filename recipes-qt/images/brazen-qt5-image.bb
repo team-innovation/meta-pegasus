@@ -18,9 +18,13 @@ IMAGE_INSTALL_append = "\
 	pulseaudio-meta-sly \
 	audio-sh \
 	mtd-utils \
-	packagegroup-camera-firmware \
 	packagegroup-ppp-config-modem \
 	packagegroup-zwave-config \
+	touchlink-alpha-firmware-cs6022-ov4689 \
+        touchlink-vivotek-vadp \
+        touchlink-vivotek-vadp-rossini \
+        touchlink-vivotek-vadp-rossini-hawxeye \
+        touchlink-lgit-firmware-poe-bridge \
 "
 
 inherit core-image

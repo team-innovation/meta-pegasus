@@ -30,28 +30,16 @@ QT5_PKGS = "\
 	qtmultimedia-qmlplugins \
 	qtquickcontrols-qmlplugins \
 	qtscript 	\
-	tslib tslib-calibrate tslib-tests \
 "
 
 PULSE_DEPENDS = "python3-pulseaudio \
 		"
-TOUCHSCREEN_DEPENDS = "libinput \
-	evtest \
-	touchlink-maxtouch-config \
-"
-
-DISPLAY_DEPENDS = "\
-	imagemagick \
-"
-
 
 RDEPENDS_${PN} += " \
-	${DISPLAY_DEPENDS} \
 	${MISC_DEPENDS} \
 	${PULSE_DEPENDS} \
 	${PYTHON_EXTRA_DEPENDS} \
 	${QT5_DEPENDS} \
 	${QT5_PKGS} \
-	${TOUCHSCREEN_DEPENDS} \
 	${VIVINT_APPS_COMMON} \
 "
