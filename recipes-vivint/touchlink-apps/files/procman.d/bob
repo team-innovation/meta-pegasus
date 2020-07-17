@@ -1,6 +1,6 @@
 {
 
-    "pumpernickel":
+    "bob":
     {
         "priority" : -5,
         "name" : "User Interface",
@@ -8,11 +8,11 @@
         "scheduler_pri": 1,
         "if" :
         {
-      	    "cycles": 5,
+            "cycles": 5,
             "cpu" : { "gt" : 85 },
             "then" : "restart"
         },
-        "start": "/etc/init.d/pumpernickel start",
+        "start": "/etc/init.d/bob start",
         "ui": true
     }
 }

@@ -167,95 +167,34 @@ ubootupdate() {
 
 # eMMC has bits that set boot modes.  These need to be set so the
 # eMMC chip agrees with the processor on how the bus is configured
-# at boot time.  These bits are accessed from a file in sysfs.
-# Details here, skip to TL;DWR for succinct version.
-#
-# The sysfs directory containing the files we need is
-# /sys/devices/soc0/soc.0/2100000.aips-bus/219c000.usdhc/mmc_host/mmc0/mmc0:0001
-# But use find and grep to set it.
-#
-mmcbootconfigdir=$(find /sys/devices -type d | grep 'mmc.:0001$')
-
-# The first file to write is boot_bus_config.  We need to set it up like this:
-# boot_bus:0x0a
-#   BOOT_MODE:1 - Use single data rate + high speed timings in boot
-#                 operation mode
-#   RESET_BOOT_BUS_WIDTH:0 - Reset bus width to x1, single data rate and
-#                            backwardcompatible timings after boot operation
-#   BOOT_BUS_WIDTH:2 - x8 (sdr/ddr) bus width in boot operation mode
-# However the file expects the value in decimal not hex so:
-MMC_BOOT_BUS_VAL=10
-
-# The second file to write is boot_config, the bits here choose the boot partition
-# we use boot partition 1 of 2 (or 0 in linux device numbering)
-#
-# this is confusing again because of hex/decimal
-# from the source we have this comment:
-#
-# 0x00 - disable boot enable.
-# 0x08 - boot partition 1 is enabled for boot.
-# 0x10 - boot partition 2 is enabled for boot.
-# 0x38 - User area is enabled for boot.
-#
-# If you do the right stupid thing you might get this helpful message that is
-# a hint that the author really liked decimal over hex:
-#
-#   wrong boot config parameter 00 (disable boot), 08 (enable boot1),
-#					... 16 (enable boot2), 56 (User area)
-#
-# we want boot partition 1(aka 0) so we use 8 which is the same for hex and decimal
-MMC_BOOT_CONFIG_VAL=8
-
-# To get the current config we need to read the file boot_info
-# in the directory determined above.
-# Here is the raw dump of this file on a system with the correct settings
-# already applied:
-
-# boot_info:0x07;
-# ALT_BOOT_MODE:1 - Supports alternate boot method
-# DDR_BOOT_MODE:1 - Supports alternate dual data rate during boot
-# HS_BOOTMODE:1 - Supports high speed timing during boot
-# boot_size:2048KB
-# boot_partition:0x48;
-# BOOT_ACK:1 - Boot acknowledge sent during boot operation
-# BOOT_PARTITION-ENABLE: 1 - Boot partition 1 enabled
-# boot_bus:0x0a
-# BOOT_MODE:1 - Use single data rate + high speed timings in boot operation mode
-# RESET_BOOT_BUS_WIDTH:0 - Reset bus width to x1, single data rate and
-# 			... backwardcompatible timings after boot operation
-# BOOT_BUS_WIDTH:2 - x8 (sdr/ddr) bus width in boot operation mode
-
-# To verify settings we check just two fields:
-# 1) BOOT_PARTITION-ENABLE: 1 corresponds to MMC_BOOT_CONFIG_VAL=8 above
-# and 2) boot_bus:0xa corresponds to MMC_BOOT_BUS_VAL=10 above
-
-
-# TL;DWR (Too Long; Don't Wanna Read)
+# at boot time.  
 #   Make eMMC boot partition writeable
 #   Sleep a bit
 #   Find the directory for eMMC using find and grep.
-#   Write 10 to boot_bus_config in directory found above.
+#   Write 0x0a to boot_bus_config in directory found above.
 #   Sleep a bit
-#   Write 8 to boot_config in directory found above.
+#   Write 0x48 to boot_config in directory found above.
 #   Sleep a bit
 #   Read boot_info in directory found above to verify.
 #
 
 # Utility function to grab a matching field
 boot_info_field() {
+	local ret
 	local match=$1;
-	sed -n s/"$match"//p "${mmcbootconfigdir}"/boot_info
+	ret=$(mmc extcsd read /dev/mmcblk0 | sed -n "s/$match//p")
+	echo ${ret%]}
 }
 
 # see above
 mmcbootbitscheck() {
 	local f1
 	local f2
-	f1=$(boot_info_field "boot_bus:")
-	f2=$(boot_info_field ".*BOOT_PARTITION-ENABLE:.1.-.")
+	f1=$(boot_info_field ".*BOOT_BUS_CONDITIONS: ")
+	f2=$(boot_info_field ".*PARTITION_CONFIG: ")
 	test "${f1}" = "0x0a" ||
 		return 1
-	test "${f2}" = "Boot partition 1 enabled" ||
+	test "${f2}" = "0x48" ||
 		return 1
 	true
 }
@@ -265,9 +204,9 @@ mmcbootbitsset() {
 	emmcrw 0
 	emmcrw 1
 	usleep 500000
-	echo ${MMC_BOOT_BUS_VAL} > "${mmcbootconfigdir}"/boot_bus_config
+	mmc bootbus set single_hs x1 x8 /dev/mmcblk0
 	usleep 500000
-	echo ${MMC_BOOT_CONFIG_VAL} > "${mmcbootconfigdir}"/boot_config
+	mmc bootpart enable 1 1 /dev/mmcblk0
 	usleep 500000
 	emmcro 0
 	emmcro 1
