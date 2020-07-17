@@ -13,13 +13,11 @@ RDEPENDS_${PN} += " \
 	fabric-go \
 	lxfp \
 	openvpn \
-	openwrt-mt7620 \
 	psoc-fw-sly \
 	psoc-fw-sly-fcc \
 	psoc-fw-wallsly \
 	qflash \
 	qfotatool \
-	nm-pkgs \
 	sly-utils \
 	swdltool \
 	zwave-nvm-converter \

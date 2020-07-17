@@ -14,11 +14,9 @@ RDEPENDS_${PN} += " \
     zeroconf \
     mmc-utils \
 	graphviz \
-	openwrt-rt3352 \
 	mighty-gecko-fw-wallsly \
 	mosquitto \
     python3-paho-mqtt \
     telegraf \
-	vis \
 "
 
