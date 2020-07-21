@@ -1,0 +1,62 @@
+#! /bin/sh
+# Copyright (c) 2017, Vivint.
+#
+# Check the Mighty Gecko firmware and update if necessary
+#set -x
+
+platform=$(strings /proc/device-tree/compatible |
+	grep vivint |
+	sed s/^vivint,//)
+
+if [ "$platform" != "wallsly" ]; then
+	return 0;
+fi
+
+mighty_gecko_verify()
+{
+	if [ ! -d /sys/class/mighty_gecko/swd0 ]; then
+		echo "ERROR: Mighty Gecko kernel device driver not installed"
+		return 1
+	fi
+
+	# if in fcc test mode use a different fw file
+	if [ -f /etc/procman.d/test_ui ]; then
+		if [ ! -e /lib/firmware/vivint/railtest_efr32.fw ]; then
+			echo "ERROR: FCC firmware not found"
+			return 1
+		fi
+	elif [ ! -e /lib/firmware/vivint/wallsly-mighty-gecko.fw ]; then
+		echo "ERROR: Mighty Gecko firmware not found"
+		return 1
+	fi
+
+	echo Check that Mighty Gecko firmware is up to date
+	if [ -f /tmp/mightygeckofwverified ]; then
+		echo "Mighty Gecko firmware already verified"
+		return 0
+	else
+		test -f /sys/class/mighty_gecko/swd0/access &&
+			echo 1 > /sys/class/mighty_gecko/swd0/access
+		if [ -f /etc/procman.d/test_ui ]; then
+			echo "railtest_efr32.fw" > /sys/class/mighty_gecko/swd0/fw_path
+		fi
+		echo 1 > /sys/class/mighty_gecko/swd0/doall &&
+			touch /tmp/mightygeckofwverified
+		test -f /sys/class/mighty_gecko/swd0/access &&
+			echo 0 > /sys/class/mighty_gecko/swd0/access
+	fi
+
+	return 0
+}
+
+case "$1" in
+	start|restart|reload)
+		mighty_gecko_verify
+		;;
+	stop)
+		stop
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+esac
