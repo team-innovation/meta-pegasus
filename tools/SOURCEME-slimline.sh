@@ -81,7 +81,7 @@ test -d ${BUILD_DIR} &&
     sed -i '/PRSERV_HOST/d'  ${BUILD_DIR}/conf/local.conf && 
     sed -i '/DISTRO_FEATURES_remove/d' ${BUILD_DIR}/conf/local.conf && 
     sed -i '/IMAGE_INSTALL_remove/d' ${BUILD_DIR}/conf/local.conf && 
-    sed -i '/CONNECTIVITY_CHECK_URIS/d' {BUILD_DIR}/conf/local.conf && 
+    sed -i '/CONNECTIVITY_CHECK_URIS/d' ${BUILD_DIR}/conf/local.conf && 
    	echo "CONNECTIVITY_CHECK_URIS = \"https://www.example.com\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "DISTRO_FEATURES_remove = \"x11 wayland directfb bluetooth zeroconf\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "IMAGE_INSTALL_remove = \" packagegroup-fsl-bluez5-tools\"" >> ${BUILD_DIR}/conf/local.conf &&

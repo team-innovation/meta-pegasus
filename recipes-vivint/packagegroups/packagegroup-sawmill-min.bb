@@ -38,4 +38,5 @@ RDEPENDS_${PN} = " \
 	util-linux-sfdisk \
 	vivutils \
 	wallsly-modules \
+	mmc-utils \
 "

@@ -34,6 +34,12 @@ EXTRA_OECMAKE = " \
     -DDISABLE_MOCK=TRUE \
 "
 
+EXTRA_OECMAKE = " \
+    -DCMAKE_INSTALL_PREFIX=/usr/local \
+    -DSKIP_TESTING=TRUE \
+    -DDISABLE_MOCK=TRUE \
+"
+
 do_package_qa() {
     echo "Skipping QA ..."
 }

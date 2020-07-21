@@ -24,6 +24,12 @@ except ImportError:
     print('Must be a 3.7 or earlier panel build')
     pprint = print
 
+try:
+    from taurine.utils.ssh_network_module import SSHToNetworkModule
+except ImportError:
+    print('No taurine')
+    exit(-1)
+
 # try:
 #     from taurine.async_io.protocols.ssdp import SsdpServer
 #     from taurine.async_io.event_loop import EventLoop
@@ -113,86 +119,6 @@ else:
             time.sleep(0.1)
 
             return True
-
-
-class SSHToNetworkModule(CustomSSH):
-    def __init__(self, timeout=30, maxread=2000, searchwindowsize=None, logfile=None, cwd=None, env=None):
-        super().__init__(timeout, maxread, searchwindowsize, logfile, cwd, env)
-        self._server = None
-        self._server_mac = None
-        self._uptime = None
-        self._cmd = None
-
-    def execute_cmd(self, cmd, strip_cmd=True, timeout=None):
-        result = ''
-        if self.before:
-            self.before = ''
-        self._cmd = cmd
-        self.sendline(cmd)
-        if self.prompt(-1 if timeout is None else timeout):
-            result = self.before
-            if strip_cmd:
-                import re
-                try:
-                    r = re.sub(r'^[^\n]*\n', '', result)
-                except TypeError:
-                    r = re.sub(r'^[^\n]*\n', '', result.decode())
-                result = r
-                # result = result.strip(cmd+'\r\n')
-        else:
-            if self.before:
-                self.expect(r'.+')
-            self.before = ''
-
-        return result
-
-    def start_cmd(self, cmd):
-        return self.sendline(cmd)
-
-    def end_cmd(self, cmd, strip_cmd=True):
-        self.prompt(10)
-        result = self.before
-        #        result = result.strip(cmd+'\r\n')
-        if strip_cmd:
-            import re
-            try:
-                r = re.sub(r'^[^\n]*\n', '', result)
-            except TypeError:
-                r = re.sub(r'^[^\n]*\n', '', result.decode(0))
-            result = r
-
-        return result
-
-    def can_ping(self, address=None):
-        if address is None:
-            address = self._server
-
-        if address:
-            import subprocess
-            ret_code = subprocess.call(['ping', '-c', '1', address])
-            # If ret_code == 0 we suceeded
-            return (ret_code == 0)
-        return False  # Failed to Ping
-
-    def login_network_module(self, server, port=None):
-        owrt_prompt = 'root@OpenWrt:~#'
-        self._server = server
-        ret = False
-        try:
-            ret = self.login(server=server, port=port, username='root', password='ap3x!0wrt',
-                             original_prompt=owrt_prompt, login_timeout=60)
-            if ret:
-                self._server_mac = self.execute_cmd("ifconfig wlan0 | grep HWaddr | awk '{print $5}'").strip()
-                self._uptime = self.execute_cmd('uptime').strip()
-        except pexpect.pxssh.ExceptionPxssh as ex:
-            print('Do we have issue logging in to the panel {}?  Try at commandline! {}'.format(server, self.before))
-            print('Exception: {}'.format(ex))
-            if self.can_ping(server):
-                subprocess.check_output('ssh-keygen -f "/home/craig/.ssh/known_hosts" -R "{}"'.format(server),
-                                        shell=True)
-        except pexpect.EOF:
-            print('Do we have issue logging in to the panel {}?  Try at commandline! {}'.format(server, self.before))
-        return ret
 
 
 class SSHIntoPanel(SSHToNetworkModule):
@@ -554,7 +480,7 @@ MAP8 wlan0 Panel: 88:6a:e3:e8:f1:2f 172.16.10.114 (Marked Bad MAC, SE Window by 
 
 class NetworkModuleInfo:
     @staticmethod
-    def find_nodes(use_ssdp=False):
+    def find_nodes(use_ssdp=False, password_list=None):
         node_list = []
         if use_ssdp:
             try:
@@ -577,17 +503,23 @@ class NetworkModuleInfo:
                             yofi_nodes.append(address)
 
                 def exit_now():
-                    for i in yofi_nodes:
-                        node_list.append(i.split('.')[-1])
                     sys.exit(0)
 
-                loop = EventLoop()
+                def on_exit_callback():
+                    for i in yofi_nodes:
+                        node_ip = i.split('.')[-1]
+                        if node_ip not in node_list:
+                            node_list.append(node_ip)
+
+                loop = EventLoop(on_exit_callback)
                 ssdp = SsdpServer(ssdp_callback)
                 if not on_touchlink():
                     ssdp.SSDP_UUID_PATH = '/tmp/ssdp-uuid'
 
                 ssdp.search(search_target)
-
+                DelayedCall(2, ssdp.search, search_target)
+                DelayedCall(2, ssdp.search, search_target)
+                DelayedCall(2, ssdp.search, search_target)
                 DelayedCall(10, exit_now)
                 loop.run()
 
@@ -595,26 +527,45 @@ class NetworkModuleInfo:
                 # node_list = [254, 141, 144, 162, 186, 142, 152]
                 node_list = [254, 135, 196, 103, 148, 104]
         else:
-            s = SSHToNetworkModule()
             addr = '172.16.10.254'
+            s = SSHToNetworkModule()
+            s.password = password_list[addr]
+            s.get_password_from_db = False
             print('Attempt login to address: {}'.format(addr))
             ret = s.login_network_module(addr)
             if ret is False:
                 s.close()
                 s = SSHToNetworkModule()
+                s.password = password_list[addr]
+                s.get_password_from_db = False
                 ret = s.login_network_module(addr, 2020)
 
             if ret:
+                import re
+                regex = r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'
+
                 uptime = s.execute_cmd('uptime')
                 print(uptime)
                 node_health = s.execute_cmd('netv mhealth')
                 print(node_health)
                 lines = node_health.split('\r\n')
+                node_health = s.execute_cmd('netv get mchan24')
+                print(node_health)
+                lines += node_health.split('\r\n')
                 for line in lines:
                     if line.startswith('node'):
                         a = line.split()
                         mac = a[1]
-                        ip = a[2]
+                        if re.match(regex, mac) and len(a) <= 2:
+                            # found an IP not a mac, there is a bug in yofid that it will not report
+                            # a mac, just [node IP] not [node MAC IP]
+                            ip = mac
+                        elif len(a) == 3:
+                            ip = a[2]
+                        else:
+                            continue
+
+                        # If we get here we think we found a IP
                         ip_last = ip.split('.')[-1]
                         if not ip_last in node_list:
                             node_list.append(ip_last)
@@ -622,16 +573,17 @@ class NetworkModuleInfo:
 
         return node_list
 
-    def __init__(self, list_of_nm=None):
+    def __init__(self, list_of_nm=None, password_list=None):
         import logging
 
         self.logger = logging.getLogger('{}'.format(self.__class__))
         self.dhcpdump = None
+        self.password_list = password_list
         # logging.basicConfig(level=logging.DEBUG)
         logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG)
         if list_of_nm is None:
             print('Search for nodes')
-            self.list_of_nm = NetworkModuleInfo.find_nodes(use_ssdp=False)
+            self.list_of_nm = NetworkModuleInfo.find_nodes(use_ssdp=False, password_list=password_list)
         else:
             self.list_of_nm = list_of_nm
 
@@ -1103,6 +1055,12 @@ Interface wlan1
         result = s.execute_cmd('uci -q get vivint.@globals[0].platform').strip()
         return result
 
+    def get_version(self, s):
+        result = s.execute_cmd('cat /etc/os-release  | grep BUILD_ID').strip()
+        key, val = result.split('=')
+        result = val.strip('"')
+        return result
+
     def get_uuid(self, s):
         result = s.execute_cmd('netv get uuid').strip()
         return result
@@ -1169,10 +1127,14 @@ Interface wlan1
             # Try to get the dhcpdump info first from the MPP
             addr2 = '172.16.10.254'
             s1 = SSHToNetworkModule()
+            s1.password = self.password_list[addr2]
+            s1.get_password_from_db = False
             ret = s1.login_network_module(addr2)
             if ret is False:
                 s1.close()
                 s1 = SSHToNetworkModule()
+                s1.password = self.password_list[addr2]
+                s1.get_password_from_db = False
                 ret = s1.login_network_module(addr2, 2020)
 
             if ret:
@@ -1183,16 +1145,26 @@ Interface wlan1
             addr2 = '172.16.10.{}'.format(j)
             try:
                 s1 = SSHToNetworkModule()
+                s1.password = self.password_list[addr2]
+                s1.get_password_from_db = False
                 ret = s1.login_network_module(addr2)
                 if ret is False:
                     s1.close()
+                    time.sleep(1)
                     s1 = SSHToNetworkModule()
+                    s1.password = self.password_list[addr2]
+                    s1.get_password_from_db = False
                     ret = s1.login_network_module(addr2, 2020)
                 if ret:
                     self.logger.info('Logged into {}'.format(addr2))
                     wlan_mac = s1._server_mac
                     mesh_map[wlan_mac] = {}
                     mesh_map[wlan_mac]['platform'] = self.get_platform(s1)
+                    try:
+                        mesh_map[wlan_mac]['version'] = self.get_version(s1)
+                    except :
+                        mesh_map[wlan_mac]['version'] = ''
+
                     uuid = self.get_uuid(s1)
                     if uuid:
                         mesh_map[wlan_mac]['uuid'] = uuid
@@ -1260,26 +1232,31 @@ Interface wlan1
         result = ''
         for i in self.list_of_nm:
             try:
-                s = SSHToNetworkModule()
                 addr = '172.16.10.{}'.format(i)
-
+                s = SSHToNetworkModule()
+                s.password = self.password_list[addr]
+                s.get_password_from_db = False
                 ret = s.login_network_module(addr)
                 if ret is False:
                     s.close()
                     s = SSHToNetworkModule()
+                    s.password = self.password_list[addr]
                     ret = s.login_network_module(addr, 2020)
 
                 if ret:
                     for j in self.list_of_nm:
                         if i != j:
                             try:
-                                s1 = SSHToNetworkModule()
                                 addr2 = '172.16.10.{}'.format(j)
-
+                                s1 = SSHToNetworkModule()
+                                s1.password = self.password_list[addr2]
+                                s1.get_password_from_db = False
                                 ret = s1.login_network_module(addr2)
                                 if ret is False:
                                     s1.close()
                                     s1 = SSHToNetworkModule()
+                                    s1.password = self.password_list[addr2]
+                                    s1.get_password_from_db = False
                                     ret = s1.login_network_module(addr2, 2020)
 
                                 if ret:
@@ -1427,8 +1404,10 @@ Interface wlan1
 
     def test_1(self):
         for i in self.list_of_nm:
-            s = SSHToNetworkModule()
             addr = '172.16.10.{}'.format(i)
+            s = SSHToNetworkModule()
+            s.password = self.password_list[addr]
+            s.get_password_from_db = False
             print('')
             print('Attempt login to address: {}'.format(addr))
             try:
@@ -1436,6 +1415,8 @@ Interface wlan1
                 if ret is False:
                     s.close()
                     s = SSHToNetworkModule()
+                    s.password = self.password_list[addr]
+                    s.get_password_from_db = False
                     ret = s.login_network_module(addr, 2020)
 
                 if ret:
@@ -1459,6 +1440,17 @@ Interface wlan1
                     s.close()
             except Exception as ex:
                 pass
+
+    def get_module_local_ip(self):
+        try:
+            con_cmd = NMCmdConsoleClass(rate=57600)
+            module_ip = con_cmd.execute_command("ifconfig br-lan | grep Bcast | awk '{print $2}'|cut -d':' -f2")
+            con_cmd.close()
+            return module_ip
+        except Exception :
+            print('Failed to get IP')
+
+        return ''
 
     def fix_up_netd_database(self, list_of_panels):
         for j in list_of_panels:
@@ -1504,12 +1496,29 @@ class PanelSystemInfo:
     def __init__(self, address='172.16.10.100'):
         self.address = address
 
+    def retrieve_nodes_password(self):
+        print("Retrieving node password...")
+        yofi_devices = self.get_yofi_info()
+
+        list_of_password = {}
+
+        for node in yofi_devices:
+            if node['properties']['password']:
+                _password = node['properties']['password']
+            else:
+                _password = 'ap3x!0wrt'
+
+            list_of_password[node['properties']['address']] = _password
+
+        # print("DEBUG: passord list: {}".format(list_of_password))
+        return list_of_password
+
     def get_camera_info(self):
         j = {}
         k = {}
         try:
             import requests
-            r = requests.post('http://{}:8080/camera_device/'.format(self.address))
+            r = requests.get('http://{}:8080/camera_device/'.format(self.address))
             # print(r.content)
             import json
             j = json.loads(r.content.decode())
@@ -1527,7 +1536,7 @@ class PanelSystemInfo:
 
                 cam['properties']['camera_mac_address'] = mac.lower()
 
-            r = requests.post('http://{}:8080/lgit_poe_wifi_device/'.format(self.address))
+            r = requests.get('http://{}:8080/lgit_poe_wifi_device/'.format(self.address))
             k = json.loads(r.content.decode())
             for cam_lg in k:
                 # Fix up MAC address
@@ -1566,7 +1575,7 @@ class PanelSystemInfo:
         j = {}
         try:
             import requests
-            r = requests.post('http://{}:8080/yofi_device/'.format(self.address))
+            r = requests.get('http://{}:8080/yofi_device/'.format(self.address))
             # print(r.content)
             import json
             j = json.loads(r.content.decode())
@@ -1583,15 +1592,16 @@ class PanelSystemInfo:
                     mac = node['properties']['mac_address']
 
                 node['properties']['mac_address'] = mac.lower()
-        except:
-            pass
+        except Exception as e:
+            print("get_yofi_info exception: {}".format(e))
+            print("get_yofi_info request return: {}".format(r.content.decode()))
         return j
 
     def get_slim_line_info(self):
         j = {}
         try:
             import requests
-            r = requests.post('http://{}:8080/slim_line_device/'.format(self.address))
+            r = requests.get('http://{}:8080/slim_line_device/'.format(self.address))
             # print(r.content)
             import json
             j = json.loads(r.content.decode())
@@ -1612,17 +1622,20 @@ class PanelSystemInfo:
             pass
         return j
 
+
 def on_touchlink():
     uname = platform.uname()
     is_linux = "linux" in sys.platform
     return is_linux and not "x86" in uname[4] and not "Ubuntu" in uname[3]
 
-
 def main(use_ssdp=True):
     node_list = []
+    node_password_list = {}
     p = PanelSystemInfo()
     camera_info = p.get_camera_info()
     panel_info = p.get_slim_line_info()
+    node_password_list = p.retrieve_nodes_password()
+
     # pprint(j)
     #
     # for cam in j:
@@ -1633,9 +1646,17 @@ def main(use_ssdp=True):
     #     print(cam['properties']['camera_ip_address'])  # cam['properties']['address']
     #     print(cam['properties']['camera_mac_address'])
 
-    node_list = NetworkModuleInfo.find_nodes(use_ssdp)
+    if not node_password_list:
+        print("Failed to get password list for nodes. exit now")
+        sys.exit(1)
 
-    nm = NetworkModuleInfo(node_list)
+    node_list = NetworkModuleInfo.find_nodes(use_ssdp, password_list=node_password_list)
+
+    nm = NetworkModuleInfo(node_list, password_list=node_password_list)
+
+    result = nm.get_module_local_ip()
+    with open('/tmp/module_ip.txt', 'w') as f:
+        f.write(result)
 
     # nm.fix_up_netd_database([100])
 
