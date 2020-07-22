@@ -46,7 +46,6 @@ require touchlink-apps-mmpd.inc
 #roubaix
 require touchlink-apps-roubaix-services.inc
 require touchlink-apps-initpumpernickel.inc
-require touchlink-apps-initbob.inc
 
 # framework
 require touchlink-apps-framework.inc
@@ -383,7 +382,6 @@ PACKAGES = " \
 	${PN}-audmgrd   \
 	${PN}-roubaix-services  \
 	${PN}-initpumpernickel \
-	${PN}-initbob \
 	${PN}-qml-framework     \
 	${PN}-qml-framework-images-controls 	\
 	${PN}-qml-framework-images-controls-keyboards 	\
