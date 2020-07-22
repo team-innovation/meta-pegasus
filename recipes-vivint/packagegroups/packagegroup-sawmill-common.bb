@@ -114,6 +114,7 @@ RDEPENDS_${PN} = " \
 	panel-audio-test \
 	pa-test \
 	pa-test-simple \
+	tonegen \
 	wps-sh \
 	xdelta3 \
 	xz \
