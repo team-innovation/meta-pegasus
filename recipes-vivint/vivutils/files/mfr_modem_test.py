@@ -98,7 +98,7 @@ class ModemDevice:
             print("Error: Trying to open serial port with no serial port name configured.")
             return False
 
-        #print("Opening serial port {}...".format(serial_port))
+        # print("Opening serial port {}...".format(serial_port))
         # make sure serial port is ready (file link exists) - give it up to 30 seconds
         for n in range(0, 60):
             if os.path.exists(self._serial_port_name):
@@ -113,7 +113,7 @@ class ModemDevice:
         return False
 
     def close_serial_port(self):
-        #print("Closing serial port...")
+        # print("Closing serial port...")
         if self._serial_port:
             self._serial_port.close()
             self._serial_port = None
@@ -204,15 +204,12 @@ class SierraHL7588:
         self._last_command = None
 
     def wait_for_ready(self):
-        #print("Waiting for +PBREADY...")
-        wait_time = 10
-        now = time.time()
+        # print("Waiting for +PBREADY...")
         result_buffer = self._device.monitor(timeout=10)
-
         if result_buffer and "+PBREADY" in result_buffer:
             return True
 
-        #print("Modem did not respond with +PBREADY")
+        # print("Modem did not respond with +PBREADY")
         return False
 
     def get_firmware_version(self):
@@ -357,23 +354,9 @@ class SierraHL7588:
 
         return ""
 
-    def get_rx_power(self):
-        try:
-            self._device.write_command("AT+WMRXPOWER=1,2,600")
-            buffer = self._device.read_result()
-
-            tuples = buffer.split("\r\n")
-            for tuple in tuples:
-                if "+WMRXPOWER: " in tuple:
-                    return tuple[12:]
-        except:
-            pass
-
-        return ""
-
     def reset(self, connect=True):
         try:
-            #print("Resetting modem...")
+            # print("Resetting modem...")
             self._device.write_command("AT+CFUN=1,1")
             self._device.read_result()
             self._device.close_serial_port()
@@ -445,51 +428,6 @@ class SierraHL7588:
             return True
 
         print("Failed to verify NVRAM backup completion")
-        return False
-
-    def reflash_modem(self, firmware_file, force_flash=True, current_version=None):
-        if firmware_file:
-            flash_proc = subprocess.Popen(["/usr/bin/swdltool", firmware_file], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            time.sleep(5)
-
-            # reset the modem and close the serial port
-            self._device.write_command("AT+CFUN=1,1")
-            self._device.read_result()
-            self._device.close_serial_port()
-
-            try:
-                stdout, stderr = flash_proc.communicate(timeout=60)
-
-                # check stdout for completion string
-                if stdout:
-                    stdout = stdout.decode("utf-8")
-
-                    # check result
-                    if "failed" in stdout:
-                        print("Flash operation failed!")
-                        print(stdout)
-
-                    elif "Firmware download successful" in stdout:
-                        # flash has completed
-                        print("Success flashing file {}".format(firmware_file))
-                        if self._device.open_serial_port():
-                            self.wait_for_nvbackup()
-                            return True
-                else:
-                    print("Flash operation completed with no output")
-                    print(stdout)
-                    if self._device.open_serial_port():
-                        self.wait_for_nvbackup()
-                        return True
-            except subprocess.TimeoutExpired:
-                # otherwise poll to see if the app is done
-                result = flash_proc.poll()
-                if result is not None:
-                    print("Flash program complete - no stdout")
-        else:
-            print("Error reflashing modem - no firmware files found in /var/lib/firmware/Sierra")
-            return False
-
         return False
 
 
@@ -670,7 +608,7 @@ class QuectelEG91:
 
     def reset(self, connect=True):
         try:
-            #print("Resetting modem...")
+            # print("Resetting modem...")
             self._device.write_command("AT+CFUN=1,1")
             self._device.read_result()
             self._device.close_serial_port()
@@ -719,91 +657,7 @@ class QuectelEG91:
 
         self._device.turn_off()
 
-    def reflash_modem(self, firmware_file, force_flash=True, current_version=None):
-        if firmware_file:
-            # close the serial port
-            self._device.close_serial_port()
-
-            flash_proc = subprocess.Popen(["/usr/local/bin/qfotatool", "-p", "/dev/ttyUSB4", "-f", "/var/lib/firmware/Quectel/"+firmware_file], bufsize=-1)
-            time.sleep(10)
-            result = False
-
-            try:
-                # wait up to 12 minutes for the flash to complete.
-                flash_proc.communicate(timeout=720)
-                if flash_proc.returncode == 0:
-                    # flash has completed
-                    print("Success flashing file {}".format(firmware_file))
-                    if self._device.open_serial_port():
-                        result = True
-                else:
-                    print("Flash operation failed with error {}".format(flash_proc.returncode))
-            except Exception as exception:
-                # otherwise poll to see if the app is done
-                print("Exception running flash program: {}".format(exception))
-
-            if result:
-                return True
-
-            # if there was an error upgrading the modem, then the modem may reboot up to 5 times.  We won't be able to
-            # send "AT and get OK until it's done.
-            for n in range(5):
-                try:
-                    if self._device.wait_for_port_closed():
-                        if self._device.open_serial_port():
-                            # try sending AT
-                            self._device.write_command("AT")
-                            buffer = self._device.read_result(timeout=1)
-                            if buffer and "OK" in output:
-                                return False
-                            else:
-                                self._device.close_serial_port()
-                except:
-                    self._device.close_serial_port()
-        else:
-            print("Error reflashing modem - no firmware files found in /var/lib/firmware/Quectel")
-            return False
-
-        return False
-
-
 # ----------------------------------------------------------------------------------------------------------------------
-def is_upgrade_needed(current_version, device_id):
-    file_version = ""
-    file_list = []
-    if device_id is 1:  #Sierra
-        if "SWIMCB71XX.A." in current_version or "SWIMCB71XX-AIM" in current_version:
-            file_list = glob.glob("/var/lib/firmware/Sierra/*SWIMCB71XX-AIM*.fls")
-            if not file_list:
-                file_list = glob.glob("/var/lib/firmware/Sierra/RHL75xx.A.*.fls")
-        elif "SWIMCB71XX.V." in current_version or "SWIMCB71XX-VC" in current_version:
-            file_list = glob.glob("/var/lib/firmware/Sierra/*SWIMCB71XX-VC*.fls")
-            if not file_list:
-                file_list = glob.glob("/var/lib/firmware/Sierra/*SWIMCB71XX.V.*.fls")
-        if len(file_list) > 0:
-            file_list.sort()
-            file_version = file_list[-1]
-            print("Sierra HL7588 firmware update detected from {} to {}".format(current_version, file_version))
-            return True, file_version
-        else:
-            return False, None
-    elif device_id is 3:    #Quectel
-        if os.path.exists('/var/lib/firmware/Quectel/version'):
-            upgrade_file = ""
-            with open("/var/lib/firmware/Quectel/version", "r") as content_file:
-                version_text = content_file.read().strip("\n")
-                version_elements = version_text.split(",")
-                ver_from = version_elements[0]
-                file_version = version_elements[1]
-                upgrade_file = version_elements[2]
-            if current_version == file_version:
-                return False, None
-            elif current_version == ver_from:
-                print("Quectel EG91 firmware update detected from {} to {}".format(current_version, file_version))
-                return True, upgrade_file
-
-    return False, None
-
 
 if __name__ == "__main__":
     MODEM_IDS_FILE = "/media/extra/conf/modemids"
@@ -882,37 +736,9 @@ if __name__ == "__main__":
         device.turn_off()
         quit()
 
-    # get the firmware version currently on the modem to check for an upgrade
+    # get the firmware version for reporting only
     firmware_version = modem.get_firmware_version()
     print("Current firmware version is {}".format(firmware_version))
-
-    update_firmware, update_file = is_upgrade_needed(firmware_version, device_id)
-    if update_firmware:
-        if device_id is 1:      # Sierra
-            if "SWIMCB71XX.A." in firmware_version or "SWIMCB71XX-AIM" in firmware_version:
-                result = modem.reflash_modem(update_file)
-            elif "SWIMCB71XX.V." in firmware_version or "SWIMCB71XX-VC" in firmware_version:
-                result = modem.reflash_modem(update_file)
-            else:
-                print("Unknown firmware version {} - can't update".format(firmware_version))
-                modem.power_down()
-                quit()
-        elif device_id is 3:    # Quectel
-            result = modem.reflash_modem(update_file)
-
-        if result:
-            print("Modem firmware update successful")
-        else:
-            print("Error updating firmware")
-            # modem may be rebooting - wait for a bit before trying to open it
-            device.close_serial_port()
-            time.sleep(15)
-            if not device.open_serial_port():
-                if not device.reset_hard():
-                    print("Unable to open serial port - exiting")
-                    quit()
-    else:
-        print("Modem firmware is up to date")
 
     if os.path.exists(MODEM_IDS_FILE):
         print("Modemids file found, exiting.")

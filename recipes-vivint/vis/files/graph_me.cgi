@@ -1,4 +1,7 @@
 #!/bin/sh
+echo "Content-type: text/html"
+echo ""
+
 BASE_DOT_FILE=dot.svg
 LOG_DIR=/var/log
 
@@ -25,15 +28,18 @@ if [ ! -e $RUNNING ] ; then
     [ -e /usr/bin/dot ] && {
     	[ ! -e "/usr/lib/graphviz/config6" ] && {
 		logger -t DEBUG "graph_me.cgi: Initialize dot config"
-		/usr/bin/dot -c
+		/usr/bin/dot -c &> /dev/null
 	}
 	WWW_DIR="/srv/www/network"
 	[ -e "$WWW_DIR" ] && {
 		logger -t DEBUG "graph_me.cgi: Build dot files"
+		(
 		/usr/bin/dot -T svg $WWW_DIR/vis/test/tmp2.dot -o $WWW_DIR/$BASE_DOT_FILE
 		/usr/bin/dot -T svg $WWW_DIR/vis/test/tmp3.dot -o $WWW_DIR/mesh_$BASE_DOT_FILE
 		# backup to /var/log so we can download them when we request logs
 		tar -czf $LOG_DIR/node_map.tar.gz $WWW_DIR/$BASE_DOT_FILE $WWW_DIR/mesh_$BASE_DOT_FILE $WWW_DIR/vis/test/tmp2.dot $WWW_DIR/vis/test/tmp3.dot $WWW_DIR/tmp*.dat
+		) &> /tmp/graphme.txt
+		cat /tmp/graphme.txt >> /var/log/build_dot_graph.log
 	}
     }
 else
@@ -42,9 +48,6 @@ else
 	sleep 1
     done
 fi
-
-echo "Content-type: text/html"
-echo ""
 
 echo '<html>'
 echo '<head>'

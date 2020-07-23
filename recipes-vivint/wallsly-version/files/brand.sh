@@ -27,11 +27,6 @@ check_and_set()
 			cp /usr/bin/lsb_release_wallsly /usr/bin/lsb_release
 			chmod 755 /usr/bin/lsb_release
 		fi
-    else
-        if [ -e /etc/init.d/rf915d ]; then
-            rm -f /etc/init.d/rf915d
-            rm -f /etc/procman.d/rf915d
-        fi
 	fi
 }
 

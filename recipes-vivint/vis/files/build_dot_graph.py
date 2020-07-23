@@ -36,6 +36,36 @@ except ImportError:
     print('Must be a 3.7 or earlier panel build')
     pprint = print
 
+try:
+    import sys
+    sys.path.insert(0, "/opt/2gig/utils/")
+    import signal_color_helper
+
+    def _wifi_style_color(sig):
+        return signal_color_helper.wifi_style_color(sig)
+except ImportError:
+    def _wifi_style_color(sig):
+        style = 'solid'
+        color = 'red'
+        if sig <= -69:
+            color = 'red'
+        if sig > -90 and sig <= -80:
+            # Not good
+            style = 'dashed'
+        elif sig <= -90:
+            # Unusable
+            style = 'dotted'
+        elif sig >= -70 and sig <= -66:
+            color = 'orange'
+        elif sig >= -67 and sig < -45:
+            color = 'yellowgreen'#'orange'
+        elif sig >= -45:
+            color = 'green'
+        else:
+            color = 'black'
+
+        return style, color
+
 from get_mesh_info import NetworkModuleInfo, PanelSystemInfo, on_touchlink
 
 
@@ -16758,7 +16788,7 @@ class BuildDotFile:
                 name = 'cluster_{}'.format(r.replace(':',''))
                 clusters += '''subgraph {} {{
                 node [style=filled,color=white];
-                style=filled;
+		style=filled;
                 color=lightgrey;
                 label = "2.4 Network [{}]\nAP {}";
                 {}
@@ -16766,25 +16796,7 @@ class BuildDotFile:
         return clusters
 
     def wifi_style_color(self, sig):
-        style = 'solid'
-        if sig <= -74:
-            color = 'red'
-            if sig > -90 and sig <= -80:
-                # Not good
-                style = 'dashed'
-            elif sig < -90:
-                # Unusable
-                style = 'dotted'
-        elif sig >= -74 and sig <= -68:
-            color = 'orange'
-        elif sig >= -67 and sig < -45:
-            color = 'yellowgreen'#'orange'
-        elif sig >= -45:
-            color = 'green'
-        else:
-            color = 'black'
-
-        return style, color
+        return _wifi_style_color(sig)
 
     def create_node_map_signals(self, mesh_data, cam_info=None, panel_info=None):
         import re
@@ -16842,15 +16854,18 @@ class BuildDotFile:
                 # If we find a platform entry it is a panel
                 nname = 'main panel[' + platform + ']\n' + nname
                 fill_color = 'lightblue'
-                
-            node_name = nname + '\n' + more_info + '\n' + self.mesh_data[k]['uptime']
+
+            version = self.mesh_data[k]['version']
+
+            sub_node_name = more_info + '\n' + version + '\n' + self.mesh_data[k]['uptime']
+            node_name = nname + '\n' + sub_node_name
             labels[k_lower] = {'var': self.make_var(i), 'attr': 'shape=box style=filled fillcolor={} regular=false'.format(fill_color), 'name': node_name}
             rank_mesh_nodes.append(k_lower)
             if k_lower == primary_node:
                 # The primary node has the dhcpdump info
                 labels[k_lower]['attr'] += ' color=green'
                 if not labels[k_lower]['name'].startswith('YOFI-MESH-'):
-                    labels[k_lower]['name'] = 'main portal\n' + self.mesh_data[k]['name'] + '\n' + self.mesh_data[k]['uuid'] + '\n' + '{}\n{}\n{}\n{}\n[YOFI-MESH-{}]\n{}'.format('172.16.10.254',k_lower,self.mesh_data[k]['wan_address'],self.mesh_data[k]['wan_address_mac'], k_lower[-8:], more_info + '\n' + self.mesh_data[k]['uptime'])
+                    labels[k_lower]['name'] = 'main portal\n' + self.mesh_data[k]['name'] + '\n' + self.mesh_data[k]['uuid'] + '\n' + '{}\n{}\n{}\n{}\n[MeshNode-{}]\n{}'.format('172.16.10.254',k_lower,self.mesh_data[k]['wan_address'],self.mesh_data[k]['wan_address_mac'], k_lower[-8:], sub_node_name)
             i += 1
 
             # NM STA on AP
@@ -16986,9 +17001,11 @@ class BuildDotFile:
 def main():
     import subprocess
     import os
+
     p = PanelSystemInfo()
     camera_info = p.get_camera_info()
     panel_info = p.get_slim_line_info()
+    node_password_list = p.retrieve_nodes_password()
 
     # for cam in j:
     #     print()
@@ -17005,7 +17022,7 @@ def main():
     # node_list = [254, 136, 196, 103, 148]
     # node_list = [254, 135, 196, 103, 148, 160] # home (home_mesh_with_two_panels_removed_added_two_nodes.png)
     #node_list = [254, 135, 103, 160]  # home now with nodes
-    n = NetworkModuleInfo(node_list)
+    n = NetworkModuleInfo(node_list, password_list=node_password_list)
     data = n.mesh_node_info_map()
 
     # pprint(data)

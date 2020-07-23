@@ -3,7 +3,7 @@
 DESCRIPTION = "primary aka sly touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r34"
+PR = "r35"
 
 require packagegroup-touchlink-apps-common.inc
 
@@ -13,6 +13,7 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-audmgrd \
 	touchlink-apps-cloudd \
 	touchlink-apps-dbapd \
+	touchlink-apps-flashpolicyd \
 	touchlink-apps-httpd \
 	touchlink-apps-mmpd \
 	touchlink-apps-modemd \

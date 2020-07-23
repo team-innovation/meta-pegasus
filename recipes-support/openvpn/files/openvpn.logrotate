@@ -1,0 +1,16 @@
+/var/log/openvpn.log {
+        missingok
+        size 1M
+        copytruncate
+        rotate 5
+        compress
+}
+
+/var/log/openvpnServer.log {
+        missingok
+        size 1M
+        copytruncate
+        rotate 5
+        compress
+}
+
