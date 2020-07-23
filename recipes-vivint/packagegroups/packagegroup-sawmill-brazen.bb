@@ -19,9 +19,9 @@ RDEPENDS_${PN} += " \
         python3-paho-mqtt \
         telegraf \
 	vis \
-	bluetooth-mfg-fw \
-	efr32-mfg-fw \
-        zwave-mfg-fw \
+	bluetooth-fw \
+	efr32-fw \
+        zwave-fw \
         iot-radio-fw-verify \
 "
 
