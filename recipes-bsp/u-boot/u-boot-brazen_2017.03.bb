@@ -36,7 +36,7 @@ COMPATIBLE_MACHINE = "(mx6)"
 
 SRCREV = "${GIT_BRAZEN_UBOOT_REV}"
 PV = "2017.03+git${SRCPV}"
-PR = "r1"
+PR = "r2"
 
 do_compile_append() {
     mv ${B}/u-boot.${UBOOT_SUFFIX} ${B}/${UBOOT_BINARY}

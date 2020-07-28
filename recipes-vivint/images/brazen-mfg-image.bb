@@ -1,4 +1,4 @@
-DESCRIPTION = "Brazen Base image."
+DESCRIPTION = "Brazen MFG image."
 LICENSE = "MIT"
 PR = "r1"
 IMAGE_FEATURES += "package-management" 
@@ -13,7 +13,7 @@ IMAGE_INSTALL_append = "\
 	pulseaudio-meta-sly \
 	audio-sh \
 	mtd-utils \
-	packagegroup-camera-firmware \
+	i2c-tools \
 	packagegroup-ppp-config-modem \
 	packagegroup-zwave-config \
 "

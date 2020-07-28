@@ -370,7 +370,6 @@ addboardmodelfromdevtree() {
 	    	echo export WS_BOARD_MODEL=28-600060-001-"$(chk_rev)" >> $pit  &&
 		return
 	is_brazen &&
-		sed --in-place '/28-FIX-ME/d' $pit &&
 		echo export BRAZEN_BOARD_MODEL=28-600060-001-"$(chk_rev)" >> $pit  &&
 		return
 
@@ -390,7 +389,6 @@ addboardrevfromdevtree() {
 		echo export WS_BOARD_REV=VS-SH2000-"$(chk_board)"-Rev-"$(chk_rev)" >> $pit &&
 		return
 	is_brazen &&
-		sed --in-place '/V-FIX-ME/d' $pit &&
 		echo export BRAZEN_BOARD_REV=VS-SH2000-"$(chk_board)"-Rev-"$(chk_rev)" >> $pit &&
 		return
 

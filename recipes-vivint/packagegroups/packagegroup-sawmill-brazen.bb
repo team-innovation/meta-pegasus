@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r6"
+PR = "r8"
 
 require packagegroup-sawmill-sly-common.inc
 
@@ -16,7 +16,12 @@ RDEPENDS_${PN} += " \
 	graphviz \
 	mighty-gecko-fw-wallsly \
 	mosquitto \
-    python3-paho-mqtt \
-    telegraf \
+        python3-paho-mqtt \
+        telegraf \
+	vis \
+	bluetooth-fw \
+	efr32-fw \
+        zwave-fw \
+        iot-radio-fw-verify \
 "
 

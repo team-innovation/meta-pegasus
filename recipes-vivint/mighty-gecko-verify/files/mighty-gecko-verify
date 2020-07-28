@@ -9,7 +9,7 @@ platform=$(strings /proc/device-tree/compatible |
 	sed s/^vivint,//)
 
 if [ "$platform" != "wallsly" ]; then
-	return 0;
+	exit 0;
 fi
 
 mighty_gecko_verify()
