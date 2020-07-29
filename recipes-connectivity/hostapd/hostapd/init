@@ -28,23 +28,46 @@ delay_stop() {
 }
 
 setup() {
-	read macaddr </sys/class/net/wlan0/address
-	macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
+    read macaddr </sys/class/net/wlan0/address
+    serialnum=$(python3 - <<'__END_PYTHON'
+try:
+    with open("/media/bootscript/serialnumber2.txt") as f:
+        print("{:0>13}".format(f.readline().strip().upper()))
+except FileNotFoundError:
+    try:
+        with open("/media/bootscript/serialnumber.txt") as f:
+            # hex format
+            print("{:0>13d}".format(int(f.readline().strip(), 16)))
+    except Exception:
+        print()
+__END_PYTHON
+)
 
-        platform=$(strings /proc/device-tree/compatible | grep vivint | sed s/^vivint,//)
+    if [ -z "$serialnum" ]; then
+        echo "Error: No serial number"
+        exit 1
+    fi
 
-        if [ "$platform" == "brazen" ]; then
+    macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
+    platform=$(strings /proc/device-tree/compatible | grep vivint | sed s/^vivint,//)
+    password=$(echo -n $serialnum | sha256sum)
+
+    # Chop the password town to the length allowed by WPA2:
+    password=${password:0:63}
+
+    if [ "$platform" == "brazen" ]; then
 	    ARGS="/etc/hostapd_hub.conf -B"
-	    sed -i "s/ssid=.*/ssid=VIVINT_HUB_(${macaddrup:9})/" /etc/hostapd_hub.conf
-        else
-	    sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
-	fi
+        sed -i "s/ssid=.*/ssid=VIVINT_HUB_${serialnum}/" /etc/hostapd_hub.conf
+        sed -i "s/wpa_passphrase=.*/wpa_passphrase=${password}/" /etc/hostapd_hub.conf
+    else
+        sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
+    fi
 
 }
 
 case "$1" in
     start)
-	setup()
+	setup
 	### HACK - maybe there a better way
 	if [ "$platform" == "brazen" ]; then
 		echo "Not auto start on Hub Plus"
@@ -56,7 +79,7 @@ case "$1" in
 	echo "$NAME."
 	;;
     manual_start)
-	setup()
+	setup
 	echo -n "Starting $DESC: "
 	start-stop-daemon -S -x $DAEMON -- $ARGS
 	echo "$NAME."

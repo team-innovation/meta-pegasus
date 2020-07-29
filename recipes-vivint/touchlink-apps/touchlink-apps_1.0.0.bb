@@ -183,6 +183,8 @@ DEPENDS = " \
 	python3-pycparser-native \
 	python3-chardet-native \
 	python3-certifi-native \
+    python3-avahi-native \
+    python3-dbus-native \
 	breakpad \
 	variant-lite \
 	taocpp-json \
@@ -322,9 +324,11 @@ do_runstrip() {
 }
 
 do_install () {
-        # Install init.d scripts
-	install -d ${D}/${sysconfdir}/init.d/
-	install -m 0755 ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
+    # Install init.d scripts
+    install -d ${D}/${sysconfdir}/init.d/
+    install -d ${D}/${sysconfdir}/avahi/services/
+    install -m 0755 ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
+    cp -a ${S}/config/avahi/services/* ${D}/${sysconfdir}/avahi/services/
 }
 
 do_install_append() {
