@@ -12,6 +12,8 @@ RDEPENDS_${PN} += " \
 	brazen-version \
 	hostapd \
     zeroconf \
+    python3-avahi \
+    python3-dbus \
     mmc-utils \
 	graphviz \
 	mighty-gecko-fw-wallsly \

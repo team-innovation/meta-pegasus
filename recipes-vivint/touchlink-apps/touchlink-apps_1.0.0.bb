@@ -183,6 +183,8 @@ DEPENDS = " \
 	python3-pycparser-native \
 	python3-chardet-native \
 	python3-certifi-native \
+    python3-avahi-native \
+    python3-dbus-native \
 	breakpad \
 	variant-lite \
 	taocpp-json \
