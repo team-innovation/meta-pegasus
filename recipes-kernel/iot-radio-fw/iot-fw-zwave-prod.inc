@@ -1,6 +1,6 @@
 DESCRIPTION = "Zwave firmware"
 
-SRC_URI += "file://railtest_zwave.hex"
+SRC_URI += "file://vivint_zwave.hex"
 
 PR = "r2"
 
