@@ -4,8 +4,7 @@ SRC_URI_append = "file://chrony_start.sh \
 	file://chrony_stop.sh \
 	file://init \
 	file://chrony.conf.slimline \
-    file://chrony.conf.sly \
-    file://chrony.conf.wallsly \
+    file://chrony.conf.hub \
 "
 
 PR = "r1"
