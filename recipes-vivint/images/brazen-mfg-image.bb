@@ -1,9 +1,11 @@
 DESCRIPTION = "Brazen MFG image."
 LICENSE = "MIT"
-PR = "r1"
+PR = "r2"
 IMAGE_FEATURES += "package-management" 
 
-DEPENDS += "zip-native"
+DEPENDS += "zip-native \
+	   iot-mfg-fw"
+
 IMAGE_INSTALL_append = "\
 	${CORE_IMAGE_BASE_INSTALL} \
 	packagegroup-sawmill-common \
