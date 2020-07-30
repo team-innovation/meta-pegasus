@@ -2,7 +2,7 @@ HOMEPAGE = "http://www.vivint.com/"
 SECTION = "base"
 LICENSE = "CLOSED"
 
-SRC_URI = "file://${FW_NAME} \
+SRC_URI = "file://${FW_HEX_NAME} \
 	   file://ihex2fw.c \
           "
 
