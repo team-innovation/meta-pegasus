@@ -1,9 +1,11 @@
 DESCRIPTION = "Brazen qt5 image."
 LICENSE = "MIT"
-PR = "r5"
+PR = "r6"
 IMAGE_FEATURES += "package-management" 
 
-DEPENDS += "zip-native"
+DEPENDS += "zip-native \
+	    iot-fw"
+
 IMAGE_INSTALL_append = "\
 	${CORE_IMAGE_BASE_INSTALL} \
 	packagegroup-sawmill-common \
