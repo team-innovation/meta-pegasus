@@ -1056,7 +1056,7 @@ Interface wlan1
         return result
 
     def get_version(self, s):
-        result = s.execute_cmd('cat /etc/os-release  | grep BUILD_ID').strip()
+        result = s.execute_cmd('cat /etc/os-release  | grep LEDE_RELEASE').strip()
         key, val = result.split('=')
         result = val.strip('"')
         return result
