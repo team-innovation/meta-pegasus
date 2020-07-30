@@ -33,18 +33,18 @@ swd_search()
 get_zwave_fw()
 {
 	if [ -f /home/root/.mfg_image ]; then 
-		echo "railtest_zwave.hex"
+		echo "railtest_zwave.fw"
 	else
-		echo "vivint_zwave.hex"
+		echo "vivint_zwave.fw"
 	fi
 }
 
 get_bluetooth_fw()
 {
 	if [ -f /home/root/.mfg_image ]; then 
-		echo "railtest_blue.hex"
+		echo "railtest_blue.fw"
 	else
-		echo "vivint_blue.hex"
+		echo "vivint_blue.fw"
 	fi
 }
 
@@ -97,7 +97,7 @@ case "$1" in
 
 		swd_search
 		flash_iot_fw "zwave" "$(get_zwave_fw)" "$zwave_swd" &
-		flash_iot_fw "efr32" "vivint_efr32.hex" "$efr32_swd" &
+		flash_iot_fw "efr32" "vivint_efr32.fw" "$efr32_swd" &
 		flash_iot_fw "bluetooth" "$(get_bluetooth_fw)" "$bluetooth_swd" &
 	
 		wait

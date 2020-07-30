@@ -2,9 +2,10 @@ DESCRIPTION = "Zwave rail test firmware"
 
 require iot-fw.inc
 
-PR = "r1"
+PR = "r2"
 
-FW_NAME = "railtest_zwave.hex"
+FW_HEX_NAME = "railtest_zwave.hex"
+FW_NAME = "railtest_zwave.fw"
 
 do_install_append(){
         install -d ${D}/home/root
