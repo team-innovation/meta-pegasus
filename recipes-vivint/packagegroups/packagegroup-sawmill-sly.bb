@@ -13,14 +13,15 @@ RDEPENDS_${PN} += " \
 	lxfp \
 	graphviz \
 	openvpn \
-	openwrt-mt7620 \
-	openwrt-rt3352 \
+	openwrtlegacy-mt7620 \
+	openwrtlatest-mt7620 \
 	psoc-fw-sly \
 	psoc-fw-sly-fcc \
 	psoc-fw-wallsly \
 	qflash \
 	qfotatool \
-	nm-pkgs \
+	nm-pkgslegacy \
+	nm-pkgslatest \
 	sly-utils \
 	sly-version \
 	wallsly-version \
