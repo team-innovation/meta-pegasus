@@ -1,4 +1,5 @@
-pool us.pool.ntp.org 
+pool timepool.vivintsky.com iburst key 1
+keyfile /etc/chrony.keys
 allow
 cmdport 0
 local stratum 10
@@ -6,3 +7,5 @@ driftfile /etc/chrony.drift
 dumpdir /var/log/chrony
 dumponexit
 acquisitionport 123
+makestep 2 5
+ratelimit interval 3 burst 8

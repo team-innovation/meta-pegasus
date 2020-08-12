@@ -9,7 +9,7 @@ SERVERS="/media/extra/conf/ntp.addresses"
 #
 # Usage examples:
 #    ntpsync
-#    ntpsync pool.ntp.org
+#    ntpsync timepool.vivintsky.com
 #    ntpsync US/Mountain 10.255.255.10
 
 if [ -z $2 ]; then
@@ -104,7 +104,7 @@ elif [ -e $SERVERS ]; then
                         fi 
         done 
 else 
-        $NTPD_CALL us.pool.ntp.org
+        $NTPD_CALL timepool.vivintsky.com
         ret=$?
 fi
 fi

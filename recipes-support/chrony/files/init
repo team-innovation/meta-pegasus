@@ -16,19 +16,19 @@ fi
 
 case "$1" in
     start)
-        echo "Starting chrony server: chronyd"
+        echo "Starting chrony server: chronyd "
         start-stop-daemon -S -p $PIDFILE -x /usr/sbin/chronyd
         echo "done."
         ;;
     
     stop)
-        echo -n "Stopping chrony server: chronyd"
+        echo -n "Stopping chrony server: chronyd "
         start-stop-daemon -K -p $PIDFILE -x /usr/sbin/chronyd
         echo "."
         ;;
 
     restart)
-        echo -n "Restarting chrony server: chronyd"
+        echo -n "Restarting chrony server: chronyd "
         start-stop-daemon -K -p $PIDFILE --oknodo -x /usr/sbin/chronyd
         sleep 2
         start-stop-daemon -S -p $PIDFILE -x /usr/sbin/chronyd

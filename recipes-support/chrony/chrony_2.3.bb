@@ -3,12 +3,13 @@ HOMEPAGE = "https://chrony.tuxfamily.org/index.html"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=751419260aa954499f7abaabaa882bbe"
 
-PR = "r5"
+PR = "r6"
 
 SRC_URI = "https://download.tuxfamily.org/chrony/${BPN}-${PV}.tar.gz \
 	file://chrony_start.sh \
 	file://chrony_stop.sh \
 	file://init \
+	file://chrony.keys \
 	file://chrony.conf.slimline \
     file://chrony.conf.sly \
     file://chrony.conf.wallsly \
@@ -24,6 +25,7 @@ inherit autotools-brokensep
 
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d
+    install -m 0644 ${WORKDIR}/chrony.keys ${D}${sysconfdir}
     install -m 0644 ${WORKDIR}/chrony.conf.sly ${D}${sysconfdir}
     install -m 0644 ${WORKDIR}/chrony.conf.slimline ${D}${sysconfdir}
     install -m 0644 ${WORKDIR}/chrony.conf.wallsly ${D}${sysconfdir}
