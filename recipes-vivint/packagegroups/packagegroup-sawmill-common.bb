@@ -75,6 +75,7 @@ RDEPENDS_${PN} = " \
 	python3-protobuf \
 	python3-pycparser \
 	python3-pyftpdlib \
+	python3-pyjwt \
 	python3-pyserial \
 	python3-pyssh-ctypes \
 	python3-pytest \
