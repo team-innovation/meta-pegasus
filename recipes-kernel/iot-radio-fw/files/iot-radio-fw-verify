@@ -96,9 +96,9 @@ case "$1" in
 		fi
 
 		swd_search
-		flash_iot_fw "zwave" "$(get_zwave_fw)" "$zwave_swd" &
-		flash_iot_fw "efr32" "vivint_efr32.fw" "$efr32_swd" &
-		flash_iot_fw "bluetooth" "$(get_bluetooth_fw)" "$bluetooth_swd" &
+		flash_iot_fw "zwave" "$(get_zwave_fw)" "$zwave_swd"
+		flash_iot_fw "efr32" "vivint_efr32.fw" "$efr32_swd"
+		flash_iot_fw "bluetooth" "$(get_bluetooth_fw)" "$bluetooth_swd"
 	
 		wait
 		report
