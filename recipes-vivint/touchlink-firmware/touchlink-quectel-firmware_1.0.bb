@@ -1,7 +1,7 @@
 DESCRIPTION = "Quectel EG91 firmware"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.quectel.com"
-PR = "r03"
+PR = "r04"
 
 PKGR_${PN}-eg91-f = "${PR}.1"
 PKGR_${PN}-eg91-version = "${PR}.1"
