@@ -1,0 +1,101 @@
+#/bin/sh
+#set -x
+# If manufacturing tests are available
+#   Create/update serial number and panel info files
+#   Run manufacturing tests
+
+# make sure usb stick is mounted
+USB_SCSI_PATH="/dev/disk/by-path/platform-musb-hdrc.1-usb-0:1:1.0-scsi-0:0:0:0-part1"
+
+GPG_HOME="/.gnupg"
+GPG_HOME_OPT="--homedir=$GPG_HOME"
+
+platform=$(strings /proc/device-tree/compatible |
+        grep vivint |
+        sed s/^vivint,//)
+
+script_postfix="$platform"
+
+if [ $platform'x' == "wallslyx" ]; then
+	script_postfix="sly"
+fi
+
+import_key()
+{
+	if [ ! -e $GPG_HOME/trustdb.gpg ]
+	then
+		echo "Importing gpg public key..."
+		gpg $GPG_HOME_OPT --import /usr/share/keys/vivintbuild_gpg.pub
+		if [ $? -ne 0 ]
+		then
+			echo "Failed to import public key"
+		fi
+	fi
+}
+
+if [ -h ${USB_SCSI_PATH} ]
+then
+    dev_node=$(readlink $USB_SCSI_PATH)
+    sd_part=$(basename $dev_node)
+    count=0
+    # wait for for max of 30 seconds for usb to get mounted
+    while [ true ]
+    do
+        if grep -q /dev/$sd_part /etc/mtab
+        then
+			echo "Found USB stick..."
+            break
+        else
+            if [ $count -lt 6 ]
+            then
+                count=$(expr $count + 1) 
+                echo "Checking USB stick..."
+                sleep 5
+            else
+				echo "No USB stick detected."
+                break
+            fi
+        fi
+    done
+fi
+
+test_script=$(find /media -name run_mfg_test_${script_postfix}.sh)
+if [ -z $test_script ]
+then
+	echo "No run_mfg_test_${script_postfix}.sh file found"
+	exit 0
+fi
+
+# verify signature
+import_key
+
+for i in 1 2
+do
+	gpg $GPG_HOME_OPT --verify $test_script
+	if [ $? -ne 0 ]
+	then
+        	echo "Failed to verify test script. Retry $i..."
+	    	# trustdb may be bad, delete re-import and retry
+		rm -rf $GPG_HOME
+		import_key
+	fi
+done
+
+# decrypt the scrypt
+test_dir=$(dirname $test_script)
+
+dec_script="${test_dir}/run_mfg_test_${script_postfix}_dec.sh"
+
+gpg $GPG_HOME_OPT --output ${dec_script} --yes --decrypt $test_script
+if [ $? -ne 0 ]
+then
+	echo "Failed to decrypt test script. Cannot run test."
+	exit 0
+fi
+##
+
+export PATH=$PATH:$test_dir
+echo "Running "${dec_script}
+sh ${dec_script}
+
+exit 0

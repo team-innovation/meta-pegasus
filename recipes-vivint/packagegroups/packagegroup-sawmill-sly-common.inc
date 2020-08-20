@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r3"
+PR = "r4"
 
 inherit packagegroup
 
@@ -18,7 +18,7 @@ RDEPENDS_${PN} += " \
 	psoc-fw-wallsly \
 	qflash \
 	qfotatool \
-	sly-utils \
+	hub-utils \
 	swdltool \
 	zwave-nvm-converter \
 	touchlink-kwikset-firmware \
