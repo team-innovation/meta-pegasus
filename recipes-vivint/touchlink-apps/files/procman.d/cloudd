@@ -1,7 +1,0 @@
-{
-    "cloudd":
-    {
-	"name" : "Back-end Services",
-    	"start": "/etc/init.d/cloudd start"
-    }
-}

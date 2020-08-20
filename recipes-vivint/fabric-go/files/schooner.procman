@@ -1,7 +1,0 @@
-{
-    "schooner":
-    {
-	"name" : "Sky Monkey clip service",
-     	"start": "/etc/init.d/schooner start"
-    }
-}

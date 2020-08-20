@@ -1,7 +1,0 @@
-{
-    "usage_analytics":
-    {
-	"name" : "Usage Analytics",
-	"start": "/etc/init.d/usage_analytics start"
-    }
-}

@@ -1,9 +1,0 @@
-{
-    "netd":
-    {
-	"priority" : -2,
-	"name" : "Networking Services",
-	"pid_file" : "/var/run/netd.pid",
-	"start": "/etc/init.d/netd start"
-    }
-}

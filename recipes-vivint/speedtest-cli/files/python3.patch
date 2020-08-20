@@ -1,9 +1,0 @@
-diff -ruN speedtest-cli-orig/speedtest_cli.py speedtest-cli/speedtest_cli.py
---- speedtest-cli-orig/speedtest_cli.py	2015-01-19 11:06:31.995814273 -0700
-+++ speedtest-cli/speedtest_cli.py	2015-01-19 11:07:01.891813929 -0700
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/env python3
- # -*- coding: utf-8 -*-
- # Copyright 2012-2014 Matt Martz
- # All Rights Reserved.

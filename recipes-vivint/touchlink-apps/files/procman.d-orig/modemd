@@ -1,8 +1,0 @@
-{
-    "modemd":
-    {
-	"priority" : -1,
-	"name" : "Cellular Services",
-    	"start": "/etc/init.d/modemd start"
-    }
-}

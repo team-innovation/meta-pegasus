@@ -1,7 +1,0 @@
-{
-    "videod":
-    {
-	"name" : "Video Services",
-    	"start": "/etc/init.d/videod start"
-    }
-}

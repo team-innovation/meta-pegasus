@@ -1,7 +1,0 @@
-{
-    "rtspd":
-    {
-	"name" : "RTSP Services",
-    	"start": "/etc/init.d/rtspd start"
-    }
-}

@@ -1,8 +1,0 @@
-{
-    "logz":
-    {
-        "name" : "Metrics and logs, done better!",
-        "pid_file" : "/var/run/logz.pid",
-        "start": "/etc/init.d/logz start"
-    }
-}

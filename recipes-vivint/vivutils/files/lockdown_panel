@@ -1,8 +1,0 @@
-#!/bin/sh
-
-# Stop init from running gettys from running on boot
-touch /media/extra/serial_lock
-
-# Toggle DIY by hijacking updated's update from usb feature
-echo 0 > /sys/block/mmcblk0boot1/force_ro
-fw_setenv usb_update yes

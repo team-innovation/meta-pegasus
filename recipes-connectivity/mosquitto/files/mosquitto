@@ -1,7 +1,0 @@
-{
-	"mosquitto":
-	{
-		"name" : "MQTT Broker Service",
-		"start" : "/etc/init.d/mosquitto.init start"
-	}
-}

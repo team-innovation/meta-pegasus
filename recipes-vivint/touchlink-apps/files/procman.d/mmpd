@@ -1,7 +1,0 @@
-{
-    "mmpd":
-    {
-	"name" : "MultiMedia Proxy",
-    	"start": "/etc/init.d/mmpd start"
-    }
-}

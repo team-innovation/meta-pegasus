@@ -1,8 +1,0 @@
-{
-    "syslogd":
-    {
-        "name" : "Syslog Service",
-        "pid_file" : "/var/run/syslogd.pid",
-        "start": "/etc/init.d/syslog start"
-    }
-}

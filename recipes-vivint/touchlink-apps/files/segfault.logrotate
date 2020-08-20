@@ -1,7 +1,0 @@
-/var/log/error/*segfault.log {
-    missingok
-    size 1M
-    copytruncate
-    rotate 1
-    compress
-}
