@@ -92,7 +92,7 @@ case "$1" in
 	start|restart|reload)
 		if [ ! -d /sys/class/mighty_gecko ]; then
 			echo "ERROR: Mighty Gecko kernel device driver not installed"
-			return 1
+			exit 1
 		fi
 
 		swd_search
