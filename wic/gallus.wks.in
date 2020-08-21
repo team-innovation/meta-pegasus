@@ -12,9 +12,11 @@
 # | |         |              |
 # 0 1kiB    4MiB + rootfs + IMAGE_EXTRA_SPACE (default 10MiB)
 #
-part u-boot --source rawcopy --sourceparams="file=u-boot.imx" --ondisk mmcblk --no-table --align 1
-part / --source rootfs --ondisk mmcblk --fstype=ext4 --label root1 --align 128
-part /other --source rootfs --rootfs-dir=${IMAGE_ROOTFS}/media/other --ondisk mmcblk --fstype=ext4 --label root2 --align 2184
-part /media/extra --source rootfs --rootfs-dir=${IMAGE_ROOTFS}/media/extra --ondisk mmcblk --fstype=ext4 --label extra --align 4232
+
+part u-boot --source rawcopy --sourceparams="file=imx-boot" --ondisk mmcblk --no-table --align ${IMX_BOOT_SEEK}
+part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label boot --active --align 8192 --size 64
+part / --source rootfs --ondisk mmcblk --fstype=ext4 --label root1 --align 8192
+part /other --source rootfs --rootfs-dir=${IMAGE_ROOTFS}/media/other --ondisk mmcblk --fstype=ext4 --label root2 --align 2097152
+part /media/extra --source rootfs --rootfs-dir=${IMAGE_ROOTFS}/media/extra --ondisk mmcblk --fstype=ext4 --label extra --align 4194304
 
 bootloader --ptable gpt
