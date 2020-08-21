@@ -1,4 +1,0 @@
-Presence of file /etc/ssh/sshd_not_to_be_run aborts
-sshd initialization. The script /etc/init.d/sshd
-checks for this file and gracefully exits before
-running start-stop-daemon.
