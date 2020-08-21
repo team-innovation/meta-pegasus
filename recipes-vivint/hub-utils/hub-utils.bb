@@ -1,4 +1,4 @@
-# Copyright (C) 2016 Vivint Innovation 
+# Copyright (C) 2016 Vivint Innovation
 
 DESCRIPTION = "Vivint Hub Utilities"
 SECTION = "Hub"
@@ -11,8 +11,8 @@ PR = "r1"
 SRC_URI = "\
 	file://mfg_test \
 	file://sshd_not_to_be_run \
-    	file://udhcpd.conf \
-    	file://udhcpd.leases \
+	file://udhcpd.conf \
+	file://udhcpd.leases \
 "
 
 PACKAGES = "${PN}"
@@ -32,7 +32,7 @@ do_install() {
 
 	install -d ${D}/${sysconfdir}/ssh
 	install -m 644  ${S}/sshd_not_to_be_run ${D}/${sysconfdir}/ssh/
-    
+
 	install -m 0644 ${S}/udhcpd.conf ${D}${sysconfdir}
 	install -d ${D}/var/lib/misc
 	install -m 0644 ${S}/udhcpd.leases ${D}/var/lib/misc

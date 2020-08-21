@@ -48,7 +48,7 @@ then
         else
             if [ $count -lt 6 ]
             then
-                count=$(expr $count + 1) 
+                count=$(expr $count + 1)
                 echo "Checking USB stick..."
                 sleep 5
             else
@@ -74,8 +74,8 @@ do
 	gpg $GPG_HOME_OPT --verify $test_script
 	if [ $? -ne 0 ]
 	then
-        	echo "Failed to verify test script. Retry $i..."
-	    	# trustdb may be bad, delete re-import and retry
+		echo "Failed to verify test script. Retry $i..."
+		# trustdb may be bad, delete re-import and retry
 		rm -rf $GPG_HOME
 		import_key
 	fi
