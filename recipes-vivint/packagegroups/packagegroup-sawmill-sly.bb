@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r33"
+PR = "r34"
 
 inherit packagegroup
 
@@ -32,6 +32,7 @@ RDEPENDS_${PN} += " \
 	touchlink-telit-firmware-he910 \
 	touchlink-telit-firmware-ue910 \
 	touchlink-sierra-firmware-hl7588-a \
+	touchlink-sierra-firmware-hl7588-3g \
 	touchlink-sierra-firmware-hl7588-v \
 	touchlink-quectel-firmware-eg91-f \
 	touchlink-quectel-firmware-eg91-version \
