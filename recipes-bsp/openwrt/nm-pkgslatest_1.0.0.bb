@@ -7,7 +7,7 @@ DESCRIPTION = "Network Module Packages"
 HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 
-GIT_ARTIFACTS_BRANCH = "feature/18.06_rel_3.20.3_pilot"
+GIT_ARTIFACTS_BRANCH = "${GIT_ARTIFACTS_LATEST_BRANCH}"
 GIT_ARTIFACTS_SERVER ?= "${GIT_SERVER}"
 GIT_ARTIFACTS_PROTOCOL ?= "ssh"
 
@@ -16,7 +16,7 @@ SRCREV = "${GIT_ARTIFACTS_REV}"
 
 SRC_URI_append = "git://${GIT_ARTIFACTS_SERVER}/artifacts;protocol=${GIT_ARTIFACTS_PROTOCOL};branch=${GIT_ARTIFACTS_BRANCH}"
 
-PR = "r3"
+PR = "r4"
 PV = "${SRCPV}"
 
 MT7620_update_pkg = "nm_pkgs.tar.gz"

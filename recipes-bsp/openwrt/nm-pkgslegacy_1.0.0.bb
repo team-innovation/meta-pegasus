@@ -16,7 +16,7 @@ SRCREV = "${GIT_ARTIFACTS_REV}"
 
 SRC_URI_append = "git://${GIT_ARTIFACTS_SERVER}/artifacts;protocol=${GIT_ARTIFACTS_PROTOCOL};branch=${GIT_ARTIFACTS_BRANCH}"
 
-PR = "r1"
+PR = "r2"
 PV = "${SRCPV}"
 
 MT7620_update_pkg = "nm_pkgs.tar.gz"

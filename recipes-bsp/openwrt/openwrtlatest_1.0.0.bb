@@ -2,14 +2,14 @@ DESCRIPTION = "OpenWrt 18.06 version for MT7620 Network Module"
 
 require openwrt.inc
 
-GIT_ARTIFACTS_BRANCH = "feature/18.06_rel_3.20.3_pilot"
+GIT_ARTIFACTS_BRANCH = "${GIT_ARTIFACTS_LATEST_BRANCH}"
 GIT_ARTIFACTS_SERVER ?= "${GIT_SERVER}"
 GIT_ARTIFACTS_PROTOCOL ?= "ssh"
 
 GIT_ARTIFACTS_REV ?= "${AUTOREV}"
 SRCREV = "${GIT_ARTIFACTS_REV}"
 
-PR = "r3"
+PR = "r4"
 PV = "${SRCPV}"
 
 SRC_URI = "git://${GIT_ARTIFACTS_SERVER}/artifacts;protocol=${GIT_ARTIFACTS_PROTOCOL};branch=${GIT_ARTIFACTS_BRANCH} \
