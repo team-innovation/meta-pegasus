@@ -1,3 +1,4 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-SRC_URI += "use_revb.patch"
+PR = "1"
+SRC_URI += "file://use_revb.patch"
