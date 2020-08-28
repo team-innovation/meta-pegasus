@@ -23,12 +23,12 @@ do_compile(){
 
 do_install(){
     install -d ${D}/home/    
-    install -d ${D}/home/vivint/
-    install -d -m 0700 ${D}/home/vivint/.gnupg/
-    install -m 0644 ${WORKDIR}/build/pubring.kbx ${D}/home/vivint/.gnupg/
-    install -m 0600 ${WORKDIR}/build/trustdb.gpg ${D}/home/vivint/.gnupg/
+    install -d ${D}/home/root/
+    install -d -m 0700 ${D}/home/root/.gnupg/
+    install -m 0644 ${WORKDIR}/build/pubring.kbx ${D}/home/root/.gnupg/
+    install -m 0600 ${WORKDIR}/build/trustdb.gpg ${D}/home/root/.gnupg/
 }
 
 FILES_${PN} += " \
-    /home/vivint/.gnupg/* \
+    /home/root/.gnupg/* \
 "
