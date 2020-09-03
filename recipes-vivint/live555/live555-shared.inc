@@ -4,29 +4,25 @@
 
 DESCRIPTION = "LIVE555 Streaming Media libraries"
 HOMEPAGE = "http://live.com/"
-LICENSE = "LGPL-2.1"
-SECTION = "devel"
+LICENSE = "LGPLv3"
 
-INC_PR = "r62"
+DEPENDS += "openssl"
+
+INC_PR = "r63"
 
 # IF UPDATING THE LIVE555 MAKE SURE TO UPDATE SKYCONTROL RECIPES AS WELL
-SRCREV = "${GIT_LIVE555_REV}"
-SRCBRANCH = "${GIT_LIVE555_BRANCH}"
-GIT_LIVE555_SERVER ?= "${GIT_SERVER}"
-GIT_LIVE555_PROTOCOL ?= "ssh"
+SRCREV = "${AUTOREV}"
+SRCBRANCH = "2020.08.19"
+GIT_LIVE555_SERVER ?= "/home/localRepos/"
+GIT_LIVE555_PROTOCOL ?= "file"
 
 MODULE = "live555"
 SRC_URI = "git://${GIT_LIVE555_SERVER}/${MODULE};protocol=${GIT_LIVE555_PROTOCOL};branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git"
-TARGET_CC_ARCH += "${LDFLAGS}"
 
 do_configure() {
 	./genMakefiles linux-with-shared-libraries
-}
-
-do_compile() {
-	make
 }
 
 do_install() {
@@ -59,7 +55,13 @@ do_install() {
 
 PACKAGES += "live555-openrtsp live555-playsip live555-mediaserver live555-proxyserver live555-test"
 PACKAGES += "live555-libusageenvironment live555-libbasicusageenvironment live555-libgroupsock live555-liblivemedia"
-FILES_${PN} = "${bindir}/sapWatch ${bindir}/testOnDemandRTSPServer ${bindir}/testRelay ${bindir}/testAMRAudioStreamer ${bindir}/testDVVideoStreamer ${bindir}/testMP3Receiver ${bindir}/testMP3Streamer ${bindir}/testMPEG1or2AudioVideoStreamer ${bindir}/testMPEG1or2VideoStreamer ${bindir}/testMPEG2TransportStreamer ${bindir}/testMPEG4VideoStreamer ${bindir}/testWAVAudioStreamer ${bindir}/vobStreamer ${bindir}/MPEG2TransportStreamIndexer"
+FILES_${PN} = "\
+    ${bindir}/sapWatch ${bindir}/testOnDemandRTSPServer ${bindir}/testRelay ${bindir}/testAMRAudioStreamer \
+    ${bindir}/testDVVideoStreamer ${bindir}/testMP3Receiver ${bindir}/testMP3Streamer \
+    ${bindir}/testMPEG1or2AudioVideoStreamer ${bindir}/testMPEG1or2VideoStreamer ${bindir}/testMPEG2TransportStreamer \
+    ${bindir}/testMPEG4VideoStreamer ${bindir}/testWAVAudioStreamer ${bindir}/vobStreamer \
+    ${bindir}/MPEG2TransportStreamIndexer ${bindir}/live555HLSProxy \
+"
 FILES_live555-openrtsp = "${bindir}/openRTSP"
 FILES_live555-playsip = "${bindir}/playSIP"
 FILES_live555-mediaserver = "${bindir}/live555MediaServer"
