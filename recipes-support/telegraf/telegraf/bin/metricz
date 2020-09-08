@@ -1,0 +1,36 @@
+#!/bin/sh
+
+EXEC='/usr/bin/telegraf'
+ARGS='--config /etc/telegraf/metricz.conf'
+PIDFILE=/var/run/metricz.pid
+
+export INFLUX_HOST_STRING=https://chuckberry-583b0391.influxcloud.net:8086
+export INFLUX_UDP_OUT=udp://datagram.vivint.ai:12345
+export PANEL_ID=$(sqlite3 /media/extra/db/sundance.db 'select value from property where name = "communication_id";')
+export PANEL_VERSION=$(cat /etc/version | cut -d ' ' -f 2)
+
+start_it() {
+        chrt -i 0 ionice -c 2 -n 6 start-stop-daemon -S -b -m -p $PIDFILE -x $EXEC -- $ARGS
+}
+
+stop_it() {
+        start-stop-daemon -K -p $PIDFILE
+}
+
+case "$1" in
+    start)
+        start_it
+        ;;
+    stop)
+        stop_it
+        ;;
+    restart)
+        stop_it
+        start_it
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit 0
