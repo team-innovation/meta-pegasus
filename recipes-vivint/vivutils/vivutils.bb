@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r101"
+PR = "r102"
 
 DEPENDS_append = "update-rc.d-native"
 
@@ -61,6 +61,7 @@ SRC_URI = "\
 	   file://ssid-verify.py \
 	   file://convert-panel \
 	   file://mmcstress.sh \
+	   file://earlymod.sh \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -129,6 +130,10 @@ do_install() {
         install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
 	
 	install -d ${D}/home/root/
+
+	install -m 0755 ${S}/earlymod.sh ${D}/${sysconfdir}/init.d/earlymod.sh
+	update-rc.d -r ${D} earlymod.sh start 03 S .
+
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"
