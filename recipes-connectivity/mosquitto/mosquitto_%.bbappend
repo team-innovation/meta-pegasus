@@ -1,7 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += "file://mosquitto.conf" 
-"
 
 do_install_append() {
     install -d ${D}${sysconfdir}/mosquitto
