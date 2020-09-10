@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r10"
+PR = "r11"
 
 require packagegroup-sawmill-sly-common.inc
 
@@ -14,6 +14,7 @@ RDEPENDS_${PN} += " \
     	zeroconf \
     	python3-avahi \
     	python3-dbus \
+	python3-evdev \
     	mmc-utils \
 	graphviz \
 	mighty-gecko-fw-wallsly \
