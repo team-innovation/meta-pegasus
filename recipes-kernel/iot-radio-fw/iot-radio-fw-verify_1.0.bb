@@ -7,7 +7,6 @@ LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=a6d576eb292a14a25860bf932896ef
 PR = "r3"
 
 SRC_URI = "file://iot-radio-fw-verify \
-	   SimplicityCommander-Linux.zip \
            file://COPYING"
 
 inherit update-rc.d
