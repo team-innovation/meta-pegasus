@@ -10,7 +10,7 @@ RDEPENDS_${PN} = "bridge-utils openssl11"
 PR = "r1"
 PV = "7.13.01+git${SRCPV}"
 
-SRCREV = "a82d0c23a52adb5cbe97a40d0fa971d7534a85b0"
+SRCREV = "eeef36aaa5283a4f29fc3c183688d563229aa87f"
 SRCBRANCH = "v7.13.1"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
@@ -18,6 +18,7 @@ GIT_ZGATE_PROTOCOL ?= "ssh"
 
 SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_PROTOCOL};branch=${SRCBRANCH} \
            file://zwaved \
+           file://zipgateway.logrotate \
            "
 
 S = "${WORKDIR}/git/zipgateway-7.13.01-Source/usr/local"
@@ -53,6 +54,8 @@ do_configure_prepend() {
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwaved ${D}${sysconfdir}/init.d
+    install -d "${D}${sysconfdir}/logrotate.d"
+    install -m 0600 "${WORKDIR}/zipgateway.logrotate" "${D}${sysconfdir}/logrotate.d/zipgateway"
 
     rm -f ${D}/${prefix}/local/etc/zipgateway_node_identify_rpi3b+_led.sh
 }
