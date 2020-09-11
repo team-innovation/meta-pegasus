@@ -18,6 +18,7 @@ GIT_ZGATE_PROTOCOL ?= "ssh"
 
 SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_PROTOCOL};branch=${SRCBRANCH} \
            file://zwaved \
+           file://zipgateway.logrotate \
            "
 
 S = "${WORKDIR}/git/zipgateway-7.14.01-Source/usr/local"
@@ -52,6 +53,8 @@ do_configure_prepend() {
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwaved ${D}${sysconfdir}/init.d
+    install -d "${D}${sysconfdir}/logrotate.d"
+    install -m 0600 "${WORKDIR}/zipgateway.logrotate" "${D}${sysconfdir}/logrotate.d/zipgateway"
 
     rm -f ${D}/${prefix}/local/etc/zipgateway_node_identify_rpi3b+_led.sh
 }
