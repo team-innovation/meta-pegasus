@@ -73,6 +73,6 @@ RDEPENDS_${PN} = " \
 	libgstrtspserver-1.0-0 \
 	libgstsdp-1.0-0 \
 	libgsturidownloader-1.0-0 \
-	libopus0 \
+	libopus \
 	civetweb \
 "
