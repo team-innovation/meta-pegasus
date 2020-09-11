@@ -2,15 +2,15 @@ SUMMARY = "Zwave NVM Converter"
 HOMEPAGE = "http://zts.sigmadesigns.com"
 SECTION = "network"
 LICENSE = "CLOSED"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
+LIC_FILES_CHKSUM = "file://../zware-7.13.01/LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
 
 DEPENDS = ""
 
 PR = "r1"
 PV = "6.71+git${SRCPV}"
 
-SRCREV = "7c501460593f1437d9599d331c39504e300c1950"
-SRCBRANCH = "master"
+SRCREV = "a82d0c23a52adb5cbe97a40d0fa971d7534a85b0"
+SRCBRANCH = "v7.13.1"
 
 GIT_ZWAVE_SERVER ?= "${GIT_SERVER}"
 GIT_ZWAVE_PROTOCOL ?= "ssh"
@@ -20,6 +20,10 @@ SRC_URI = "git://${GIT_ZWAVE_SERVER}/zware_controller_sdk;protocol=${GIT_ZWAVE_P
 S = "${WORKDIR}/git/zwave_nvm_converter"
 
 inherit pkgconfig cmake
+
+do_package_qa() {
+    echo "Skipping QA ..."
+}
 
 do_install() {
     install -d ${D}${prefix}/local/sbin

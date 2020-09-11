@@ -2,22 +2,22 @@ SUMMARY = "Zware SDK"
 HOMEPAGE = "http://zts.sigmadesigns.com"
 SECTION = "network"
 LICENSE = "CLOSED"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
+LIC_FILES_CHKSUM = "file://../../../LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
 
 DEPENDS = "python-native openssl"
 
 PR = "r1"
-PV = "7.11.02+git${SRCPV}"
+PV = "7.13.01+git${SRCPV}"
 
-SRCREV = "7c501460593f1437d9599d331c39504e300c1950"
-SRCBRANCH = "master"
+SRCREV = "a82d0c23a52adb5cbe97a40d0fa971d7534a85b0"
+SRCBRANCH = "v7.13.1"
 
 GIT_ZWARE_SERVER ?= "${GIT_SERVER}"
 GIT_ZWARE_PROTOCOL ?= "ssh"
 
 SRC_URI = "git://${GIT_ZWARE_SERVER}/zware_controller_sdk;protocol=${GIT_ZWARE_PROTOCOL};branch=${SRCBRANCH}"
 
-S = "${WORKDIR}/git/zware-7.11.02/src/zwave/hcapi"
+S = "${WORKDIR}/git/zware-7.13.01/src/zwave/hcapi"
 
 do_compile() {
     cd ${S}
