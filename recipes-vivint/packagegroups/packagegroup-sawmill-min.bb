@@ -7,7 +7,7 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "1"
+PR = "22"
 
 inherit packagegroup
 
@@ -22,7 +22,6 @@ RDEPENDS_${PN} = " \
 	kernel-image \
 	kernel-modules \
 	memtester \
-	obp-utils \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
 	strace \
