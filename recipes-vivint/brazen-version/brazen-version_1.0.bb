@@ -5,12 +5,14 @@ SECTION = "brazen"
 LICENSE = "CLOSED"
 DEPENDS = ""
 PV = "${DISTRO_VERSION}"
-PR = "r2"
+PR = "r3"
 
-SRC_URI =	"file://lsb_release_brazen \
-		 file://issue_brazen \
-		 file://issue_brazen.net \
-		 file://brand.sh"
+SRC_URI =	"file://lsb_release \
+		 file://issue \
+		 file://issue.net"
+
+
+#		 file://brand.sh"
 
 PACKAGES = "${PN}"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -19,10 +21,10 @@ RPROVIDES_${PN} = "brazen-version"
 
 SRCREV = "${GIT_APPS_REV}"
 SRCBRANCH = "${GIT_APPS_BRANCH}"
-inherit update-rc.d
 
-INITSCRIPT_NAME = "brand.sh"
-INITSCRIPT_PARAMS = "start 04 S ."
+#inherit update-rc.d
+#INITSCRIPT_NAME = "brand.sh"
+#INITSCRIPT_PARAMS = "start 04 S ."
 
 GIT_APPS_SERVER ?= "${GIT_SERVER}"
 GIT_APPS_PROTOCOL ?= "ssh"
@@ -50,23 +52,24 @@ do_install() {
 	echo "Target system: ${TARGET_SYS}" >> ${D}${sysconfdir}/brazen-version
 
 	install -d ${D}${bindir}
-	install -m 0755 ${WORKDIR}/lsb_release_brazen ${D}${bindir}/
+	install -m 0755 ${WORKDIR}/lsb_release ${D}${bindir}
 
 	# issue
-	install -m 0644 ${WORKDIR}/issue_brazen*  ${D}${sysconfdir}
+	install -m 0644 ${WORKDIR}/issue*  ${D}${sysconfdir}
+	install -m 0644 ${WORKDIR}/issue.net  ${D}${sysconfdir}/issue
 	if [ -n "${BRAZEN_NAME}" ]; then
-		printf "${BRAZEN_NAME} " >> ${D}${sysconfdir}/issue_brazen
-		printf "${BRAZEN_NAME} " >> ${D}${sysconfdir}/issue_brazen.net
+		printf "${BRAZEN_NAME} " >> ${D}${sysconfdir}/issue
+		printf "${BRAZEN_NAME} " >> ${D}${sysconfdir}/issue.net
 	fi
 	if [ -n "${DISTRO_VERSION}" ]; then
-		printf "${DISTRO_VERSION} " >> ${D}${sysconfdir}/issue_brazen
-		printf "${DISTRO_VERSION} " >> ${D}${sysconfdir}/issue_brazen.net
+		printf "${DISTRO_VERSION} " >> ${D}${sysconfdir}/issue
+		printf "${DISTRO_VERSION} " >> ${D}${sysconfdir}/issue.net
 	fi
-	printf "\\\n \\\l\n" >> ${D}${sysconfdir}/issue_brazen
-	echo >> ${D}${sysconfdir}/issue_brazen
-	echo "%h"    >> ${D}${sysconfdir}/issue_brazen.net
-	echo >> ${D}${sysconfdir}/issue_brazen.net
+	printf "\\\n \\\l\n" >> ${D}${sysconfdir}/issue
+	echo >> ${D}${sysconfdir}/issue
+	echo "%h"    >> ${D}${sysconfdir}/issue.net
+	echo >> ${D}${sysconfdir}/issue.net
 
-	install -d ${D}${sysconfdir}/init.d
-	install -m 0755 ${WORKDIR}/brand.sh ${D}${sysconfdir}/init.d
+	#install -d ${D}${sysconfdir}/init.d
+	#install -m 0755 ${WORKDIR}/brand.sh ${D}${sysconfdir}/init.d
 }
