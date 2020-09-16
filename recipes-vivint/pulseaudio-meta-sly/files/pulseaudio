@@ -25,7 +25,7 @@ start() {
     # FIXME once alsa/shm permissions have been fixed, supply --system
 #start-stop-daemon -S $START_STOP_OPTS -x /usr/bin/pulseaudio -- --log-target=file:/var/log/pulse.log --high-priority --realtime --no-cpu-limit --exit-idle-time=-1 --log-time -vvv --log-meta --log-backtrace=5 --log-level=4 --resample-method=$RESAMPLE_METHOD -nF /etc/pulse/session
     start-stop-daemon -S $START_STOP_OPTS -x /usr/bin/pulseaudio -- \
-	    --systemc --disallow-exit --disallow-module-loading \
+	    --system --disallow-exit --disallow-module-loading \
 	    --log-target=file:/var/log/pulse.log --high-priority --realtime \
 	    --no-cpu-limit --exit-idle-time=-1 --log-time -v --log-level=1 \
 	    --resample-method=$RESAMPLE_METHOD -nF /etc/pulse/session
