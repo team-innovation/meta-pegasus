@@ -69,12 +69,12 @@ setbootnum() {
 
 retry=0 
 verifybootnum(){
-        echo ***** Verify new bootnum  ****
+        echo ***** Verify bootnum...  ****
         new=$(fw_printenv bootnum)
-        echo "**** NEW bootnum $new ****"
+        echo "****  bootnum set to: $new ****"
         if [ "$new"x != "bootnum=$1"x ]; then
                 let retry=$(expr $retry + 1)
-                echo "RETRY setting bootnum count $retry"
+                echo "ERROR, incorrect bootnum. RETRY setting bootnum count $retry"
                 if [ $retry -gt 10 ]; then
                         echo "###############################################################################"
                         echo "### !!! FAILED to set bootnum, please re-run the convert script again. !!!! ###"
@@ -104,12 +104,6 @@ ubootupdate() {
 		fi
 	fi
 
-        if [ $cur_bootnum -eq 1 ]; then
-                new_bootnum=2
-        else
-                new_bootnum=1
-        fi
-
 	emmcrw 0
 	dd if=/dev/zero of=/dev/mmcblk0boot0 bs=1024 count=2048
 	dd if="$(ubootbinary)" of=/dev/mmcblk0boot0 bs=512 seek=2
@@ -121,9 +115,9 @@ ubootupdate() {
 	emmcrw 1
 	dd if=/dev/zero of=/dev/mmcblk0boot1 bs=1024 count=2048
 
-	setbootnum $new_bootnum	
+	setbootnum $cur_bootnum	
 
-	verifybootnum $new_bootnum
+	verifybootnum $cur_bootnum
 
 	emmcro 1
 	
