@@ -62,6 +62,7 @@ SRC_URI = "\
 	   file://convert-panel \
 	   file://mmcstress.sh \
 	   file://earlymod.sh \
+	   file://led_ctrl \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -115,6 +116,7 @@ do_install() {
 	install -m 0755 ${S}/ssid-verify.py ${D}/usr/local/bin
 	install -m 0755 ${S}/convert-panel ${D}/usr/local/bin
 	install -m 0755 ${S}/mmcstress.sh ${D}/usr/local/bin
+	install -m 0755 ${S}/led_ctrl ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
