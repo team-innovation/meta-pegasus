@@ -12,3 +12,9 @@ inherit setuptools3 pypi
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native nativesdk"
+
+RDEPENDS_${PN} += " \
+	${PYTHON_PN}-ndeflib \
+	${PYTHON_PN}-libusb1 \
+	${PYTHON_PN}-pydes \
+	"
