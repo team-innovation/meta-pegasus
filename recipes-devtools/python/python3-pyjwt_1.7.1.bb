@@ -1,7 +1,7 @@
 DESCRIPTION = "Python JWT implementation"
 HOMEPAGE = "https://pypi.org/project/PyJWT/"
 SECTION = "devel/python"
-LICENSE = "Apache-2.0"
+LICENSE = "MIT License (MIT)"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=68626705a7b513ca8d5f44a3e200ed0c"
 
 DEPENDS += "python3"

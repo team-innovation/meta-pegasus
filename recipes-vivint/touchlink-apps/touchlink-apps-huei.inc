@@ -1,5 +1,5 @@
 ###
-### Change HUEI_PREPEND everything you touch this script
+### Change HUEI_PREPEND everytime you touch this script
 ###
 HUEI_PREPEND = "-2"
 
