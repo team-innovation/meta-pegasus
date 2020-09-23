@@ -169,7 +169,7 @@ ubootupdate() {
 	emmcro 1
 	
 	info "board re-setup complete, reboot..."
-	#reboot -f
+	reboot -f
 
 	exit 0
 }
