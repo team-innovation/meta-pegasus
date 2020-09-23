@@ -130,7 +130,7 @@ setubootenv_ws(){
 #
 ubootupdate() {
 
-	if  grep -q mmcblk0p5 /proc/cmdline ; then
+	if  grep -q mmcblk0p6 /proc/cmdline ; then
 		echo
 		echo "###############################################################"
 		echo "# NOTE: IF AFTER PANEL REBOOT AND LOGIN PROMPT DOES NOT SHOW  #"
@@ -153,7 +153,7 @@ ubootupdate() {
 
 	# clearing u-boot env loses bootnum so re-set it after
 	emmcrw 1
-	if  grep -q mmcblk0p5 /proc/cmdline ; then
+	if  grep -q mmcblk0p6 /proc/cmdline ; then
 		_board=$(fw_printenv board | cut -d= -f2)
 		if is_wallsly; then
 			setubootenv_brazen $_board
