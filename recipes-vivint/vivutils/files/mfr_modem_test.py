@@ -3,6 +3,7 @@
 import os, time, sys, glob, subprocess, shutil
 from serial import Serial
 from sys import argv
+from taurine.utils.which_hardware import WhichHardware, HardwareTypes
 
 CARRIER_ATT = 1
 CARRIER_VERIZON = 2
@@ -663,6 +664,15 @@ if __name__ == "__main__":
     MODEM_IDS_FILE = "/media/extra/conf/modemids"
     AT_PORT_HL7588 = "/dev/ttyACM0"
     AT_PORT_EG91 = "/dev/ttyUSB4"
+
+    # franken-hub (brazen) or hubplus-v0 is on WS so still use ttyUSB4
+    if WhichHardware.get_type() == HardwareTypes.BRAZEN:
+       # check for board rev
+       _board = subprocess.check_output(["/sbin/fw_printenv", "board"]).decode()
+       _board = _board.split('=')[1].strip()
+       if _board not in ["brazen-v6", "brazen-v4", "brazen-v3", "Hubplus-v0"]:
+           AT_PORT_EG91 = "/dev/ttyUSB3"
+
     FIRMWARE_FOLDER = "/var/lib/firmware"
     modem = None
     update_firmware = False
