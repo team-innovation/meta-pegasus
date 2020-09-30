@@ -87,8 +87,6 @@ CONFFILES_${PN} = "\
   ${sysconfdir}/pulse/daemon.conf.pulseaudio-meta-slimline \
 "
 
-FILES_${PN} += " /home/root/.config"
-
 # At the time the postinst runs, dbus might not be setup so only restart if running
 pkg_postinst_ontarget_hal () {
 

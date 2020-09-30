@@ -4,14 +4,14 @@ SECTION = "network"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 
-DEPENDS = "python-native libusb libxml2-native libxslt-native openssl flex json-c"
-RDEPENDS_${PN} = "bridge-utils bash"
+DEPENDS = "python-native libusb flex json-c openssl11"
+RDEPENDS_${PN} = "bridge-utils openssl11"
 
 PR = "r2"
-PV = "7.11.02+git${SRCPV}"
+PV = "7.13.01+git${SRCPV}"
 
-SRCREV = "c2e2264693d910c372c678bb31773e25e6959a3d"
-SRCBRANCH = "v71102_sumo"
+SRCREV = "a82d0c23a52adb5cbe97a40d0fa971d7534a85b0"
+SRCBRANCH = "v7131_sumo"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
 GIT_ZGATE_PROTOCOL ?= "ssh"
@@ -20,11 +20,10 @@ SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_P
            file://zwaved \
            "
 
-S = "${WORKDIR}/git/zipgateway-7.11.02-Source/usr/local"
+S = "${WORKDIR}/git/zipgateway-7.13.01-Source/usr/local"
 
-inherit pkgconfig cmake python3-dir python3native update-rc.d
+inherit pkgconfig cmake python-dir pythonnative update-rc.d
 
-# Create runlevel links
 INITSCRIPT_NAME = "zwaved"
 INITSCRIPT_PARAMS = "start 30 5 ."
 
@@ -32,16 +31,23 @@ EXTRA_OECMAKE = " \
     -DCMAKE_INSTALL_PREFIX=/usr/local \
     -DSKIP_TESTING=TRUE \
     -DDISABLE_MOCK=TRUE \
+    -DJSON_C_SRC=/usr \
+    -DDISABLE_DTLS=TRUE \
 "
+cmake_do_generate_toolchain_file_append() {
+	cat >> ${WORKDIR}/toolchain.cmake << EOF
+set ( CMAKE_LIBRARY_PATH ${libdir}/openssl11/lib ${libdir} ${base_libdir})
+set ( ENV{PKG_CONFIG_PATH} ${STAGING_LIBDIR}/openssl11/lib/pkgconfig:$ENV{PKG_CONFIG_PATH})
+EOF
+}
 
-EXTRA_OECMAKE = " \
-    -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DSKIP_TESTING=TRUE \
-    -DDISABLE_MOCK=TRUE \
-"
+do_configure_prepend() {
+	sed -i -e 's/PkgConfig::JSON_C/\x24{JSON_C_LDFLAGS}/g' ${S}/systools/zw_nvm_converter/controllerlib_7.xx/CMakeLists.txt
+	sed -i -e 's/PkgConfig::JSON_C/\x24{JSON_C_LDFLAGS}/g' ${S}/systools/zgw_restore/CMakeLists.txt
+	sed -i -e 's/-Werror/\x24{JSON_C_CFLAGS} -Werror/g' ${S}/systools/zgw_restore/CMakeLists.txt
 
-do_package_qa() {
-    echo "Skipping QA ..."
+	sed -i -e 's/OpenSSL::SSL OpenSSL::Crypto/\x24{OPENSSL_LIBRARIES}/g' ${S}/src/CMakeLists.txt
+	sed -i -e 's/target_compile_options( zipgateway-lib PUBLIC )/target_compile_options( zipgateway-lib PUBLIC \x24{_OPENSSL_CFLAGS})/g' ${S}/src/CMakeLists.txt
 }
 
 do_install_append() {
@@ -66,6 +72,8 @@ FILES_${PN} += "${sysconfdir}/rcS.d/*zwaved"
 FILES_${PN} += "${prefix}/local/man/man3/zipgateway.3"
 FILES_${PN} += "${prefix}/local/bin/zgw_convert_eeprom"
 FILES_${PN} += "${prefix}/local/bin/zgw_import.sh"
+FILES_${PN} += "${prefix}/local/bin/zgw_backup.sh"
+FILES_${PN} += "${prefix}/local/bin/zgw_recover.sh"
 FILES_${PN} += "${prefix}/local/bin/zgw_restore"
 FILES_${PN} += "${prefix}/local/bin/zw_nvm_converter"
 FILES_${PN} += "${prefix}/local/bin/zw_programmer"

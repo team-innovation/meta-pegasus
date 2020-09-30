@@ -10,10 +10,10 @@
 #load-module module-alsa-card device_id=/dev/snd/controlC0 name=codec.0 card_name=alsa_card.codec tsched=1 rate=8000
 
 # Core protocols
-load-module module-simple-protocol-tcp
+#load-module module-simple-protocol-tcp
 load-module module-native-protocol-unix auth-anonymous=1
 load-module module-cli-protocol-unix
-load-module module-cli-protocol-tcp
+#load-module module-cli-protocol-tcp
 
 # alsa-source needs to have a deferred_volume=0 or we get an assert in rtpoll.c (pa_assert(usec <= PA_USEC_PER_SEC*60ULL*60ULL); line 387 in pa_rtpoll_set_timer_relative() )
 
