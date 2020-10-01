@@ -104,4 +104,4 @@ diff -rupN iotivity-2.0.0/service/resource-encapsulation/unittests/ResourceClien
 +    constexpr const char* VALUE = "value";
  
      auto mockHandler = mocks.Mock< CustomHandler >();
- 
+
