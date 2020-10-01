@@ -91,6 +91,18 @@ diff -rupN iotivity-2.0.0/resource/src/OCRepresentation.cpp /home/workdir/iotivi
      }
  
      std::ostream& operator<<(std::ostream& os, const OCRepresentation::AttributeItem& ai)
+diff -rupN iotivity-2.0.0/service/resource-container/examples/BMISensorBundle/src/inputSensors/WeightSensorApp/src/WeightSensorApp.cpp iotivity/service/resource-container/examples/BMISensorBundle/src/inputSensors/WeightSensorApp/src/WeightSensorApp.cpp
+--- iotivity-2.0.0/service/resource-container/examples/BMISensorBundle/src/inputSensors/WeightSensorApp/src/WeightSensorApp.cpp 2020-10-01 10:45:35.378757514 -0600
++++ iotivity/service/resource-container/examples/BMISensorBundle/src/inputSensors/WeightSensorApp/src/WeightSensorApp.cpp       2020-10-01 10:51:43.685088631 -0600
+@@ -221,7 +221,7 @@ int main()
+
+         OC::OCPlatform::stopPresence();
+     }
+-    catch (std::exception e)
++    catch (std::exception& e)
+     {
+         cout << e.what() << endl;
+     }
 diff -rupN iotivity-2.0.0/service/resource-encapsulation/unittests/ResourceClientTest.cpp /home/workdir/iotivity/service/resource-encapsulation/unittests/ResourceClientTest.cpp
 --- iotivity-2.0.0/service/resource-encapsulation/unittests/ResourceClientTest.cpp	2020-09-11 11:38:32.434117011 -0600
 +++ /home/workdir/iotivity/service/resource-encapsulation/unittests/ResourceClientTest.cpp	2020-09-11 10:40:07.141692134 -0600
@@ -104,4 +116,3 @@ diff -rupN iotivity-2.0.0/service/resource-encapsulation/unittests/ResourceClien
 +    constexpr const char* VALUE = "value";
  
      auto mockHandler = mocks.Mock< CustomHandler >();
-

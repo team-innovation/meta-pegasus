@@ -11,6 +11,8 @@ PYPI_PACKAGE = "pydevd"
 inherit pypi setuptools3
 
 do_install_append() {
+	rm -f ${D}${PYTHON_SITEPACKAGES_DIR}/pydevd_attach_to_process/attach_linux_amd64.so
+	rm -f ${D}${PYTHON_SITEPACKAGES_DIR}/pydevd_attach_to_process/attach_linux_x86.so
     rm -f ${D}${datadir}/pydevd_attach_to_process/attach_linux_amd64.so
     rm -f ${D}${datadir}/pydevd_attach_to_process/attach_linux_x86.so
 }
