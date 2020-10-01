@@ -7,6 +7,7 @@ PROCMAND_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-procmand = "${PR}${PROCMAND_PREPEND}${PROCMAND_REVISION}"
 
 RDEPENDS_${PN}-procmand = "\
+	bash \
 	python3-pyinotify \
 	python3-psutil \
  	python3-cherrypy	\

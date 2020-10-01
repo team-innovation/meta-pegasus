@@ -4,13 +4,13 @@ SECTION = "network"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 
-DEPENDS = "python-native libusb openssl flex json-c"
+DEPENDS = "python-native libusb openssl flex-native bison-native libxslt-native json-c"
 RDEPENDS_${PN} = "bridge-utils openssl bash"
 
 PR = "r2"
 PV = "7.13.01+git${SRCPV}"
 
-SRCREV = "a82d0c23a52adb5cbe97a40d0fa971d7534a85b0"
+SRCREV = "50962f966c43fe3cc93e903b165f831b2b0bdb9a"
 SRCBRANCH = "v7131_sumo"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
@@ -28,7 +28,6 @@ inherit pkgconfig cmake python3-dir python3native update-rc.d
 INITSCRIPT_NAME = "zwaved"
 INITSCRIPT_PARAMS = "start 30 5 ."
 
-
 EXTRA_OECMAKE = " \
     -DCMAKE_INSTALL_PREFIX=/usr/local \
     -DSKIP_TESTING=TRUE \
@@ -36,8 +35,6 @@ EXTRA_OECMAKE = " \
     -DJSON_C_SRC=/usr \
     -DDISABLE_DTLS=TRUE \
 "
-
-
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwaved ${D}${sysconfdir}/init.d

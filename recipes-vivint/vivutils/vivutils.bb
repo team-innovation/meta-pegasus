@@ -12,7 +12,7 @@ RDEPENDS_${PN} = " \
     python3-pysodium \
     libpulse-simple \
     libpulse \
-    libasound \
+    alsa-lib \
 "
 
 SRC_URI = "\

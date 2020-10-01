@@ -10,7 +10,6 @@ RDEPENDS_${PN} += " \
         u-boot-wallsly \
 	graphviz \
 	openwrt-mt7620 \
-        nm-pkgs \
 	mighty-gecko-fw-wallsly \
 	wallsly-version \
 	mosquitto \
