@@ -4,15 +4,14 @@ SECTION = "network"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 
-<<<<<<< HEAD:recipes-connectivity/zipgateway/zipgateway_7.11.02.bb
-DEPENDS = "python-native libusb flex json-c openssl11 flex json-c"
-RDEPENDS_${PN} = "bridge-utils openssl11 bash"
+DEPENDS = "python-native libusb openssl flex json-c"
+RDEPENDS_${PN} = "bridge-utils openssl bash"
 
-PR = "r1"
+PR = "r2"
 PV = "7.13.01+git${SRCPV}"
 
 SRCREV = "a82d0c23a52adb5cbe97a40d0fa971d7534a85b0"
-SRCBRANCH = "v7.13.1"
+SRCBRANCH = "v7131_sumo"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
 GIT_ZGATE_PROTOCOL ?= "ssh"
@@ -33,30 +32,10 @@ EXTRA_OECMAKE = " \
     -DCMAKE_INSTALL_PREFIX=/usr/local \
     -DSKIP_TESTING=TRUE \
     -DDISABLE_MOCK=TRUE \
-"
-
-EXTRA_OECMAKE = " \
-    -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DSKIP_TESTING=TRUE \
-    -DDISABLE_MOCK=TRUE \
     -DJSON_C_SRC=/usr \
     -DDISABLE_DTLS=TRUE \
 "
-cmake_do_generate_toolchain_file_append() {
-	cat >> ${WORKDIR}/toolchain.cmake << EOF
-set ( CMAKE_LIBRARY_PATH ${libdir}/openssl11/lib ${libdir} ${base_libdir})
-set ( ENV{PKG_CONFIG_PATH} ${STAGING_LIBDIR}/openssl11/lib/pkgconfig:$ENV{PKG_CONFIG_PATH})
-EOF
-}
 
-do_configure_prepend() {
-	sed -i -e 's/PkgConfig::JSON_C/\x24{JSON_C_LDFLAGS}/g' ${S}/systools/zw_nvm_converter/controllerlib_7.xx/CMakeLists.txt
-	sed -i -e 's/PkgConfig::JSON_C/\x24{JSON_C_LDFLAGS}/g' ${S}/systools/zgw_restore/CMakeLists.txt
-	sed -i -e 's/-Werror/\x24{JSON_C_CFLAGS} -Werror/g' ${S}/systools/zgw_restore/CMakeLists.txt
-
-	sed -i -e 's/OpenSSL::SSL OpenSSL::Crypto/\x24{OPENSSL_LIBRARIES}/g' ${S}/src/CMakeLists.txt
-	sed -i -e 's/target_compile_options( zipgateway-lib PUBLIC )/target_compile_options( zipgateway-lib PUBLIC \x24{_OPENSSL_CFLAGS})/g' ${S}/src/CMakeLists.txt
-}
 
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d
