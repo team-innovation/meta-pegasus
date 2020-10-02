@@ -6,6 +6,7 @@
 DESCRIPTION = "Network Module Packages"
 HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
+LIC_FILES_CHKSUM = "file://../COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 GIT_ARTIFACTS_LATEST_BRANCH ?= "feature/18.06_rel_3.20.3_pilot"
 GIT_ARTIFACTS_LATEST_SERVER ?= "${GIT_SERVER}"
