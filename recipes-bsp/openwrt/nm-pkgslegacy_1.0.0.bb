@@ -15,7 +15,9 @@ GIT_ARTIFACTS_PROTOCOL ?= "ssh"
 GIT_ARTIFACTS_REV ?= "${AUTOREV}"
 SRCREV = "${GIT_ARTIFACTS_REV}"
 
-SRC_URI_append = "git://${GIT_ARTIFACTS_SERVER}/artifacts;protocol=${GIT_ARTIFACTS_PROTOCOL};branch=${GIT_ARTIFACTS_BRANCH}"
+SRC_URI = "git://${GIT_ARTIFACTS_SERVER}/artifacts;protocol=${GIT_ARTIFACTS_PROTOCOL};branch=${GIT_ARTIFACTS_BRANCH} \
+	file://COPYING \
+	"
 
 PR = "r3"
 PV = "${SRCPV}"
@@ -31,7 +33,7 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${SRV_WWW_DIR}/packages
-    tar xzf ${WORKDIR}/${REPO_DIR}/${MT7620_update_pkg} -C ${D}${SRV_WWW_DIR}/packages
+    tar xzf --no-same-owner ${WORKDIR}/${REPO_DIR}/${MT7620_update_pkg} -C ${D}${SRV_WWW_DIR}/packages
 }
 
 #Default will be legacy(17.01) for now.
