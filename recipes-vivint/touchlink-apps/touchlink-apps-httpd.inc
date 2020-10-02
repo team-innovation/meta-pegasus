@@ -6,9 +6,6 @@ HTTPD_PREPEND = "-3"
 HTTPD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-httpd = "${PR}${HTTPD_PREPEND}${HTTPD_REVISION}"
 
-
-do_package_qa[noexec] = "1"
-
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/httpd/
         ${RSYNC_CMD} ${S}/code/httpd/ ${D}/${INSTALL_DIR}/httpd/
