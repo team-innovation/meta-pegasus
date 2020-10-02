@@ -7,7 +7,7 @@ HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-SRC_URI_append = " file://COPYING"
+SRC_URI_append = " file://COPYING "
 
 MT7620_uImage = "MT7620_uImage"
 MT7620_7612_uImage = "MT7620_MT7612_MESH_NODE_uImage"
