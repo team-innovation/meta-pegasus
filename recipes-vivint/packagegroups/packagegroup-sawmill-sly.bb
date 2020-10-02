@@ -9,7 +9,8 @@ require packagegroup-sawmill-sly-common.inc
 RDEPENDS_${PN} += " \
         u-boot-wallsly \
 	graphviz \
-	openwrt-mt7620 \
+	openwrtlegacy-mt7620 \
+	openwrtlatest-mt7620 \
         nm-pkgslegacy \
         nm-pkgslatest \
 	mighty-gecko-fw-wallsly \
