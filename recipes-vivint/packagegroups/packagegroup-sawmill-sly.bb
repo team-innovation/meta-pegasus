@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r36"
+PR = "r37"
 
 require packagegroup-sawmill-sly-common.inc
 
@@ -10,7 +10,8 @@ RDEPENDS_${PN} += " \
         u-boot-wallsly \
 	graphviz \
 	openwrt-mt7620 \
-        nm-pkgs \
+        nm-pkgslegacy \
+        nm-pkgslatest \
 	mighty-gecko-fw-wallsly \
 	wallsly-version \
 	mosquitto \
