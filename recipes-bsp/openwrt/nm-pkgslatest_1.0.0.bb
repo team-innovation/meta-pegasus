@@ -33,7 +33,7 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${SRV_WWW_DIR}/packages
-    tar xzf --no-same-owner ${WORKDIR}/${REPO_DIR}/${MT7620_update_pkg} -C ${D}${SRV_WWW_DIR}/packages
+    tar --no-same-owner -xzf ${WORKDIR}/${REPO_DIR}/${MT7620_update_pkg} -C ${D}${SRV_WWW_DIR}/packages
 }
 
 FILES_${PN} = "\
