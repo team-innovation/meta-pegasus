@@ -4,13 +4,13 @@ SECTION = "network"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 
-DEPENDS = "python-native libusb openssl flex json-c"
+DEPENDS = "python-native libusb openssl flex json-c libxslt-native"
 RDEPENDS_${PN} = "bridge-utils openssl bash"
 
 PR = "r2"
 PV = "7.13.01+git${SRCPV}"
 
-SRCREV = "a82d0c23a52adb5cbe97a40d0fa971d7534a85b0"
+SRCREV = "50962f966c43fe3cc93e903b165f831b2b0bdb9a"
 SRCBRANCH = "v7131_sumo"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
