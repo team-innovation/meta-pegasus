@@ -4,7 +4,7 @@ SECTION = "network"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 
-DEPENDS = "python-native libusb openssl flex json-c libxslt-native"
+DEPENDS = "python-native libusb openssl flex-native bison-native libxslt-native json-c"
 RDEPENDS_${PN} = "bridge-utils openssl bash"
 
 PR = "r2"
@@ -35,8 +35,6 @@ EXTRA_OECMAKE = " \
     -DJSON_C_SRC=/usr \
     -DDISABLE_DTLS=TRUE \
 "
-
-
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwaved ${D}${sysconfdir}/init.d
