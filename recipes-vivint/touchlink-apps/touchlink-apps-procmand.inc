@@ -11,6 +11,7 @@ RDEPENDS_${PN}-procmand = "\
 	python3-psutil \
  	python3-cherrypy	\
 	${PN}-favicon \
+	bash \
 	"
 
 RREPLACES_${PN}-procmand = "monit"

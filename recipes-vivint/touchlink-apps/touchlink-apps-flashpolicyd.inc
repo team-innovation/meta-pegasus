@@ -14,6 +14,8 @@ INITSCRIPT_PACKAGES += "${PN}-flashpolicyd"
 INITSCRIPT_NAME_${PN}-flashpolicyd = "flashpolicyd"
 INITSCRIPT_PARAMS_${PN}-flashpolicyd = "defaults 99 18"
 
+do_package_qa[noexec] = "1"
+
 do_install_append() {
 	install -d ${D}/etc/init.d/
 	cp ${S}/code/flashpolicyd/Python_init/flashpolicyd.init ${D}/etc/init.d/flashpolicyd
