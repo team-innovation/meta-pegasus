@@ -5,7 +5,7 @@ LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=e944ef975ef9d0312e63c9ee80df17fc"
 PRIORITY = "optional"
 
-PR = "r21"
+PR = "r22"
 
 SRC_URI = "https://github.com/OpenVPN/easy-rsa/releases/download/${PV}/EasyRSA-${PV}.tgz \
 		   file://vivint.patch \
@@ -25,6 +25,7 @@ do_install() {
 	install -m 755 ${S}/build-key-server ${D}/${EASY_RSA_DIR}
 	install -m 755 ${S}/clean-all ${D}/${EASY_RSA_DIR}
 	install -m 644 ${S}/openssl-1.0.0.cnf ${D}/${EASY_RSA_DIR}
+	install -m 644 ${S}/openssl-1.0.0.cnf ${D}/${EASY_RSA_DIR}/openssl.cnf
 	install -m 755 ${S}/pkitool ${D}/${EASY_RSA_DIR}
 	install -m 644 ${S}/vars ${D}/${EASY_RSA_DIR}
 	install -m 755 ${S}/whichopensslcnf ${D}/${EASY_RSA_DIR}
@@ -40,6 +41,7 @@ FILES_${PN} = "${EASY_RSA_DIR}/build-ca  \
                ${EASY_RSA_DIR}/client.ovpn  \
 			   ${EASY_RSA_DIR}/create-all-certs \
 			   ${EASY_RSA_DIR}/openssl-1.0.0.cnf \
+			   ${EASY_RSA_DIR}/openssl.cnf \
 		  	   ${EASY_RSA_DIR}/pkitool  \
 			   ${EASY_RSA_DIR}/vars  \
 			   ${EASY_RSA_DIR}/whichopensslcnf"
