@@ -7,7 +7,7 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "22"
+PR = "23"
 
 inherit packagegroup
 
@@ -39,4 +39,6 @@ RDEPENDS_${PN} = " \
 	vivutils \
 	wallsly-modules \
 	mmc-utils \
+	openssl-bin \
+	openssl-engines \
 "
