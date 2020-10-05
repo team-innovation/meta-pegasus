@@ -8,10 +8,10 @@ DEPENDS = "python-native libusb flex json-c openssl11"
 RDEPENDS_${PN} = "bridge-utils openssl11"
 
 PR = "r1"
-PV = "7.13.01+git${SRCPV}"
+PV = "7.14.01+git${SRCPV}"
 
-SRCREV = "a82d0c23a52adb5cbe97a40d0fa971d7534a85b0"
-SRCBRANCH = "v7.13.1"
+SRCREV = "a4fe258bde8c871d57e2929f24fa5a7434e7016c"
+SRCBRANCH = "v7.14.1"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
 GIT_ZGATE_PROTOCOL ?= "ssh"
@@ -20,7 +20,7 @@ SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_P
            file://zwaved \
            "
 
-S = "${WORKDIR}/git/zipgateway-7.13.01-Source/usr/local"
+S = "${WORKDIR}/git/zipgateway-7.14.01-Source/usr/local"
 
 inherit pkgconfig cmake python-dir pythonnative update-rc.d
 
