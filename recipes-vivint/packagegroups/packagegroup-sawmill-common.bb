@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "52"
+PR = "53"
 
 inherit packagegroup
 
@@ -28,12 +28,15 @@ RDEPENDS_${PN} = " \
 	python3-asn1crypto \
 	python3-asyncio \
 	python3-aioconsole \
-        python3-aiodns \
-        python3-aiohttp \
-        python3-async-generator \
-        python3-async-timeout \
-        python3-atomicwrites \
-        python3-attrs \
+	python3-aiodns \
+	python3-aiohttp \
+	python3-aiohttp-security \
+	python3-aiohttp-session \
+	python3-aiohttp-sse \
+	python3-async-generator \
+	python3-async-timeout \
+	python3-atomicwrites \
+	python3-attrs \
 	python3-bson \
 	python3-cachetools \
 	python3-cchardet \	
@@ -48,9 +51,9 @@ RDEPENDS_${PN} = " \
 	python3-setuptools \
 	python3-grpcio \
 	python3-idna \
-        python3-idna-ssl \
-        python3-pycares \
-        python3-terminaltables \
+	python3-idna-ssl \
+	python3-pycares \
+	python3-terminaltables \
 	python3-idle \
 	python3-intelhex \
 	python3-jinja2 \
@@ -73,6 +76,7 @@ RDEPENDS_${PN} = " \
 	python3-protobuf \
 	python3-pycparser \
 	python3-pyftpdlib \
+	python3-pyjwt \
 	python3-pyserial \
 	python3-pyssh-ctypes \
 	python3-pyalsaaudio \
@@ -95,7 +99,7 @@ RDEPENDS_${PN} = " \
 	python3-unixadmin \
 	python3-numbers \
 	python3-wheel \
-        python3-yarl \
+	python3-yarl \
 	pv \
 	speedtest-cli \
 	sqlite3 \
