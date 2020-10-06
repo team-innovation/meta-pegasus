@@ -1,0 +1,255 @@
+#!/bin/sh
+
+opcode=$1
+cmd=$2
+args=$3
+
+
+setup_ap() {
+    read macaddr </sys/class/net/ra0/address
+    serialnum=$(python3 - <<'__END_PYTHON'
+try:
+    with open("/media/bootscript/serialnumber2.txt") as f:
+        print("{:0>13}".format(f.readline().strip().upper()))
+except FileNotFoundError:
+    try:
+        with open("/media/bootscript/serialnumber.txt") as f:
+            # hex format
+            print("{:0>13d}".format(int(f.readline().strip(), 16)))
+    except Exception as ex:
+        print("Failed to get serial")
+__END_PYTHON
+)
+
+    if [ -z "$serialnum" ]; then
+        echo "Error: No serial number"
+        exit 1
+    fi
+
+    macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
+    password=$(echo -n $serialnum | sha256sum)
+
+    # Chop the password town to the length allowed by WPA2:
+    password=${password:0:63}
+
+    sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+}
+
+
+ap_mode()
+{
+        /sbin/ip addr add 192.168.10.1/24 dev ra0
+        /usr/sbin/udhcpd /etc/udhcpd.conf
+}
+
+setup_interfaces()
+{
+	echo "Bring up all required interfaces: ra0 and apcli0"
+	ifconfig ra0 up
+	ifconfig apcli0 up
+}
+
+start_udhcpc()
+{
+        # start udhcpc
+        killall -9 udhcpc
+        sleep 1
+        udhcpc -R -b -p /var/run/udhcpc.apcli0.pid -i apcli0
+}
+
+setup_scan()
+{
+        # $1 = mode- 9 for 2.4
+        # 2.4GHz = 9
+        # 5GHz = 14
+	# $2 - continuous - will also scan for 5G so don't bring network back up
+
+	# save the current wirless mode so we can restore it
+	current_wmode=$(grep WirelessMode /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f 2)
+
+	ifconfig apcli0 down
+	ifconfig ra0 down
+	sleep 1
+
+	rmmod mt_wifi
+
+	sed -i "s/WirelessMode=.*$/WirelessMode=$1/g" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+
+	modprobe mt_wifi
+	ifconfig ra0 up
+	ifconfig apcli0 up
+
+        #iwpriv apcli0 set PartialScan=0
+        iwpriv apcli0 set SiteSurvey=
+        sleep 1
+        iwpriv apcli0 get_site_survey
+
+	# keep ra0 down 
+	ifconfig ra0 down
+
+	# restore wireless mode
+	sed -i "s/WirelessMode=.*$/WirelessMode=$current_wmode/g" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+
+	if [ $2'x' != 'continuousx' ]; then 
+		# restart network if it is set
+		ssid=$(grep ApCliSsid /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
+		if [ ! -z "$ssid" ] ; then
+			ifconfig apcli0 down
+			ifconfig apcli0 up
+			start_udhcpc
+		fi
+	fi
+
+}
+
+connect_ssid()
+{
+        # $1 - SSID
+        # $2 - Password
+        # $3 - Security
+	# $4 - Channel
+
+	channel=$4
+
+        if [ -z $1 ]; then
+                echo "No SSID specify"
+                exit 1
+        elif [ -z $2 ]; then
+                echo "No passphrase specify"
+                exit 1
+	elif [ -z $3 ]; then
+                echo "No security specify"
+                exit 1
+        fi
+
+	ssid=$1
+	pass=$2
+	sec=$3
+
+	auth_mode=${sec%%/*}
+	enc_type=${sec##*/}
+
+	iwpriv apcli0 set ApCliEnable=0
+	if [ ! -z $channel ]; then
+		iwpriv apcli0 set Channel=$channel
+
+		if [ $channel -lt 12 ]; then
+			wireless_mode=9
+		        iwpriv apcli0 set WirelessMode=$wireless_mode
+                        iwpriv ra0 set WirelessMode=$wireless_mode
+		else
+			wireless_mode=14
+                        iwpriv apcli0 set WirelessMode=$wireless_mode
+                        iwpriv ra0 set WirelessMode=$wireless_mode
+		fi
+		sleep 1
+	fi
+
+	iwpriv apcli0 set ApCliAuthMode=$auth_mode
+	iwpriv apcli0 set ApCliEncrypType=$enc_type
+	iwpriv apcli0 set ApCliSsid="$ssid"
+	iwpriv apcli0 set ApCliWPAPSK="$pass"
+	iwpriv apcli0 set ApCliSsid="$ssid"
+	iwpriv apcli0 set ApCliEnable=1
+	iwpriv apcli0 set ApCliAutoConnect=1
+	sleep 1
+
+	start_udhcpc
+
+	# update profile
+	sed -i "s/^ApCliAutoConnect=.*$/ApCliAutoConnect=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	sed -i "s/^Channel=.*$/Channel=$channel/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	sed -i "s/^WirelessMode=.*$/WirelessMode=$wireless_mode/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	sed -i "s/^ApCliAuthMode=.*$/ApCliAuthMode=$auth_mode/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	sed -i "s/^ApCliEncrypType=.*$/ApCliEncrypType=$enc_type/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	sed -i "s/^ApCliSsid=.*$/ApCliSsid=$ssid/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=$pass/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	sed -i "s/^ApCliEnable=.*$/ApCliEnable=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+
+}
+
+reconnect()
+{
+	# when AP change channel we need to rescan and find the new channel to reconnect to 
+	current_ssid=$(grep ApCliSsid= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
+	current_wmode=$(grep WirelessMode= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
+
+	setup_scan $current_wmode continuous | grep $current_ssid
+
+	iwpriv apcli0 set ApCliAutoConnect=1
+	sleep 1
+	start_udhcpc
+}
+
+print_help()
+{
+	if [ -e /etc/wireless/mediatek/mtk_net_ctrl.help ]; then
+	        /bin/cat /etc/wireless/mediatek/mtk_net_ctrl.help
+	else
+		echo "Available options"
+	       	echo -e "\t init - setup all required interfaces for use"
+		echo -e "\t setup_ap - Setup Soft AP and bring it up"
+		echo -e "\t disable_ap - Disable Soft AP"
+		echo -e "\t ap_mode - Bring up Soft AP if it already setup"
+		echo -e "\t scan24 - Site survey 2.4 GHz"
+		echo -e "\t scan5 - Site survey 5 GHz"
+		echo -e "\t site_survey - Site survey both 2.4GHz and 5GHz channel"
+		echo -e "\t udhcpc - Start udhcpc"
+		echo -e "\t connect - Connect to an AP"
+		echo -e "\t\t $0 connect SSID PASSPHRASE SECURITY"
+		echo -e "\t\t\t Example: $0 connect MySSID MyPassword WPA2PSK/AES"
+	fi
+}
+
+
+case "$opcode" in
+	"init")
+		setup_interfaces
+		;;
+
+        "setup_ap")
+                setup_ap
+                ap_mode
+                ;;
+
+        "ap_mode")
+                ap_mode
+                ;;
+
+	"disable_ap")
+		ifconfig ra0 down
+		;;
+
+         "scan24")
+                setup_scan 9 
+                ;;
+
+        "scan5")
+                setup_scan 14
+                ;;
+
+	"site_survey")
+		setup_scan 9 continuous
+		setup_scan 14
+		;;
+
+        "connect")
+                shift
+                connect_ssid $@
+                ;;
+
+	"reconnect")
+                reconnect
+                ;;
+
+
+	"udhcpc")
+		start_udhcpc
+		;;
+
+        *)
+                echo -e "Invalid netv command. see help"
+                print_help
+                ;;
+esac

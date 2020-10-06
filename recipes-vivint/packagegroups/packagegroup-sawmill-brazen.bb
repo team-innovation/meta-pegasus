@@ -26,6 +26,7 @@ RDEPENDS_${PN} += " \
 	iot-fw-ble \
 	iot-fw-zwave \
         iot-radio-fw-verify \
+	mt7663e-driver \
 "
 
 ### TODO - remove this later for real HUB+

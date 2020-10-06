@@ -1,34 +1,75 @@
 #!/bin/sh
 
-#make sure we have network wireless.conf and wpa_supplicant_wireless.conf
-# symlink
-media_extra_conf_network_dir="/media/extra/conf/network"
+# update mediatek profile
+if [ -e /sys/class/net/ra0/address ]; then
 
-etc_wireless_conf="/etc/network/wireless.conf"
-media_extra_wireless_conf="$media_extra_conf_network_dir/wireless.conf"
+    read macaddr </sys/class/net/ra0/address
+    serialnum=$(python3 - <<'__END_PYTHON'
+try:
+    with open("/media/bootscript/serialnumber2.txt") as f:
+        print("{:0>13}".format(f.readline().strip().upper()))
+except FileNotFoundError:
+    try:
+        with open("/media/bootscript/serialnumber.txt") as f:
+            # hex format
+            print("{:0>13d}".format(int(f.readline().strip(), 16)))
+    except Exception as ex:
+        print("Failed to get serial")
+__END_PYTHON
+)
 
-media_extra_wpa_supplicant_conf="$media_extra_conf_network_dir/wpa_supplicant_wireless.conf"
-etc_wpa_supplicant_conf="/etc/network/wpa_supplicant_wireless.conf"
+    if [ -z "$serialnum" ]; then
+        echo "Error: No serial number"
+        exit 1
+    fi
 
-mkdir -p $media_extra_conf_network_dir
+    macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
+    password=$(echo -n $serialnum | sha256sum)
 
-if [ ! -h $etc_wireless_conf ]
-then
-   echo "Create $etc_wireless_conf link"
-   rm -f $etc_wireless_conf
-   ln -sf $media_extra_wireless_conf $etc_wireless_conf
-fi
+    # Chop the password town to the length allowed by WPA2:
+    password=${password:0:63}
 
-if [ ! -h $etc_wpa_supplicant_conf ]
-then
-   echo "Create $etc_wpa_supplicant_conf link"
-   rm -f $etc_wpa_supplicant_conf
-   ln -sf $media_extra_wpa_supplicant_conf $etc_wpa_supplicant_conf
-fi
+    sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
-# Fix open network connection
-if [ -f $media_extra_wpa_supplicant_conf ]; then
-    grep -q -e 'disabled=1' $media_extra_wpa_supplicant_conf || sed -i "/key_mgmt=NONE/a\\\        disabled=1" $wpafile
+    # need to start ra0 up first before we can initialize apcli0
+    # we then bring ra0 down so there is a brief momment that Soft AP will be up
+    ifconfig ra0 up
+    ifconfig apcli0 up
+    ifconfig ra0 down
+
+else
+
+   #make sure we have network wireless.conf and wpa_supplicant_wireless.conf
+   # symlink
+   media_extra_conf_network_dir="/media/extra/conf/network"
+
+   etc_wireless_conf="/etc/network/wireless.conf"
+   media_extra_wireless_conf="$media_extra_conf_network_dir/wireless.conf"
+
+   media_extra_wpa_supplicant_conf="$media_extra_conf_network_dir/wpa_supplicant_wireless.conf"
+   etc_wpa_supplicant_conf="/etc/network/wpa_supplicant_wireless.conf"
+
+   mkdir -p $media_extra_conf_network_dir
+
+   if [ ! -h $etc_wireless_conf ]
+   then
+      echo "Create $etc_wireless_conf link"
+      rm -f $etc_wireless_conf
+      ln -sf $media_extra_wireless_conf $etc_wireless_conf
+   fi
+
+   if [ ! -h $etc_wpa_supplicant_conf ]
+   then
+      echo "Create $etc_wpa_supplicant_conf link"
+      rm -f $etc_wpa_supplicant_conf
+      ln -sf $media_extra_wpa_supplicant_conf $etc_wpa_supplicant_conf
+   fi
+
+   # Fix open network connection
+   if [ -f $media_extra_wpa_supplicant_conf ]; then
+       grep -q -e 'disabled=1' $media_extra_wpa_supplicant_conf || sed -i "/key_mgmt=NONE/a\\\        disabled=1" $wpafile
+   fi
 fi
 
 exit 0

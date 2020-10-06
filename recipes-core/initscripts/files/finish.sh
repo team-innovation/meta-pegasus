@@ -80,9 +80,6 @@ update_start_sshd_count()
 	    # bring eth0 up
 	    ifup eth0
 
-	    # bring eth0 up
-	    ifup eth0
-
 	    # start sshd
 	    /etc/init.d/sshd force-start
 	    /opt/2gig/utils/password_utils --fixroot
@@ -107,6 +104,8 @@ if [ -e /sys/class/input/input0/device/reset ] ; then
 	# FRANKEN HUB use ethernet dongle so the ethernet is eth1
 	if grep -q brazen /etc/hostname ; then	
 		sed -i 's/"ethernet_iface": "eth0"/"ethernet_iface": "eth1"/' /opt/2gig/netd/conf_files/brazen/netd_conf.json
+		sed -i 's/"wireless_iface": "apcli0"/"wireless_iface": "wlan0"/' /opt/2gig/netd/conf_files/brazen/netd_conf.json
+		sed -i 's/ra0/wlan0/' /etc/udhcpd.conf
 	fi
 else
 	# HUB PLUS mod

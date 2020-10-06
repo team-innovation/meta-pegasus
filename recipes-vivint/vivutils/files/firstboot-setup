@@ -460,12 +460,27 @@ chargerinit() {
 	true
 }
 
+restore_mt7663e_eeprom() {
+	mntbootscript
+	eeprom_file='/media/bootscript/MT7663E_EEPROM1.bin'
+	if [ -e $eeprom_file ]; then
+		saved_md5sum=$(md5sum $eeprom_file | cut -b-32)
+                current_md5sum=$(md5sum /etc_ro/wlan/MT7663E_EEPROM1.bin | cut -b-32)
+
+                if [ $saved_md5sum'x' != $current_md5sum'x' ]; then
+                        echo "Restore MT7663E_EEPROM1.bin"
+                        cp -a $eeprom_file /etc_ro/wlan
+                fi
+	fi
+}
+
 succeed_or bootscrcheck bootscrupdate
 succeed_or ubootcheck ubootupdate
 succeed_or mmcbootbitscheck mmcbootbitsset
 succeed_or fusecheck fuseset
 
 chargerinit
+restore_mt7663e_eeprom
 
 test "${FACTORYFIRSTBOOT}" = "true" && {
 	info "Initial factory board setup complete -- halting!"

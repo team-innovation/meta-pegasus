@@ -9,11 +9,17 @@ DAEMON=/sbin/udhcpc
 
 test -x $DAEMON || exit 0
 
+if [ -e /sys/class/net/apcli0 ]; then
+	iface=apcli0
+else
+	iface=wlan0
+fi
+
 case "$1" in
   start)
     echo -n "Starting DHCP client: udhcpc"
     start-stop-daemon --start --quiet --exec $DAEMON \
-      -- -R -n -p /var/run/udhcpc.wlan0.pid -i wlan0 \
+      -- -R -n -p /var/run/udhcpc.$iface.pid -i $iface \
       || echo -n " already running"
   ;;
 
@@ -25,7 +31,7 @@ case "$1" in
 
   stop)
     echo -n "Stopping DHCP client: $DAEMON"
-    start-stop-daemon --stop --quiet --exec $DAEMON || echo -n " not running"
+    killall -9 udhcpc
     echo "."
   ;;
 

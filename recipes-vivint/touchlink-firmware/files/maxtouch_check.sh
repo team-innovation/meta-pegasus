@@ -79,8 +79,7 @@ stop() {
 case "$1" in
     start|restart|reload)
 	# only call this on non Hub+ board
-	board=$(fw_printenv board | cut -d= -f2)
-	if [ "$board"x != "Hubplus-v1x" ]; then
+	if [ -e /sys/class/input/input0/device/reset ]; then
 	        check_and_set
 	fi
         ;;

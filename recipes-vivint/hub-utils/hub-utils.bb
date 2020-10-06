@@ -6,7 +6,7 @@ LICENSE = "CLOSED"
 DEPENDS = ""
 # PV = "${DISTRO_VERSION}"
 PV = "1.0.0"
-PR = "r1"
+PR = "r2"
 
 SRC_URI = "\
 	file://mfg_test \
