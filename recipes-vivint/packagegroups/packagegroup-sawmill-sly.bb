@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r35"
+PR = "r36"
 
 inherit packagegroup
 
@@ -13,6 +13,7 @@ RDEPENDS_${PN} += " \
 	lxfp \
 	graphviz \
 	openvpn \
+	openvpn-procmand \
 	openwrtlegacy-mt7620 \
 	openwrtlatest-mt7620 \
 	psoc-fw-sly \
