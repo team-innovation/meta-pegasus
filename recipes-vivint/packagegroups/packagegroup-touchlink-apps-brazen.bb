@@ -14,6 +14,7 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-cloudd \
 	touchlink-apps-dbapd \
 	touchlink-apps-httpd \
+	touchlink-apps-huei \
 	touchlink-apps-mmpd \
 	touchlink-apps-modemd \
 	touchlink-apps-pyftpd \
