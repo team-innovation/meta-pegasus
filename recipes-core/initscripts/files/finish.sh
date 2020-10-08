@@ -73,5 +73,13 @@ rm_roubaix_logs
 # set the system root password to a random value when touchlink starts
 /opt/2gig/utils/password_utils --random
 
+
 # Give touchscreen a quick reset to clear and re-initialize
-echo 1 > /sys/class/input/input0/device/reset
+board=$(fw_printenv board | cut -d= -f2)
+
+if [ "$board"x != "Hubplus-v1x" ]; then
+	echo 1 > /sys/class/input/input0/device/reset
+
+	# FRANKEN HUB use ethernet dongle so the ethernet is eth1
+	sed -i 's/"ethernet_iface": "eth0"/"ethernet_iface": "eth1"/' /opt/2gig/netd/conf_files/brazen/netd_conf.json
+fi

@@ -1,5 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
-PR_append = "-6"
+PR_append = "-7"
 
 SRC_URI += "file://finish.sh    \
 	    file://hostname.sh  \
