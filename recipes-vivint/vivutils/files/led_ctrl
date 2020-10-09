@@ -114,6 +114,22 @@ main_bar() {
 	   shift
            set_bar_color_all $1 $2
       ;;
+      process)
+          shift
+          while true
+          do
+              set_bar_color_all green 0
+	      sleep 0.5
+              set_bar_color_single ${leds_bar["led1"]} $1 $2
+              sleep 0.5
+              set_bar_color_single ${leds_bar["led2"]} $1 $2
+              sleep 0.5
+              set_bar_color_single ${leds_bar["led3"]} $1 $2
+              sleep 0.5
+              set_bar_color_single ${leds_bar["led4"]} $1 $2
+              sleep 0.5
+          done
+      ;;
       led1 | led2 | led3 | led4)
           # led color value
           set_bar_color_single ${leds_bar["$1"]} $2 $3
@@ -337,7 +353,7 @@ main() {
          shift
          main_bar $@
          ;;
-         
+
       away) 
          shift
          set_away_on $@

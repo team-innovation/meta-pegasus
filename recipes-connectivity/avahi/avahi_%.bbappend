@@ -1,5 +1,5 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
-PR = "5"
+PR = "6"
 
 SRC_URI += "file://avahi-daemon.conf"
 
