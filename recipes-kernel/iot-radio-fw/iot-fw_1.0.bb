@@ -4,7 +4,7 @@ LICENSE = "CLOSED"
 
 require iot-fw-ble-prod.inc
 require iot-fw-zwave-prod.inc
-require iot-fw-efr32.inc
+require iot-fw-efr32-prod.inc
 
 
 SRC_URI += "file://ihex2fw.c"

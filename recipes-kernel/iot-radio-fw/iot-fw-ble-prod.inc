@@ -2,7 +2,7 @@ DESCRIPTION = "Bluetooth firmware"
 
 SRC_URI += "file://vivint_blue.hex"
 
-PR = "r2"
+PR = "r5"
 
 BLE_FW_HEX_NAME = "vivint_blue.hex"
 BLE_FW_NAME = "vivint_blue.fw"
