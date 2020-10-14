@@ -9,8 +9,9 @@
 # Short-Description: Make sure the correct screen configuration is loaded 
 ### END INIT INFO
 
+
 check_and_set() {
-    if grep -q wallsly /proc/device-tree/compatible; then
+    if grep -q wallsly /proc/device-tree/compatible || grep -q brazen /proc/device-tree/compatible; then
 	dev="-d i2c-dev:2-004a"
 	mxtfam=$(mxt-app $dev -i | grep Family | awk '{print $2}')
 	mxtver=$(mxt-app $dev -i | grep Firmware | awk '{print $6}')
@@ -77,7 +78,11 @@ stop() {
 
 case "$1" in
     start|restart|reload)
-        check_and_set
+	# only call this on non Hub+ board
+	board=$(fw_printenv board | cut -d= -f2)
+	if [ "$board"x != "Hubplus-v1x" ]; then
+	        check_and_set
+	fi
         ;;
     stop)
         stop

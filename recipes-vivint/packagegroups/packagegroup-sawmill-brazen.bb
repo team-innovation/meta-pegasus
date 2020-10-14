@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r11"
+PR = "r13"
 
 require packagegroup-sawmill-sly-common.inc
 
@@ -28,3 +28,7 @@ RDEPENDS_${PN} += " \
         iot-radio-fw-verify \
 "
 
+### TODO - remove this later for real HUB+
+RDEPENDS_${PN} += " \ 
+		touchlink-maxtouch-config \
+"
