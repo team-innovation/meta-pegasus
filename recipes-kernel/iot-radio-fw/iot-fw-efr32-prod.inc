@@ -12,7 +12,7 @@ do_compile_append(){
         ./ihex2fw ${EFR32_FW_HEX_NAME} ${EFR32_FW_NAME}
 }
 
-do_install () {
+do_install_append () {
     install -m 644 ${S}/${EFR32_FW_NAME} ${D}${FW_DIR}
 }
 
