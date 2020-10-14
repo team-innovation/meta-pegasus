@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ ! -e /dev/vivint/psoc/backlights/bl_backlight_blank ] ; then
+        echo "bl_backlight_blank does not exit. QUIT"
+        exit 0
+fi
+
+
 echo 1 > /dev/vivint/psoc/backlights/bl_backlight_blank
 export FB_MULTI_BUFFER=2
 qmlfile=/tmp/touchtest.qml
