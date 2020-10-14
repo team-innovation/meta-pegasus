@@ -21,6 +21,11 @@ do_install () {
     install -d ${D}${FW_DIR}
 }
 
+PROVIDES = "${PN}-ble \
+	    ${PN}-zwave \
+            ${PN}-efr32 \
+	   "
+
 PACKAGES = "${PN}-ble	\
 	    ${PN}-zwave \
 	    ${PN}-efr32 \
