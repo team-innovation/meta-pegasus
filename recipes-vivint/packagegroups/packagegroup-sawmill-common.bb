@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "53"
+PR = "54"
 
 inherit packagegroup
 
@@ -115,4 +115,5 @@ RDEPENDS_${PN} = " \
 	wps-sh \
 	xdelta3 \
 	xz \
+	vim \
 "
