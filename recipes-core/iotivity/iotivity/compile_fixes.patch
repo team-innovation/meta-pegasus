@@ -1,6 +1,6 @@
-diff -rupN iotivity-2.0.0/bridging/plugins/lyric_plugin/honeywell_objects/honeywellThermostat.h /home/workdir/iotivity/bridging/plugins/lyric_plugin/honeywell_objects/honeywellThermostat.h
---- iotivity-2.0.0/bridging/plugins/lyric_plugin/honeywell_objects/honeywellThermostat.h	2020-09-11 11:01:32.737823579 -0600
-+++ /home/workdir/iotivity/bridging/plugins/lyric_plugin/honeywell_objects/honeywellThermostat.h	2020-09-11 10:35:07.965325924 -0600
+diff -rupN iotivity-2.0.0/bridging/plugins/lyric_plugin/honeywell_objects/honeywellThermostat.h iotivity/bridging/plugins/lyric_plugin/honeywell_objects/honeywellThermostat.h
+--- iotivity-2.0.0/bridging/plugins/lyric_plugin/honeywell_objects/honeywellThermostat.h	2020-10-27 08:59:02.753861813 -0600
++++ iotivity/bridging/plugins/lyric_plugin/honeywell_objects/honeywellThermostat.h	2020-10-27 08:41:49.321135407 -0600
 @@ -69,6 +69,7 @@ struct THERMOSTAT
  {
      THERMOSTAT(); // default constructor
@@ -9,9 +9,9 @@ diff -rupN iotivity-2.0.0/bridging/plugins/lyric_plugin/honeywell_objects/honeyw
  
      DEVICE_INFO devInfo;           // Device info
      bool isOnline;                 // Is thermostat online now?
-diff -rupN iotivity-2.0.0/examples/OICMiddle/Client.cpp /home/workdir/iotivity/examples/OICMiddle/Client.cpp
---- iotivity-2.0.0/examples/OICMiddle/Client.cpp	2020-09-11 11:01:32.754490213 -0600
-+++ /home/workdir/iotivity/examples/OICMiddle/Client.cpp	2020-09-11 09:46:10.150979696 -0600
+diff -rupN iotivity-2.0.0/examples/OICMiddle/Client.cpp iotivity/examples/OICMiddle/Client.cpp
+--- iotivity-2.0.0/examples/OICMiddle/Client.cpp	2020-10-27 08:59:02.753861813 -0600
++++ iotivity/examples/OICMiddle/Client.cpp	2020-10-27 08:41:49.321135407 -0600
 @@ -51,7 +51,7 @@ void MiddleClient::foundOCResource(share
  
      try {
@@ -42,9 +42,9 @@ diff -rupN iotivity-2.0.0/extlibs/hippomocks/hippomocks/HippoMocks/hippomocks.h 
  			{
  				printf("Latent exception masked!\nException:\n%s\n", e.what());
  			}
-diff -rupN iotivity-2.0.0/resource/examples/garageserver.cpp /home/workdir/iotivity/resource/examples/garageserver.cpp
---- iotivity-2.0.0/resource/examples/garageserver.cpp	2020-09-11 11:01:32.861156675 -0600
-+++ /home/workdir/iotivity/resource/examples/garageserver.cpp	2020-09-11 10:12:00.289826422 -0600
+diff -rupN iotivity-2.0.0/resource/examples/garageserver.cpp iotivity/resource/examples/garageserver.cpp
+--- iotivity-2.0.0/resource/examples/garageserver.cpp	2020-10-27 08:59:02.753861813 -0600
++++ iotivity/resource/examples/garageserver.cpp	2020-10-27 08:41:49.334468870 -0600
 @@ -388,7 +388,7 @@ int main(int /*argc*/, char** /*argv[1]*
          std::unique_lock<std::mutex> lock(blocker);
          cv.wait(lock);
@@ -54,9 +54,9 @@ diff -rupN iotivity-2.0.0/resource/examples/garageserver.cpp /home/workdir/iotiv
      {
          oclog() << e.what();
      }
-diff -rupN iotivity-2.0.0/resource/src/OCRepresentation.cpp /home/workdir/iotivity/resource/src/OCRepresentation.cpp
---- iotivity-2.0.0/resource/src/OCRepresentation.cpp	2020-09-11 11:01:32.867823329 -0600
-+++ /home/workdir/iotivity/resource/src/OCRepresentation.cpp	2020-09-11 09:47:29.097233051 -0600
+diff -rupN iotivity-2.0.0/resource/src/OCRepresentation.cpp iotivity/resource/src/OCRepresentation.cpp
+--- iotivity-2.0.0/resource/src/OCRepresentation.cpp	2020-10-27 08:59:02.753861813 -0600
++++ iotivity/resource/src/OCRepresentation.cpp	2020-10-27 08:41:49.334468870 -0600
 @@ -863,13 +863,13 @@ namespace OC
      OCRepresentation::AttributeItem OCRepresentation::operator[](const std::string& key)
      {
@@ -92,10 +92,10 @@ diff -rupN iotivity-2.0.0/resource/src/OCRepresentation.cpp /home/workdir/iotivi
  
      std::ostream& operator<<(std::ostream& os, const OCRepresentation::AttributeItem& ai)
 diff -rupN iotivity-2.0.0/service/resource-container/examples/BMISensorBundle/src/inputSensors/WeightSensorApp/src/WeightSensorApp.cpp iotivity/service/resource-container/examples/BMISensorBundle/src/inputSensors/WeightSensorApp/src/WeightSensorApp.cpp
---- iotivity-2.0.0/service/resource-container/examples/BMISensorBundle/src/inputSensors/WeightSensorApp/src/WeightSensorApp.cpp 2020-10-01 10:45:35.378757514 -0600
-+++ iotivity/service/resource-container/examples/BMISensorBundle/src/inputSensors/WeightSensorApp/src/WeightSensorApp.cpp       2020-10-01 10:51:43.685088631 -0600
+--- iotivity-2.0.0/service/resource-container/examples/BMISensorBundle/src/inputSensors/WeightSensorApp/src/WeightSensorApp.cpp	2020-10-27 08:59:02.753861813 -0600
++++ iotivity/service/resource-container/examples/BMISensorBundle/src/inputSensors/WeightSensorApp/src/WeightSensorApp.cpp	2020-10-27 08:41:49.334468870 -0600
 @@ -221,7 +221,7 @@ int main()
-
+ 
          OC::OCPlatform::stopPresence();
      }
 -    catch (std::exception e)
@@ -103,9 +103,9 @@ diff -rupN iotivity-2.0.0/service/resource-container/examples/BMISensorBundle/sr
      {
          cout << e.what() << endl;
      }
-diff -rupN iotivity-2.0.0/service/resource-encapsulation/unittests/ResourceClientTest.cpp /home/workdir/iotivity/service/resource-encapsulation/unittests/ResourceClientTest.cpp
---- iotivity-2.0.0/service/resource-encapsulation/unittests/ResourceClientTest.cpp	2020-09-11 11:38:32.434117011 -0600
-+++ /home/workdir/iotivity/service/resource-encapsulation/unittests/ResourceClientTest.cpp	2020-09-11 10:40:07.141692134 -0600
+diff -rupN iotivity-2.0.0/service/resource-encapsulation/unittests/ResourceClientTest.cpp iotivity/service/resource-encapsulation/unittests/ResourceClientTest.cpp
+--- iotivity-2.0.0/service/resource-encapsulation/unittests/ResourceClientTest.cpp	2020-10-27 08:59:01.997212717 -0600
++++ iotivity/service/resource-encapsulation/unittests/ResourceClientTest.cpp	2020-10-27 08:41:49.334468870 -0600
 @@ -228,8 +228,8 @@ TEST_F(RemoteResourceObjectTest, QueryPa
          virtual ~CustomHandler() {}
      };
@@ -116,3 +116,16 @@ diff -rupN iotivity-2.0.0/service/resource-encapsulation/unittests/ResourceClien
 +    constexpr const char* VALUE = "value";
  
      auto mockHandler = mocks.Mock< CustomHandler >();
+ 
+diff -rupN iotivity-2.0.0/service/scene-manager/sampleapp/linux/fanserver.cpp iotivity/service/scene-manager/sampleapp/linux/fanserver.cpp
+--- iotivity-2.0.0/service/scene-manager/sampleapp/linux/fanserver.cpp	2020-10-27 08:59:01.997212717 -0600
++++ iotivity/service/scene-manager/sampleapp/linux/fanserver.cpp	2020-10-27 08:51:09.918955021 -0600
+@@ -313,7 +313,7 @@ int main()
+         std::unique_lock < std::mutex > lock(blocker);
+         cv.wait(lock);
+     }
+-    catch (OCException e)
++    catch (OCException& e)
+     {
+         //log(e.what());
+     }

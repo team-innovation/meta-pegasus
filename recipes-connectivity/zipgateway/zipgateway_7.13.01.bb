@@ -4,13 +4,13 @@ SECTION = "network"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 
-DEPENDS = "python-native libusb flex-native bison-native json-c openssl libxslt-native"
+DEPENDS = "python-native libusb flex-native bison-native json-c openssl libxslt-native libusb-native json-c-native"
 RDEPENDS_${PN} = "bridge-utils openssl bash"
 
 PR = "r1"
 PV = "7.13.01+git${SRCPV}"
 
-SRCREV = "a82d0c23a52adb5cbe97a40d0fa971d7534a85b0"
+SRCREV = "ace817ccd812cc491b22a260c1f3691621299aa0"
 SRCBRANCH = "v7.13.1"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
@@ -18,7 +18,6 @@ GIT_ZGATE_PROTOCOL ?= "ssh"
 
 SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_PROTOCOL};branch=${SRCBRANCH} \
            file://zwaved \
-	   file://zip_zeus.patch;striplevel=4 \
            "
 
 S = "${WORKDIR}/git/zipgateway-7.13.01-Source/usr/local"
@@ -29,10 +28,9 @@ INITSCRIPT_NAME = "zwaved"
 INITSCRIPT_PARAMS = "start 30 5 ."
 
 EXTRA_OECMAKE = " \
-    -DCMAKE_INSTALL_PREFIX=/usr/local \
+    -DCMAKE_INSTALL_PREFIX=${prefix}/local \
     -DSKIP_TESTING=TRUE \
     -DDISABLE_MOCK=TRUE \
-    -DJSON_C_SRC=/usr \
     -DDISABLE_DTLS=TRUE \
 "
 
@@ -41,6 +39,13 @@ do_install_append() {
     install -m 0755 ${WORKDIR}/zwaved ${D}${sysconfdir}/init.d
 
     rm -f ${D}/${prefix}/local/etc/zipgateway_node_identify_rpi3b+_led.sh
+}
+
+do_install_append_class-nativesdk() {
+	mv ${D}/etc/radvd.conf ${D}${sysconfdir}
+	mv ${D}/etc/init.d/zipgateway ${D}${sysconfdir}/init.d/
+	rmdir ${D}/etc/init.d
+	rmdir ${D}/etc
 }
 
 FILES_${PN} += "${prefix}/local/sbin/zipgateway"
@@ -69,3 +74,4 @@ FILES_${PN}-dbg += "${prefix}/local/sbin/.debug"
 
 RPROVIDES_${PN} = "zipgateway"
 
+BBCLASSEXTEND = "native nativesdk"

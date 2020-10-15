@@ -1,5 +1,7 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
+DEPENDS_append = " virtual/kernel"
+
 PR = "1"
 SRC_URI += "file://use_revb.patch"
 

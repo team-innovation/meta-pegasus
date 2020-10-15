@@ -7,7 +7,7 @@ index 165c6eb..2ef4cad 100644
  
  include( ExternalProject )
 -set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pipe -Werror -Wparentheses -Wno-array-bounds -Wno-unused-result -std=gnu99 -D_DEFAULT_SOURCE")
-+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pipe -Werror -Wparentheses -Wno-array-bounds -Wno-unused-result -std=gnu99 -D_DEFAULT_SOURCE -Wno-error=address-of-packed-member")
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pipe -Werror -Wparentheses -Wno-array-bounds -Wno-unused-result -std=gnu99 -D_DEFAULT_SOURCE -Wno-address-of-packed-member")
  set(CONFIGURE_HOST arm-linux)
  
  if(DEFINED ENABLE_CODE_COVERAGE)
