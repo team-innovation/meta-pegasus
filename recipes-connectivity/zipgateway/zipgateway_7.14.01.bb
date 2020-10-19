@@ -10,7 +10,7 @@ RDEPENDS_${PN} = "bridge-utils openssl11"
 PR = "r1"
 PV = "7.14.01+git${SRCPV}"
 
-SRCREV = "a4fe258bde8c871d57e2929f24fa5a7434e7016c"
+SRCREV = "ce44a5c849b2eb35a607c50bcdf7a4a19cf43dc2"
 SRCBRANCH = "v7.14.1"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
@@ -32,7 +32,6 @@ EXTRA_OECMAKE = " \
     -DSKIP_TESTING=TRUE \
     -DDISABLE_MOCK=TRUE \
     -DJSON_C_SRC=/usr \
-    -DDISABLE_DTLS=TRUE \
 "
 cmake_do_generate_toolchain_file_append() {
 	cat >> ${WORKDIR}/toolchain.cmake << EOF
