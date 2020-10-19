@@ -82,4 +82,9 @@ if [ "$board"x != "Hubplus-v1x" ]; then
 
 	# FRANKEN HUB use ethernet dongle so the ethernet is eth1
 	sed -i 's/"ethernet_iface": "eth0"/"ethernet_iface": "eth1"/' /opt/2gig/netd/conf_files/brazen/netd_conf.json
+else
+	# comment mosquitto bind address
+	sed -i '/bind_address/ s/^#*/#/' /etc/mosquitto/mosquitto.conf
+	# remove pumpernickel entry
+	rm -f /etc/procman.d/pumpernickel
 fi
