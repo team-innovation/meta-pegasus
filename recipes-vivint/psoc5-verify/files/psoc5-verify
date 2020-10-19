@@ -77,6 +77,11 @@ stop() {
 
 case "$1" in
 	start|restart|reload)
+                if [ ! -e /sys/class/input/input0/device/reset ]; then
+                        echo "Hubplus v1/v2 - does not need to run"
+                        exit 0
+                fi
+
 		psoc5_verify
 		monpwr_loaded=$(lsmod | grep monpwr | sed -e 's/ \+/\t/g' | cut -f 1)
 		test "$monpwr_loaded" = "$monpwr_module" ||
