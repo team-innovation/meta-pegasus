@@ -3,9 +3,9 @@ DESCRIPTION = "EFR32 rail test firmware"
 SRC_URI += "file://vivint_efr32.hex"
 
 
-PR = "r3"
+PR = "r4"
 
-EFR32_FW_HEX_NAME = "vivint_efr32.hex"
+EFR32_FW_HEX_NAME = "vivint_efr32_fg14.hex"
 EFR32_FW_NAME = "vivint_efr32.fw"
 
 do_compile_append(){
