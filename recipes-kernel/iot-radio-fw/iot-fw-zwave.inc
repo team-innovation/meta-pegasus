@@ -1,11 +1,11 @@
 DESCRIPTION = "Zwave rail test firmware"
 
-SRC_URI += "file://railtest_zwave.hex"
-
 PR = "r2"
 
 ZWAVE_FW_HEX_NAME = "railtest_zwave.hex"
 ZWAVE_FW_NAME = "railtest_zwave.fw"
+
+SRC_URI += "file://${ZWAVE_FW_HEX_NAME}"
 
 do_compile_append(){
         ./ihex2fw ${ZWAVE_FW_HEX_NAME} ${ZWAVE_FW_NAME}

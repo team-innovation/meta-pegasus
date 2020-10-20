@@ -1,11 +1,11 @@
 DESCRIPTION = "Zwave firmware"
 
-SRC_URI += "file://vivint_zwave.hex"
-
 PR = "r5"
 
 ZWAVE_FW_HEX_NAME = "vivint_zwave.hex"
 ZWAVE_FW_NAME = "vivint_zwave.fw"
+
+SRC_URI += "file://${ZWAVE_FW_HEX_NAME}"
 
 do_compile_append(){
         ./ihex2fw ${ZWAVE_FW_HEX_NAME} ${ZWAVE_FW_NAME}
