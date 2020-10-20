@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 
 sys_class="/sys/class/leds"
 sync_enable="colors/sync_enable"
