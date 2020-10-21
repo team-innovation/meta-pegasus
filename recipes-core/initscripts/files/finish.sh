@@ -64,6 +64,32 @@ rm_roubaix_logs()
     fi
 }
 
+update_start_sshd_count()
+{
+    count_file="/media/bootscript/start_sshd_count"
+    if [ -f $count_file ] ; then
+	count=$(cat $count_file)
+	if [ $count -gt 0 ]; then
+	    count=$(expr $count - 1)
+
+	    echo "Set start_sshd_count count to $count"
+	    mount -o remount,rw /media/bootscript 
+            echo $count > $count_file
+	    mount -o remount,ro /media/bootscript 
+
+	    # bring eth0 up
+	    ifup eth0
+
+	    # bring eth0 up
+	    ifup eth0
+
+	    # start sshd
+	    /etc/init.d/sshd force-start
+	    /opt/2gig/utils/password_utils --fixroot
+	fi
+    fi
+}
+
 # check to make sure public key is in /media/extra/conf
 check_pub_key
 
@@ -75,16 +101,21 @@ rm_roubaix_logs
 
 
 # Give touchscreen a quick reset to clear and re-initialize
-board=$(fw_printenv board | cut -d= -f2)
-
-if [ "$board"x != "Hubplus-v1x" ]; then
+if [ -e /sys/class/input/input0/device/reset ] ; then
 	echo 1 > /sys/class/input/input0/device/reset
 
 	# FRANKEN HUB use ethernet dongle so the ethernet is eth1
-	sed -i 's/"ethernet_iface": "eth0"/"ethernet_iface": "eth1"/' /opt/2gig/netd/conf_files/brazen/netd_conf.json
+	if grep -q brazen /etc/hostname ; then	
+		sed -i 's/"ethernet_iface": "eth0"/"ethernet_iface": "eth1"/' /opt/2gig/netd/conf_files/brazen/netd_conf.json
+	fi
 else
+	# HUB PLUS mod
+	# decrement start_sshd_count
+	update_start_sshd_count
+
 	# comment mosquitto bind address
 	sed -i '/bind_address/ s/^#*/#/' /etc/mosquitto/mosquitto.conf
+
 	# remove pumpernickel entry
 	rm -f /etc/procman.d/pumpernickel
 fi
