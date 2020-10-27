@@ -448,10 +448,18 @@ panelinfoboardrevupdate() {
 	mntbootscriptro
 }
 
+chargerinit() {
+	is_brazen &&
+		i2cset -y 1 0x2f 0 44
+	true
+}
+
 succeed_or bootscrcheck bootscrupdate
 succeed_or ubootcheck ubootupdate
 succeed_or mmcbootbitscheck mmcbootbitsset
 succeed_or fusecheck fuseset
+
+chargerinit
 
 test "${FACTORYFIRSTBOOT}" = "true" && {
 	info "Initial factory board setup complete -- halting!"
