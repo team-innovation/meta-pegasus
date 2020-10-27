@@ -370,7 +370,7 @@ addboardmodelfromdevtree() {
 	    	echo export WS_BOARD_MODEL=28-600060-001-"$(chk_rev)" >> $pit  &&
 		return
 	is_brazen &&
-		echo export BRAZEN_BOARD_MODEL=28-600060-001-"$(chk_rev)" >> $pit  &&
+		echo export BRAZEN_BOARD_MODEL=PCB-600021-001-"$(chk_rev)" >> $pit  &&
 		return
 
 }
@@ -389,7 +389,7 @@ addboardrevfromdevtree() {
 		echo export WS_BOARD_REV=VS-SH2000-"$(chk_board)"-Rev-"$(chk_rev)" >> $pit &&
 		return
 	is_brazen &&
-		echo export BRAZEN_BOARD_REV=VS-SH2000-"$(chk_board)"-Rev-"$(chk_rev)" >> $pit &&
+		echo export BRAZEN_BOARD_REV=VS-HD1000-"$(chk_board)"-Rev-"$(chk_rev)" >> $pit &&
 		return
 
 }
@@ -401,7 +401,10 @@ panelinfoboardmodelcheck() {
 	test -f $pit ||
 		return "$(false)"
 
-	BMODEL="28-600060-001-$(chk_rev)"
+	is_wallsly &&
+		BMODEL="28-600060-001-$(chk_rev)"
+	is_brazen &&
+		BMODEL="PCB-600021-001-$(chk_rev)"
 
 	if ! grep -q "$BMODEL" "$pit"; then
 		mntbootscriptrw
@@ -418,7 +421,10 @@ panelinfoboardrevcheck() {
 	test -f $pit ||
 		return "$(false)"
 
-	BREV="VS-SH2000-$(chk_board)-Rev-$(chk_rev)"
+	is_wallsly &&
+		BREV="VS-SH2000-$(chk_board)-Rev-$(chk_rev)"
+	is_brazen &&
+		BREV="VS-HD1000-$(chk_board)-Rev-$(chk_rev)"
 
 	if ! grep -q "$BREV" "$pit"; then
 		mntbootscriptrw
