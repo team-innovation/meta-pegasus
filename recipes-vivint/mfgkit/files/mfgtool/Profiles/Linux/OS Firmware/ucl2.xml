@@ -463,7 +463,7 @@
     <CMD state="Updater" type="push" body="$ bash save-restore-serialnums.sh restore">Restoring serialnumbers, keys, skus ...</CMD>
   </LIST>
 
-  <LIST name="Brazen-Reflash-Plus-Serial" desc="Reflash a Brazen and prompt for serialnumber">
+  <LIST name="Hubplus-v1-Reflash-Plus-Serial" desc="Reflash a Hubplus-v1 or Hubplus-v2 and prompt for serialnumber">
     <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot-brazen.imx">Loading U-boot</CMD>
 
     <CMD state="BootStrap" type="load" file="files/usb-reflash-boot.scr" address="0x11000000"
@@ -504,7 +504,7 @@
     <CMD state="BootStrap" type="jump" > Jumping to OS image. </CMD>
   </LIST>
 
-  <LIST name="Brazen-Boot-to-shell" desc="Boot Brazen to shell in initramfs">
+  <LIST name="Hubplus-v1-Boot-to-shell" desc="Boot Hubplus-v1 or Hubplus-v2 to shell in initramfs">
     <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot-brazen.imx">Loading U-boot</CMD>
 
     <CMD state="BootStrap" type="load" file="files/binshell-boot.scr" address="0x11000000"
@@ -521,7 +521,8 @@
 
     <CMD state="BootStrap" type="jump" >Jumping to OS image.</CMD>
   </LIST>
-  <LIST name="Brazen-Reflash-Save-Serial-Etc" desc="Reflash a Wallsly and save the existing serialnumber and other info">
+
+  <LIST name="Hubplus-v1-Reflash-Save-Serial-Etc" desc="Reflash a Hubplus-v1 or Hubplus-v2 and save the existing serialnumber and other info">
     <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot-brazen.imx">Loading U-boot</CMD>
 
     <CMD state="BootStrap" type="load" file="files/usb-reflash-boot.scr" address="0x11000000"
@@ -555,5 +556,17 @@
     <CMD state="Updater" type="push" body="$ bash slimline-emmc-postfs-init.sh">Running post-fsextract script</CMD>
 
     <CMD state="Updater" type="push" body="$ bash save-restore-serialnums.sh restore">Restoring serialnumbers, keys, skus ...</CMD>
+  </LIST>
+
+  <LIST name="Hubplus-v1-DDR-Tune-Stress" desc="Boot Hubplus-v1 or Hubplus-v2 to u-boot and run ddr tune and stress tool">
+    <CMD state="BootStrap" type="boot" body="BootStrap" file ="files/u-boot-brazen.imx">Loading U-boot</CMD>
+
+    <CMD state="BootStrap" type="load" file="files/ddrtunestress.scr" address="0x11000000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading Bootscript.</CMD>
+
+    <CMD state="BootStrap" type="load" file="files/ddr-test-uboot-jtag-mx6dl.bin" address="0x00907000"
+      loadSection="OTH" setSection="OTH" HasFlashHeader="FALSE">Loading stress tool binary.</CMD>
+
+    <CMD state="BootStrap" type="jump" >Jumping to U-Boot.</CMD>
   </LIST>
 </UCL>
