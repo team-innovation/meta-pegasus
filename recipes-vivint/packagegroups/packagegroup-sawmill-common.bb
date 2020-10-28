@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "54"
+PR = "55"
 
 inherit packagegroup
 
@@ -116,4 +116,6 @@ RDEPENDS_${PN} = " \
 	xdelta3 \
 	xz \
 	vim \
+        lrzsz \
+	ser2net \
 "
