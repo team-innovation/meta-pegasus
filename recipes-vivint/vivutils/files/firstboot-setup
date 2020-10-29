@@ -39,7 +39,8 @@ is_wallsly() {
 }
 
 is_brazen() {
-	grep -q vivint,brazen "/proc/device-tree/compatible"
+	grep -q vivint,brazen "/proc/device-tree/compatible" &&
+		test $(cat /sys/class/board_info/board_info/board_rev) -gt 13
 }
 
 #
