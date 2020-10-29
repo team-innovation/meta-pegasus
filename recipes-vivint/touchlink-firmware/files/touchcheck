@@ -91,10 +91,13 @@ Window {
 EOF
 )
 
-echo -e "$S" > $qmlfile
+echo -e "$S" > "$qmlfile"
+if [ ! -f "$qmlfile" ]; then
+	exit 1
+fi
 ret=$(/usr/bin/qt5/qmlscene $qmlfile 2>&1)
-echo $ret
-rm $qmlfile 
+echo "$ret"
+rm "$qmlfile" 
 unset FB_MULTI_BUFFER
 if [ "$ret" = "qml: PASSED!" ]; then
 	exit 0
