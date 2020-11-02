@@ -6,6 +6,6 @@ VOLATILE_BINDS = "\
     /media/extra/srv /srv\n\
     /media/extra/etc /etc\n\
     /media/extra/opt /opt\n\
-    /media/extra/root /root\n\
+    /media/extra/root /home/root\n\
 "
 
