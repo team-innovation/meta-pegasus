@@ -139,7 +139,7 @@ do_install() {
     install -d ${D}/opt/2gig/soundfiles/wav
     install -d ${D}/opt/2gig/soundfiles/wav/clicks
     cp -dR ${S}/wav/* ${D}/opt/2gig/soundfiles/wav
-    cp -dR ${S}/content/sounds/* ${D}/opt/2gig/soundfiles/wav/clicks 
+    cp -dR ${S}/content/sounds/* ${D}/opt/2gig/soundfiles/wav/clicks
 
     install -d "${D}${sysconfdir}/logrotate.d"
     install -m 0600 "${WORKDIR}/pumpernickel.logrotate" "${D}${sysconfdir}/logrotate.d/pumpernickel"
