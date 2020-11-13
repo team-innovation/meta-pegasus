@@ -82,12 +82,17 @@ do_install() {
     install -d ${D}${datadir}/${EXEC_DIR}
     install -m 0755 ${B}/${EXEC_DIR} ${D}${datadir}/${EXEC_DIR}
 
+    install -d ${D}/opt/2gig/soundfiles/wav
+    install -d ${D}/opt/2gig/soundfiles/wav/clicks
+    cp -dR ${S}/wav/* ${D}/opt/2gig/soundfiles/wav
+    cp -dR ${S}/content/sounds/* ${D}/opt/2gig/soundfiles/wav/clicks
+
     install -d "${D}${sysconfdir}/logrotate.d"
     install -m 0600 "${WORKDIR}/pumpernickel.logrotate" "${D}${sysconfdir}/logrotate.d/pumpernickel"
 }
 
 FILES_${PN}-dbg += "${datadir}/${EXEC_DIR}/.debug"
-FILES_${PN} += "${datadir}"
+FILES_${PN} += "${datadir} /opt/2gig/soundfiles/*"
 
 RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
     qtsvg-plugins \

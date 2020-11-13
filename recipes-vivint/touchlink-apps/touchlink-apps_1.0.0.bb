@@ -34,6 +34,7 @@ require touchlink-apps-zwaved.inc
 require touchlink-apps-netd.inc
 require touchlink-apps-utils.inc
 require touchlink-apps-httpd.inc
+require touchlink-apps-huei.inc
 require touchlink-apps-ssdpd.inc
 require touchlink-apps-webd.inc
 require touchlink-apps-dbapd.inc
@@ -106,6 +107,9 @@ DEPENDS = " \
 	python3-aiodns-native \
 	python3-aioconsole-native \
 	python3-aiohttp-native \
+	python3-aiohttp-security-native \
+	python3-aiohttp-session-native \
+	python3-aiohttp-sse-native \
 	python3-async-generator-native \
 	python3-async-timeout-native \
 	python3-atomicwrites-native \
@@ -157,6 +161,7 @@ DEPENDS = " \
 	python3-pyserial-native \
 	python3-pysodium-native \
 	python3-py-native \
+	python3-pyjwt-native \
 	python3-pytz-native \
 	python3-requests-native \
 	python3-requests-toolbelt-native \
@@ -396,6 +401,7 @@ PACKAGES = " \
 	${PN}-flashpolicyd   \
 	${PN}-global-conf \
 	${PN}-httpd \
+	${PN}-huei \
 	${PN}-iod   \
 	${PN}-launcherd \
 	${PN}-modemd-proxies      \

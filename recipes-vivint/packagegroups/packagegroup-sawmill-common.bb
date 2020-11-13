@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "49"
+PR = "53"
 
 inherit packagegroup
 
@@ -29,6 +29,9 @@ RDEPENDS_${PN} = " \
 	python3-aioconsole \
 	python3-aiodns \
 	python3-aiohttp \
+	python3-aiohttp-security \
+	python3-aiohttp-session \
+	python3-aiohttp-sse \
 	python3-async-generator \
 	python3-async-timeout \
 	python3-atomicwrites \
@@ -72,6 +75,7 @@ RDEPENDS_${PN} = " \
 	python3-protobuf \
 	python3-pycparser \
 	python3-pyftpdlib \
+	python3-pyjwt \
 	python3-pyserial \
 	python3-pyssh-ctypes \
 	python3-pytest \
