@@ -39,6 +39,7 @@ __END_PYTHON
 
 ap_mode()
 {
+	ifconfig ra0 up
         /sbin/ip addr add 192.168.10.1/24 dev ra0
         /usr/sbin/udhcpd /etc/udhcpd.conf
 }
