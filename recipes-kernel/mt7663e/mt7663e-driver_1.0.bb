@@ -35,16 +35,9 @@ pkg_postinst_ontarget_${PN} () {
 	network_profile_etc="/etc/wireless/mediatek/mt7663/mt7663.1.dat"
         network_profile="/media/extra/conf/network/mt7663.1.dat"
 
-        test -d $network_conf_dir || {
-		mkdir -p $network_conf_dir
-        }
-
-	test -f $network_profile || {
-		mv $network_profile_etc $network_profile
+	test -f $network_profile && {
+		cp $network_profile $network_profile_etc
 	}
-
-	rm -f $network_profile_etc
-	ln -sf $network_profile $network_profile_etc
 
 	exit 0
 }

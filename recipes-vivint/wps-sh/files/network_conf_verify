@@ -29,8 +29,22 @@ __END_PYTHON
     # Chop the password town to the length allowed by WPA2:
     password=${password:0:63}
 
+    # copy /media/extra/conf/network/mt7663.1.dat over if it exist
+    if [ -f /media/extra/conf/network/mt7663.1.dat ]; then
+	    cp -a /media/extra/conf/network/mt7663.1.dat /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    fi
+
     sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
     sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+
+    if [ -f /media/bootscript/wifiinfo.txt ]; then
+            mac=$(cat /media/bootscript/wifiinfo.txt)
+            sed -i "s/MacAddress=.*/MacAddress=$mac/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+            if [ -f /media/extra/conf/network/mt7663.1.dat ]; then
+                    sed -i "s/MacAddress=.*/MacAddress=$mac/" /media/extra/conf/network/mt7663.1.dat
+            fi
+    fi
+
 
     # need to start ra0 up first before we can initialize apcli0
     # we then bring ra0 down so there is a brief momment that Soft AP will be up

@@ -42,6 +42,7 @@ ap_mode()
 	ifconfig ra0 up
         /sbin/ip addr add 192.168.10.1/24 dev ra0
         /usr/sbin/udhcpd /etc/udhcpd.conf
+	touch /tmp/ap_mode
 }
 
 setup_interfaces()
@@ -74,20 +75,28 @@ setup_scan()
 	sleep 1
 
 	rmmod mt_wifi
+	sleep 1
 
 	sed -i "s/WirelessMode=.*$/WirelessMode=$1/g" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
 	modprobe mt_wifi
+	sleep 1
+
 	ifconfig ra0 up
 	ifconfig apcli0 up
+	sleep 1
 
         #iwpriv apcli0 set PartialScan=0
         iwpriv apcli0 set SiteSurvey=
         sleep 1
         iwpriv apcli0 get_site_survey
 
-	# keep ra0 down 
-	ifconfig ra0 down
+	if [ -e /tmp/ap_mode ]; then
+		ap_mode
+	else
+		# keep ra0 down 
+		ifconfig ra0 down
+	fi
 
 	# restore wireless mode
 	sed -i "s/WirelessMode=.*$/WirelessMode=$current_wmode/g" /etc/wireless/mediatek/mt7663/mt7663.1.dat
@@ -102,6 +111,7 @@ setup_scan()
 		fi
 	fi
 
+	sleep 5
 }
 
 connect_ssid()
@@ -130,6 +140,9 @@ connect_ssid()
 
 	auth_mode=${sec%%/*}
 	enc_type=${sec##*/}
+
+	ifconfig apcli0 up
+	ifconfig ra0 down
 
 	iwpriv apcli0 set ApCliEnable=0
 	if [ ! -z $channel ]; then
@@ -168,6 +181,30 @@ connect_ssid()
 	sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=$pass/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 	sed -i "s/^ApCliEnable=.*$/ApCliEnable=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
+	rm -f /tmp/ap_mode
+}
+
+disable_ap()
+{
+        if [ -e /tmp/ap_mode ]; then
+                ifconfig ra0 down
+        fi
+        killall -9 udhcpd
+        rm -f /tmp/ap_mode
+}
+
+reset()
+{
+	iwpriv apcli0 set ApCliSsid=
+	iwpriv apcli0 set ApCliWPAPSK=
+	iwpriv apcli0 set ApCliEnable=0
+
+	# update profile
+        sed -i "s/^Channel=.*$/Channel=/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+        sed -i "s/^ApCliSsid=.*$/ApCliSsid=/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+        sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+
+	start_udhcpc
 }
 
 reconnect()
@@ -189,7 +226,7 @@ print_help()
 	        /bin/cat /etc/wireless/mediatek/mtk_net_ctrl.help
 	else
 		echo "Available options"
-	       	echo -e "\t init - setup all required interfaces for use"
+	        echo -e "\t init - setup all required interfaces for use"
 		echo -e "\t setup_ap - Setup Soft AP and bring it up"
 		echo -e "\t disable_ap - Disable Soft AP"
 		echo -e "\t ap_mode - Bring up Soft AP if it already setup"
@@ -218,9 +255,9 @@ case "$opcode" in
                 ap_mode
                 ;;
 
-	"disable_ap")
-		ifconfig ra0 down
-		;;
+        "disable_ap")
+		disable_ap
+                ;;
 
          "scan24")
                 setup_scan 9 
@@ -244,6 +281,9 @@ case "$opcode" in
                 reconnect
                 ;;
 
+	"reset")
+                reset
+                ;;
 
 	"udhcpc")
 		start_udhcpc
