@@ -95,7 +95,6 @@ PYTHON_EXTRA_DEPENDS = "\
 	python3-six \
 	python3-soco \
 	python3-sparsedict \
-	python3-simpleaudio \
 	python3-phue \
 	python3-transitions \
 "
