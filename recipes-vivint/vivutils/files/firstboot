@@ -11,6 +11,16 @@ firstboot()
 	/usr/local/bin/firstboot-setup
 }
 
+is_brazen() {
+        grep -q vivint,brazen "/proc/device-tree/compatible" &&
+                test $(cat /sys/class/board_info/board_info/board_rev) -gt 13
+}
+
+run_led_status()
+{
+  	/usr/local/bin/led_ctrl progress status red 255 &
+}
+
 do_nothing() {
 	return 0
 }
@@ -18,6 +28,7 @@ do_nothing() {
 case "$1" in
 	start)
 		firstboot
+		is_brazen && run_led_status
 		;;
 	stop|restart|reload)
 		do_nothing

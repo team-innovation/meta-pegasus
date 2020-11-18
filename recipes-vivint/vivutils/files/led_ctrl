@@ -152,12 +152,15 @@ set_disarm()
 	    set_stay $color 0
 	    set_away $color 0
 	done
+	set_stay white 255
+	set_away white 255
 }
 
 set_stay()
 {
 	# $1 - color
 	# $2 - brightness
+	echo 0 > ${stay_led["white"]}
 	echo $2 > ${stay_led["$1"]}
 }
 
@@ -167,6 +170,7 @@ set_away()
 {
 	# $1 - color
 	# $2 - brightness
+	echo 0 > ${away_led["white"]}
 	echo $2 > ${away_led["$1"]}
 }
 
@@ -182,6 +186,9 @@ all_icons()
 
 set_backlight()
 {
+	set_stay white $1
+	set_away white $1
+
 	# $1 - brightness
 	for i in {1..11}
 	do
