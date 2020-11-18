@@ -118,6 +118,6 @@ else
 	# remove pumpernickel entry
 	rm -f /etc/procman.d/pumpernickel
 	killall -9 led_ctrl
-	/usr/loca/bin/led_ctrl off
-	/usr/loca/bin/led_ctrl backlight 255
+	/usr/local/bin/led_ctrl off
+	/usr/local/bin/led_ctrl backlight 255
 fi
