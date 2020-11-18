@@ -1,433 +1,295 @@
 #!/bin/sh
 
-sys_class="/sys/class/leds"
-sync_enable="colors/sync_enable"
-blue="colors/blue/brightness"
-green="colors/green/brightness"
-red="colors/red/brightness"
+########## MAIN BOARD LEDs #####################
+# Main board LEDs Left 4
+declare -A mainboard_led_4
 
-declare -A leds_bar
-leds_bar["led1"]="lp5012:led3_mod"                                                
-leds_bar["led2"]="lp5012:led2_mod" 
-leds_bar["led3"]="lp5012:led1_mod"      
-leds_bar["led4"]="lp5012:led0_mod"      
+mainboard_led_4["white"]="/sys/class/leds/lp5018_out12/brightness"
+mainboard_led_4["red"]="/sys/class/leds/lp5018_out1/brightness"
+mainboard_led_4["green"]="/sys/class/leds/lp5018_out2/brightness"
+mainboard_led_4["blue"]="/sys/class/leds/lp5018_out0/brightness"
 
-progress_bar="${leds_bar["led1"]} ${leds_bar["led2"]} ${leds_bar["led3"]} ${leds_bar["led4"]}"
+# Main board LEDs Left 3
+declare -A mainboard_led_3
+
+mainboard_led_3["white"]="/sys/class/leds/lp5018_out13/brightness"
+mainboard_led_3["red"]="/sys/class/leds/lp5018_out4/brightness"
+mainboard_led_3["green"]="/sys/class/leds/lp5018_out5/brightness"
+mainboard_led_3["blue"]="/sys/class/leds/lp5018_out3/brightness"
+
+# Main board LEDs Left 2
+declare -A mainboard_led_2
+
+mainboard_led_2["white"]="/sys/class/leds/lp5018_out14/brightness"
+mainboard_led_2["red"]="/sys/class/leds/lp5018_out7/brightness"
+mainboard_led_2["green"]="/sys/class/leds/lp5018_out8/brightness"
+mainboard_led_2["blue"]="/sys/class/leds/lp5018_out6/brightness"
+
+# Main board LEDs Left 1
+declare -A mainboard_led_1
+
+mainboard_led_1["white"]="/sys/class/leds/lp5018_out15/brightness"
+mainboard_led_1["red"]="/sys/class/leds/lp5018_out10/brightness"
+mainboard_led_1["green"]="/sys/class/leds/lp5018_out11/brightness"
+mainboard_led_1["blue"]="/sys/class/leds/lp5018_out9/brightness"
+
+#####################################################################
+
+########### KEYPAD BOARD LEDs #####################################
+# STAY button
+declare -A stay_led
+stay_led["white"]="/sys/class/leds/lp5024_out21/brightness"
+stay_led["red"]="/sys/class/leds/lp5024_out0/brightness"
+stay_led["green"]="/sys/class/leds/lp5024_out1/brightness"
+stay_led["blue"]="/sys/class/leds/lp5024_out2/brightness"
+
+# AWAY button
+declare -A away_led
+away_led["white"]="/sys/class/leds/lp5024_out22/brightness"
+away_led["red"]="/sys/class/leds/lp5024_out9/brightness"
+away_led["green"]="/sys/class/leds/lp5024_out10/brightness"
+away_led["blue"]="/sys/class/leds/lp5024_out11/brightness"
+
+# ICONS
+icon_1="/sys/class/leds/lp5024_out23/brightness"
+icon_2="/sys/class/leds/lp5024_out18/brightness"
+icon_3="/sys/class/leds/lp5024_out20/brightness"
+icon_4="/sys/class/leds/lp5024_out19/brightness"
+
+# Backlight
+declare -A backlight_leds
+backlight_leds[1]="/sys/class/leds/lp5024_out3/brightness"
+backlight_leds[2]="/sys/class/leds/lp5024_out4/brightness"
+backlight_leds[3]="/sys/class/leds/lp5024_out5/brightness"
+backlight_leds[4]="/sys/class/leds/lp5024_out6/brightness"
+backlight_leds[5]="/sys/class/leds/lp5024_out7/brightness"
+backlight_leds[6]="/sys/class/leds/lp5024_out8/brightness"
+backlight_leds[7]="/sys/class/leds/lp5024_out12/brightness"
+backlight_leds[8]="/sys/class/leds/lp5024_out13/brightness"
+backlight_leds[9]="/sys/class/leds/lp5024_out14/brightness"
+backlight_leds[10]="/sys/class/leds/lp5024_out15/brightness"
+backlight_leds[11]="/sys/class/leds/lp5024_out17/brightness"
+
+########################################################################
+colors="white red green blue"
+icon_leds="${icon_1} ${icon_2} ${icon_3} ${icon_4}"
 
 
-declare -A keypad_leds
+all_on()
+{
+	# $1 - color
+	# $2 - brightness
 
-keypad_leds["led1"]="lp5024:led4_mod"
-keypad_leds["led2"]="lp5024:led5_mod"
-keypad_leds["led3"]="lp5024:led6_mod"
-keypad_leds["led4"]="lp5024:led7_mod"
-keypad_leds["led5"]="lp5024:led2_mod"
-keypad_led5_green="lp5024:led3_mod"
-keypad_leds["led6"]="lp5024:led0_mod"                             
-keypad_led6_green="lp5024:led1_mod" 
-keypad_leds["led7"]="lp5024:led1_mod"                             
-keypad_leds["led8"]="lp5024:led5_mod"                             
-keypad_leds["led9"]="lp5024:led3_mod"                             
-keypad_leds["led10"]="lp5024:led6_mod"                             
-keypad_leds["led11"]="lp5024:led4_mod"                             
-keypad_leds["led12"]="lp5024:led7_mod"                             
-
-icon_leds="${keypad_leds["led1"]} ${keypad_leds["led2"]} ${keypad_leds["led3"]} ${keypad_leds["led4"]}"
-away_button="${keypad_leds["led5"]}"
-stay_button="${keypad_leds["led6"]}"
-
-
-# led_ctrl bar all blue 200
-
-set_bar_color_all() {
-   for l in ${progress_bar}; do                                     
-      echo 0 > ${sys_class}/${l}/${sync_enable}           
-      case "$1" in                                        
-         blue)                                        
-            echo $2 > ${sys_class}/${l}/${blue} 
-            ;;                                   
-         green)                                       
-            echo $2 > ${sys_class}/${l}/${green}
-            ;;                                 
-         red)                                       
-            echo $2 > ${sys_class}/${l}/${red}
-            ;;                  
-         white)
-            echo $2 > ${sys_class}/${l}/${blue}
-            echo $2 > ${sys_class}/${l}/${green}
-            echo $2 > ${sys_class}/${l}/${red}
-            ;;
-         orange)
-            gval=let $(expr $2 / 2)
-            echo $gval > ${sys_class}/${l}/${blue}
-            echo $2 > ${sys_class}/${l}/${green}
-            ;;
-         *)                          
-            echo "Invalid color"
-            exit 1
-      esac      
-   done  	
+	set_progress all $1 $2
+	set_stay $1 $2
+	set_away $1 $2
+	all_icons $2
+	set_backlight $2
 }
 
-set_bar_color_single(){
-   echo 0 > ${sys_class}/$1/${sync_enable}
-   case "$2" in
-      blue)
-          echo $3 > ${sys_class}/$1/${blue}
-          ;;
+set_progress()
+{
+	# $1 - arg
+	# $2 - color
+	# $3 - brightness
 
-      green)
-          if [ $1 = "led5" ]; then
-             echo $3 > ${sys_class}/$keypad_leds5_green/${green}
-          elif [ $1 = "led6" ]; then
-             echo $3 > ${sys_class}/$keypad_led6_green/${green}
-          else
-             echo $3 > ${sys_class}/$1/${green}
-          fi
-          ;;
+	case $1 in
+	    all)
+		mainboard_leds="${mainboard_led_1["$2"]} ${mainboard_led_2["$2"]} ${mainboard_led_3["$2"]} ${mainboard_led_4["$2"]}"
+		for led in ${mainboard_leds}
+        	do
+                    echo $3 > $led
+        	done
+		;;
 
-      red)
-          echo $3 > ${sys_class}/$1/${red}
-          ;;
+	    led1)
+		echo $3 > ${mainboard_led_1["$2"]}
+		;;
 
-      white)
-          echo $3 > ${sys_class}/$1/${blue}
-          echo $3 > ${sys_class}/$1/${green}
-          echo $3 > ${sys_class}/$1/${red}
-          ;;
- 
-      orange)
-          gval=let $(expr $2 / 2)
-          echo $gval > ${sys_class}/$1/${blue}
-          echo $3 > ${sys_class}/$1/${green}
-          ;;
-      *)
-          echo "Invalid color for $1"
-	  exit 1
-   esac
+	    led2)
+		echo $3 > ${mainboard_led_2["$2"]}
+		;;
+
+	    led3)
+		echo $3 > ${mainboard_led_3["$2"]}
+		;;
+
+	    led4)
+		echo $3 > ${mainboard_led_4["$2"]}
+		;;
+
+	    status)
+		while [ 1 ] 
+		do
+		    mainboard_leds="${mainboard_led_1["$2"]} ${mainboard_led_2["$2"]} ${mainboard_led_3["$2"]} ${mainboard_led_4["$2"]}"		
+		    for led in ${mainboard_leds}
+		    do
+		        echo $3 > $led
+		        sleep 1		    
+		    done
+		    set_progress off
+		    sleep 1
+	        done
+		;;
+
+	    off)
+	       for color in ${colors}
+	       do
+	           mainboard_leds="${mainboard_led_1["$color"]} ${mainboard_led_2["$color"]} ${mainboard_led_3["$color"]} ${mainboard_led_4["$color"]}"
+	           for led in ${mainboard_leds}
+	           do
+	 	       echo 0 > $led
+	           done
+	       done
+	       ;;
+	esac
 }
 
-main_bar() {
-   #echo "$@"
-   case "$1" in
-       all)
-	   shift
-           set_bar_color_all $1 $2
-      ;;
-      process)
-          shift
-          while true
-          do
-              set_bar_color_all green 0
-	      sleep 0.5
-              set_bar_color_single ${leds_bar["led1"]} $1 $2
-              sleep 0.5
-              set_bar_color_single ${leds_bar["led2"]} $1 $2
-              sleep 0.5
-              set_bar_color_single ${leds_bar["led3"]} $1 $2
-              sleep 0.5
-              set_bar_color_single ${leds_bar["led4"]} $1 $2
-              sleep 0.5
-          done
-      ;;
-      led1 | led2 | led3 | led4)
-          # led color value
-          set_bar_color_single ${leds_bar["$1"]} $2 $3
-          ;;                    
-      off)
-           set_bar_color_all blue 0
-           set_bar_color_all green 0
-           set_bar_color_all red 0
-         ;;
-      *)
-          echo "Usage: $0 bar all blue|red|green 0-255"
-          echo "example: $0 bar all blue 255"
-          echo 
-          echo "Usage: $0 bar led1|led2|led3|led4 blue|red|green|white 0-255"
-          echo "example: $0 bar led2 red 155"
-          echo 
-          echo "Usage: $0 bar off"
-         exit 1
-   esac
+set_disarm()
+{
+	for color in ${colors}
+	do
+	    set_stay $color 0
+	    set_away $color 0
+	done
 }
 
-set_control_pad_color() {
-   #echo DEBUG: led $1, color $2, value $3
-   echo 0 > ${sys_class}/${keypad_leds["$1"]}/${sync_enable}
-   case "$2" in                                
-      blue)                                     
-          echo $3 > ${sys_class}/${keypad_leds["$1"]}/${blue}     
-          ;;                                              
-      green)                                              
-          echo $3 > ${sys_class}/${keypad_leds["$1"]}/${green}              
-          ;;                                              
-      red)                                                
-          echo $3 > ${sys_class}/${keypad_leds["$1"]}/${red}                
-          ;;                                              
-      white)
-          echo $3 > ${sys_class}/${keypad_leds["$1"]}/${blue}                
-          echo $3 > ${sys_class}/${keypad_leds["$1"]}/${green}                
-          echo $3 > ${sys_class}/${keypad_leds["$1"]}/${red}                
-          ;;
-      orange)
-          gval=let $(expr $2 / 2)
-          echo $gval > ${sys_class}/${keypad_leds["$1"]}/${blue}
-          echo $3 > ${sys_class}/${keypad_leds["$1"]}/${green}
-          ;;
-      off)
-          echo 0 > ${sys_class}/${keypad_leds["$1"]}/${blue}                
-          echo 0 > ${sys_class}/${keypad_leds["$1"]}/${green}                
-          echo 0 > ${sys_class}/${keypad_leds["$1"]}/${red}                
-          ;;
-      *)                                                  
-          echo "Invalid color for ${keypad_leds["$1"]}"                              
-          exit 1                                          
-   esac
-}
-
-control_pad_off() {
-   for l in led1 led2 led3 led4 led5 led6 led7 led8 led9 led10 led11 led12; do
-      echo 0 > ${sys_class}/${keypad_leds["$l"]}/${blue} 
-      echo 0 > ${sys_class}/${keypad_leds["$l"]}/${green} 
-      echo 0 > ${sys_class}/${keypad_leds["$l"]}/${red} 
-   done
-}
-
-demo_progress_bar() {
-   for l in led1 led2 led3 led4; do
-      main_bar $l red 255
-      sleep 0.5
-   done
-   sleep 1
-   main_bar off
-
-   for l in led1 led2 led3 led4; do
-      main_bar $l green 255
-      sleep 0.5
-   done
-   sleep 1
-   main_bar off
-
-   for l in led1 led2 led3 led4; do
-      main_bar $l blue 255
-      sleep 0.5
-   done
-   sleep 1
-   main_bar off
-
-   for l in led1 led2 led3 led4; do                                          
-      main_bar $l blue 255                                                   
-      main_bar $l green 255                                                   
-      main_bar $l red 255                                                   
-      sleep 0.5                                                              
-   done                                                      
-   sleep 1                                                    
-   main_bar off  
-
-   for i in {1..255}; do
-      main_bar all red $i
-      sleep 0.1
-   done
-
-   main_bar off
-   for i in {1..255}; do
-      main_bar all green $i
-      sleep 0.1
-   done
- 
-   main_bar off
-   for i in {1..255}; do
-      main_bar all blue $i
-      sleep 0.1
-   done
-   main_bar off
-
-   main_bar off                                             
-   for i in {1..255}; do                                                     
-      main_bar all blue $i                                                   
-      main_bar all green $i                                                   
-      main_bar all red $i                                                   
-      sleep 0.1                                                              
-   done                                                                      
-   main_bar off
-}
-
-set_away_on() {
-  set_control_pad_color led5 $1 $2
-}
-
-set_away_off() {                                                                               
-  set_control_pad_color led5 off
-}
-
-set_stay_on() {
-  set_control_pad_color led6 $1 $2
-}
-
-set_stay_off() {
-  set_control_pad_color led6 off
-}
-
-wake_key_pad() {
-   for l in  led7 led8 led9 led10 led11 led12; do            
-     set_control_pad_color $l $1 $2 
-  done
-}
-
-sleep_key_pad() {                                            
-   for l in  led7 led8 led9 led10 led11 led12; do                                             
-     set_control_pad_color $l off                                                          
-  done                                                                                        
-} 
-
-all_icon_on() {
-   for l in led1 led2 led3 led4; do
-      set_control_pad_color $l $1 $2     
-   done
-}
-
-all_icon_off() {
-   for l in led1 led2 led3 led4; do
-      set_control_pad_color $l off
-   done
-}
-
-
-demo_control_pad(){
-   # icon bar
-   for l in led1 led2 led3 led4; do      
-      set_control_pad_color $l blue 255
-      sleep 0.5
-   done
-   sleep 1
-   control_pad_off
-
-   for l in led1 led2 led3 led4; do
-      set_control_pad_color $l green 255      
-      sleep 0.5
-   done                                                                       
-   sleep 1
-   control_pad_off
-
-   # away
-   for c in blue green red; do
-      set_away_on $c 125
-      sleep 1
-      set_away_on $c 0
-   done
-
-   # stay
-   for c in blue green red; do                 
-      set_stay_on $c 125           
-      sleep 1                                          
-      set_stay_on $c 0
-   done     
-
-  # key pad
-  for i in {1..255}; do
-     wake_key_pad red $i
-     sleep 0.1
-  done
-  sleep 1
-
-  sleep_key_pad
+set_stay()
+{
+	# $1 - color
+	# $2 - brightness
+	echo $2 > ${stay_led["$1"]}
 }
 
 
 
-loop_demo=1
+set_away()
+{
+	# $1 - color
+	# $2 - brightness
+	echo $2 > ${away_led["$1"]}
+}
 
-trap "loop_demo=0; main_bar off; control_pad_off; exit 0" SIGHUP SIGINT SIGTERM
+
+all_icons()
+{
+	#$1 brightness
+	for led in ${icon_leds}
+	do
+	    echo $1 > $led
+	done
+}
+
+set_backlight()
+{
+	# $1 - brightness
+	for i in {1..11}
+	do
+	    echo $1 > ${backlight_leds[$i]}
+	done
+}
+
+all_off()
+{	
+	for color in ${colors}
+	do
+	    set_progress all $color 0
+	    set_stay $color 0
+	    set_away $color 0
+	done
+	
+	all_icons 0
+	set_backlight 0
+}
+
+print_help()
+{
+	echo
+	echo "GENERAL USAGE"
+	echo 
+	echo -e "\t$0 all red|white|green|blue 0..255"
+	echo -e "\t$0 progress all|led1|led2|led3|led4|status|off red|white|green|blue 0..255"
+	echo -e "\t$0 away red|white|green|blue 0..255"
+	echo -e "\t$0 stay red|white|green|blue 0..255"
+	echo -e "\t$0 disarm"
+	echo -e "\t$0 wifi 0..255"
+	echo -e "\t$0 ac 0..255"
+	echo -e "\t$0 battery 0..255"
+	echo -e "\t$0 alerts 0..255"
+	echo -e "\t$0 backlight 0..255"
+	echo -e "\t$0 disco"
+	echo
+}
+
+trap "all_off; exit 0" SIGHUP SIGINT SIGTERM
 
 # main
 main() {
    case "$1" in
       all)
-         main_bar all $1 $2
-         icon_all_on $1 $2
-         set_away_on $1 $2
-         set_stay_on $1 $2
-         wake_key_pad red $2
+	 shift
+         all_on $@
          ;;
-      bar)
+      progress)
          shift
-         main_bar $@
+         set_progress $@
          ;;
 
       away) 
          shift
-         set_away_on $@
+         set_away $@
          ;;
 
       stay)
          shift
-         set_stay_on $@
+         set_stay $@
          ;;
 
       disarm)
-         set_away_off
-         set_stay_off
+         set_disarm
          ;;
 
       wifi)
-          set_control_pad_color led1 $2 $3
+          echo $2 > $icon_1
           ;;
       
       ac)
-          set_control_pad_color led2 $2 $3
+          echo $2 > $icon_2
           ;;
       
       battery)
-          set_control_pad_color led3 $2 $3
+          echo $2 > $icon_3
           ;;
 
       alerts)
-          set_control_pad_color led4 $2 $3
-         ;;
-      keypad)
-         shift
-         wake_key_pad $@
+          echo $2 > $icon_4
          ;;
 
-      sleep)
-         shift
-         sleep_key_pad
+      backlight)
+         set_backlight $2
          ;;
-      demo)
-         while [ $loop_demo ]; do
-            demo_control_pad
-            demo_progress_bar
-         done
-         ;;
-      flash-light)
-         main_bar all white 255
-         set_away_on white 255
-         set_stay_on white 255
-         wake_key_pad red 255
-         ;;
-      psycho)
+
+      disco)
          while [ 1 ]; do
-            main_bar all white 255
-            set_away_on white 255
-            set_stay_on white 255
-            wake_key_pad red 255
-            sleep 0.1
-            main_bar off
-            control_pad_off
-            sleep 0.1
+	    for color in ${colors}
+	    do
+                all_on $color 255
+                sleep 1
+                all_on $color 0
+	    done
          done
          ;;
+
       off)
-        main_bar off
-        control_pad_off
+        all_off
         ;;
+
       help)
-         echo "Usage: $0 {all|bar|away|stay|led[1-10]}"
+	 print_help
          ;;
 
       *)
-         echo "$1 $2 $3"
-         set_control_pad_color $1 $2 $3
+	print_help
         ;;
 
    esac
