@@ -7,11 +7,11 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 DEPENDS = "python-native libusb openssl flex-native bison-native libxslt-native json-c"
 RDEPENDS_${PN} = "bridge-utils openssl bash"
 
-PR = "r2"
-PV = "7.13.01+git${SRCPV}"
+PR = "r3"
+PV = "7.14.01+git${SRCPV}"
 
-SRCREV = "bf76683b91f301f8bc0430972d87cea2eacfb727"
-SRCBRANCH = "v7131_sumo"
+SRCREV = "fd74377b458bb62f498b50f365df5185f86dbcf4"
+SRCBRANCH = "v7.14.1"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
 GIT_ZGATE_PROTOCOL ?= "ssh"
@@ -21,7 +21,7 @@ SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_P
            file://zipgateway.logrotate \
            "
 
-S = "${WORKDIR}/git/zipgateway-7.13.01-Source/usr/local"
+S = "${WORKDIR}/git/zipgateway-7.14.01-Source/usr/local"
 
 inherit pkgconfig cmake python3-dir python3native update-rc.d
 
@@ -34,7 +34,6 @@ EXTRA_OECMAKE = " \
     -DSKIP_TESTING=TRUE \
     -DDISABLE_MOCK=TRUE \
     -DJSON_C_SRC=/usr \
-    -DDISABLE_DTLS=TRUE \
 "
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d

@@ -9,6 +9,8 @@ require packagegroup-sawmill-sly-common.inc
 RDEPENDS_${PN} += " \
         u-boot-wallsly \
 	graphviz \
+	openvpn \
+	openvpn-procmand \
 	openwrtlegacy-mt7620 \
 	openwrtlatest-mt7620 \
         nm-pkgslegacy \
