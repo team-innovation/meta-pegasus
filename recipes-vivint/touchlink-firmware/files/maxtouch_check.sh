@@ -11,7 +11,7 @@
 
 
 check_and_set() {
-    if grep -q wallsly /proc/device-tree/compatible || grep -q brazen /proc/device-tree/compatible; then
+    if grep -q wallsly /proc/device-tree/compatible ; then
 	dev="-d i2c-dev:2-004a"
 	mxtfam=$(mxt-app $dev -i | grep Family | awk '{print $2}')
 	mxtver=$(mxt-app $dev -i | grep Firmware | awk '{print $6}')

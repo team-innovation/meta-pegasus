@@ -8,7 +8,7 @@ platform=$(strings /proc/device-tree/compatible |
 	grep vivint |
 	sed s/^vivint,//)
 
-if [ "$platform" == "wallsly" ] || [ "$platform" == "brazen" ]; then
+if [ "$platform" == "wallsly" ] ; then
 	monpwr_module=monpwr_wall
 	monpwr_devlink=/sys/bus/i2c/devices/1-0034
 elif [ "$platform" == "sly" ]; then
@@ -32,11 +32,7 @@ psoc5_verify()
 		return 1
 	fi
 
-	if [ "$platform" == "brazen" ]; then
-		path=vivint/wallsly-psoc5.fw
-	else
-		path=vivint/$platform-psoc5.fw
-	fi
+	path=vivint/$platform-psoc5.fw
 
 	# if sly use fcc version of fw if in fcc test mode
 	# FIXME: do we have fcc fw from wallsly?
@@ -77,11 +73,6 @@ stop() {
 
 case "$1" in
 	start|restart|reload)
-                if [ ! -e /sys/class/input/input0/device/reset ]; then
-                        echo "Hubplus v1/v2 - does not need to run"
-                        exit 0
-                fi
-
 		psoc5_verify
 		monpwr_loaded=$(lsmod | grep monpwr | sed -e 's/ \+/\t/g' | cut -f 1)
 		test "$monpwr_loaded" = "$monpwr_module" ||

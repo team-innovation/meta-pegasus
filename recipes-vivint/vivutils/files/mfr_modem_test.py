@@ -665,13 +665,9 @@ if __name__ == "__main__":
     AT_PORT_HL7588 = "/dev/ttyACM0"
     AT_PORT_EG91 = "/dev/ttyUSB4"
 
-    # franken-hub (brazen) or hubplus-v0 is on WS so still use ttyUSB4
+    # HubPlus use ttyUSB3
     if WhichHardware.get_type() == HardwareTypes.BRAZEN:
-       # check for board rev
-       _board = subprocess.check_output(["/sbin/fw_printenv", "board"]).decode()
-       _board = _board.split('=')[1].strip()
-       if _board not in ["brazen-v6", "brazen-v4", "brazen-v3", "Hubplus-v0"]:
-           AT_PORT_EG91 = "/dev/ttyUSB3"
+        AT_PORT_EG91 = "/dev/ttyUSB3"
 
     FIRMWARE_FOLDER = "/var/lib/firmware"
     modem = None

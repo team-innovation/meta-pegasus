@@ -18,7 +18,7 @@ is_brazen() {
 
 run_led_status()
 {
-  	/usr/local/bin/led_ctrl progress status red 255 &
+        /usr/local/bin/led_ctrl progress status white 255 &
 }
 
 do_nothing() {

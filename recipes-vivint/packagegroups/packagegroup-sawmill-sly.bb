@@ -21,5 +21,6 @@ RDEPENDS_${PN} += " \
         python3-paho-mqtt \
         telegraf \
 	vis \
+	psoc5-verify \
 "
 

@@ -100,13 +100,6 @@ rm_roubaix_logs
 # Give touchscreen a quick reset to clear and re-initialize
 if [ -e /sys/class/input/input0/device/reset ] ; then
 	echo 1 > /sys/class/input/input0/device/reset
-
-	# FRANKEN HUB use ethernet dongle so the ethernet is eth1
-	if grep -q brazen /etc/hostname ; then	
-		sed -i 's/"ethernet_iface": "eth0"/"ethernet_iface": "eth1"/' /opt/2gig/netd/conf_files/brazen/netd_conf.json
-		sed -i 's/"wireless_iface": "apcli0"/"wireless_iface": "wlan0"/' /opt/2gig/netd/conf_files/brazen/netd_conf.json
-		sed -i 's/ra0/wlan0/' /etc/udhcpd.conf
-	fi
 else
 	# HUB PLUS mod
 	# decrement start_sshd_count
@@ -116,8 +109,17 @@ else
 	sed -i '/bind_address/ s/^#*/#/' /etc/mosquitto/mosquitto.conf
 
 	# remove pumpernickel entry
-	rm -f /etc/procman.d/pumpernickel
-	killall -9 led_ctrl
-	/usr/local/bin/led_ctrl off
-	/usr/local/bin/led_ctrl backlight 255
+        rm -f /etc/init.d/pumpernickel /etc/init.d/initpumpernickel
+        rm -f /etc/procman.d/pumpernickel
+        killall -9 pumpernickel
+
+	# if we flashing leave it
+	# TODO: remove this when we have real LED control
+	if pgrep run_mfg_test ; then
+		echo "MFG reflash in progress..."
+	else
+		killall -9 led_ctrl
+		/usr/local/bin/led_ctrl off
+		/usr/local/bin/led_ctrl backlight 255
+	fi
 fi

@@ -55,43 +55,16 @@ __END_PYTHON
     # Chop the password town to the length allowed by WPA2:
     password=${password:0:63}
 
-    if [ "$platform" == "brazen" ]; then
-	    ARGS="/etc/hostapd_hub.conf -B"
-        sed -i "s/ssid=.*/ssid=VIVINT_HUB_${serialnum}/" /etc/hostapd_hub.conf
-        sed -i "s/wpa_passphrase=.*/wpa_passphrase=${password}/" /etc/hostapd_hub.conf
-    else
-        sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
-    fi
-
+    sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
 }
 
 case "$1" in
     start)
 	setup
-	### HACK - maybe there a better way
-	if [ "$platform" == "brazen" ]; then
-		echo "Not auto start on Hub Plus"
-		exit 0	
-	fi
-
 	echo -n "Starting $DESC: "
 	start-stop-daemon -S -x $DAEMON -- $ARGS
 	echo "$NAME."
 	;;
-    manual_start)
-	setup
-	echo -n "Starting $DESC: "
-	start-stop-daemon -S -x $DAEMON -- $ARGS
-	echo "$NAME."
-
-	### HACK - this probably need to be move to udhcpd but add it here for now
-	if [ "$platform" == "brazen" ]; then
-		touch /var/lib/misc/udhcpd.leases
-		udhcpd /etc/udhcpd.conf
-		ifconfig wlan0 192.168.10.100
-	fi
-	;;
-
     stop)
 	echo -n "Stopping $DESC: "
 	start-stop-daemon -K --oknodo -x $DAEMON

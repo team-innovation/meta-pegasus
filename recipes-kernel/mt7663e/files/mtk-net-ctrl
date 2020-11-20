@@ -67,20 +67,20 @@ setup_scan()
         # 5GHz = 14
 	# $2 - continuous - will also scan for 5G so don't bring network back up
 
-	# save the current wirless mode so we can restore it
-	current_wmode=$(grep WirelessMode /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f 2)
 
-	ifconfig apcli0 down
-	ifconfig ra0 down
-	sleep 1
+	if [ $current_wmode != $1 ]; then
+		ifconfig apcli0 down
+		ifconfig ra0 down
+		sleep 1
 
-	rmmod mt_wifi
-	sleep 1
+		rmmod mt_wifi
+		sleep 1
 
-	sed -i "s/WirelessMode=.*$/WirelessMode=$1/g" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/WirelessMode=.*$/WirelessMode=$1/g" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
-	modprobe mt_wifi
-	sleep 1
+		modprobe mt_wifi
+		sleep 1
+	fi
 
 	ifconfig ra0 up
 	ifconfig apcli0 up
@@ -240,6 +240,8 @@ print_help()
 	fi
 }
 
+# save the current wirless mode so we can restore it
+current_wmode=$(grep WirelessMode /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f 2)
 
 case "$opcode" in
 	"init")
