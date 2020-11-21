@@ -6,7 +6,7 @@ SECTION = "misc"
 PRIORITY = "optional"
 LICENSE = "MPL-2.0"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/LICENSE;md5=815ca599c9df247a0c7f619bab123dad"
-PR = "r4"
+PR = "r5"
 
 
 # This URL gives us a PEM formatted file of Mozilla.org's certs
@@ -17,8 +17,8 @@ SRC_URI = "http://updateseng.vivint.com/innovation/downloads/cacert.pem \
            file://spacemonkey.crt \
            file://LICENSE"
 
-SRC_URI[md5sum] = "8d35a5cef6ce28da07867a0712558067"
-SRC_URI[sha256sum] = "4943df7f17fb2105e94a5d5ab0384ede066b42d7bb03ee4ec025dd81fb29fb64"
+SRC_URI[md5sum] = "eafd4fb8598e05389f29abbf7bacc0af"
+SRC_URI[sha256sum] = "bb28d145ed1a4ee67253d8ddb11268069c9dafe3db25a9eee654974c4e43eee5"
 
 do_config[noexec] = "1"
 
