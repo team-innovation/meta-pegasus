@@ -52,6 +52,9 @@ __END_PYTHON
     ifconfig apcli0 up
     ifconfig ra0 down
 
+    # perform site-survey in the background and cache it
+    /usr/local/bin/mtk-net-ctrl site_survey &
+
 else
 
    #make sure we have network wireless.conf and wpa_supplicant_wireless.conf

@@ -262,16 +262,16 @@ case "$opcode" in
                 ;;
 
          "scan24")
-                setup_scan 9 
+		 ( setup_scan 9 ) | tee /tmp/site_survey_results.txt 2>&1
                 ;;
 
         "scan5")
-                setup_scan 14
+		( setup_scan 14 ) | tee /tmp/site_survey_results.txt 2>&1
                 ;;
 
 	"site_survey")
-		setup_scan 9 continuous
-		setup_scan 14
+		( setup_scan 9 continuous ) | tee /tmp/site_survey_results.txt 2>&1
+		( setup_scan 14 ) | tee -a /tmp/site_survey_results.txt 2>&1
 		;;
 
         "connect")
