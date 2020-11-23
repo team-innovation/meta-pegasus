@@ -12,6 +12,9 @@ INITSCRIPT_PARAMS_${PN}-baguette = "start 07 S ."
 
 RDEPENDS_${PN}-baguette = "\
 	"
+
+RREPLACES="touchlink-apps-pumpernickel"
+
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/baguette/
         ${RSYNC_CMD} ${S}/code/baguette/ ${D}/${INSTALL_DIR}/baguette/
