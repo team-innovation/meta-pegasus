@@ -10,6 +10,7 @@ LICENSE = "CLOSED"
 require touchlink-apps-audmgrd.inc
 require touchlink-apps-sundance.inc
 
+require touchlink-apps-baguette.inc
 require touchlink-apps-rtspd.inc
 require touchlink-apps-videod.inc
 
@@ -391,6 +392,7 @@ PACKAGES = " \
 	${PN}-audmgrd   \
 	${PN}-roubaix-services  \
 	${PN}-initpumpernickel \
+    ${PN}-baguette \
 	${PN}-qml-framework     \
 	${PN}-qml-framework-images-controls 	\
 	${PN}-qml-framework-images-controls-keyboards 	\
