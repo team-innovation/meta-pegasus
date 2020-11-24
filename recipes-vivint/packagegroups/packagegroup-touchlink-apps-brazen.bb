@@ -6,11 +6,12 @@ LICENSE = "MIT"
 PR = "r3"
 
 require packagegroup-touchlink-apps-base.inc
-require packagegroup-touchlink-qt-brazen.inc
+#require packagegroup-touchlink-qt-brazen.inc
 
 RDEPENDS_${PN} += " \
 	touchlink-apps-345d \
 	touchlink-apps-audmgrd \
+    touchlink-apps-baguette \
 	touchlink-apps-cloudd \
 	touchlink-apps-dbapd \
 	touchlink-apps-httpd \
