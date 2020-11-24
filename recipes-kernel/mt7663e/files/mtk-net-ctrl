@@ -60,58 +60,43 @@ start_udhcpc()
         udhcpc -R -b -p /var/run/udhcpc.apcli0.pid -i apcli0
 }
 
+switch_wireless_mode()
+{
+	ifconfig apcli0 down
+        ifconfig ra0 down
+
+        rmmod mt_wifi
+
+        sed -i "s/WirelessMode=.*$/WirelessMode=$1/g" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+
+        modprobe mt_wifi
+        sleep 1
+
+	ifconfig ra0 up
+	ifconfig apcli0 up
+	ifconfig ra0 down
+}
+
 setup_scan()
 {
         # $1 = mode- 9 for 2.4
         # 2.4GHz = 9
         # 5GHz = 14
-	# $2 - continuous - will also scan for 5G so don't bring network back up
-
 
 	if [ $current_wmode != $1 ]; then
-		ifconfig apcli0 down
-		ifconfig ra0 down
-		sleep 1
-
-		rmmod mt_wifi
-		sleep 1
-
-		sed -i "s/WirelessMode=.*$/WirelessMode=$1/g" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-
-		modprobe mt_wifi
-		sleep 1
+		switch_wireless_mode $1
 	fi
 
-	ifconfig ra0 up
-	ifconfig apcli0 up
-	sleep 1
 
-        #iwpriv apcli0 set PartialScan=0
+	if [ ! -e /sys/class/net/apcli0 ]; then
+		ifconfig ra0 up
+		ifconfig apcli0 up
+	fi
+
+        iwpriv apcli0 set PartialScan=0
         iwpriv apcli0 set SiteSurvey=
-        sleep 1
+	sleep 1
         iwpriv apcli0 get_site_survey
-
-	if [ -e /tmp/ap_mode ]; then
-		ap_mode
-	else
-		# keep ra0 down 
-		ifconfig ra0 down
-	fi
-
-	# restore wireless mode
-	sed -i "s/WirelessMode=.*$/WirelessMode=$current_wmode/g" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-
-	if [ $2'x' != 'continuousx' ]; then 
-		# restart network if it is set
-		ssid=$(grep ApCliSsid /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
-		if [ ! -z "$ssid" ] ; then
-			ifconfig apcli0 down
-			ifconfig apcli0 up
-			start_udhcpc
-		fi
-	fi
-
-	sleep 5
 }
 
 connect_ssid()
@@ -182,6 +167,17 @@ connect_ssid()
 	sed -i "s/^ApCliEnable=.*$/ApCliEnable=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
 	rm -f /tmp/ap_mode
+
+	save_profile
+}
+
+save_profile()
+{
+	# save profile to /media/extra/conf/network
+	if [ ! -e /media/extra/conf/network ]; then
+		mkdir -p /media/extra/conf/network
+	fi
+	cp -a /etc/wireless/mediatek/mt7663/mt7663.1.dat /media/extra/conf/network
 }
 
 disable_ap()
@@ -205,19 +201,41 @@ reset()
         sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
 	start_udhcpc
+
+	save_profile
 }
 
 reconnect()
 {
+	# restart network if it is set
+	ssid=$(grep ApCliSsid /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
+	if [ ! -z "$ssid" ] ; then
+		ifconfig apcli0 down
+		ifconfig apcli0 up
+		start_udhcpc
+	fi
+
+	save_profile
+}
+
+
+restore_network()
+{
+	ifconfig ra0 up
+	ifconfig acplci0 up
+
 	# when AP change channel we need to rescan and find the new channel to reconnect to 
 	current_ssid=$(grep ApCliSsid= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
-	current_wmode=$(grep WirelessMode= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
 
-	setup_scan $current_wmode continuous | grep $current_ssid
+	setup_scan $current_wmode | grep $current_ssid
 
 	iwpriv apcli0 set ApCliAutoConnect=1
-	sleep 1
+
+	ifconfig ra0 down
+
 	start_udhcpc
+
+	save_profile
 }
 
 print_help()
@@ -270,8 +288,19 @@ case "$opcode" in
                 ;;
 
 	"site_survey")
-		( setup_scan 9 continuous ) | tee /tmp/site_survey_results.txt 2>&1
-		( setup_scan 14 ) | tee -a /tmp/site_survey_results.txt 2>&1
+		### optimize the scan with the current Wireless mode
+		### change band is costly currently ~8 seconds to switch band
+		if [ $current_wmode -eq 9 ]; then
+			( setup_scan 9 ) | tee /tmp/site_survey_results.txt 2>&1
+			( setup_scan 14 ) | tee -a /tmp/site_survey_results.txt 2>&1
+		else
+			( setup_scan 14 ) | tee /tmp/site_survey_results.txt 2>&1
+			( setup_scan 9 ) | tee -a /tmp/site_survey_results.txt 2>&1
+		fi
+		;;
+
+	"switch_wmode")
+		switch_wireless_mode $1
 		;;
 
         "connect")
@@ -281,6 +310,10 @@ case "$opcode" in
 
 	"reconnect")
                 reconnect
+                ;;
+
+	"restore")
+                restore_network
                 ;;
 
 	"reset")

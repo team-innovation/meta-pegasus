@@ -107,19 +107,4 @@ else
 
 	# comment mosquitto bind address
 	sed -i '/bind_address/ s/^#*/#/' /etc/mosquitto/mosquitto.conf
-
-	# remove pumpernickel entry
-        rm -f /etc/init.d/pumpernickel /etc/init.d/initpumpernickel
-        rm -f /etc/procman.d/pumpernickel
-        killall -9 pumpernickel
-
-	# if we flashing leave it
-	# TODO: remove this when we have real LED control
-	if pgrep run_mfg_test ; then
-		echo "MFG reflash in progress..."
-	else
-		killall -9 led_ctrl
-		/usr/local/bin/led_ctrl off
-		/usr/local/bin/led_ctrl backlight 255
-	fi
 fi
