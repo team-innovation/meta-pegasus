@@ -454,9 +454,12 @@ panelinfoboardrevupdate() {
 	mntbootscriptro
 }
 
+# Value          0x00    0x47    0x57    0x7f
+# Voltage(mean) 4.148V 3.6081V 3.5424V 3.4273V
+# Battery is LFP so Ky and Brian agree that 3.542 is ok
 chargerinit() {
 	is_brazen &&
-		i2cset -y 1 0x2f 0 44
+		i2cset -y 1 0x2f 0 0x57
 	true
 }
 
