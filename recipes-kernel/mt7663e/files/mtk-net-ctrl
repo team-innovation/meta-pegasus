@@ -227,7 +227,11 @@ restore_network()
 	# when AP change channel we need to rescan and find the new channel to reconnect to 
 	current_ssid=$(grep ApCliSsid= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
 
-	setup_scan $current_wmode | grep $current_ssid
+	if [ -z $1 ] ; then
+		setup_scan $current_wmode | grep $current_ssid
+	else
+		setup_scan $1 | grep $current_ssid
+	fi
 
 	iwpriv apcli0 set ApCliAutoConnect=1
 
@@ -299,8 +303,12 @@ case "$opcode" in
 		fi
 		;;
 
-	"switch_wmode")
+	"set_wmode")
 		switch_wireless_mode $1
+		;;
+
+	"get_wmode")
+		echo $current_wmode
 		;;
 
         "connect")
@@ -313,7 +321,8 @@ case "$opcode" in
                 ;;
 
 	"restore")
-                restore_network
+		# optional band 9 or 14
+                restore_network $1
                 ;;
 
 	"reset")
