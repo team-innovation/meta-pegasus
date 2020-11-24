@@ -6,3 +6,9 @@ touch /media/extra/serial_lock
 # Toggle DIY by hijacking updated's update from usb feature
 echo 0 > /sys/block/mmcblk0boot1/force_ro
 fw_setenv usb_update yes
+
+# HubPlus - remove this so sshd won't start
+# could be use for other panel if we want
+mount -o remount,rw /media/bootscript
+rm -f /media/bootscript/start_sshd_count
+mount -o remount,ro /media/bootscript
