@@ -4,7 +4,7 @@ HOMEPAGE = "http://source.vivint.com"
 SECTION = "base"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=a6d576eb292a14a25860bf932896ef51"
-PR = "r4"
+PR = "r5"
 
 SRC_URI = "file://iot-radio-fw-verify \
            file://COPYING"

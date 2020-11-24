@@ -51,9 +51,9 @@ flash_iot_fw()
 	else
 		echo "Flashing $radio firmware $fw_name ..."
 		test -f "$swd_path"/access && echo 1 > "$swd_path"/access
-			
+
 		echo "$fw_name" > "$swd_path"/fw_path
-		
+
 		echo 1 > "$swd_path"/doall && touch /tmp/"$radio"fwverified
 		test -f "$swd_path"/access && echo 0 > "$swd_path"/access
 	fi
@@ -74,6 +74,27 @@ report()
 	return $_failed
 }
 
+monpwr_module=monpwr_wall
+monpwr_devlink=/sys/bus/i2c/devices/2-0034
+monpwr_unload()
+{
+	monpwr_loaded=$(lsmod | grep monpwr | sed -e 's/ \+/\t/g' | cut -f 1)
+	test "$monpwr_loaded" = "$monpwr_module" && rmmod $monpwr_module
+}
+
+monpwr_mkdevlink()
+{
+	mkdir -p /dev/vivint
+	rm -f /dev/vivint/psoc
+	ln -s $monpwr_devlink /dev/vivint/psoc
+}
+
+monpwr_load()
+{
+	monpwr_loaded=$(lsmod | grep monpwr | sed -e 's/ \+/\t/g' | cut -f 1)
+	test "$monpwr_loaded" = "$monpwr_module" || modprobe $monpwr_module
+}
+
 case "$1" in
 	start|restart|reload)
 		if [ ! -d /sys/class/mighty_gecko ]; then
@@ -83,8 +104,12 @@ case "$1" in
 
 		swd_search
 		flash_iot_fw "zwave" "$(get_zwave_fw)" "$zwave_swd"
+
+		monpwr_unload
 		flash_iot_fw "efr32" "vivint_efr32.fw" "$efr32_swd"
-	
+		monpwr_load
+		monpwr_mkdevlink
+
 		wait
 		report
 		;;
