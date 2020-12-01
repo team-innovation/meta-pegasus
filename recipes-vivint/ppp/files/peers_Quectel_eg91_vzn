@@ -6,7 +6,7 @@ hide-password
 noauth
 connect "/usr/sbin/chat -v -f /etc/chatscripts/Quectel_eg91_vzn"
 debug
-/dev/ttyUSB5
+/dev/ttyQT03
 115200
 nodefaultroute
 noipdefault 
