@@ -1,6 +1,6 @@
 {
 
-    "pumpernickel":
+    "baguette":
     {
         "priority" : -5,
         "name" : "User Interface",
@@ -12,7 +12,7 @@
             "cpu" : { "gt" : 85 },
             "then" : "restart"
         },
-        "start": "/etc/init.d/pumpernickel start",
+        "start": "/etc/init.d/baguette start",
         "ui": true
     }
 }

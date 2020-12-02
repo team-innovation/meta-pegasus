@@ -10,6 +10,7 @@ LICENSE = "CLOSED"
 require touchlink-apps-audmgrd.inc
 require touchlink-apps-sundance.inc
 
+require touchlink-apps-baguette.inc
 require touchlink-apps-rtspd.inc
 require touchlink-apps-videod.inc
 
@@ -324,9 +325,11 @@ do_runstrip() {
 }
 
 do_install () {
-        # Install init.d scripts
-	install -d ${D}/${sysconfdir}/init.d/
-	cp -a ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
+    # Install init.d scripts
+    install -d ${D}/${sysconfdir}/init.d/
+    install -d ${D}/${sysconfdir}/avahi/services/
+    install -m 0755 ${S}/config/init.d/* ${D}/${sysconfdir}/init.d/
+    install -m 0644 ${S}/config/avahi/services/* ${D}/${sysconfdir}/avahi/services/
 }
 
 do_install_append() {
@@ -390,6 +393,7 @@ PACKAGES = " \
 	${PN}-audmgrd   \
 	${PN}-roubaix-services  \
 	${PN}-initpumpernickel \
+    ${PN}-baguette \
 	${PN}-qml-framework     \
 	${PN}-qml-framework-images-controls 	\
 	${PN}-qml-framework-images-controls-keyboards 	\
