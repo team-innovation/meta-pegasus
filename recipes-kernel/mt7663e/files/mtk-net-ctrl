@@ -77,6 +77,13 @@ switch_wireless_mode()
 	ifconfig ra0 down
 }
 
+restore_wireless_mode()
+{
+        if [ $current_wmode'x' != $1'x' ]; then
+                switch_wireless_mode $current_wmode
+        fi
+}
+
 setup_scan()
 {
         # $1 = mode- 9 for 2.4
@@ -296,10 +303,12 @@ case "$opcode" in
 
          "scan24")
 		 ( setup_scan 9 ) | tee /tmp/site_survey_results.txt 2>&1
+		 restore_wireless_mode 9
                 ;;
 
         "scan5")
 		( setup_scan 14 ) | tee /tmp/site_survey_results.txt 2>&1
+		restore_wireless_mode 14
                 ;;
 
 	"site_survey")
@@ -308,9 +317,11 @@ case "$opcode" in
 		if [ $current_wmode -eq 9 ]; then
 			( setup_scan 9 ) | tee /tmp/site_survey_results.txt 2>&1
 			( setup_scan 14 ) | tee -a /tmp/site_survey_results.txt 2>&1
+			restore_wireless_mode 14
 		else
 			( setup_scan 14 ) | tee /tmp/site_survey_results.txt 2>&1
 			( setup_scan 9 ) | tee -a /tmp/site_survey_results.txt 2>&1
+			restore_wireless_mode 9
 		fi
 		;;
 
