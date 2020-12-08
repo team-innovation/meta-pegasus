@@ -64,7 +64,7 @@ switch_wireless_mode()
 {
 	ifconfig apcli0 down
         ifconfig ra0 down
-
+	sleep 1
         rmmod mt_wifi
 
         sed -i "s/WirelessMode=.*$/WirelessMode=$1/g" /etc/wireless/mediatek/mt7663/mt7663.1.dat
