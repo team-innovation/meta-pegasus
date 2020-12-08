@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 #
-# Copyright 2016 Vivint Innovation
+# Copyright 2020 Vivint
 #
 # Used by manufacturer to generate a private/public keypair
-#
-# -
+
 import os
 import sys
 import logging
 
 import pysodium
-from base64 import b64encode
+from base64 import b64encode, b64decode
 import argparse
 from subprocess import check_call, call
 from taurine.utils.which_hardware import WhichHardware
@@ -18,7 +17,7 @@ from datetime import datetime
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-l', '--key-location', nargs=1, default='/media/bootscript',
+parser.add_argument('-l', '--key-location', default='/media/bootscript',
         help='Location where keys will be located', metavar='KEY_LOCATION')
 args = parser.parse_args()
 
@@ -46,32 +45,50 @@ def setup_logging():
 def generate_keypair():
     # Check if the keys are already there
     if not os.path.isfile(pk_file_path) or not os.path.isfile(sk_file_path):
+        # First we remount the bootscript partition so we can write to it
+        mount_bootscripts("rw")
+
         logger.info('Generating keys...')
         pk, sk = pysodium.crypto_sign_keypair()
-        pk = b64encode(pk).decode("ascii")
-        sk = b64encode(sk).decode("ascii")
+        pk_base64 = b64encode(pk).decode("ascii")
+        sk_base64 = b64encode(sk).decode("ascii")
 
         # Write the keys
-        pk_file = open(pk_file_path, 'w')
-        pk_file.write(pk)
-        pk_file.close()
+        with open(pk_file_path, 'w') as pk_file:
+            pk_file.write(pk_base64)
 
-        sk_file = open(sk_file_path, 'w')
-        sk_file.write(sk)
-        sk_file.close()
-        os.chmod(sk_file_path, 0o600)
+        with open(sk_file_path, 'w') as sk_file:
+            sk_file.write(sk_base64)
+            os.chmod(sk_file_path, 0o600)
+
+        # Remount the bootscript read only
+        mount_bootscripts("ro")
 
         logger.info('Successfully wrote keys to ' + key_location)
-    else:
-        # Read in the public key
-        pk_file = open(pk_file_path, 'r')
-        pk = pk_file.read()
-        pk_file.close()
-        logger.info('Loaded existing keys')
 
-    logger.info('Public key: {}'.format(pk))
+def print_keyinfo():
+    with open(pk_file_path, 'r') as pk_file:
+        pk_base64 = pk_file.read()
+    with open(sk_file_path, 'r') as sk_file:
+        sk_base64 = sk_file.read()
+    pk = b64decode(pk_base64)
+    sk = b64decode(sk_base64)
+    logger.info('Loaded keys from {}'.format(key_location))
+
+    message_to_sign = str(WhichHardware.get_type()).encode("utf-8")
+    message_signed = pysodium.crypto_sign(message_to_sign, sk)
+    try:
+        pysodium.crypto_sign_open(message_signed, pk)
+    except ValueError:
+        raise ValueError("Mismatched or corrupted keypair")
+    message_signed_base64 = b64encode(message_signed).decode("ascii")
+
+    logger.info('Public key: {}'.format(pk_base64))
+    logger.info('Key type: ed25519')
+    # We generate a signed message so that we can detect corruption later on, on the vivint side
     logger.info('Date generated: {}'.format(datetime.fromtimestamp(os.path.getmtime(pk_file_path)).isoformat()))
     logger.info('Hardware type: {}'.format(WhichHardware.get_type()))
+    logger.info('Signed message: {}'.format(message_signed_base64))
 
 def mount_bootscripts(attr):
     return_code = call(["mount", "-o", "remount,{}".format(attr), bootscript_partition])
@@ -82,14 +99,11 @@ def mount_bootscripts(attr):
 setup_logging()
 
 try:
-    # First we remount the bootscript partition so we can write to it
-    mount_bootscripts("rw")
-
     # Generate the keypair and write them to the filesystem if they don't already exist
     generate_keypair()
 
-    # Remount the bootscript read only
-    mount_bootscripts("ro")
+    # Verify the keys and print to the screen
+    print_keyinfo()
 
 except Exception:
     logger.exception("Unexpected error")
