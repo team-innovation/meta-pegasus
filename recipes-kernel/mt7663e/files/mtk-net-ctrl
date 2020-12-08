@@ -314,7 +314,7 @@ case "$opcode" in
 	"site_survey")
 		### optimize the scan with the current Wireless mode
 		### change band is costly currently ~8 seconds to switch band
-		if [ $current_wmode -eq 9 ]; then
+		if [ $current_wmode'x' == '9x' ]; then
 			( setup_scan 9 ) | tee /tmp/site_survey_results.txt 2>&1
 			( setup_scan 14 ) | tee -a /tmp/site_survey_results.txt 2>&1
 			restore_wireless_mode 14
