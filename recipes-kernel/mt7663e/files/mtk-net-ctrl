@@ -39,10 +39,20 @@ __END_PYTHON
 
 ap_mode()
 {
-	ifconfig ra0 up
+        # we need to unload the driver and reload if we already configure once
+        if [ -e /tmp/.already_configure_once ]; then
+                switch_wireless_mode 14
+        fi
+
+        ifconfig ra0 up
+
         /sbin/ip addr add 192.168.10.1/24 dev ra0
         /usr/sbin/udhcpd /etc/udhcpd.conf
-	touch /tmp/ap_mode
+        touch /tmp/ap_mode
+        touch /tmp/.already_configure_once
+
+	# restart avahi to be safe
+	/etc/init.d/avahi-daemon restart	
 }
 
 setup_interfaces()
