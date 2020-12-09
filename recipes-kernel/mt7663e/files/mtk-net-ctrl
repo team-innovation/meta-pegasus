@@ -46,7 +46,7 @@ ap_mode()
 
         ifconfig ra0 up
 
-        /sbin/ip addr add 192.168.10.1/24 dev ra0
+        /sbin/ip addr add 192.168.10.100/24 dev ra0
         /usr/sbin/udhcpd /etc/udhcpd.conf
         touch /tmp/ap_mode
         touch /tmp/.already_configure_once
