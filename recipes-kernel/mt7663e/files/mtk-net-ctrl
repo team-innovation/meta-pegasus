@@ -32,8 +32,14 @@ __END_PYTHON
     # Chop the password town to the length allowed by WPA2:
     password=${password:0:63}
 
-    sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-    sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    if grep -q SSID1= /etc/wireless/mediatek/mt7663/mt7663.1.dat && grep -q WPAPSK1= /etc/wireless/mediatek/mt7663/mt7663.1.dat ; then
+	sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    else
+	cp /etc/wireless/mediatek/mt7663/mt7663.1.dat_org /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    fi
 }
 
 
@@ -44,9 +50,13 @@ ap_mode()
                 switch_wireless_mode 14
         fi
 
+	# make sure SSID and pass phrase is there
+	setup_ap
+
         ifconfig ra0 up
 
         /sbin/ip addr add 192.168.10.100/24 dev ra0
+	killall -9 udhcpd
         /usr/sbin/udhcpd /etc/udhcpd.conf
         touch /tmp/ap_mode
         touch /tmp/.already_configure_once
@@ -62,12 +72,30 @@ setup_interfaces()
 	ifconfig apcli0 up
 }
 
+kill_udhcpc()
+{
+	# get the right pid then kill it
+	pid=$(ps ax | grep udhcpc | grep $1 | head -n 1 | cut -d' ' -f1)
+	if [ -z $pid ]; then
+		killall -9 udhcpc
+	else
+	        kill -9 $pid
+	fi
+}
+
 start_udhcpc()
 {
-        # start udhcpc
-        killall -9 udhcpc
+	iface=$1
+
+	if [ -z $iface ]; then
+	   iface='apcli0'
+	fi
+
+	kill_udhcpc $iface
         sleep 1
-        udhcpc -R -b -p /var/run/udhcpc.apcli0.pid -i apcli0
+
+        # start udhcpc
+        udhcpc -R -b -p /var/run/udhcpc.$iface.pid -i $iface
 }
 
 switch_wireless_mode()
@@ -89,9 +117,13 @@ switch_wireless_mode()
 
 restore_wireless_mode()
 {
-        if [ $current_wmode'x' != $1'x' ]; then
+
+	# if we in AP mode put us back 
+	if [ -e /tmp/ap_mode ]; then
+		ap_mode
+	elif [ $current_wmode'x' != $1'x' ]; then
                 switch_wireless_mode $current_wmode
-        fi
+	fi
 }
 
 setup_scan()
@@ -150,6 +182,7 @@ connect_ssid()
 	iwpriv apcli0 set ApCliEnable=0
 	if [ ! -z $channel ]; then
 		iwpriv apcli0 set Channel=$channel
+		iwpriv ra0 set Channel=$channel
 
 		if [ $channel -lt 12 ]; then
 			wireless_mode=9
@@ -172,7 +205,7 @@ connect_ssid()
 	iwpriv apcli0 set ApCliAutoConnect=1
 	sleep 1
 
-	start_udhcpc
+	start_udhcpc apcli0
 
 	# update profile
 	sed -i "s/^ApCliAutoConnect=.*$/ApCliAutoConnect=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
@@ -212,6 +245,8 @@ disable_ap()
 
 reset()
 {
+	disable_ap
+
 	iwpriv apcli0 set ApCliSsid=
 	iwpriv apcli0 set ApCliWPAPSK=
 	iwpriv apcli0 set ApCliEnable=0
@@ -221,7 +256,10 @@ reset()
         sed -i "s/^ApCliSsid=.*$/ApCliSsid=/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
         sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
-	start_udhcpc
+	# Clear the IP then kill the udhcp process
+	kill_udhcpc apcli0
+        udhcpc -R -b -T 1 -p /var/run/udhcpc.apcli0.pid -i apcli0
+	kill_udhcpc apcli0
 
 	save_profile
 }
@@ -233,7 +271,7 @@ reconnect()
 	if [ ! -z "$ssid" ] ; then
 		ifconfig apcli0 down
 		ifconfig apcli0 up
-		start_udhcpc
+		start_udhcpc apcli0
 
 		save_profile
 	fi
@@ -264,7 +302,7 @@ restore_network()
 
 		ifconfig ra0 down
 
-		start_udhcpc
+		start_udhcpc apcli0
 
 		save_profile
 	fi
@@ -336,6 +374,7 @@ case "$opcode" in
 		;;
 
 	"set_wmode")
+		shift
 		switch_wireless_mode $1
 		;;
 
@@ -363,7 +402,8 @@ case "$opcode" in
                 ;;
 
 	"udhcpc")
-		start_udhcpc
+		shift
+		start_udhcpc $1
 		;;
 
         *)
