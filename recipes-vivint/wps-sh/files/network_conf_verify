@@ -55,6 +55,8 @@ __END_PYTHON
     # perform site-survey in the background and cache it
     /usr/local/bin/mtk-net-ctrl site_survey &
 
+   /usr/local/bin/mtk-net-ctrl disable_ap
+
 else
 
    #make sure we have network wireless.conf and wpa_supplicant_wireless.conf
