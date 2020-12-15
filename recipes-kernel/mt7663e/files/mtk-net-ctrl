@@ -47,7 +47,7 @@ ap_mode()
 {
         # we need to unload the driver and reload if we already configure once
         if [ -e /tmp/.already_configure_once ]; then
-                switch_wireless_mode 14
+                switch_wireless_mode 9
         fi
 
 	# make sure SSID and pass phrase is there
@@ -118,7 +118,6 @@ switch_wireless_mode()
 restore_wireless_mode()
 {
 
-	# if we in AP mode put us back 
 	if [ -e /tmp/ap_mode ]; then
 		ap_mode
 	elif [ $current_wmode'x' != $1'x' ]; then
@@ -177,6 +176,7 @@ connect_ssid()
 	enc_type=${sec##*/}
 
 	ifconfig apcli0 up
+	ifconfig ra0 down
 
 	iwpriv apcli0 set ApCliEnable=0
 	if [ ! -z $channel ]; then
