@@ -177,7 +177,6 @@ connect_ssid()
 	enc_type=${sec##*/}
 
 	ifconfig apcli0 up
-	ifconfig ra0 down
 
 	iwpriv apcli0 set ApCliEnable=0
 	if [ ! -z $channel ]; then
@@ -203,7 +202,7 @@ connect_ssid()
 	iwpriv apcli0 set ApCliSsid="$ssid"
 	iwpriv apcli0 set ApCliEnable=1
 	iwpriv apcli0 set ApCliAutoConnect=1
-	sleep 1
+	sleep 5
 
 	start_udhcpc apcli0
 
@@ -217,7 +216,6 @@ connect_ssid()
 	sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=$pass/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 	sed -i "s/^ApCliEnable=.*$/ApCliEnable=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
-	rm -f /tmp/ap_mode
 
 	# always save the profile, if $5 (nosave is 1) then do not save
 	if [ ! -z $5 ] && [ $5 -eq 0 ]; then
@@ -236,9 +234,7 @@ save_profile()
 
 disable_ap()
 {
-        if [ -e /tmp/ap_mode ]; then
-                ifconfig ra0 down
-        fi
+        ifconfig ra0 down
         killall -9 udhcpd
         rm -f /tmp/ap_mode
 }
