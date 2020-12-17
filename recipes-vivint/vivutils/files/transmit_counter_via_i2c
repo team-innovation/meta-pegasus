@@ -1,0 +1,64 @@
+#!/bin/sh
+
+# configure and read the transmit counter for txID 222222 (translate to hex 0x3640e and piece out bytes in decimal)
+# /media/sda1/transmit_counter_via_i2c 222222
+
+ACCESS=/sys/bus/i2c/devices/2-0034/access/
+START=/sys/bus/i2c/devices/2-0034/access/data_simple_start_reg
+LEN=/sys/bus/i2c/devices/2-0034/access/data_simple_length
+VALUE=/sys/bus/i2c/devices/2-0034/access/simple_values
+DELAY=0.1
+
+rawTxID=$1
+
+echo "Transmit counter"
+
+if [ $# -eq 0 ]
+	then
+		echo "ERROR: No sensor txID given"
+		exit 1
+fi
+
+#transform input into individual hex values in decimal
+txID3=$(($rawTxID % 0x100))
+rawTxID=$(printf "0x%x\n" $(($rawTxID / 0x100)))
+txID2=$(($rawTxID % 0x100))
+rawTxID=$(printf "0x%x\n" $(($rawTxID / 0x100)))
+txID1=$(($rawTxID % 0x100))
+
+dmesg -n 1
+
+echo 0 0 0 0 > $VALUE
+
+# turn on transmit counter
+echo 171 > $START
+echo 1 > $LEN
+# delay for 100 ms
+sleep $DELAY
+echo 1 > $VALUE
+
+#set SENSOR_BRAND_B to BRAND_LEGACY
+echo 167 > $START
+# delay for 100 ms
+sleep $DELAY
+echo 1 > $VALUE
+
+#set txID
+echo 168 > $START
+echo 3 > $LEN
+# delay for 100 ms
+sleep $DELAY
+echo $txID1 $txID2 $txID3 > $VALUE
+
+#to monitor the transmit counter
+echo 172 > $START
+echo 4 > $LEN
+
+count=$(cat $VALUE)
+
+CNT=3 #for 4 count variables, including index 0.
+
+while ((1==1)); do
+#echo -e "\r            ";
+count=$(cat $VALUE); echo -ne "$(CNT=3; while IFS=' ' read -ra ARR; do for i in "${ARR[@]}"; do NUM[$(($CNT))]=$i CNT=$(($CNT-1)); done done <<< "$count"; echo $(($(printf "0x%x%x%x%x\n" ${NUM[0]} ${NUM[1]} ${NUM[2]} ${NUM[3]})));)          \r"; done
+

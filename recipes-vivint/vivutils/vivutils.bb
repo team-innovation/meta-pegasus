@@ -3,7 +3,7 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r116"
+PR = "r118"
 
 DEPENDS_append = "update-rc.d-native"
 
@@ -63,6 +63,7 @@ SRC_URI = "\
 	   file://mmcstress.sh \
 	   file://earlymod.sh \
 	   file://led_ctrl \
+	   file://transmit_counter_via_i2c \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -117,6 +118,7 @@ do_install() {
 	install -m 0755 ${S}/convert-panel ${D}/usr/local/bin
 	install -m 0755 ${S}/mmcstress.sh ${D}/usr/local/bin
 	install -m 0755 ${S}/led_ctrl ${D}/usr/local/bin
+	install -m 0755 ${S}/transmit_counter_via_i2c ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
