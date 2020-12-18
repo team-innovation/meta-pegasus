@@ -203,7 +203,13 @@ connect_ssid()
 	iwpriv apcli0 set ApCliSsid="$ssid"
 	iwpriv apcli0 set ApCliEnable=1
 	iwpriv apcli0 set ApCliAutoConnect=1
-	sleep 5
+
+	if [ $current_wmode'x' != $wireless_mode'x' ]; then
+		echo "WirelessModeChanged, sleep 10"
+		sleep 10
+	else
+		sleep 3
+	fi
 
 	start_udhcpc apcli0
 
