@@ -124,7 +124,7 @@ restore_wireless_mode()
 	if [ $current_wmode'x' != $1'x' ]; then
                 switch_wireless_mode $current_wmode
 	else
-		ifcconfig ra0 down
+		ifconfig ra0 down
 	fi
 
 }
@@ -134,6 +134,8 @@ setup_scan()
         # $1 = mode- 9 for 2.4
         # 2.4GHz = 9
         # 5GHz = 14
+	# $2 = Target_SSID for active scan to get hidden SSID channel
+
 
 	if [ $current_wmode'x' != $1'x' ]; then
 		switch_wireless_mode $1
@@ -146,7 +148,7 @@ setup_scan()
 	fi
 
         iwpriv apcli0 set PartialScan=0
-        iwpriv apcli0 set SiteSurvey=
+        iwpriv apcli0 set SiteSurvey="$2"
 	sleep 1
         iwpriv apcli0 get_site_survey
 }
@@ -161,10 +163,10 @@ connect_ssid()
 
 	channel=$4
 
-        if [ -z $1 ]; then
+        if [ -z "$1" ]; then
                 echo "No SSID specify"
                 exit 1
-        elif [ -z $2 ]; then
+        elif [ -z "$2" ]; then
                 echo "No passphrase specify"
                 exit 1
 	elif [ -z $3 ]; then
@@ -172,9 +174,9 @@ connect_ssid()
                 exit 1
         fi
 
-	ssid=$1
-	pass=$2
-	sec=$3
+	ssid="$1"
+	pass="$2"
+	sec="$3"
 
 	auth_mode=${sec%%/*}
 	enc_type=${sec##*/}
@@ -306,16 +308,16 @@ restore_network()
 	# when AP change channel we need to rescan and find the new channel to reconnect to 
 	current_ssid=$(grep ApCliSsid= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
 
-	if [ ! -z $current_ssid ]; then
+	if [ ! -z "$current_ssid" ]; then
 		if [ -z $1 ] ; then
 			if [ -z $current_wmode ]; then
-				setup_scan 9
-				setup_scan 14
+				setup_scan 9 "$current_ssid"
+				setup_scan 14 "$current_ssid"
 			else
-				setup_scan $current_wmode | grep $current_ssid
+				setup_scan $current_wmode "$current_ssid" | grep $current_ssid
 			fi
 		else
-			setup_scan $1 | grep $current_ssid
+			setup_scan $1 "$current_ssid" | grep $current_ssid
 		fi
 
 		iwpriv apcli0 set ApCliAutoConnect=1
@@ -368,12 +370,13 @@ case "$opcode" in
                 ;;
 
          "scan24")
-		 ( setup_scan 9 ) | tee /tmp/site_survey_results.txt 2>&1
+		 shift
+		 ( setup_scan 9 "$1" ) | tee /tmp/site_survey_results.txt 2>&1
 		 restore_wireless_mode 9
                 ;;
 
         "scan5")
-		( setup_scan 14 ) | tee /tmp/site_survey_results.txt 2>&1
+		( setup_scan 14 "$1") | tee /tmp/site_survey_results.txt 2>&1
 		restore_wireless_mode 14
                 ;;
 
@@ -406,7 +409,7 @@ case "$opcode" in
 
         "connect")
                 shift
-                connect_ssid $@
+                connect_ssid "$@"
                 ;;
 
 	"reconnect")
