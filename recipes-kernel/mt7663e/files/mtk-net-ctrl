@@ -376,6 +376,7 @@ case "$opcode" in
                 ;;
 
         "scan5")
+		shift
 		( setup_scan 14 "$1") | tee /tmp/site_survey_results.txt 2>&1
 		restore_wireless_mode 14
                 ;;
