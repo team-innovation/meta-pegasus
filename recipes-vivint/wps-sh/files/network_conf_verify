@@ -34,7 +34,6 @@ __END_PYTHON
 	    cp -a /media/extra/conf/network/mt7663.1.dat /etc/wireless/mediatek/mt7663/mt7663.1.dat
     fi
 
-    sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
     sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
     if [ -f /media/bootscript/wifiinfo.txt ]; then
@@ -46,16 +45,8 @@ __END_PYTHON
     fi
 
 
-    # need to start ra0 up first before we can initialize apcli0
-    # we then bring ra0 down so there is a brief momment that Soft AP will be up
-    ifconfig ra0 up
-    ifconfig apcli0 up
-    ifconfig ra0 down
-
     # perform site-survey in the background and cache it
     /usr/local/bin/mtk-net-ctrl site_survey &
-
-   /usr/local/bin/mtk-net-ctrl disable_ap
 
 else
 
