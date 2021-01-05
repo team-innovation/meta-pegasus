@@ -1,6 +1,6 @@
 DESCRIPTION = "Python sentry"
 SECTION = "devel/python"
-LICENSE = "BSD-2"
+LICENSE = "BSD-2-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=0c79f8d3c91fc847350efd28bfe0a341"
 PR = "r1"
 SRCNAME = "sentry-sdk"
