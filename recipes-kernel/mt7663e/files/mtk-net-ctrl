@@ -45,28 +45,41 @@ __END_PYTHON
 
     sed -i "s/^Channel=.*/Channel=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
     sed -i "s/^WirelessMode=.*$/WirelessMode=9/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+
+    ifconfig ra0 up
     iwpriv ra0 set HideSSID=0
     iwpriv ra0 set SSID=VIVINT_HUB_${serialnum}
+
+    # make sure AP is set
+    echo -e "Verifying AP setup: $(date) \n" > /tmp/ap_setup.log
+
+    for i in 1 2 3 4 5; do
+	iwconfig ra0 >> /tmp/ap_setup.log
+
+	if iwconfig ra0 | grep -q VIVINT_HUB ; then
+	    echo "AP SSID is set, try $i" >> /tmp/ap_setup.log
+	    iwpriv ra0 set HideSSID=0
+	    break
+	else
+	    echo "AP SSID not set yet, try $i" >> /tmp/ap_setup.log
+	    iwpriv ra0 set WirelessMode=9
+	    iwpriv ra0 set HideSSID=0
+	    iwpriv ra0 set SSID=VIVINT_HUB_${serialnum}
+	    echo
+	fi
+    done
 }
 
 
 ap_mode()
 {
-        # we need to unload the driver and reload if we already configure once	
-        if [ -e /tmp/.already_configure_once ]; then
-                switch_wireless_mode 9
-        fi
-
 	# make sure SSID and pass phrase is there
 	setup_ap
-
-        ifconfig ra0 up
 
         /sbin/ip addr add 192.168.10.100/24 dev ra0
 	killall -9 udhcpd
         /usr/sbin/udhcpd /etc/udhcpd.conf
         touch /tmp/ap_mode
-        touch /tmp/.already_configure_once
 
 	# restart avahi to be safe
 	/etc/init.d/avahi-daemon restart	
