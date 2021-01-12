@@ -4,7 +4,7 @@ SECTION = "network"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
 
-DEPENDS = "python-native openssl11"
+DEPENDS = "python-native openssl openssl11"
 
 PR = "r1"
 PV = "7.14.01+git${SRCPV}"
