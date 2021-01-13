@@ -30,8 +30,13 @@ __END_PYTHON
     password=${password:0:63}
 
     # copy /media/extra/conf/network/mt7663.1.dat over if it exist
-    if [ -f /media/extra/conf/network/mt7663.1.dat ]; then
+    if [ -s /media/extra/conf/network/mt7663.1.dat ]; then
 	    cp -a /media/extra/conf/network/mt7663.1.dat /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    else
+	    rm -f /media/extra/conf/network/mt7663.1.dat
+	    if [ ! -s /etc/wireless/mediatek/mt7663/mt7663.1.dat ]; then
+		    cp -a /etc/wireless/mediatek/mt7663/mt7663.1.dat_org /etc/wireless/mediatek/mt7663/mt7663.1.dat
+            fi
     fi
 
     sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat

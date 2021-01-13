@@ -293,8 +293,7 @@ reset()
         sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
 	# Clear the IP then kill the udhcp process
-	kill_udhcpc apcli0
-        udhcpc -R -b -T 1 -p /var/run/udhcpc.apcli0.pid -i apcli0
+        udhcpc -R -b -t 1 -T 1 -p /var/run/udhcpc.apcli0.pid -i apcli0
 	kill_udhcpc apcli0
 
 	save_profile
@@ -351,6 +350,16 @@ restore_network()
 	fi
 }
 
+reload_driver()
+{
+	ifconfig apcli0 down
+	ifconfig ra0 down
+	rmmod mt_wifi
+	sleep 1
+	modprobe mt_wifi
+	setup_interfaces
+}
+
 print_help()
 {
 	if [ -e /etc/wireless/mediatek/mtk_net_ctrl.help ]; then
@@ -370,6 +379,18 @@ print_help()
 		echo -e "\t\t\t Example: $0 connect MySSID MyPassword WPA2PSK/AES"
 	fi
 }
+
+# verify conf file before runninng
+if [ ! -s /etc/wireless/mediatek/mt7663/mt7663.1.dat ]; then
+	# Config data file is invalid, check backup
+	if [ -s /media/extra/conf/network/mt7663.1.dat ]; then
+		cp -a /media/extra/conf/network/mt7663.1.dat /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	else
+		cp -a /etc/wireless/mediatek/mt7663/mt7663.1.dat_org /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	fi
+
+	reload_driver
+fi
 
 # save the current wirless mode so we can restore it
 current_wmode=$(grep ^WirelessMode= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f 2)
