@@ -14,6 +14,7 @@ RDEPENDS_${PN} = " \
 	civetweb \
 	cronie \
 	gnupg \
+	hostapd \
 	iotivity-resource \
 	iotivity-bridging-plugins \
 	iproute2 \
