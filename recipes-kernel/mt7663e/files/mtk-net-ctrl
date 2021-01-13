@@ -264,7 +264,11 @@ save_profile()
 	if [ ! -e /media/extra/conf/network ]; then
 		mkdir -p /media/extra/conf/network
 	fi
-	cp -a /etc/wireless/mediatek/mt7663/mt7663.1.dat /media/extra/conf/network
+
+	if [ -s /etc/wireless/mediatek/mt7663/mt7663.1.dat ]; then
+		cp -a /etc/wireless/mediatek/mt7663/mt7663.1.dat /media/extra/conf/network
+		sync
+	fi
 }
 
 disable_ap()
