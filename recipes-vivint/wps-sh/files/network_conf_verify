@@ -40,6 +40,7 @@ __END_PYTHON
     fi
 
     sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
     if [ -f /media/bootscript/wifiinfo.txt ]; then
             mac=$(cat /media/bootscript/wifiinfo.txt)
@@ -49,6 +50,8 @@ __END_PYTHON
             fi
     fi
 
+
+    ifconfig ra0 up
 
     # perform site-survey in the background and cache it
     /usr/local/bin/mtk-net-ctrl site_survey &

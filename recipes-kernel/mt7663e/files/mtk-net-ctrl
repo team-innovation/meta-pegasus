@@ -47,6 +47,7 @@ __END_PYTHON
     sed -i "s/^WirelessMode=.*$/WirelessMode=9/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
     ifconfig ra0 up
+    iwpriv ra0 set ApCliEnable=0
     iwpriv ra0 set HideSSID=0
     iwpriv ra0 set SSID=VIVINT_HUB_${serialnum}
 
@@ -124,12 +125,11 @@ switch_wireless_mode()
 	ifconfig ra0 up
 	ifconfig apcli0 up
 	iwpriv ra0 set WirelessMode=$1
-	sleep 1	
-	ifconfig ra0 down
 }
 
 restore_wireless_mode()
 {
+
 	if [ $current_wmode'x' == '9x' ]; then
 		iwpriv ra0 set WirelessMode=9
 	        iwpriv apcli0 set WirelessMode=9
@@ -138,7 +138,13 @@ restore_wireless_mode()
 	        iwpriv apcli0 set WirelessMode=14
 	fi
 
-	ifconfig ra0 down
+	# take down ra0 if panel already provision
+	_apcli0_addr=$(ifconfig apcli0 | awk 'sub(/inet addr:/,""){print $1}')
+	_eth0_addr=$(ifconfig eth0 | awk 'sub(/inet addr:/,""){print $1}')
+
+	if [ ${_apcli0_addr}x != 'x' ] || [ ${_eth0_addr}x != 'x' ]; then
+	       ifconfig ra0 down
+	fi
 }
 
 
@@ -146,6 +152,9 @@ enable_ra0_scan()
 {
 	ifconfig ra0 up
 	sleep 0.1
+
+	# hide AP during scan
+        iwpriv ra0 set HideSSID=1
 	iwpriv ra0 set ApCliEnable=0
 }
 
@@ -201,7 +210,6 @@ connect_ssid()
 	enc_type=${sec##*/}
 
 	ifconfig apcli0 up
-	ifconfig ra0 down
 
 	iwpriv apcli0 set ApCliEnable=0
 	if [ ! -z $channel ]; then
@@ -273,8 +281,6 @@ save_profile()
 
 disable_ap()
 {
-	iwpriv ra0 set HideSSID=1
-	iwpriv ra0 set SSID=
 	/sbin/ip addr del 192.168.10.100/24 dev ra0
         ifconfig ra0 down
         killall -9 udhcpd
@@ -344,6 +350,7 @@ restore_network()
 			setup_scan $1 "$current_ssid" | grep $current_ssid
 		fi
 
+		iwpriv ra0 set HideSSID=0
 		ifconfig ra0 down
 
 		iwpriv apcli0 set ApCliAutoConnect=1

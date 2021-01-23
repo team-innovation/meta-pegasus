@@ -4,7 +4,7 @@ HOMEPAGE = "http://source.vivint.com"
 SECTION = "base"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=be94729c3d0e226497bf9ba8c384e96f"
-PR = "r17"
+PR = "r19"
 
 SRC_URI = "file://network_func \
            file://udhcpc_wlan0 \
