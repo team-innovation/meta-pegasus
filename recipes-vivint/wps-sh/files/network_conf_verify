@@ -42,6 +42,12 @@ __END_PYTHON
     sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
     sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
+    if ! grep -q ApCliAutoConnect /etc/wireless/mediatek/mt7663/mt7663.1.dat; then
+	    sed -i "42 a ApCliAutoConnect=1" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    else
+	    sed -i "s/^ApCliAutoConnect=.*$/ApCliAutoConnect=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    fi
+
     if [ -f /media/bootscript/wifiinfo.txt ]; then
             mac=$(cat /media/bootscript/wifiinfo.txt)
             sed -i "s/MacAddress=.*/MacAddress=$mac/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
@@ -52,6 +58,8 @@ __END_PYTHON
 
 
     ifconfig ra0 up
+
+    touch /tmp/network_initialized
 
     # perform site-survey in the background and cache it
     /usr/local/bin/mtk-net-ctrl site_survey &

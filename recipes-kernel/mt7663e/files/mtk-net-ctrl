@@ -139,11 +139,13 @@ restore_wireless_mode()
 	fi
 
 	# take down ra0 if panel already provision
-	_apcli0_addr=$(ifconfig apcli0 | awk 'sub(/inet addr:/,""){print $1}')
-	_eth0_addr=$(ifconfig eth0 | awk 'sub(/inet addr:/,""){print $1}')
-
-	if [ ${_apcli0_addr}x != 'x' ] || [ ${_eth0_addr}x != 'x' ]; then
+	_provision=$(grep ^ApCliSsid= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
+	if [ "${_provision}x" != 'x' ]; then
 	       ifconfig ra0 down
+	fi
+
+	if [ -e /tmp/network_initialized ] ; then
+		reconnect
 	fi
 }
 
@@ -315,9 +317,7 @@ reconnect()
 	ssid=$(grep ApCliSsid /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
 	chan=$(grep ^Channel= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
 	if [ ! -z "$ssid" ] ; then
-		ifconfig apcli0 down
-		ifconfig apcli0 up
-		iwpriv apcli0 set ApCliSsid=$ssid
+		iwpriv apcli0 set ApCliSsid="$ssid"
 		iwpriv apcli0 set Channel=$chan
 		sleep 3
 		start_udhcpc apcli0
