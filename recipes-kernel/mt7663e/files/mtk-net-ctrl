@@ -315,10 +315,11 @@ reconnect()
 {
 	# restart network if it is set
 	ssid=$(grep ApCliSsid /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
-	chan=$(grep ^Channel= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
+	#chan=$(grep ^Channel= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
 	if [ ! -z "$ssid" ] ; then
 		iwpriv apcli0 set ApCliSsid="$ssid"
-		iwpriv apcli0 set Channel=$chan
+		#iwpriv apcli0 set Channel=$chan
+		iwpriv apcli0 set ApCliAutoConnect=1
 		sleep 3
 		start_udhcpc apcli0
 
