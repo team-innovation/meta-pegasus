@@ -40,7 +40,6 @@ ApCliAuthMode=OPEN
 ApCliBssid=
 ApCliDefaultKeyID=1
 ApCliEnable=1
-ApCliAutoConnect=1
 ApCliEncrypType=NONE
 ApCliKey1Str=
 ApCliKey1Type=1
