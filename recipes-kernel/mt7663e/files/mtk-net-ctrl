@@ -242,7 +242,7 @@ connect_ssid()
 		echo "WirelessModeChanged, sleep 10"
 		sleep 10
 	else
-		sleep 3
+		sleep 5
 	fi
 
 	start_udhcpc apcli0
