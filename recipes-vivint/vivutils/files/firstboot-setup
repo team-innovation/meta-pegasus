@@ -384,29 +384,39 @@ fusecheck || {
 function chk_board()
 {
 	local result
-	read result </sys/class/board_info/board_info/board_rev
-	case "$result" in
-		13)
-			echo "C00"
-			;;
-		*)
-			echo "000"
-			;;
-	esac
+	if [ -f /media/bootscript/sku.txt ]; then
+		read -r result </media/bootscript/sku.txt
+		echo "${result##*-}"
+	else
+		read -r result </sys/class/cell/cell0/id
+		case "$result" in
+			3)
+				echo "C00"
+				;;
+			*)
+				echo "000"
+				;;
+		esac
+	fi
 }
 
 function chk_rev()
 {
 	local result
-	read result </sys/class/board_info/board_info/board_rev
-	case "$result" in
-		9|10|11|12|13)
-			echo "8.19"
-			;;
-		*)
-			echo "A.0"
-			;;
-	esac
+	if [ -f /media/bootscript/hwrev.txt ]; then
+		read -r result </media/bootscript/hwrev.txt
+		echo "${result}"
+	else
+		read -r result </sys/class/board_info/board_info/board_rev
+		case "$result" in
+			9|10|11|12|13)
+				echo "8.19"
+				;;
+			*)
+				echo "A.0"
+				;;
+		esac
+	fi
 }
 
 addboardmodelfromdevtree() {
