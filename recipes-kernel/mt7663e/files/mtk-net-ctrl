@@ -317,7 +317,7 @@ reconnect()
 	ssid=$(grep ApCliSsid /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
 	#chan=$(grep ^Channel= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
 	if [ ! -z "$ssid" ] ; then
-		iwpriv apcli0 set ApCliSsid="$ssid"
+		iwpriv apcli0 set "ApCliSsid=$ssid"
 		#iwpriv apcli0 set Channel=$chan
 		iwpriv apcli0 set ApCliAutoConnect=1
 		sleep 3
@@ -327,8 +327,17 @@ reconnect()
 	fi
 }
 
-
 restore_network()
+{
+	ifconfig apcli0 down
+	ifconfig ra0 down
+	sleep 0.1
+	ifconfig ra0 up
+	ifconfig apcli0 up
+	start_udhcpc apcli0
+}
+
+reload_network()
 {
 	if [ ! -e /sys/class/net/apcli0 ]; then
 		ifconfig ra0 up
@@ -349,10 +358,10 @@ restore_network()
 				setup_scan 9 "$current_ssid"
 				setup_scan 14 "$current_ssid"
 			else
-				setup_scan $current_wmode "$current_ssid" | grep $current_ssid
+				setup_scan $current_wmode "$current_ssid" | grep "$current_ssid"
 			fi
 		else
-			setup_scan $1 "$current_ssid" | grep $current_ssid
+			setup_scan $1 "$current_ssid" | grep "$current_ssid"
 		fi
 
 		iwpriv ra0 set HideSSID=0
@@ -484,11 +493,15 @@ case "$opcode" in
                 reconnect
                 ;;
 
-	"restore")
+	"reload")
 		# optional band 9 or 14
 		shift
-                restore_network $1
+                reload_network $1
                 ;;
+
+	"restore")
+		restore_network
+		;;
 
 	"reset")
                 reset
