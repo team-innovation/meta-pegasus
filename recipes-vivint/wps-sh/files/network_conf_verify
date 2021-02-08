@@ -56,6 +56,9 @@ __END_PYTHON
             fi
     fi
 
+    if ! grep -q apcli0 /etc/network/interfaces ; then
+        echo -e "\niface apcli0 inet dhcp" >> /etc/network/interfaces
+    fi
 
     ifconfig ra0 up
 
