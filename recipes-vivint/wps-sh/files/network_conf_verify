@@ -62,8 +62,6 @@ __END_PYTHON
 
     ifconfig ra0 up
 
-    touch /tmp/network_initialized
-
     # perform site-survey in the background and cache it
     /usr/local/bin/mtk-net-ctrl site_survey &
 

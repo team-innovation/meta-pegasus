@@ -141,12 +141,12 @@ restore_wireless_mode()
 	# take down ra0 if panel already provision
 	_provision=$(grep ^ApCliSsid= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
 	if [ "${_provision}x" != 'x' ]; then
-	       ifconfig ra0 down
+		ifconfig ra0 down
+		reconnect
+	else
+		iwpriv ra0 set HideSSID=1
 	fi
 
-	if [ -e /tmp/network_initialized ] ; then
-		reconnect
-	fi
 }
 
 
@@ -385,6 +385,13 @@ reload_driver()
 	setup_interfaces
 }
 
+ping_test()
+{
+	if ! ping -c 3 -W 1 -I apcli0 8.8.8.8 ; then
+		restore_network
+	fi
+}
+
 print_help()
 {
 	if [ -e /etc/wireless/mediatek/mtk_net_ctrl.help ]; then
@@ -494,9 +501,7 @@ case "$opcode" in
                 ;;
 
 	"reload")
-		# optional band 9 or 14
-		shift
-                reload_network $1
+		ping_test
                 ;;
 
 	"restore")
