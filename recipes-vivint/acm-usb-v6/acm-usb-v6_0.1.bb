@@ -1,8 +1,7 @@
 SUMMARY = "Sierra Wireless USB Log Download Tool"
 DESCRIPTION = "Tool for retrieving logs via libusb from Sierra Wireless modems"
 SECTION = "base"
-LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = "file://acm_usb_v6.c;md5=0dea14201c47f868bc851a32bebb968e"
+LICENSE = "CLOSED"
 PR = "r1"
 
 SRC_URI = "file://acm_usb_v6.c"
