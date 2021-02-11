@@ -119,6 +119,7 @@ RDEPENDS_${PN} = " \
 	pa-test \
 	pa-test-simple \
 	tonegen \
+	sndfix \
 	wps-sh \
 	xdelta3 \
 	xz \
