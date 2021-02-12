@@ -25,7 +25,6 @@ pkg_postinst_ontarget_${PN}-sundance (){
 FILES_${PN}-httpd = "\
 	${INSTALL_DIR}/httpd/*   \
 	${sysconfdir}/init.d/httpd \
-	${sysconfdir}/avahi/services/vivint-admin.service \
 	${sysconfdir}/procman.d/httpd \
        "
 
