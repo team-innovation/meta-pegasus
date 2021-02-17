@@ -1,6 +1,6 @@
 DESCRIPTION = "Slimline qt5 image."
 LICENSE = "MIT"
-PR = "r8"
+PR = "r9"
 IMAGE_FEATURES += "package-management" 
 
 IMAGE_INSTALL_append = "\
@@ -24,14 +24,18 @@ license_create_manifest_append() {
         rm -f ${IMAGE_ROOTFS}/usr/share/common-licenses/generic_*
         for d in $(find ${IMAGE_ROOTFS}/usr/share/common-licenses -type d); do
            rm -f "$d"/generic_* 
+	   rm -f "$d"/*.h
+	   if [ ! -d "$d"/*.d ]; then
+		   rm -f "$d"/*.d
+	   fi
+	   rm -f "$d"/*.am
+	   rm -f "$d"/*.c
+	   rm -f "$d"/*.py
+	   rm -f "$d"/*.in
+	   rm -f "$d"/*.pl
            rmdir --ignore-fail-on-non-empty "$d"
         done
 
-    fi
-
-    # Make a link so roubaix is happy
-    if [ ! -e ${IMAGE_ROOTFS}/usr/share/licenses ]; then
-        ln -s common-licenses ${IMAGE_ROOTFS}/usr/share/licenses
     fi
 }
 
