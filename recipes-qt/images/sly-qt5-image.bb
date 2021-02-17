@@ -1,6 +1,6 @@
 DESCRIPTION = "Sly qt5 image."
 LICENSE = "MIT"
-PR = "r10"
+PR = "r11"
 IMAGE_FEATURES += "package-management" 
 
 IMAGE_INSTALL_append = "\
@@ -26,15 +26,19 @@ license_create_manifest_append() {
         rm -f ${IMAGE_ROOTFS}/usr/share/common-licenses/license.manifest
         rm -f ${IMAGE_ROOTFS}/usr/share/common-licenses/generic_*
         for d in $(find ${IMAGE_ROOTFS}/usr/share/common-licenses -type d); do
-           rm -f "$d"/generic_* 
+           rm -fd "$d"/generic_* 
+	   rm -fd "$d"/*.h
+	   if [ ! -d "$d"/*.d ]; then
+		   rm -f "$d"/*.d
+	   fi
+	   rm -fd "$d"/*.am
+	   rm -fd "$d"/*.c
+	   rm -fd "$d"/*.py
+	   rm -fd "$d"/*.in
+	   rm -fd "$d"/*.pl
            rmdir --ignore-fail-on-non-empty "$d"
         done
 
-    fi
-
-    # Make a link so roubaix is happy
-    if [ ! -e ${IMAGE_ROOTFS}/usr/share/licenses ]; then
-        ln -s common-licenses ${IMAGE_ROOTFS}/usr/share/licenses
     fi
 }
 
