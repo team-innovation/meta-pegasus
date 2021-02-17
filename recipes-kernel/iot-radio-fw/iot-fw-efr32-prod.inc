@@ -1,6 +1,6 @@
 DESCRIPTION = "EFR32 rail test firmware"
 
-PR = "r7"
+PR = "r8"
 
 EFR32_FW_HEX_NAME = "vivint_efr32_fg14.hex"
 EFR32_FW_NAME = "vivint_efr32.fw"
