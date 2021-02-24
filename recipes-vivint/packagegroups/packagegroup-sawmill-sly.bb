@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r36"
+PR = "r37"
 
 inherit packagegroup
 
@@ -29,6 +29,7 @@ RDEPENDS_${PN} += " \
 	swdltool \
 	zwave-nvm-converter \
 	touchlink-kwikset-firmware \
+	touchlink-keypad-firmware \
 	touchlink-rtc-firmware \
 	touchlink-rcs-firmware \
 	touchlink-telit-firmware-he910 \
