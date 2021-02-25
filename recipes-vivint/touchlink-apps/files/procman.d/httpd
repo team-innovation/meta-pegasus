@@ -1,0 +1,7 @@
+{
+    "httpd":
+    {
+	"name" : "HTTPD services",
+	"start": "/etc/init.d/httpd start"
+    }
+}
