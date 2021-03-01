@@ -11,8 +11,6 @@ RDEPENDS_${PN} += " \
     	u-boot-brazen \
 	brazen-version \
     	zeroconf \
-    	python3-avahi \
-    	python3-dbus \
 	python3-evdev \
     	mmc-utils \
 	graphviz \

@@ -18,6 +18,7 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-huei \
 	touchlink-apps-mmpd \
 	touchlink-apps-modemd \
+	touchlink-apps-sundance \
 	touchlink-apps-netd \
 	touchlink-apps-pyftpd \
 	touchlink-apps-rtspd \

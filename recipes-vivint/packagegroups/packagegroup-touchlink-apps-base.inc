@@ -13,7 +13,6 @@ VIVINT_APPS_BASE = "\
 	touchlink-apps-sound-wav-chimes \
 	touchlink-apps-ssdpd \
 	touchlink-apps-sundance-proxies \
-	touchlink-apps-sundance \
 	touchlink-apps-updated \
 	touchlink-apps-utils \
 	touchlink-apps-modemd-proxies \

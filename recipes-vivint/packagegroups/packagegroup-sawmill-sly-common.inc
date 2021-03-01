@@ -34,6 +34,8 @@ RDEPENDS_${PN} += " \
 	mfr-audio-test-wallsly \
 	mfr-piezo-test \
 	asr-parse \
-        python3-ubus \
+    python3-ubus \
+    python3-avahi \
+    python3-dbus \
 "
 
