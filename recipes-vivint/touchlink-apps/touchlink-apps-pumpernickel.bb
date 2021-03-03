@@ -12,6 +12,8 @@ PR = "r19"
 DEPENDS += " \
 	touchlink-apps \
 	python3-bcrypt-native \
+	python3-boto3-native \
+	python3-botocore-native \
 	python3-cachetools \
 	python3-cherrypy-native \
 	python3-certifi-native \
@@ -22,6 +24,7 @@ DEPENDS += " \
 	python3-googleapis-common-protos-native \
 	python3-intelhex-native \
 	python3-jinja2-native \
+	python3-jmespath-native \
 	python3-markupsafe-native \
 	python3-mixpanel-native \
 	python3-mock-native \
@@ -76,6 +79,9 @@ EXEC_DIR = "pumpernickel"
 do_configure_prepend() {
 	export PYTHONPATH=${S}/../sundance/services/devices/generated/grpc:$PYTHONPATH
 	${S}/../../scripts/generate_all_proxies.py
+
+	# generate new .wav audio files
+	python3 ${S}/../../scripts/tts_wav_generator.py --json_file ${S}/tts_inputs.json --path ${S}/wav/
 }
 
 do_install() {
@@ -98,6 +104,9 @@ RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
     qtsvg-plugins \
     gstreamer1.0 \
 	libunwind \
+	python3-boto3 \
+	python3-botocore \
+	python3-jmespath \
 	"
 
 pkg_postinst_${PN} () {

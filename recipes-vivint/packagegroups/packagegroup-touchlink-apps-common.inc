@@ -97,6 +97,9 @@ PYTHON_EXTRA_DEPENDS = "\
 	python3-sparsedict \
 	python3-phue \
 	python3-transitions \
+	python3-boto3 \
+	python3-botocore \
+	python3-jmespath \
 "
 
 RDEPENDS_${PN} = " \
