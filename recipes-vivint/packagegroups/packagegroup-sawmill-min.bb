@@ -7,7 +7,7 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "24"
+PR = "25"
 
 inherit packagegroup
 
@@ -19,9 +19,6 @@ RDEPENDS_${PN} = " \
 	e2fsprogs-resize2fs \
 	e2fsprogs-mke2fs \
 	iw \
-	kernel-devicetree \
-	kernel-image \
-	kernel-modules \
 	memtester \
 	obp-utils \
 	openssh-sftp-server \
