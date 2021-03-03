@@ -23,6 +23,8 @@ DEPENDS += " \
         python3-atomicwrites-native \
         python3-attrs-native \
         python3-bcrypt-native \
+	python3-boto3-native \
+	python3-botocore-native \
         python3-bson-native \
         python3-cachetools \
         python3-cachetools-native \
@@ -44,6 +46,7 @@ DEPENDS += " \
         python3-googleapis-common-protos-native \
         python3-intelhex-native \
         python3-jinja2-native \
+	python3-jmespath-native \
         python3-jsonschema-native \
         python3-markupsafe-native \
         python3-mixpanel-native \
@@ -160,12 +163,15 @@ RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
     qtsvg-plugins \
     gstreamer1.0 \
     libunwind \
+    python3-boto3 \
+    python3-botocore \
+    python3-jmespath \
     weston \
     weston-init \
     qtwayland \
     qtwayland-plugins \
     qtwayland-qmlplugins \
-	"
+    "
 
 pkg_postinst_ontarget_${PN}-pumpernickel () {
 
