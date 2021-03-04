@@ -31,7 +31,8 @@ QT5_PKGS = "\
 	qtmultimedia-plugins \
 	qtmultimedia-qmlplugins \
 	qtgraphicaleffects-qmlplugins \
-	qtquickcontrols-qmlplugins \
+	qtquickcontrols2 \
+	qtquickcontrols2-qmlplugins \
 	qtscript 	\
 "
 
