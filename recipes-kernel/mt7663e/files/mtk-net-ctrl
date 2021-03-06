@@ -281,24 +281,23 @@ connect_ssid()
 
 	start_udhcpc apcli0
 
-	# update profile
-	sed -i "s/^ApCliAutoConnect=.*$/ApCliAutoConnect=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-
-	if [ ! -z $channel ]  && [ $channel'x' != '-1x' ] ; then
-		sed -i "s/^Channel=.*$/Channel=$channel/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-	fi
-
-	sed -i "s/^WirelessMode=.*$/WirelessMode=$wireless_mode/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-	sed -i "s/^ApCliAuthMode=.*$/ApCliAuthMode=$auth_mode/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-	sed -i "s/^ApCliEncrypType=.*$/ApCliEncrypType=$enc_type/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-	sed -i "s/^ApCliSsid=.*$/ApCliSsid=$ssid/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-	sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=$pass/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-	sed -i "s/^ApCliEnable=.*$/ApCliEnable=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-
-
 	# always save the profile, if $5 (nosave is 1) then do not save
 	if [ ! -z $5 ] && [ $5 -eq 0 ]; then
-	       save_profile
+		# update profile
+		sed -i "s/^ApCliAutoConnect=.*$/ApCliAutoConnect=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+
+		if [ ! -z $channel ]  && [ $channel'x' != '-1x' ] ; then
+			sed -i "s/^Channel=.*$/Channel=$channel/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		fi
+
+		sed -i "s/^WirelessMode=.*$/WirelessMode=$wireless_mode/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliAuthMode=.*$/ApCliAuthMode=$auth_mode/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliEncrypType=.*$/ApCliEncrypType=$enc_type/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliSsid=.*$/ApCliSsid=$ssid/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=$pass/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliEnable=.*$/ApCliEnable=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+
+	       save_profile "$ssid" "$pass" "$auth_mode" "$enc_type" "$channel" "$wireless_mode"
 	fi
 }
 
@@ -309,10 +308,13 @@ save_profile()
 		mkdir -p /media/extra/conf/network
 	fi
 
-	if [ -s /etc/wireless/mediatek/mt7663/mt7663.1.dat ]; then
-		cp -a /etc/wireless/mediatek/mt7663/mt7663.1.dat /media/extra/conf/network
-		sync
-	fi
+	echo SSID="\"$1\"" > /media/extra/conf/network/vivint.dat
+	echo KEY="\"$2\"" >> /media/extra/conf/network/vivint.dat
+	echo AUTH="$3" >> /media/extra/conf/network/vivint.dat
+	echo ENC="$4" >> /media/extra/conf/network/vivint.dat
+	echo CHANNEL="$5" >> /media/extra/conf/network/vivint.dat
+	echo WMODE="$6" >> /media/extra/conf/network/vivint.dat
+	sync
 }
 
 disable_ap()
@@ -332,17 +334,15 @@ reset()
 	iwpriv apcli0 set ApCliSsid=
 	iwpriv apcli0 set ApCliWPAPSK=
 
-	# update profile
-        sed -i "s/^Channel=.*$/Channel=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-	sed -i "s/^WirelessMode=.*$/WirelessMode=9/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-        sed -i "s/^ApCliSsid=.*$/ApCliSsid=/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-        sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	# restore original dat
+	cp /etc/wireless/mediatek/mt7663/mt7663.1.dat_org /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
 	# Clear the IP then kill the udhcp process
         udhcpc -R -b -t 1 -T 1 -p /var/run/udhcpc.apcli0.pid -i apcli0
 	kill_udhcpc apcli0
 
-	save_profile
+	# delete vivint setting
+	rm -f /media/extra/conf/network/vivint.dat
 }
 
 reconnect()
@@ -358,7 +358,7 @@ reconnect()
 	if [ ! -z "$ssid" ] ; then
 		if [ $perform_site_survey -eq 1 ]; then
 			# only scan if we are not associate
-			if ! iwconfig apcli0 | grep -q "mynetwork" ; then
+			if ! iwconfig apcli0 | grep -q "$ssid" ; then
 				scan_known_network
 			fi
 		fi
@@ -369,7 +369,6 @@ reconnect()
 		sleep 3
 		start_udhcpc apcli0
 
-		save_profile
 	fi
 }
 

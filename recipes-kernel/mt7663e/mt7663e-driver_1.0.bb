@@ -1,7 +1,7 @@
 DESCRIPTION = "MediaTek 7663 wifi firmware"
 LICENSE = "CLOSED"
 
-PR = "r38"
+PR = "r39"
 
 SRC_URI = " \
 	file://MT7663E_EEPROM1.bin \
@@ -20,6 +20,7 @@ do_install() {
 	install -d ${D}/etc_ro/wlan
  	install -m 644 ${WORKDIR}/MT7663E_EEPROM1.bin ${D}/etc_ro/wlan
 	cp -a ${WORKDIR}/wireless/* ${D}/${sysconfdir}/wireless/
+	cp -a ${WORKDIR}/wireless/mediatek/mt7663/mt7663.1.dat ${D}/${sysconfdir}/wireless/mediatek/mt7663/mt7663.1.dat_org
 	install -m 755 ${WORKDIR}/mtk-net-ctrl ${D}/usr/local/bin/
 }
 
