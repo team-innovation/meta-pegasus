@@ -1,7 +1,7 @@
 DESCRIPTION = "MediaTek 7663 wifi firmware"
 LICENSE = "CLOSED"
 
-PR = "r39"
+PR = "r40"
 
 SRC_URI = " \
 	file://MT7663E_EEPROM1.bin \

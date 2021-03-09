@@ -363,10 +363,12 @@ reconnect()
 			fi
 		fi
 
-		iwpriv apcli0 set ApCliEnable=1
 		iwpriv apcli0 set "ApCliSsid=$ssid"
+		sleep 1
+		iwpriv apcli0 set "ApCliSsid=$ssid"
+		iwpriv apcli0 set ApCliEnable=1
 		iwpriv apcli0 set ApCliAutoConnect=1
-		sleep 3
+		sleep 5
 		start_udhcpc apcli0
 
 	fi
