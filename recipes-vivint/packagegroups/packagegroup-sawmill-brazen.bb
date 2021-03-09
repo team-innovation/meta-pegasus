@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r15"
+PR = "r16"
 
 require packagegroup-sawmill-sly-common.inc
 
@@ -25,4 +25,5 @@ RDEPENDS_${PN} += " \
         iot-radio-fw-verify \
 	mt7663e-driver \
 	openvpn-procmand \
+        avahi-utils \
 "

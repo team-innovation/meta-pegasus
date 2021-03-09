@@ -1,5 +1,8 @@
 #!/bin/sh
 
+
+
+
 # update mediatek profile
 if [ -e /sys/class/net/ra0/address ]; then
 
@@ -29,24 +32,10 @@ __END_PYTHON
     # Chop the password town to the length allowed by WPA2:
     password=${password:0:63}
 
-    # copy /media/extra/conf/network/mt7663.1.dat over if it exist
-    if [ -s /media/extra/conf/network/mt7663.1.dat ]; then
-	    cp -a /media/extra/conf/network/mt7663.1.dat /etc/wireless/mediatek/mt7663/mt7663.1.dat
-    else
-	    rm -f /media/extra/conf/network/mt7663.1.dat
-	    if [ ! -s /etc/wireless/mediatek/mt7663/mt7663.1.dat ]; then
-		    cp -a /etc/wireless/mediatek/mt7663/mt7663.1.dat_org /etc/wireless/mediatek/mt7663/mt7663.1.dat
-            fi
-    fi
 
     sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
     sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
 
-    #if ! grep -q ApCliAutoConnect /etc/wireless/mediatek/mt7663/mt7663.1.dat; then
-    #	    sed -i "42 a ApCliAutoConnect=1" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-    #else
-    #	    sed -i "s/^ApCliAutoConnect=.*$/ApCliAutoConnect=1/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
-    #fi
 
     if [ -f /media/bootscript/wifiinfo.txt ]; then
             mac=$(cat /media/bootscript/wifiinfo.txt)
@@ -56,9 +45,49 @@ __END_PYTHON
             fi
     fi
 
+
+    if [ -f /media/extra/conf/network/mt7663.1.dat ]; then
+	    # use old one then remove - migration path
+	    SSID=$(grep ^ApCliSsid= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+	    KEY=$(grep ^ApCliWPAPSK= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+	    AUTH=$(grep ^ApCliAuthMode= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+	    ENC=$(grep ^ApCliEncrypType= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+	    CHANNEL=$(grep ^Channel= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+	    WMODE=$(grep ^WirelessMode= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+
+	    # create new setting dat file
+	    echo SSID="\"$SSID\"" > /media/extra/conf/network/vivint.dat
+            echo KEY="\"$KEY\"" >> /media/extra/conf/network/vivint.dat
+            echo AUTH="$AUTH" >> /media/extra/conf/network/vivint.dat
+            echo ENC="$ENC" >> /media/extra/conf/network/vivint.dat
+            echo CHANNEL="$CHANNEL" >> /media/extra/conf/network/vivint.dat
+            echo WMODE="$WMODE" >> /media/extra/conf/network/vivint.dat
+
+	    rm -f /media/extra/conf/network/mt7663.1.dat
+    fi
+
+
+    # check if current dat has SSID define or not
+    # update if it different then setup file
+    if [ -f /media/extra/conf/network/vivint.dat ]; then
+	source /media/extra/conf/network/vivint.dat
+
+	cur_ssid=$(grep ^ApCliSsid= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
+	if [ -z "$cur_ssid" ] || [ "$cur_ssid"x != "$SSID"x ]; then
+		sed -i "s/^WirelessMode=.*$/WirelessMode=$WMODE/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliAuthMode=.*$/ApCliAuthMode=$AUTH/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliEncrypType=.*$/ApCliEncrypType=$ENC/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliSsid=.*$/ApCliSsid=$SSID/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=$KEY/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^Channel=.*$/Channel=$CHANNEL/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	fi
+    fi
+
     if ! grep -q apcli0 /etc/network/interfaces ; then
         echo -e "\niface apcli0 inet dhcp" >> /etc/network/interfaces
     fi
+
+    sync
 
     ifconfig ra0 up
 
