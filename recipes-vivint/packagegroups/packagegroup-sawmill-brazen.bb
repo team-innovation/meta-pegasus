@@ -28,5 +28,4 @@ RDEPENDS_${PN} += " \
 	mt7663e-driver \
 	openvpn-procmand \
         avahi-utils \
-	libavahi-client3 \
 "
