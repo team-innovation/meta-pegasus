@@ -80,8 +80,9 @@ do_configure_prepend() {
 	export PYTHONPATH=${S}/../sundance/services/devices/generated/grpc:$PYTHONPATH
 	${S}/../../scripts/generate_all_proxies.py
 
-	# generate new .wav audio files
-	python3 ${S}/../../scripts/tts_wav_generator.py --json_file ${S}/tts_inputs.json --path ${S}/wav/
+    if [ ! ${SKIP_GENERATE_AUDIO} ]; then
+    	python3 ${S}/../../scripts/tts_wav_generator.py --json_file ${S}/tts_inputs.json --path ${S}/wav/
+    fi
 }
 
 do_install() {
