@@ -1105,6 +1105,7 @@ Interface wlan1
         #     self.logger.exception('Failed on access of panel db')
 
         p = PanelSystemInfo()
+        p.run()
         yofi_devices = p.get_yofi_info()
         for node in yofi_devices:
             # print()
@@ -1491,10 +1492,110 @@ Interface wlan1
             except Exception as ex:
                 pass
 
+from taurine.async_io.event_loop import EventLoop
+from taurine.async_io.delayed_call import DelayedCall
+from taurine.rpc.rpc_client import RpcClient
 
-class PanelSystemInfo:
+def on_touchlink():
+    uname = platform.uname()
+    is_linux = "linux" in sys.platform
+    return is_linux and not "x86" in uname[4] and not "Ubuntu" in uname[3]
+
+if not on_touchlink():
+    base = os.getcwd()
+    sun_prox = os.path.abspath(base + "/../../sundance/proxies/python")
+    sys.path.insert(0, sun_prox)
+    sys.path.insert(0, base + "/../../sundance")
+else:
+    sys.path.insert(0, "/opt/2gig/sundance/proxies/python")
+#    sys.path.insert(0, "/opt/2gig/sundance/proxies/python/sundance_proxies/singletons")
+
+from sundance_proxies.devices.camera_device import CameraDevice
+from sundance_proxies.devices.slim_line_device import SlimLineDevice
+from sundance_proxies.devices.yofi_device import YofiDevice
+from sundance_proxies.devices.lgit_poe_wifi_device import LGITPoEWifiDevice
+
+class PanelSystemInfo(EventLoop):
     def __init__(self, address='172.16.10.100'):
+        super().__init__(self.on_exit)
         self.address = address
+
+        if not on_touchlink():
+            self.address = '10.42.0.79'
+
+        self.port = 7080
+
+        self._cam_list = []
+
+    def setup(self):
+        self.__client = RpcClient('sundance')
+        self.__client.connect(self.address, self.port, self.on_connected, disconnected_callback=self.on_disconnected,auto_reconnect=False)
+
+    def on_exit(self):
+        if self.__client:
+            self.__client.disconnect()
+
+    def on_connected(self, error):
+        if not error:
+            print("CONNECTED CALLED.........STARTING TEST")
+            self.cameras = []
+            self.lgs = []
+            self.yofi_nodes = []
+            self.panels = []
+            for device in CameraDevice.list():
+                dev = device.get_all_properties()
+                mac = device.camera_mac_address.lower()
+                if ':' not in mac:
+                    mac = ':'.join([mac[i: i + 2] for i in range(0, len(mac), 2)])
+                dev['properties']['camera_mac_address'] = mac
+                self.cameras.append(dev)
+
+            for device in LGITPoEWifiDevice.list():
+                dev = device.get_all_properties()
+                mac = device.mac_address.lower()
+                if ':' not in mac:
+                    mac = ':'.join([mac[i: i + 2] for i in range(0, len(mac), 2)])
+                dev['properties']['camera_mac_address'] = mac
+                dev['properties']['connected_ssid'] = ''
+                dev['properties']['wireless_link_quality'] = ''
+                try:
+                    dev['properties']['wireless_signal_level'] = dev['properties']['rssi']
+                    # Match up the camera name to the bridge so we can also show the IP of the camera in the name.
+                    for cam in self.cameras:
+                        if dev['properties']['name'].startswith(cam['properties']['name']):
+                            dev['properties']['name'] = '{} [{}]'.format(cam['properties']['name'], cam['properties']['camera_ip_address'])
+                            break
+                except:
+                    pass
+
+                self.lgs.append(dev)
+
+            self.cameras.extend(self.lgs)
+
+            for device in YofiDevice.list():
+                dev = device.get_all_properties()
+                mac = device.mac_address.lower()
+                if ':' not in mac:
+                    mac = ':'.join([mac[i: i + 2] for i in range(0, len(mac), 2)])
+                dev['properties']['mac_address'] = mac
+                self.yofi_nodes.append(dev)
+
+            for device in SlimLineDevice.list():
+                dev = device.get_all_properties()
+                mac = device.panel_mac_address.lower()
+                if ':' not in mac:
+                    mac = ':'.join([mac[i: i + 2] for i in range(0, len(mac), 2)])
+                dev['properties']['panel_mac_address'] = mac
+                self.panels.append(dev)
+
+            sys.exit(0)
+
+    def on_disconnected(self):
+        print('Goodbye!:')
+
+    def run(self):
+        DelayedCall(0,self.setup)
+        super().run()
 
     def retrieve_nodes_password(self):
         print("Retrieving node password...")
@@ -1514,113 +1615,13 @@ class PanelSystemInfo:
         return list_of_password
 
     def get_camera_info(self):
-        j = {}
-        k = {}
-        try:
-            import requests
-            r = requests.get('http://{}:8080/camera_device/'.format(self.address))
-            # print(r.content)
-            import json
-            j = json.loads(r.content.decode())
-            for cam in j:
-                # Fix up MAC address
-                try:
-                    m = cam['properties']['camera_mac_address']
-                    if ':' not in m:
-                        #  fancy way to add : to the MAC
-                        mac = ':'.join([m[i: i + 2] for i in range(0, len(m), 2)])
-                    else:
-                        mac = m
-                except:
-                    mac = cam['properties']['camera_mac_address']
-
-                cam['properties']['camera_mac_address'] = mac.lower()
-
-            r = requests.get('http://{}:8080/lgit_poe_wifi_device/'.format(self.address))
-            k = json.loads(r.content.decode())
-            for cam_lg in k:
-                # Fix up MAC address
-                try:
-                    m = cam_lg['properties']['mac_address']
-                    if ':' not in m:
-                        #  fancy way to add : to the MAC
-                        mac = ':'.join([m[i: i + 2] for i in range(0, len(m), 2)])
-                    else:
-                        mac = m
-                except:
-                    mac = cam_lg['properties']['mac_address']
-
-                cam_lg['properties']['camera_mac_address'] = mac.lower()
-
-                cam_lg['properties']['connected_ssid'] = ''
-                cam_lg['properties']['wireless_link_quality'] = ''
-                try:
-                    cam_lg['properties']['wireless_signal_level'] = cam_lg['properties']['rssi']
-                    # Match up the camera name to the bridge so we can also show the IP of the camera in the name.
-                    for cam in j:
-                        if cam_lg['properties']['name'].startswith(cam['properties']['name']):
-                            cam_lg['properties']['name'] = '{} [{}]'.format(cam['properties']['name'], cam['properties']['camera_ip_address'])
-                            break
-                except:
-                    pass
-
-            # Append the list of LG bridges to the camera list (j).
-            for item in k:
-                j.append(item)
-        except:
-            pass
-        return j
+        return self.cameras
 
     def get_yofi_info(self):
-        j = {}
-        try:
-            import requests
-            r = requests.get('http://{}:8080/yofi_device/'.format(self.address))
-            # print(r.content)
-            import json
-            j = json.loads(r.content.decode())
-            for node in j:
-                # Fix up MAC address
-                try:
-                    m = node['properties']['mac_address']
-                    if ':' not in m:
-                        #  fancy way to add : to the MAC
-                        mac = ':'.join([m[i: i + 2] for i in range(0, len(m), 2)])
-                    else:
-                        mac = m
-                except:
-                    mac = node['properties']['mac_address']
-
-                node['properties']['mac_address'] = mac.lower()
-        except Exception as e:
-            print("get_yofi_info exception: {}".format(e))
-            print("get_yofi_info request return: {}".format(r.content.decode()))
-        return j
+        return self.yofi_nodes
 
     def get_slim_line_info(self):
-        j = {}
-        try:
-            import requests
-            r = requests.get('http://{}:8080/slim_line_device/'.format(self.address))
-            # print(r.content)
-            import json
-            j = json.loads(r.content.decode())
-            for cam in j:
-                # Fix up MAC address
-                try:
-                    m = cam['properties']['panel_mac_address']
-                    if ':' not in m:
-                        #  fancy way to add : to the MAC
-                        mac = ':'.join([m[i: i + 2] for i in range(0, len(m), 2)])
-                    else:
-                        mac = m
-                except:
-                    mac = cam['properties']['panel_mac_address']
-
-                cam['properties']['panel_mac_address'] = mac.lower()
-        except:
-            pass
-        return j
+        return self.panels
 
 
 def on_touchlink():
@@ -1632,6 +1633,7 @@ def main(use_ssdp=True):
     node_list = []
     node_password_list = {}
     p = PanelSystemInfo()
+    p.run()
     camera_info = p.get_camera_info()
     panel_info = p.get_slim_line_info()
     node_password_list = p.retrieve_nodes_password()
