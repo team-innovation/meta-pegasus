@@ -129,6 +129,9 @@ switch_wireless_mode()
 
 restore_wireless_mode()
 {
+	if [ -e /tmp/wifi_connect_in_proccess ]; then
+		exit 0
+	fi
 
 	if [ $current_wmode'x' == '9x' ]; then
 		iwpriv ra0 set WirelessMode=9
