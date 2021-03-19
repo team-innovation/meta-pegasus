@@ -214,6 +214,7 @@ RDEPENDS_${PN} = "\
  	python3-jsonschema \
 	python3-sparsedict \
 	python3-phue \
+	python3-mixpanel \
  	iotivity-resource \
  	iotivity-bridging-plugins \
     	zwave-nvm-converter \
