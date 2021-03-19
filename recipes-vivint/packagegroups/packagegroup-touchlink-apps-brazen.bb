@@ -3,7 +3,7 @@
 DESCRIPTION = "Brazen system packages"
 LICENSE = "MIT"
 
-PR = "r3"
+PR = "r4"
 
 require packagegroup-touchlink-apps-base.inc
 #require packagegroup-touchlink-qt-brazen.inc
@@ -22,6 +22,7 @@ RDEPENDS_${PN} += " \
 	touchlink-apps-pyftpd \
 	touchlink-apps-rtspd \
 	touchlink-apps-test-daemon \
+	touchlink-apps-usage-analytics \
 	touchlink-apps-videod \
 	touchlink-apps-webd \
 	touchlink-apps-zwaved \
