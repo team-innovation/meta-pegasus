@@ -1,0 +1,40 @@
+--- pluggy-0.7.1/setup.py	2018-07-28 16:45:12.000000000 -0600
++++ pluggy-0.7.1/setup.py	2021-03-22 16:25:19.326524308 -0600
+@@ -1,4 +1,6 @@
+ from setuptools import setup
++import re
++import os
+ 
+ classifiers = [
+     'Development Status :: 4 - Beta',
+@@ -18,16 +20,25 @@ classifiers = [
+ with open('README.rst') as fd:
+     long_description = fd.read()
+ 
++def read(*names, **kwargs):
++    with open(os.path.join( *names), 'r') as fp:
++        return fp.read()
++
++def find_version(*file_paths):
++    version_file = read(*file_paths)
++    version_match = re.search(r"^version = ['\']([^'\"]*)['\']",
++                              version_file, re.M)
++
++    if version_match:
++        return version_match.group(1)
++    raise RuntimeError("Unable to find version string.")
+ 
+ def main():
+     setup(
+         name='pluggy',
+         description='plugin and hook calling mechanisms for python',
+         long_description=long_description,
+-        use_scm_version={
+-            'write_to': 'pluggy/_version.py',
+-        },
+-        setup_requires=['setuptools-scm'],
++	version=find_version("pluggy", "_version.py"),
+         license='MIT license',
+         platforms=['unix', 'linux', 'osx', 'win32'],
+         author='Holger Krekel',
+

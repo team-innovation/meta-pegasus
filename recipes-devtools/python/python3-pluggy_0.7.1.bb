@@ -6,10 +6,11 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=338dad807ed9337bfaeb9979c3bfe20f"
 
 DEPENDS += "python3-setuptools-scm-native"
 
-PR = "r2"
+PR = "r3"
 SRCNAME = "pluggy-${PV}"
 
 SRC_URI = "https://files.pythonhosted.org/packages/a1/83/ef7d976c12d67a5c7a5bc2a47f0501c926cabae9d9fcfdc26d72abc9ba15/pluggy-0.7.1.tar.gz"
+SRC_URI += "file://pluggy_version_fix.patch"
 
 S = "${WORKDIR}/${SRCNAME}"
 
