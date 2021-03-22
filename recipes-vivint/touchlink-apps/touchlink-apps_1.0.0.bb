@@ -104,6 +104,8 @@ DEPENDS = " \
 	gstreamer1.0-plugins-base \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0 \
+	python3 \
+	python3-native \
 	python3-setuptools-native \
 	python3-aiodns-native \
 	python3-aioconsole-native \

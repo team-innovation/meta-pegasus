@@ -1,0 +1,33 @@
+--- py-1.6.0/setup.py	2021-03-22 16:39:55.025593547 -0600
++++ py/setup.py	2021-03-22 16:46:29.720753101 -0600
+@@ -1,4 +1,19 @@
+ from setuptools import setup, find_packages
++import re
++import os
++
++def read(*names, **kwargs):
++    with open(os.path.join( *names), 'r') as fp:
++        return fp.read()
++
++def find_version(*file_paths):
++    version_file = read(*file_paths)
++    version_match = re.search(r"^version = ['\']([^'\"]*)['\']",
++                              version_file, re.M)
++
++    if version_match:
++        return version_match.group(1)
++    raise RuntimeError("Unable to find version string.")
+ 
+ 
+ def main():
+@@ -6,8 +21,7 @@ def main():
+         name='py',
+         description='library with cross-python path, ini-parsing, io, code, log facilities',
+         long_description=open('README.rst').read(),
+-        use_scm_version={"write_to": "py/_version.py"},
+-        setup_requires=["setuptools-scm"],
++	version=find_version("py", "_version.py"),
+         url='http://py.readthedocs.io/',
+         license='MIT license',
+         platforms=['unix', 'linux', 'osx', 'cygwin', 'win32'],
+
