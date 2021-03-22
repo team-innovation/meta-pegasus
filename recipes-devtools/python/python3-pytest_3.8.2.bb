@@ -4,7 +4,9 @@ SECTION = "devel/python"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=c39b24965f4aef64222cb35de9d47cc4"
 
-PR = "r1"
+DEPENDS += "python3-setuptools-scm-native"
+
+PR = "r2"
 SRCNAME = "pytest-${PV}"
 
 SRC_URI = "https://files.pythonhosted.org/packages/5f/d2/7f77f406ac505abda02ab4afb50d06ebf304f6ea42fca34f8f37529106b2/pytest-3.8.2.tar.gz"
@@ -20,3 +22,7 @@ BBCLASSEXTEND = "native"
 NATIVE_INSTALL_WORKS = "1"
 
 inherit setuptools3 python3-dir
+
+do_configure_prepend() {
+	sed -i "/setuptools-scm/d" ${S}/setup.py
+}
