@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "55"
+PR = "56"
 
 inherit packagegroup
 
@@ -63,6 +63,7 @@ RDEPENDS_${PN} = " \
 	python3-markupsafe \
 	python3-math \
 	python3-misc \
+	python3-mixpanel \
 	python3-msgpack \
 	python3-multidict \
 	python3-more-itertools \

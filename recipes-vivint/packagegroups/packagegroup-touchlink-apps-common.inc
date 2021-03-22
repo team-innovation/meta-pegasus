@@ -63,7 +63,6 @@ PYTHON_EXTRA_DEPENDS = "\
 	python3-urllib3 \
 	python3-sentry-sdk \
 	python3-jsonschema \
-	python3-mixpanel \
 	python3-mmap \
 	python3-multiprocessing \
 	python3-requests \
