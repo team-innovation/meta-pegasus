@@ -3,6 +3,8 @@ LICENSE = "MIT"
 PR = "r10"
 IMAGE_FEATURES += "package-management" 
 
+inherit populate_sdk_qt5
+
 DEPENDS += "zip-native"
 IMAGE_INSTALL_append = "\
 	${CORE_IMAGE_BASE_INSTALL} \
