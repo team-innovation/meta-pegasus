@@ -12,9 +12,6 @@ SRC_URI_append_class-target = " \
     file://ppc-boringssl-support.patch \
     file://riscv64_support.patch \
     file://disable-grpc-forking.patch \
-"
-
-SRC_URI_append = " \
     file://compiler.patch \
 "
 
@@ -24,12 +21,6 @@ SRC_URI[sha256sum] = "5043440c45c0a031f387e7f48527541c65d672005fb24cf18ef6857483
 PYPI_PACKAGE = "grpcio"
 inherit pypi setuptools3
 
-export GRPC_PYTHON_DISABLE_LIBC_COMPATIBILITY = "1"
-
-do_compile_prepend_toolchain-clang() {
-    export GRPC_PYTHON_CFLAGS='-fvisibility=hidden -fno-wrapv -fno-exceptions'
-}
-
 RDEPENDS_${PN} = "${PYTHON_PN}-protobuf \
                   ${PYTHON_PN}-setuptools \
                   ${PYTHON_PN}-six \
@@ -38,5 +29,3 @@ CLEANBROKEN = "1"
 
 # For usage in other recipes when compiling protobuf files (e.g. by grpcio-tools)
 BBCLASSEXTEND = "native nativesdk"
-
-CCACHE_DISABLE = "1"

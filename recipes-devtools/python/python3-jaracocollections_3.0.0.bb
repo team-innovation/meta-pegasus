@@ -13,16 +13,5 @@ SRC_URI[sha256sum] = "be570ef4f2e7290b757449395238fa63d70a9255574624e73c5ff9f1ee
 PYPI_PACKAGE = "jaraco.collections"
 inherit setuptools3 pypi
 
-RDEPENDS_${PN} = " \
-	${PYTHON_PN}-jaracoclasses \
-	${PYTHON_PN}-jaracotext \
-	${PYTHON_PN}-six \
-"
-
-do_install_append() {
-	rm ${D}${PYTHON_SITEPACKAGES_DIR}/jaraco/__init__.py
-	rm ${D}${PYTHON_SITEPACKAGES_DIR}/jaraco/__pycache__/__init__.cpython-37.pyc
-}
-
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native nativesdk"

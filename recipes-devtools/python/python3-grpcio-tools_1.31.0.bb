@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://MANIFEST.in;md5=4e1da04207560d860fc7e2eeb805727f"
 
 DEPENDS = "${PYTHON_PN}-grpcio"
 
-SRC_URI_append = " file://compiler.patch"
+SRC_URI_append_class-target = " file://compiler.patch"
 
 SRC_URI[md5sum] = "bf292a112c0a0598d70e31e93d9109e7"
 SRC_URI[sha256sum] = "3b08cbd3f4d5b60e3bff8f859e6e03db739967a684268164abc940415e23ca51"
