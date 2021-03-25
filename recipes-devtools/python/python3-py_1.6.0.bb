@@ -4,10 +4,11 @@ SECTION = "devel/python"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=a6bb0320b04a0a503f12f69fea479de9"
 
-PR = "r1"
+PR = "r2"
 SRCNAME = "py-${PV}"
 
 SRC_URI = "https://files.pythonhosted.org/packages/4f/38/5f427d1eedae73063ce4da680d2bae72014995f9fdeaa57809df61c968cd/py-1.6.0.tar.gz"
+SRC_URI += "file://py_version_fix.patch"
 
 S = "${WORKDIR}/${SRCNAME}"
 
