@@ -6,6 +6,11 @@ HTTPD_PREPEND = "-3"
 HTTPD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-httpd = "${PR}${HTTPD_PREPEND}${HTTPD_REVISION}"
 
+RDEPENDS_${PN}-httpd = "\
+    python3-zeroconf \
+    python3-sseclient \
+	"
+
 do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/httpd/
         ${RSYNC_CMD} ${S}/code/httpd/ ${D}/${INSTALL_DIR}/httpd/

@@ -15,8 +15,12 @@ RDEPENDS_${PN} += " \
 	slimline-utils \
 	slimline-version \
 	mosquitto-clients \
-        openvpn \
-        telegraf \
-	vim \
+    openvpn \
+    telegraf \
+    vim \
+    zeroconf \
+    python3-avahi \
+    python3-dbus \
+    psoc5-verify \
 "
 

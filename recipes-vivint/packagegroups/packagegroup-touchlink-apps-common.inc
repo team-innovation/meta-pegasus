@@ -8,6 +8,7 @@ VIVINT_APPS_COMMON = "\
 	touchlink-apps-qml-framework-images-controls \
 	touchlink-apps-qml-framework-images-controls-shared \
 	touchlink-apps-pumpernickel \
+	touchlink-apps-httpd \
 	touchlink-apps-initpumpernickel \
 	touchlink-apps-roubaix-services \
 	touchlink-apps-usage-analytics \
