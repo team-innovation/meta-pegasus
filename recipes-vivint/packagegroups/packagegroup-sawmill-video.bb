@@ -38,7 +38,4 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-rtsp-server \
 	ffmpeg \
 	libopus \
-	live555-openrtsp \
-	python3-live555proxy \
-	live555-proxyserver \
 "
