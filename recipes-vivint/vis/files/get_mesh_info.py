@@ -25,7 +25,7 @@ except ImportError:
     pprint = print
 
 try:
-    from taurine.utils.ssh_network_module import SSHToNetworkModule
+    from taurine.utils.ssh_network_module import SSHToNetworkModule, ExceptionPasswordRefused
 except ImportError:
     print('No taurine')
     exit(-1)
@@ -529,17 +529,24 @@ class NetworkModuleInfo:
         else:
             addr = '172.16.10.254'
             s = SSHToNetworkModule()
-            s.password = password_list[addr]
             s.get_password_from_db = False
             print('Attempt login to address: {}'.format(addr))
-            ret = s.login_network_module(addr)
+            try:
+                ret = s.login_network_module(addr, password=password_list[addr])
+            except ExceptionPasswordRefused:
+                s.close()
+                s = SSHToNetworkModule()
+                ret = s.login_network_module(addr)
             if ret is False:
                 s.close()
                 s = SSHToNetworkModule()
-                s.password = password_list[addr]
                 s.get_password_from_db = False
-                ret = s.login_network_module(addr, 2020)
-
+                try:
+                    ret = s.login_network_module(addr, 2020, password=password_list[addr])
+                except ExceptionPasswordRefused:
+                    s.close()
+                    s = SSHToNetworkModule()
+                    ret = s.login_network_module(addr, 2020)
             if ret:
                 import re
                 regex = r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'
@@ -1128,16 +1135,21 @@ Interface wlan1
             # Try to get the dhcpdump info first from the MPP
             addr2 = '172.16.10.254'
             s1 = SSHToNetworkModule()
-            s1.password = self.password_list[addr2]
-            s1.get_password_from_db = False
-            ret = s1.login_network_module(addr2)
+            try:
+                ret = s1.login_network_module(addr2, password=self.password_list[addr2])
+            except ExceptionPasswordRefused:
+                s1.close()
+                s1 = SSHToNetworkModule()
+                ret = s1.login_network_module(addr2)
             if ret is False:
                 s1.close()
                 s1 = SSHToNetworkModule()
-                s1.password = self.password_list[addr2]
-                s1.get_password_from_db = False
-                ret = s1.login_network_module(addr2, 2020)
-
+                try:
+                    ret = s1.login_network_module(addr2, 2020, password=self.password_list[addr2])
+                except ExceptionPasswordRefused:
+                    s1.close()
+                    s1 = SSHToNetworkModule()
+                    ret = s1.login_network_module(addr2, 2020)
             if ret:
                 self.logger.info('Logged into {}'.format(addr2))
                 self.dhcpdump = self.netv_dhcpdump(s1)
@@ -1146,16 +1158,23 @@ Interface wlan1
             addr2 = '172.16.10.{}'.format(j)
             try:
                 s1 = SSHToNetworkModule()
-                s1.password = self.password_list[addr2]
-                s1.get_password_from_db = False
-                ret = s1.login_network_module(addr2)
+                try:
+                    ret = s1.login_network_module(addr2, password=self.password_list[addr2])
+                except ExceptionPasswordRefused:
+                    s1.close()
+                    s1 = SSHToNetworkModule()
+                    ret = s1.login_network_module(addr2)
                 if ret is False:
                     s1.close()
                     time.sleep(1)
                     s1 = SSHToNetworkModule()
-                    s1.password = self.password_list[addr2]
-                    s1.get_password_from_db = False
-                    ret = s1.login_network_module(addr2, 2020)
+                    try:
+                        ret = s1.login_network_module(addr2, 2020, password=self.password_list[addr2])
+                    except ExceptionPasswordRefused:
+                        s1.close()
+                        s1 = SSHToNetworkModule()
+                        ret = s1.login_network_module(addr2, 2020)
+
                 if ret:
                     self.logger.info('Logged into {}'.format(addr2))
                     wlan_mac = s1._server_mac
@@ -1519,6 +1538,8 @@ class PanelSystemInfo(EventLoop):
     def __init__(self, address='172.16.10.100'):
         super().__init__(self.on_exit)
         self.address = address
+        import logging
+        self.logger = logging.getLogger(self.__class__.__name__)
 
         if not on_touchlink():
             self.address = '10.42.0.79'
@@ -1537,14 +1558,19 @@ class PanelSystemInfo(EventLoop):
 
     def on_connected(self, error):
         if not error:
-            print("CONNECTED CALLED.........STARTING TEST")
+            self.logger.info("CONNECTED CALLED.........STARTING TEST")
             self.cameras = []
             self.lgs = []
             self.yofi_nodes = []
             self.panels = []
             for device in CameraDevice.list():
                 dev = device.get_all_properties()
-                mac = device.camera_mac_address.lower()
+                mac = "00:00:00:00:00:00"
+                if device.camera_mac_address:
+                    mac = device.camera_mac_address.lower()
+                elif device.mac_address:
+                    mac = device.mac_address.lower()
+
                 if ':' not in mac:
                     mac = ':'.join([mac[i: i + 2] for i in range(0, len(mac), 2)])
                 dev['properties']['camera_mac_address'] = mac
@@ -1552,7 +1578,9 @@ class PanelSystemInfo(EventLoop):
 
             for device in LGITPoEWifiDevice.list():
                 dev = device.get_all_properties()
-                mac = device.mac_address.lower()
+                mac = "00:00:00:00:00:00"
+                if device.mac_address:
+                    mac = device.mac_address.lower()
                 if ':' not in mac:
                     mac = ':'.join([mac[i: i + 2] for i in range(0, len(mac), 2)])
                 dev['properties']['camera_mac_address'] = mac
@@ -1574,7 +1602,9 @@ class PanelSystemInfo(EventLoop):
 
             for device in YofiDevice.list():
                 dev = device.get_all_properties()
-                mac = device.mac_address.lower()
+                mac = "00:00:00:00:00:00"
+                if device.mac_address:
+                    mac = device.mac_address.lower()
                 if ':' not in mac:
                     mac = ':'.join([mac[i: i + 2] for i in range(0, len(mac), 2)])
                 dev['properties']['mac_address'] = mac
@@ -1582,7 +1612,12 @@ class PanelSystemInfo(EventLoop):
 
             for device in SlimLineDevice.list():
                 dev = device.get_all_properties()
-                mac = device.panel_mac_address.lower()
+                mac = "00:00:00:00:00:00"
+                if device.panel_mac_address:
+                    mac = device.panel_mac_address.lower()
+                elif device.mac_address:
+                    mac = device.mac_address.lower()
+
                 if ':' not in mac:
                     mac = ':'.join([mac[i: i + 2] for i in range(0, len(mac), 2)])
                 dev['properties']['panel_mac_address'] = mac
@@ -1591,14 +1626,14 @@ class PanelSystemInfo(EventLoop):
             sys.exit(0)
 
     def on_disconnected(self):
-        print('Goodbye!:')
+        self.logger.info('Goodbye!:')
 
     def run(self):
         DelayedCall(0,self.setup)
         super().run()
 
     def retrieve_nodes_password(self):
-        print("Retrieving node password...")
+        self.logger.info("Retrieving node password...")
         yofi_devices = self.get_yofi_info()
 
         list_of_password = {}
@@ -1611,7 +1646,7 @@ class PanelSystemInfo(EventLoop):
 
             list_of_password[node['properties']['address']] = _password
 
-        # print("DEBUG: passord list: {}".format(list_of_password))
+        # self.logger.info("DEBUG: passord list: {}".format(list_of_password))
         return list_of_password
 
     def get_camera_info(self):
