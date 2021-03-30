@@ -1,0 +1,25 @@
+# HG changeset patch
+# User Johny Bui <jbui@vivint.com>
+# Date 1396503172 21600
+# Node ID e1dff83d4bc98e26eae6e04890e376681c183336
+# Parent  f1714ece80b9e4f24ab0177082d5158f6200ee49
+patch sample conf
+
+diff --git a/sample/sample-config-files/server.conf b/sample/sample-config-files/server.conf
+--- a/sample/sample-config-files/server.conf
++++ b/sample/sample-config-files/server.conf
+@@ -243,12 +243,13 @@
+ # the client config file as well.
+ ;cipher BF-CBC        # Blowfish (default)
+ ;cipher AES-128-CBC   # AES
++cipher AES-256-CBC
+ ;cipher DES-EDE3-CBC  # Triple-DES
+ 
+ # Enable compression on the VPN link.
+ # If you enable it here, you must also
+ # enable it in the client config file.
+-comp-lzo
++;comp-lzo
+ 
+ # The maximum number of concurrently connected
+ # clients we want to allow.

@@ -1,0 +1,8 @@
+{
+    "vpnclient":
+    {
+		"name": "OpenVNP Client Service",
+		"pid_file" : "/var/run/openvpn.pid",
+	"start": "/usr/sbin/openvpn /media/extra/conf/openvpn/client.conf"
+    }
+}
