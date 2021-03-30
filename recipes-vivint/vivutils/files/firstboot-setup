@@ -7,7 +7,6 @@ set -e
 
 echo "$SCRIPTNAME"
 
-modprobe board_info
 BSPART=/dev/mmcblk0p3
 
 # Utility functions
@@ -35,6 +34,7 @@ is_sly() {
 }
 
 is_wallsly() {
+	modprobe board_info
 	# real wallsly has a wallsly device tree
 	grep -q vivint,wallsly "/proc/device-tree/compatible" &&
 		return 0
@@ -44,6 +44,7 @@ is_wallsly() {
 }
 
 is_brazen() {
+	modprobe board_info
 	grep -q vivint,brazen "/proc/device-tree/compatible" &&
 		test $(cat /sys/class/board_info/board_info/board_rev) -gt 13
 }
