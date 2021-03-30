@@ -29,7 +29,6 @@ RDEPENDS_${PN} += " \
 	python3-cffi \
 	python3-cherrypy \
 	python3-compile \
-	python3-config \
 	python3-cryptography \
 	python3-ctypes \
 	python3-curses \

@@ -33,10 +33,8 @@ RDEPENDS_${PN} += " \
 	nativesdk-python3-bcrypt \
 	nativesdk-python3-bson \
 	nativesdk-python3-cachetools \
-	nativesdk-python3-cachetools \
 	nativesdk-python3-cchardet \
 	nativesdk-python3-cherrypy \
-	nativesdk-python3-config \
 	nativesdk-python3-cstruct \
 	nativesdk-python3-coverage \
 	nativesdk-python3-certifi \
@@ -61,7 +59,6 @@ RDEPENDS_${PN} += " \
 	nativesdk-python3-more-itertools \
 	nativesdk-python3-msgpack \
 	nativesdk-python3 \
-	nativesdk-python3-dev \
 	nativesdk-python3-pathlib2 \
 	nativesdk-python3-paho-mqtt \
 	nativesdk-python3-pexpect \
