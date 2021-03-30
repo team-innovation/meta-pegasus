@@ -17003,6 +17003,7 @@ def main():
     import os
 
     p = PanelSystemInfo()
+    p.run()
     camera_info = p.get_camera_info()
     panel_info = p.get_slim_line_info()
     node_password_list = p.retrieve_nodes_password()
