@@ -7,7 +7,7 @@ DESCRIPTION = "Network Module Packages"
 HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
 
-GIT_ARTIFACTS_LATEST_BRANCH ?= "feature/18.06_rel_3.20.3_pilot"
+GIT_ARTIFACTS_LATEST_BRANCH ?= "feature/18.06-staging"
 GIT_ARTIFACTS_LATEST_SERVER ?= "${GIT_SERVER}"
 GIT_ARTIFACTS_LATEST_PROTOCOL ?= "ssh"
 
@@ -38,14 +38,14 @@ FILES_${PN} = "\
     "
 
 #Commenting the below for so that we can enable it in future.
-#pkg_postinst_${PN}() {
+pkg_postinst_${PN}() {
 #!/bin/sh -e
 # create symlink to /src/www/network for actual packages to use
 
-#if [ x"$D" = "x" ]; then
-#	( cd /srv/www/network ; ln -sf latest/* .)
-#else
-#	exit 1
-#fi
-#}
-#
+if [ x"$D" = "x" ]; then
+	( cd /srv/www/network ; ln -sf latest/* .)
+else
+	exit 1
+fi
+}
+

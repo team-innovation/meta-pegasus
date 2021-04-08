@@ -2,7 +2,7 @@ DESCRIPTION = "OpenWrt 18.06 version for MT7620 Network Module"
 
 require openwrt.inc
 
-GIT_ARTIFACTS_LATEST_BRANCH ?= "feature/18.06_rel_3.20.3_pilot"
+GIT_ARTIFACTS_LATEST_BRANCH ?= "feature/18.06-staging"
 GIT_ARTIFACTS_LATEST_SERVER ?= "${GIT_SERVER}"
 GIT_ARTIFACTS_LATEST_PROTOCOL ?= "ssh"
 
@@ -27,15 +27,14 @@ FILES_${PN}-mt7620 += "\
     ${sysconfdir}/init.d/networkmodule \
     "
 
-#Commenting this for enabling in future.
-#pkg_postinst_${PN}-mt7620() {
-#!/bin/sh -e
-# create symlink to /lib/firmware for MT7620_* to use
-#
-#if [ x"$D" = "x" ]; then
-#    echo "Changing directory and creating links."
-#    (cd /lib/firmware; ln -sf latest/* .)
-#else
-#    exit 1
-#fi
-#}
+pkg_postinst_${PN}-mt7620() {
+!/bin/sh -e
+ create symlink to /lib/firmware for MT7620_* to use
+
+if [ x"$D" = "x" ]; then
+    echo "Changing directory and creating links."
+    (cd /lib/firmware; ln -sf latest/* .)
+else
+    exit 1
+fi
+}

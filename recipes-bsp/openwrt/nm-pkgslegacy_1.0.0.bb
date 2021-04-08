@@ -35,16 +35,16 @@ do_install() {
 
 #Default will be legacy(17.01) for now.
 #
-pkg_postinst_${PN}() {
-#!/bin/sh -e
+#pkg_postinst_${PN}() {
+##!/bin/sh -e
 # create symlink to /src/www/network for actual packages to use
 
-if [ x"$D" = "x" ]; then
-        ( cd /srv/www/network ; ln -sf legacy/* .)
-else
-        exit 1
-fi
-}
+#if [ x"$D" = "x" ]; then
+#        ( cd /srv/www/network ; ln -sf legacy/* .)
+#else
+#        exit 1
+#fi
+#}
 
 FILES_${PN} = "\
     ${SRV_WWW_DIR}/packages/* \
