@@ -16733,8 +16733,11 @@ class BuildDotFile:
             print('Did not find MAC in dhcp table search arp entries...')
             if self.mesh_data:
                 arp_list = []
-                for key in self.mesh_data:
-                    arp_list.extend(self.mesh_data[key]['arp'])
+                try:
+                    for key in self.mesh_data:
+                        arp_list.extend(self.mesh_data[key]['arp'])
+                except KeyError:
+                    print('arp entries not found, no arp_list')
 
                 for a in arp_list:
                     n = self.get_device_name(a['mac'], a['hostname'])
@@ -16774,6 +16777,8 @@ class BuildDotFile:
             else:
                 pass
         except IndexError :
+            pass
+        except KeyError :
             pass
 
         return ret
@@ -16831,15 +16836,21 @@ class BuildDotFile:
 
             # Lookup ip for br-lan (in case we can not find it in the dhcpdump or arp)
             br_ip = None
-            for iface in mesh_data[k]['ifconfig']:
-                if iface['iface'] == 'br-lan':
-                    br_ip = iface['ip'] if 'ip' in iface else None
-                    if br_ip is not None:
-                        break
+            try:
+                for iface in mesh_data[k]['ifconfig']:
+                    if iface['iface'] == 'br-lan':
+                        br_ip = iface['ip'] if 'ip' in iface else None
+                        if br_ip is not None:
+                            break
+            except KeyError:
+                pass
 
             more_info = 'MESH {}'.format(self.return_mesh_info(k))
-            if not self.show_clusters or not self.mesh_data[k]['sta_on_ap']:
-                more_info += '\nAP {}'.format(self.return_mesh_ap_info(k))
+            try:
+                if not self.show_clusters or not self.mesh_data[k]['sta_on_ap']:
+                    more_info += '\nAP {}'.format(self.return_mesh_ap_info(k))
+            except KeyError:
+                pass
             nname = self.get_name(k_lower)
 
             # If we have a br_ip see if we only returned the  mac if so add the IP
@@ -16873,36 +16884,41 @@ class BuildDotFile:
 
             # List of STA
             if self.show_ap_nodes:
-                sta = node['sta_on_ap']
-                for s in sta:
-                    # Each STA in the list
-                    s_lower = s['mac'].lower()
-                    _ssid = self.get_device_connected_ssid(s_lower)
-                    if len(_ssid) > 0:
-                        _name = self.get_name(s_lower) + "\n SSID: " + _ssid
-                    else:
-                        _name = self.get_name(s_lower)
-                    # Store a label for the station (using the station mac as a key)
-                    labels[s_lower] = {'var': self.make_var(i), 'attr': 'color=blue shape=oval regular=false', 'name': _name}
-                    i += 1
+                try:
+                    sta = node['sta_on_ap']
+                    for s in sta:
+                        # Each STA in the list
+                        s_lower = s['mac'].lower()
+                        _ssid = self.get_device_connected_ssid(s_lower)
+                        if len(_ssid) > 0:
+                            _name = self.get_name(s_lower) + "\n SSID: " + _ssid
+                        else:
+                            _name = self.get_name(s_lower)
+                        # Store a label for the station (using the station mac as a key)
+                        labels[s_lower] = {'var': self.make_var(i), 'attr': 'color=blue shape=oval regular=false', 'name': _name}
+                        i += 1
+                except KeyError:
+                    pass
 
         # Build labels for mesh neighbors, if not found above
         for k in mesh_data.keys():
             node = mesh_data[k]
 
-            mesh = node['mesh_neighbors']
-            for mn in mesh:
-                # MESH nodes to check if we built labels for and logged into.
-                mn_lower = mn['mac'].lower()
-                if not mn_lower in labels:
-                    # No labels so we have not logged into this node
-                    more_info = 'MESH {}'.format(self.return_mesh_info(k))
-                    if not self.show_clusters or not self.mesh_data[k]['sta_on_ap']:
-                        more_info += '\nAP {}'.format(self.return_mesh_ap_info(k))
-                    node_name = self.get_name(mn_lower) + '\n' + more_info + '\nCould not Login to, no uptime'
-                    labels[mn_lower] = {'var': self.make_var(i), 'attr': 'shape=box style=filled fillcolor=darkseagreen1 regular=false', 'name': node_name}
-                    i += 1
-
+            try:
+                mesh = node['mesh_neighbors']
+                for mn in mesh:
+                    # MESH nodes to check if we built labels for and logged into.
+                    mn_lower = mn['mac'].lower()
+                    if not mn_lower in labels:
+                        # No labels so we have not logged into this node
+                        more_info = 'MESH {}'.format(self.return_mesh_info(k))
+                        if not self.show_clusters or not self.mesh_data[k]['sta_on_ap']:
+                            more_info += '\nAP {}'.format(self.return_mesh_ap_info(k))
+                        node_name = self.get_name(mn_lower) + '\n' + more_info + '\nCould not Login to, no uptime'
+                        labels[mn_lower] = {'var': self.make_var(i), 'attr': 'shape=box style=filled fillcolor=darkseagreen1 regular=false', 'name': node_name}
+                        i += 1
+            except:
+                pass
         children = ''
         # Network Modules children or siblings
         for k in mesh_data.keys():
@@ -16911,62 +16927,67 @@ class BuildDotFile:
             n = mesh_data[k]
 
             if self.show_ap_nodes:
-                sta = n['sta_on_ap']
-                # 2.4 AP Nodes
-                self.sub_graph_sta_to_ap[k_lower] = ''
-                for s in sta:
-                    # STA MAC connected to this NM
-                    m = s['mac'].lower()
-                    if k_lower != m:
-                        link_quality = mesh_data[k]['iwinfo'][1]['Link Quality'] if len(
-                            mesh_data[k]['iwinfo']) > 0 else ''
-                        sig_str = '{}\n{}'.format(s['signal avg'].lower(), link_quality)
-                        sig = int((sig_str if 'signal avg' in s else '0 dBm').split()[0])
-                        styl, colr = self.wifi_style_color(sig)
-                        if s['associated'] == 'no' or s['authenticated'] == 'no' or s['authorized'] == 'no':
-                            styl = 'dashed,arrowhead = dot'
-                        elif s['associated'] == 'yes' and (s['authenticated'] == 'no' or s['authorized'] == 'no'):
-                            styl = 'dotted'
-                        attr1 = 'style = {},color = {}'.format(styl, colr)
-                        attr = '[ {},label = "{}"]'.format(attr1, sig_str)
-                        # Group the nodes in a sub graph
-                        self.sub_graph_sta_to_ap[k_lower] += '{} -> {} {};\n'.format(labels[k_lower]['var'], labels[m]['var'], attr)
+                try:
+                    sta = n['sta_on_ap']
+                    # 2.4 AP Nodes
+                    self.sub_graph_sta_to_ap[k_lower] = ''
+                    for s in sta:
+                        # STA MAC connected to this NM
+                        m = s['mac'].lower()
+                        if k_lower != m:
+                            link_quality = mesh_data[k]['iwinfo'][1]['Link Quality'] if len(
+                                mesh_data[k]['iwinfo']) > 0 else ''
+                            sig_str = '{}\n{}'.format(s['signal avg'].lower(), link_quality)
+                            sig = int((sig_str if 'signal avg' in s else '0 dBm').split()[0])
+                            styl, colr = self.wifi_style_color(sig)
+                            if s['associated'] == 'no' or s['authenticated'] == 'no' or s['authorized'] == 'no':
+                                styl = 'dashed,arrowhead = dot'
+                            elif s['associated'] == 'yes' and (s['authenticated'] == 'no' or s['authorized'] == 'no'):
+                                styl = 'dotted'
+                            attr1 = 'style = {},color = {}'.format(styl, colr)
+                            attr = '[ {},label = "{}"]'.format(attr1, sig_str)
+                            # Group the nodes in a sub graph
+                            self.sub_graph_sta_to_ap[k_lower] += '{} -> {} {};\n'.format(labels[k_lower]['var'], labels[m]['var'], attr)
+    
+                            # Get signals from sundance database for the cameras perspective.
+                            sig = self.get_device_wireless_signal(m)
+                            link_quality = self.get_device_wireless_link_quality(m)
+                            sig_str = '{}\n{}'.format('{} dbm'.format(sig), link_quality)
+                            styl, colr = self.wifi_style_color(sig)
+                            if s['associated'] == 'no' or s['authenticated'] == 'no' or s['authorized'] == 'no':
+                                styl = 'dashed,arrowhead = dot'
+                            elif s['associated'] == 'yes' and (s['authenticated'] == 'no' or s['authorized'] == 'no'):
+                                styl = 'dotted'
+                            attr1 = 'style = {},color = {}'.format(styl, colr)
+                            attr = '[ {},label = "{}"]'.format(attr1, sig_str)
+                            # Group the nodes in a sub graph
+                            self.sub_graph_sta_to_ap[k_lower] += '{} -> {} {};\n'.format(labels[m]['var'], labels[k_lower]['var'],  attr)
+                except KeyError:
+                    pass
 
-                        # Get signals from sundance database for the cameras perspective.
-                        sig = self.get_device_wireless_signal(m)
-                        link_quality = self.get_device_wireless_link_quality(m)
-                        sig_str = '{}\n{}'.format('{} dbm'.format(sig), link_quality)
-                        styl, colr = self.wifi_style_color(sig)
-                        if s['associated'] == 'no' or s['authenticated'] == 'no' or s['authorized'] == 'no':
-                            styl = 'dashed,arrowhead = dot'
-                        elif s['associated'] == 'yes' and (s['authenticated'] == 'no' or s['authorized'] == 'no'):
-                            styl = 'dotted'
-                        attr1 = 'style = {},color = {}'.format(styl, colr)
-                        attr = '[ {},label = "{}"]'.format(attr1, sig_str)
-                        # Group the nodes in a sub graph
-                        self.sub_graph_sta_to_ap[k_lower] += '{} -> {} {};\n'.format(labels[m]['var'], labels[k_lower]['var'],  attr)
-
-            # Neighboring Mesh Nodes
-            mesh = n['mesh_neighbors']
-            for mn in mesh:
-                link_quality = mesh_data[k]['iwinfo'][0]['Link Quality'] if len(mesh_data[k]['iwinfo']) > 0 else ''
-                sig_str = '{} {}\n{}'.format(mn['signal avg'].lower().split()[0], mn['signal avg'].lower().split()[-1], link_quality)
-                sig = int((sig_str if 'signal avg' in mn else '-999 dBm').split()[0])
-                styl, colr = self.wifi_style_color(sig)
-                node = mn['mac'].lower()
-                mesh_node = labels[k_lower]['var']
-                mesh_node_n = labels[node]['var']
-                mesh_node_a = 'style=dashed'  #labels[node]['attr']
-                if 'mesh plink' in mn:
-                    try:
-                        key = mn['mesh plink']
-                        color = colr # self.mesh_node_plink_state_color[key]
-                        style = self.mesh_node_plink_state_style[key]
-                        mesh_node_a = ' style = {} color = {} label = "{}"'.format(style, color, sig_str)
-                    except :
-                        pass
-                children += '{} -> {} [{}];\n'.format(mesh_node, mesh_node_n, mesh_node_a)
-
+            try:
+                # Neighboring Mesh Nodes
+                mesh = n['mesh_neighbors']
+                for mn in mesh:
+                    link_quality = mesh_data[k]['iwinfo'][0]['Link Quality'] if len(mesh_data[k]['iwinfo']) > 0 else ''
+                    sig_str = '{} {}\n{}'.format(mn['signal avg'].lower().split()[0], mn['signal avg'].lower().split()[-1], link_quality)
+                    sig = int((sig_str if 'signal avg' in mn else '-999 dBm').split()[0])
+                    styl, colr = self.wifi_style_color(sig)
+                    node = mn['mac'].lower()
+                    mesh_node = labels[k_lower]['var']
+                    mesh_node_n = labels[node]['var']
+                    mesh_node_a = 'style=dashed'  #labels[node]['attr']
+                    if 'mesh plink' in mn:
+                        try:
+                            key = mn['mesh plink']
+                            color = colr # self.mesh_node_plink_state_color[key]
+                            style = self.mesh_node_plink_state_style[key]
+                            mesh_node_a = ' style = {} color = {} label = "{}"'.format(style, color, sig_str)
+                        except :
+                            pass
+                    children += '{} -> {} [{}];\n'.format(mesh_node, mesh_node_n, mesh_node_a)
+            except:
+                pass
         # All Labels
         labels_sorted = list(labels.keys())
         for k_l in labels_sorted:
@@ -17174,5 +17195,6 @@ def main3():
 
 if __name__ == '__main__':
     main()
+    #main3()
     #main2(None)
 

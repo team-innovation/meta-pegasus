@@ -24,19 +24,41 @@ except ImportError:
     print('Must be a 3.7 or earlier panel build')
     pprint = print
 
+def on_touchlink():
+    uname = platform.uname()
+    is_linux = "linux" in sys.platform
+    return is_linux and not "x86" in uname[4] and not "Ubuntu" in uname[3]
+
+if not on_touchlink():
+    base = os.getcwd()
+    indx = base.find('meta-vivint')
+    if indx > -1:
+        os.chdir(base[0:indx]+'embedded-apps/code')
+        base = os.getcwd()
+    sun_prox = os.path.abspath(base + "/sundance/proxies/python")
+    sys.path.insert(0, sun_prox)
+    sys.path.insert(0, base + "/sundance")
+    sys.path.insert(0, base + "/framework")
+else:
+    sys.path.insert(0, "/opt/2gig/sundance/proxies/python")
+#    sys.path.insert(0, "/opt/2gig/sundance/proxies/python/sundance_proxies/singletons")
+
+
 try:
     from taurine.utils.ssh_network_module import SSHToNetworkModule, ExceptionPasswordRefused
-except ImportError:
-    print('No taurine')
+except ImportError as ex:
+    print('No taurine {}'.format(ex))
     exit(-1)
 
-# try:
-#     from taurine.async_io.protocols.ssdp import SsdpServer
-#     from taurine.async_io.event_loop import EventLoop
-#     from taurine.async_io.delayed_call import DelayedCall
-# except ImportError:
-#     print('No taurine')
-#     exit(-1)
+from taurine.async_io.event_loop import EventLoop
+from taurine.async_io.delayed_call import DelayedCall
+from taurine.rpc.rpc_client import RpcClient
+
+from sundance_proxies.devices.camera_device import CameraDevice
+from sundance_proxies.devices.slim_line_device import SlimLineDevice
+from sundance_proxies.devices.yofi_device import YofiDevice
+from sundance_proxies.devices.lgit_poe_wifi_device import LGITPoEWifiDevice
+
 
 # Bump this number when we change stuff in this script
 VERSION = "1.0.0.0"
@@ -529,9 +551,14 @@ class NetworkModuleInfo:
         else:
             addr = '172.16.10.254'
             s = SSHToNetworkModule()
+            if not s.can_ping(addr):
+                # Try panel NM
+                addr = '172.16.10.253'
             s.get_password_from_db = False
             print('Attempt login to address: {}'.format(addr))
             try:
+                if addr not in password_list:
+                    raise ExceptionPasswordRefused('Password not found use default')
                 ret = s.login_network_module(addr, password=password_list[addr])
             except ExceptionPasswordRefused:
                 s.close()
@@ -542,6 +569,8 @@ class NetworkModuleInfo:
                 s = SSHToNetworkModule()
                 s.get_password_from_db = False
                 try:
+                    if addr not in password_list:
+                        raise ExceptionPasswordRefused('Password not found use default')
                     ret = s.login_network_module(addr, 2020, password=password_list[addr])
                 except ExceptionPasswordRefused:
                     s.close()
@@ -553,11 +582,22 @@ class NetworkModuleInfo:
 
                 uptime = s.execute_cmd('uptime')
                 print(uptime)
-                node_health = s.execute_cmd('netv mhealth')
-                print(node_health)
-                lines = node_health.split('\r\n')
-                node_health = s.execute_cmd('netv get mchan24')
-                print(node_health)
+                mode = s.execute_cmd('uci -q get vivint.@globals[0].mode')
+                if mode == 'mesh':
+                    node_health = s.execute_cmd('netv mhealth')
+                    print(node_health)
+                    lines = node_health.split('\r\n')
+                    node_health = s.execute_cmd('netv get mchan24')
+                    print(node_health)
+                else:
+                    try:
+                        mac = s.execute_cmd("netv get macaddrs | grep '5.0G' | awk '{print $1}'")
+                        if not mac:
+                            mac = s.execute_cmd("netv get macaddrs | grep Ethernet | awk '{print $1}'")
+                    except :
+                        print('Failed to find a mac on a non mesh setup')
+                        mac = '00:00:00:00:00:00'
+                    node_health = "node    {}       172.16.10.254".format(mac)
                 lines += node_health.split('\r\n')
                 for line in lines:
                     if line.startswith('node'):
@@ -840,6 +880,7 @@ class NetworkModuleInfo:
         return rows
 
     def get_arp_info(self, s):
+        self.logger.info('get_arp_info: {}'.format(s._server))
         result = s.execute_cmd('arp | grep br-lan')
         wlan_mac = s._server_mac
         self.logger.debug('ARP {} - {}'.format(s._server, wlan_mac))
@@ -1135,7 +1176,13 @@ Interface wlan1
             # Try to get the dhcpdump info first from the MPP
             addr2 = '172.16.10.254'
             s1 = SSHToNetworkModule()
+            if not s1.can_ping(addr2):
+                # Try panel NM
+                addr2 = '172.16.10.253'
+
             try:
+                if addr2 not in self.password_list:
+                    raise ExceptionPasswordRefused('Password not found use default')
                 ret = s1.login_network_module(addr2, password=self.password_list[addr2])
             except ExceptionPasswordRefused:
                 s1.close()
@@ -1145,6 +1192,8 @@ Interface wlan1
                 s1.close()
                 s1 = SSHToNetworkModule()
                 try:
+                    if addr2 not in self.password_list:
+                        raise ExceptionPasswordRefused('Password not found use default')
                     ret = s1.login_network_module(addr2, 2020, password=self.password_list[addr2])
                 except ExceptionPasswordRefused:
                     s1.close()
@@ -1159,6 +1208,8 @@ Interface wlan1
             try:
                 s1 = SSHToNetworkModule()
                 try:
+                    if addr2 not in self.password_list:
+                        raise ExceptionPasswordRefused('Password not found use default')
                     ret = s1.login_network_module(addr2, password=self.password_list[addr2])
                 except ExceptionPasswordRefused:
                     s1.close()
@@ -1169,6 +1220,8 @@ Interface wlan1
                     time.sleep(1)
                     s1 = SSHToNetworkModule()
                     try:
+                        if addr2 not in self.password_list:
+                            raise ExceptionPasswordRefused('Password not found use default')
                         ret = s1.login_network_module(addr2, 2020, password=self.password_list[addr2])
                     except ExceptionPasswordRefused:
                         s1.close()
@@ -1212,21 +1265,34 @@ Interface wlan1
                     line = "-" * len(msg)
                     self.logger.debug('\n{}\n{}'.format(msg, line))
                     # Get arp info from node
-                    arp = self.get_arp_info(s1)
-                    mesh_map[wlan_mac]['arp'] = arp
+                    try:
+                        arp = self.get_arp_info(s1)
+                        mesh_map[wlan_mac]['arp'] = arp
+                    except Exception as ex:
+                        self.logger.error('No arp entries can be found')
+                        arp = None
+
                     # Get Mesh node STA info from AP
-                    sta = self.get_ap_station_info(s1, self.dhcpdump, arp)
-                    if len(sta):
-                        self.logger.info('\tFound {} STA'.format(len(sta)))
-                    mesh_map[wlan_mac]['sta_on_ap'] = sta
-                    # Get Mesh node neighboring MESH nodes
-                    nodes = self.get_mesh_node_neighbors(s1)
-                    if len(nodes):
-                        self.logger.info('\tFound {} NEIGHBORING MESH NODES'.format(len(nodes)))
-                    mesh_map[wlan_mac]['mesh_neighbors'] = nodes
-                    # Get Mesh node path
-                    mpath = self.get_mesh_path_info(s1)
-                    mesh_map[wlan_mac]['mesh_path'] = mpath
+                    try:
+                        sta = self.get_ap_station_info(s1, self.dhcpdump, arp)
+                        if len(sta):
+                            self.logger.info('\tFound {} STA'.format(len(sta)))
+                        mesh_map[wlan_mac]['sta_on_ap'] = sta
+                    except Exception:
+                        self.logger.error('AP disabled?, can not determine if we have any sta_on_ap')
+
+                    try:
+                        # Get Mesh node neighboring MESH nodes
+                        nodes = self.get_mesh_node_neighbors(s1)
+                        if len(nodes):
+                            self.logger.info('\tFound {} NEIGHBORING MESH NODES'.format(len(nodes)))
+                        mesh_map[wlan_mac]['mesh_neighbors'] = nodes
+                        # Get Mesh node path
+                        mpath = self.get_mesh_path_info(s1)
+                        mesh_map[wlan_mac]['mesh_path'] = mpath
+                    except Exception :
+                        pass
+
                     # Get iwinfo for both radios
                     iw = self.get_iwinfo(s1)
                     mesh_map[wlan_mac]['iwinfo'] = iw
@@ -1511,29 +1577,6 @@ Interface wlan1
             except Exception as ex:
                 pass
 
-from taurine.async_io.event_loop import EventLoop
-from taurine.async_io.delayed_call import DelayedCall
-from taurine.rpc.rpc_client import RpcClient
-
-def on_touchlink():
-    uname = platform.uname()
-    is_linux = "linux" in sys.platform
-    return is_linux and not "x86" in uname[4] and not "Ubuntu" in uname[3]
-
-if not on_touchlink():
-    base = os.getcwd()
-    sun_prox = os.path.abspath(base + "/../../sundance/proxies/python")
-    sys.path.insert(0, sun_prox)
-    sys.path.insert(0, base + "/../../sundance")
-else:
-    sys.path.insert(0, "/opt/2gig/sundance/proxies/python")
-#    sys.path.insert(0, "/opt/2gig/sundance/proxies/python/sundance_proxies/singletons")
-
-from sundance_proxies.devices.camera_device import CameraDevice
-from sundance_proxies.devices.slim_line_device import SlimLineDevice
-from sundance_proxies.devices.yofi_device import YofiDevice
-from sundance_proxies.devices.lgit_poe_wifi_device import LGITPoEWifiDevice
-
 class PanelSystemInfo(EventLoop):
     def __init__(self, address='172.16.10.100'):
         super().__init__(self.on_exit)
@@ -1541,8 +1584,8 @@ class PanelSystemInfo(EventLoop):
         import logging
         self.logger = logging.getLogger(self.__class__.__name__)
 
-        if not on_touchlink():
-            self.address = '10.42.0.79'
+        if not on_touchlink() and address.startswith('172.16.10.100'):
+            self.address = '10.42.1.79'
 
         self.port = 7080
 
@@ -1574,6 +1617,16 @@ class PanelSystemInfo(EventLoop):
                 if ':' not in mac:
                     mac = ':'.join([mac[i: i + 2] for i in range(0, len(mac), 2)])
                 dev['properties']['camera_mac_address'] = mac
+                if 'motion_detection_windows' in dev['collections']:
+                    from taurine.decorators.service_object_decorator import service_object
+                    mdw_list = dev['collections']['motion_detection_windows']
+                    new_mdw_list = []
+                    try:
+                        for mdw in mdw_list:
+                            new_mdw_list.append(mdw.as_dict())
+                        dev['collections']['motion_detection_windows'] = new_mdw_list
+                    except:
+                        dev['collections']['motion_detection_windows'] = []
                 self.cameras.append(dev)
 
             for device in LGITPoEWifiDevice.list():
@@ -1667,7 +1720,7 @@ def on_touchlink():
 def main(use_ssdp=True):
     node_list = []
     node_password_list = {}
-    p = PanelSystemInfo()
+    p = PanelSystemInfo(address='10.42.1.79')
     p.run()
     camera_info = p.get_camera_info()
     panel_info = p.get_slim_line_info()
@@ -1705,6 +1758,7 @@ def main(use_ssdp=True):
     pprint(data)
     print("------------------------------------------------------------------------------")
     dest_dir = '/srv/www/network' if on_touchlink() else '/tmp'
+    print('Dest Dir: {}'.format(dest_dir))
     with open('{}/tmp_cam.dat'.format(dest_dir), 'w') as f:
         pprint(camera_info, f)
 
