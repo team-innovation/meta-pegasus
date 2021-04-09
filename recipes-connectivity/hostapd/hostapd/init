@@ -1,0 +1,103 @@
+#!/bin/sh
+DAEMON=/usr/sbin/hostapd
+NAME=hostapd
+DESC="HOSTAP Daemon"
+ARGS="/etc/hostapd.conf -B"
+
+test -f $DAEMON || exit 0
+
+set -e
+
+# source function library
+. /etc/init.d/functions
+
+
+delay_stop() {
+	count=0
+	while [ $count -lt 9 ] ; do
+	        if pidof $DAEMON >/dev/null; then
+	                sleep 1
+	        else
+			killall -9 udhcpd
+	                return 0
+	        fi
+		count=`expr $count + 1`
+	done
+	echo "Failed to stop $DESC."
+	return 1
+}
+
+setup() {
+    iface="wlan0"
+    platform=$(strings /proc/device-tree/compatible | grep vivint | sed s/^vivint,//)
+    if [ $plaform'x' == 'nenex' ]; then
+	cp /etc/hostapd_hub.conf /etc/hostapd.conf
+	iface="p2p0"
+	ssid_prefix="VIVINT_HUB"
+    else
+	ssid_prefix="VIVINT_SCREEN" 
+    fi
+
+    read macaddr </sys/class/net/$iface/address
+
+    serialnum=$(python3 - <<'__END_PYTHON'
+try:
+    with open("/media/bootscript/serialnumber2.txt") as f:
+        print("{:0>13}".format(f.readline().strip().upper()))
+except FileNotFoundError:
+    try:
+        with open("/media/bootscript/serialnumber.txt") as f:
+            # hex format
+            print("{:0>13d}".format(int(f.readline().strip(), 16)))
+    except Exception:
+        print()
+__END_PYTHON
+)
+
+    if [ -z "$serialnum" ]; then
+        echo "Error: No serial number"
+        exit 1
+    fi
+
+    macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
+    password=$(echo -n $serialnum | sha256sum)
+
+    # Chop the password town to the length allowed by WPA2:
+    password=${password:0:63}
+
+    sed -i "s/ssid=.*/ssid=${ssid_prefix}_(${macaddrup:9})/" /etc/hostapd.conf
+}
+
+case "$1" in
+    start)
+	setup
+	echo -n "Starting $DESC: "
+	start-stop-daemon -S -x $DAEMON -- $ARGS
+	echo "$NAME."
+	;;
+    stop)
+	echo -n "Stopping $DESC: "
+	start-stop-daemon -K --oknodo -x $DAEMON
+	killall -9 udhcpd
+	echo "$NAME."
+	;;
+    restart)
+	$0 stop
+	delay_stop && $0 start
+	;;
+    reload)
+	echo -n "Reloading $DESC: "
+	killall -HUP $(basename ${DAEMON})
+	echo "$NAME."
+	;;
+    status)
+	status $DAEMON
+	exit $?
+	;;
+    *)
+	echo "Usage: $0 {start|stop|restart|reload|status}"
+	exit 1
+	;;
+esac
+
+exit 0
