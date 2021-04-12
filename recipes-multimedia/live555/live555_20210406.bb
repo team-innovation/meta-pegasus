@@ -11,7 +11,7 @@ DEPENDS = "openssl"
 
 SRCREV = "${GIT_LIVE555_REV}"
 SRCBRANCH = "nextgenhub"
-SRC_URI = "git://${GIT_LIVE555_SERVER}/${MODULE};protocol=${GIT_LIVE555_PROTOCOL};branch=${SRCBRANCH}"
+SRC_URI = "git://${GIT_LIVE555_SERVER}/live555;protocol=${GIT_LIVE555_PROTOCOL};branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git"
 
