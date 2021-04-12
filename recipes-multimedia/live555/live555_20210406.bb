@@ -41,7 +41,7 @@ do_install() {
     for i in $(find . -name "*.hh") $(find . -name "*.h") ; do
         install ${i} ${D}${includedir}
     done
-    cp ${S}/*/*.a ${D}${libdir}
+    cp ${S}/*/*.so.* ${D}${libdir}
     install -d ${D}${bindir}
     for i in MPEG2TransportStreamIndexer openRTSP playSIP sapWatch testMPEG1or2ProgramToTransportStream testMPEG1or2Splitter testMPEG1or2VideoReceiver testMPEG2TransportStreamTrickPlay testOnDemandRTSPServer testRelay testAMRAudioStreamer testDVVideoStreamer testMP3Receiver testMP3Streamer testMPEG1or2AudioVideoStreamer testMPEG1or2VideoStreamer testMPEG2TransportStreamer testMPEG4VideoStreamer testWAVAudioStreamer vobStreamer; do
         install -m 0755 ${S}/testProgs/${i} ${D}${bindir}/
