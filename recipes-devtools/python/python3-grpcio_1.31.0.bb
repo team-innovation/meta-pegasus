@@ -15,6 +15,8 @@ SRC_URI_append_class-target = " \
     file://compiler.patch \
 "
 
+SRC_URI_append_class-native = " file://compiler.patch"
+
 SRC_URI[md5sum] = "810e3c4b54fa2aa3827f9aac158f1564"
 SRC_URI[sha256sum] = "5043440c45c0a031f387e7f48527541c65d672005fb24cf18ef6857483557d39"
 
