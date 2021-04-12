@@ -1,0 +1,21 @@
+diff -rupN grpcio-1.31.0/setup.py grpcio/setup.py
+--- grpcio-1.31.0/setup.py	2020-09-02 16:11:20.266393734 -0600
++++ grpcio/setup.py	2020-09-02 16:14:52.577353051 -0600
+@@ -169,7 +169,7 @@ def check_linker_need_libatomic():
+ EXTRA_ENV_COMPILE_ARGS = os.environ.get('GRPC_PYTHON_CFLAGS', None)
+ EXTRA_ENV_LINK_ARGS = os.environ.get('GRPC_PYTHON_LDFLAGS', None)
+ if EXTRA_ENV_COMPILE_ARGS is None:
+-    EXTRA_ENV_COMPILE_ARGS = ' -std=c++11'
++    EXTRA_ENV_COMPILE_ARGS = ''
+     if 'win32' in sys.platform:
+         if sys.version_info < (3, 5):
+             EXTRA_ENV_COMPILE_ARGS += ' -D_hypot=hypot'
+@@ -186,7 +186,7 @@ if EXTRA_ENV_COMPILE_ARGS is None:
+             # available dynamically
+             EXTRA_ENV_COMPILE_ARGS += ' /MT'
+     elif "linux" in sys.platform:
+-        EXTRA_ENV_COMPILE_ARGS += ' -std=gnu99 -fvisibility=hidden -fno-wrapv -fno-exceptions'
++        EXTRA_ENV_COMPILE_ARGS += ' -fvisibility=hidden -fno-wrapv -fno-exceptions'
+     elif "darwin" in sys.platform:
+         EXTRA_ENV_COMPILE_ARGS += ' -stdlib=libc++ -fvisibility=hidden -fno-wrapv -fno-exceptions'
+ 
