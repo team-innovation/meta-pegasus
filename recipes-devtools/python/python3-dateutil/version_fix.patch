@@ -37,7 +37,7 @@ diff -rupN python-dateutil-2.7.2/setup.py python-dateutil/setup.py
        zip_safe=True,
        requires=["six"],
 -      setup_requires=['setuptools_scm'],
-+      version=find_version("dateutil", "_version.py")
++      version=find_version("dateutil", "_version.py"),
        install_requires=["six >=1.5"],  # XXX fix when packaging is sane again
        classifiers=[
            'Development Status :: 5 - Production/Stable',
