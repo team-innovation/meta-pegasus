@@ -9,6 +9,8 @@ DEPENDS = "${PYTHON_PN}-grpcio"
 
 SRC_URI_append_class-target = " file://compiler.patch"
 
+SRC_URI_append_class-native = " file://compiler.patch"
+
 SRC_URI[md5sum] = "bf292a112c0a0598d70e31e93d9109e7"
 SRC_URI[sha256sum] = "3b08cbd3f4d5b60e3bff8f859e6e03db739967a684268164abc940415e23ca51"
 
