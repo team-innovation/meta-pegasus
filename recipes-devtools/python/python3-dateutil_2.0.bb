@@ -10,6 +10,7 @@ DEPENDS += "python3 python3-native python3-setuptools-native"
 
 SRC_URI = " \
 	http://labix.org/download/python-dateutil/${SRCNAME}-${PV}.tar.gz \
+	file://version_fix.patch \
 "
 
 
