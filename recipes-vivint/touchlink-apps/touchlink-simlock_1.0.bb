@@ -29,6 +29,7 @@ FILES_${PN} = "\
 FILES_${PN}-dbg += "\
 	/opt/2gig/lib/.debug/ \
 "
+ALLOW_EMPTY_${PN} = "1"
 
 do_configure() {
     sed -i '/^CC/d' ${S}/Makefile    
