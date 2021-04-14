@@ -411,7 +411,6 @@ PACKAGES = " \
 	${PN}-huei \
 	${PN}-iod   \
 	${PN}-launcherd \
-	${PN}-modemd-proxies      \
 	${PN}-modemd          \
 	${PN}-netd  \
 	${PN}-pcamd        \

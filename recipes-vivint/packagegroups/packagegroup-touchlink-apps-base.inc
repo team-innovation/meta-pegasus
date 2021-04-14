@@ -9,13 +9,11 @@ VIVINT_APPS_BASE = "\
 	touchlink-apps-iod \
 	touchlink-apps-netd \
 	touchlink-apps-procmand \
-	touchlink-apps-audmgrd \
 	touchlink-apps-sound-wav-chimes \
 	touchlink-apps-ssdpd \
 	touchlink-apps-sundance-proxies \
 	touchlink-apps-updated \
 	touchlink-apps-utils \
-	touchlink-apps-modemd-proxies \
 	touchlink-simlock \
 	touchlink-ssl-profile \
 	voiceaudio \

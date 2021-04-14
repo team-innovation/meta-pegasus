@@ -22,10 +22,6 @@ pkg_postinst_ontarget_${PN}-modemd () {
 
 }
 
-FILES_${PN}-modemd-proxies = "\
-		${INSTALL_DIR}/modemd/proxies/* \
-		"
-
 FILES_${PN}-modemd = "\
 	${INSTALL_DIR}/modemd/*	\
 	${sysconfdir}/init.d/modemd		\
