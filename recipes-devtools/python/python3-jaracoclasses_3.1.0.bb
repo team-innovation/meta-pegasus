@@ -15,3 +15,7 @@ inherit setuptools3 pypi
 
 # Allows us to create a native package for staging in OE
 BBCLASSEXTEND = "native nativesdk"
+
+
+SYSROOT_DIRS_BLACKLIST +="${STAGING_LIBDIR_NATIVE}/python3.7/site-packages/jaraco/__init__.py \
+                        ${STAGING_LIBDIR_NATIVE}/python3.7/site-packages/jaraco/__pycache__"
