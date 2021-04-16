@@ -3,7 +3,6 @@
 import os, time, sys, glob, subprocess, shutil
 from serial import Serial
 from sys import argv
-from taurine.utils.which_hardware import WhichHardware, HardwareTypes
 
 CARRIER_ATT = 1
 CARRIER_VERIZON = 2
@@ -666,8 +665,12 @@ if __name__ == "__main__":
     AT_PORT_EG91 = "/dev/ttyUSB4"
 
     # HubPlus use ttyUSB3
-    if WhichHardware.get_type() == HardwareTypes.BRAZEN:
-        AT_PORT_EG91 = "/dev/ttyUSB3"
+    try:
+        with open('/proc/device-tree/compatible') as f:
+            if "vivint,brazen" in f.read():
+                AT_PORT_EG91 = "/dev/ttyUSB3"
+    except Exception as why:
+        pass
 
     FIRMWARE_FOLDER = "/var/lib/firmware"
     modem = None
