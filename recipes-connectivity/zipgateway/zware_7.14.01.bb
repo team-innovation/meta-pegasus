@@ -15,7 +15,9 @@ SRCBRANCH = "v7.14.1"
 GIT_ZWARE_SERVER ?= "${GIT_SERVER}"
 GIT_ZWARE_PROTOCOL ?= "ssh"
 
-SRC_URI = "git://${GIT_ZWARE_SERVER}/zware_controller_sdk;protocol=${GIT_ZWARE_PROTOCOL};branch=${SRCBRANCH}"
+SRC_URI = "git://${GIT_ZWARE_SERVER}/zware_controller_sdk;protocol=${GIT_ZWARE_PROTOCOL};branch=${SRCBRANCH} \
+	file://zware.pc \
+"
 
 S = "${WORKDIR}/git/zware-7.14.01/src/zwave/hcapi"
 
@@ -30,6 +32,9 @@ do_install_append() {
     install -d ${D}${libdir}
     install -m 644 ${S}/lib/libzip_api.a ${D}${libdir}/libzip_api.a
     install -m 644 ${S}/src/libzip_ctl.a ${D}${libdir}/libzip_ctl.a
+
+    install -d ${D}${libdir}/pkgconfig
+    install -m 644 ${WORKDIR}/zware.pc ${D}${libdir}/pkgconfig
 }
 
 FILES_${PN} += "${libdir}/libzip_api.a"
