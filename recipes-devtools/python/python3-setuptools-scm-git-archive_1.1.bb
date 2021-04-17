@@ -2,7 +2,7 @@ SUMMARY = "Python Cheroot"
 HOMEPAGE = "https://github.com/Changaco/setuptools_scm_git_archive/"
 SECTION = "devel/python"
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=c187ff3653a0878075713adef2c545c3"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=838c366f69b72c5df05c96dff79b35f2"
 
 DEPENDS += "${PYTHON_PN}-setuptools-scm-native"
 
