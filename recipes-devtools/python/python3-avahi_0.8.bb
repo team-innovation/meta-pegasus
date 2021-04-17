@@ -30,6 +30,6 @@ do_install () {
 }
 
 BBCLASSEXTEND = "native nativesdk"
-RDEPENDS_${PN} += "python3-core python3-dbus"
+RDEPENDS_${PN} += "python3 python3-core python3-dbus"
 
 FILES_${PN} = "${PYTHON_SITEPACKAGES_DIR}/avahi"
