@@ -12,6 +12,7 @@ SRC_URI="git://github.com/aleixq/python3-brisa.git;protocol=git"
 S = "${WORKDIR}/git"
 
 RDEPENDS_${PN} = "\
+  ${PYTHON_PN} \
   ${PYTHON_PN}-requests \
   ${PYTHON_PN}-cherrypy \
 "
