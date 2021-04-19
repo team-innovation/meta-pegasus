@@ -46,4 +46,5 @@ FILES_${PN} = "\
 
 INSANE_SKIP_${PN} += "file-rdeps"
 INSANE_SKIP_${PN} += "arch"
+INSANE_SKIP_${PN}-dbg += "arch"
 		      
