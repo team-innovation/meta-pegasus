@@ -20,3 +20,5 @@ RDEPENDS_${PN} = "\
 do_install_append() {
     sed -i  '1i#!/usr/bin/python3\n' ${D}/${bindir}/brisa-conf
 }
+
+INSANE_SKIP_${PN} += "file-rdeps"
