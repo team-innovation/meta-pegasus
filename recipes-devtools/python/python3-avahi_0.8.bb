@@ -33,3 +33,5 @@ BBCLASSEXTEND = "native nativesdk"
 RDEPENDS_${PN} += "python3 python3-core python3-dbus"
 
 FILES_${PN} = "${PYTHON_SITEPACKAGES_DIR}/avahi"
+
+INSANE_SKIP_${PN} += "file-rdeps"
