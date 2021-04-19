@@ -41,3 +41,9 @@ FILES_${PN} = "\
 	${sysconfdir}/procman.d/schooner \
 	${sysconfdir}/logrotate.d/schooner \ 
 	"
+
+### TODO: REMOVE THIS once we have an arm64 binary
+
+INSANE_SKIP_${PN} += "file-rdeps"
+INSANE_SKIP_${PN} += "arch"
+		      
