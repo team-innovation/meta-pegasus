@@ -11,7 +11,7 @@ PR = "r2"
 SRC_URI = "\
 	file://mfg_test \
 	file://sshd_not_to_be_run \
-	file://udhcpd.conf \
+	file://udhcpd_vivint.conf \
 	file://udhcpd.leases \
 "
 
@@ -21,7 +21,7 @@ S = "${WORKDIR}"
 
 RPROVIDES_${PN} = "hub-utils"
 
-inherit update-rc.d
+inherit update-rc.d update-alternatives
 
 INITSCRIPT_NAME = "mfg_test"
 INITSCRIPT_PARAMS = "start 86 5 ."
@@ -33,7 +33,7 @@ do_install() {
 	install -d ${D}/${sysconfdir}/ssh
 	install -m 644  ${S}/sshd_not_to_be_run ${D}/${sysconfdir}/ssh/
 
-	install -m 0644 ${S}/udhcpd.conf ${D}${sysconfdir}
+	install -m 0644 ${S}/udhcpd_vivint.conf ${D}${sysconfdir}
 	install -d ${D}/var/lib/misc
 	install -m 0644 ${S}/udhcpd.leases ${D}/var/lib/misc
 }
@@ -41,3 +41,5 @@ do_install() {
 RREPLACES_${PN} = "sly-utils"
 RCONFLICTS_${PN} = "sly-utils"
 
+ALTERNATIVE_NAME = "udhcpd.conf"
+ALTERNATIVE_PATH = "${sysconfdir}/udhcpd_vivint.conf"
