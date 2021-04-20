@@ -11,6 +11,7 @@ SRC_URI += " \
     file://schooner.procman \
     file://schooner.logrotate \
     file://schooner \
+    file://schooner_arm64 \
 "
 
 LICENSE = "CLOSED"
@@ -19,7 +20,11 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d "${D}/${bindir}"
-    install -m 0755 "${WORKDIR}/schooner" "${D}/${bindir}"
+    if [ ${HOST_SYS} != "aarch64-poky-linux" ]; then
+       install -m 0755 "${WORKDIR}/schooner" "${D}/${bindir}"
+    else
+       install -m 0755 "${WORKDIR}/schooner_arm64" "${D}/${bindir}/schooner"
+    fi
 
     install -d "${D}${sysconfdir}/init.d"
     install -m 0755 "${WORKDIR}/init" "${D}${sysconfdir}/init.d/schooner"
@@ -42,9 +47,4 @@ FILES_${PN} = "\
 	${sysconfdir}/logrotate.d/schooner \ 
 	"
 
-### TODO: REMOVE THIS once we have an arm64 binary
-
 INSANE_SKIP_${PN} += "file-rdeps"
-INSANE_SKIP_${PN} += "arch"
-INSANE_SKIP_${PN}-dbg += "arch"
-		      
