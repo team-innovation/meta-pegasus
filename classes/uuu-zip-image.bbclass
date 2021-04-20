@@ -64,8 +64,7 @@ python do_uuu_zip_image() {
         return
 
     # simple name
-    #zip_name = uuu_path+"/"+"vivint-"+d.getVar('MACHINE')+"-"+d.getVar('DATETIME')+".zip"
-    zip_name = uuu_path+"/"+"vivint-"+d.getVar('MACHINE')+".zip"
+    zip_name = uuu_path+"/"+d.getVar('PN')+".zip"
 
     zipObj = ZipFile(ddi+'/'+zip_name, 'w')
     for f in files:
@@ -75,3 +74,4 @@ python do_uuu_zip_image() {
 }
 
 addtask uuu_zip_image after do_image_complete before do_populate_lic_deploy
+
