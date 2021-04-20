@@ -5,6 +5,7 @@ DESCRIPTION = "Image for Vivint next gen hub"
 LICENSE = "MIT"
 
 inherit core-image
+inherit uuu-zip-image
 
 #IMAGE_FEATURES += " \
 #    package-management \
