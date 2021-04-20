@@ -1,4 +1,6 @@
-DEPENDS += "fsl-image-mfgtool-initramfs uuu-tool"
+DEPENDS += "uuu-tool"
+
+do_configure[depends] += "fsl-image-mfgtool-initramfs:do_image_complete"
 
 python do_uuu_zip_image() {
 
@@ -73,4 +75,3 @@ python do_uuu_zip_image() {
 }
 
 addtask uuu_zip_image after do_image_complete before do_populate_lic_deploy
-
