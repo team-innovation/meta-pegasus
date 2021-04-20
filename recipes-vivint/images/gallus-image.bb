@@ -6,6 +6,7 @@ LICENSE = "MIT"
 
 inherit core-image
 inherit populate_sdk_qt5 populate_sdk_gallus
+inherit uuu-zip-image
 
 IMAGE_FEATURES += " \
     package-management \
