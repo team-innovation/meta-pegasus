@@ -68,7 +68,10 @@ python do_uuu_zip_image() {
 
     zipObj = ZipFile(ddi+'/'+zip_name, 'w')
     for f in files:
-        zipObj.write(f['path'], f['name'])
+        if os.path.exists(f['path']):
+            zipObj.write(f['path'], f['name'])
+        else:
+            bb.warn("The zip archive might not be complete. The missing file is "+f['path'])
     zipObj.close()
 
 }
