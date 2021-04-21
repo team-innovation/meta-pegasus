@@ -12,7 +12,7 @@ FB: download -f Image
 FB: ucmd setenv fastboot_buffer ${fdt_addr}
 FB: download -f devicetree.dtb
 FB: ucmd setenv fastboot_buffer ${initrd_addr}
-FB: download -f mfgtool-initramfs.cpio.gz.u-boot
+FB: download -f initramfs.cpio.gz.u-boot
 
 # set bootargs for initramfs
 FB: ucmd setenv mfgtool_args setenv bootargs console=${console} rdinit=/linuxrc clk_ignore_unused
@@ -32,7 +32,7 @@ FBK: ucmd /tmp/save-restore-serialnums.sh save
 ## setup pipes
 FBK: acmd bzip2 -dc | dd of=/dev/mmcblk2 bs=1k conv=fsync
 ## stream
-FBK: ucp gallus-image-imx8mm-gallus.wic.bz2 t:-
+FBK: ucp image.wic.bz2 t:-
 
 # restore serial numbers
 FBK: ucmd /tmp/save-restore-serialnums.sh restore
