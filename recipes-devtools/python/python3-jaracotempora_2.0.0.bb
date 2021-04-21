@@ -17,5 +17,11 @@ inherit setuptools3 pypi
 BBCLASSEXTEND = "native nativesdk"
 
 
+do_install_append() {
+   rm -f ${D}/${libdir}/python${PYTHON_BASEVERSION}/site-packages/jaraco/__init__.py
+   rm -f ${D}/${libdir}/python${PYTHON_BASEVERSION}/site-packages/jaraco/__pycache__/__init__.cpython-37.pyc
+}
+
+
 SYSROOT_DIRS_BLACKLIST +="${STAGING_LIBDIR_NATIVE}/python3.7/site-packages/jaraco/__init__.py \
                         ${STAGING_LIBDIR_NATIVE}/python3.7/site-packages/jaraco/__pycache__"
