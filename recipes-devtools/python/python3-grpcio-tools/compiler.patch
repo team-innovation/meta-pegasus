@@ -1,12 +1,12 @@
-diff -rupN grpcio-tools/setup.py grpcio-tools-1.25.0/setup.py
---- grpcio-tools/setup.py	2019-12-10 10:45:45.731842924 -0700
-+++ grpcio-tools-1.25.0/setup.py	2019-11-05 18:06:30.000000000 -0700
-@@ -71,7 +71,7 @@ def check_linker_need_libatomic():
+diff -rupN grpcio-tools-1.31.0/setup.py grpcio-tools/setup.py
+--- grpcio-tools-1.31.0/setup.py	2020-09-02 16:34:07.642906926 -0600
++++ grpcio-tools/setup.py	2020-09-02 16:36:02.338337582 -0600
+@@ -70,7 +70,7 @@ def check_linker_need_libatomic():
+     """Test if linker on system needs libatomic."""
      code_test = (b'#include <atomic>\n' +
                   b'int main() { return std::atomic<int64_t>{}; }')
-     cc_test = subprocess.Popen(
--        ['cc', '-x', 'c++', '-std=c++11', '-'],
-+        ['gcc', '-x', 'c++', '-std=c++11', '-'],
-         stdin=PIPE,
-         stdout=PIPE,
-         stderr=PIPE)
+-    cc_test = subprocess.Popen(['cc', '-x', 'c++', '-std=c++11', '-'],
++    cc_test = subprocess.Popen(['gcc', '-x', 'c++', '-std=c++11', '-'],
+                                stdin=PIPE,
+                                stdout=PIPE,
+                                stderr=PIPE)
