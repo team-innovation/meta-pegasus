@@ -28,11 +28,15 @@ FBK: ucmd chmod 777 /tmp/save-restore-serialnums.sh
 # store serial numbers
 FBK: ucmd /tmp/save-restore-serialnums.sh save
 
+# save to host (for for manual recovery)
+FBK: ucp t:/tmp/savedfiles.tar .
+
 # write to emmc
 ## setup pipes
 FBK: acmd bzip2 -dc | dd of=/dev/mmcblk2 bs=1k conv=fsync
 ## stream
 FBK: ucp image.wic.bz2 t:-
+FBK: sync
 
 # restore serial numbers
 FBK: ucmd /tmp/save-restore-serialnums.sh restore

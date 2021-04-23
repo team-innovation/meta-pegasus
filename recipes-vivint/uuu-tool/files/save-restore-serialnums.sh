@@ -68,6 +68,8 @@ savestuff()
 		mntbootscript
 		mkdir -p $saveloc
 		cp ${BSMNTPT}/* $saveloc || true
+		# for uuu - pack everything into a single archive
+		tar cvf $saveloc.tar -C ${BSMNTPT} $(ls ${BSMNTPT})
 		umntbootscript
 		info "Done saving serial numbers etc."
 	else
