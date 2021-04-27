@@ -1,11 +1,11 @@
 # Instructions
 ## Flash with save/restore serial numbers (preferred)
 ```
-cd <here>
 # <here> in Yocto is under the deploy deirectory, examples:
-# * build-gallus/tmp/deploy/images/imx8mm-gallus/uuu/
-# * build-nene/tmp/deploy/images/imx8mn-nene/uuu/
-
+#     * build-gallus/tmp/deploy/images/imx8mm-gallus/uuu/
+#     * build-nene/tmp/deploy/images/imx8mn-nene/uuu/
+# <here> in general - a directory with the zip archive for flashing.
+cd <here>
 # put the target into the fastboot mode
 sudo ./uuu <archive-name>.zip
 ```
