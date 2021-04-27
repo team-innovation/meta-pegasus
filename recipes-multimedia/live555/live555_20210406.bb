@@ -10,7 +10,7 @@ SECTION = "devel"
 DEPENDS = "openssl"
 
 SRCREV = "${GIT_LIVE555_REV}"
-SRCBRANCH = "nextgenhub"
+SRCBRANCH = "${GIT_LIVE555_BRANCH}"
 SRC_URI = "git://${GIT_LIVE555_SERVER}/live555;protocol=${GIT_LIVE555_PROTOCOL};branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git"
