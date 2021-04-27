@@ -1,5 +1,5 @@
 # Instructions
-## Flash with save/restore serial numbers (preferred)
+## 1. Flash with save/restore serial numbers (preferred)
 ```
 # <here> in Yocto is under the deploy deirectory, examples:
 #     * build-gallus/tmp/deploy/images/imx8mm-gallus/uuu/
@@ -10,7 +10,7 @@ cd <here>
 sudo ./uuu <archive-name>.zip
 ```
 *Note*: **savedfiles.tar** will be downloaded from the target. It contains an archived /media/bootscript/ folder (serial numbers). Use for manual recovery if needed.
-## Flash without backup
+## 2. Flash without backup
 ```
 cd <here>
 unzip <archive-name>.zip
