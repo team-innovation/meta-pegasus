@@ -4,7 +4,7 @@
 # <here> in Yocto is under the deploy deirectory, examples:
 #     * build-gallus/tmp/deploy/images/imx8mm-gallus/uuu/
 #     * build-nene/tmp/deploy/images/imx8mn-nene/uuu/
-# <here> in general - a directory with the zip archive for flashing.
+# <here> in general - a directory with the zip archive for flashing and the uuu binary.
 cd <here>
 # put the target into the fastboot mode
 sudo ./uuu <archive-name>.zip
