@@ -21,21 +21,25 @@ pkg_postinst_${PN}-pyftpd () {
 #!/bin/sh
 # Post install to setup the home id directories
 #
-set -e
+if [ x"$D" = "x" ]; then
+	set -e
 
- logging()
- {
-    if busybox ps | grep psplash | grep -qv grep
-    then
-        psplash-write "MSG $*"
-    fi
-    echo $*
- }
+	 logging()
+	 {
+	    if busybox ps | grep psplash | grep -qv grep
+	    then
+		psplash-write "MSG $*"
+	    fi
+	    echo $*
+	 }
 
-if [ ! -d /media/clips/ftp ]
-then
-     logging "Creating /media/clips/ftp..."
-     mkdir -p /media/clips/ftp
+	if [ ! -d /media/clips/ftp ]
+	then
+	     logging "Creating /media/clips/ftp..."
+	     mkdir -p /media/clips/ftp
+	fi
+	else
+	exit 1
 fi
 }
 
