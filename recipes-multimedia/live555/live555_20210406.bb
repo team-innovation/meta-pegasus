@@ -49,7 +49,7 @@ do_install() {
     install -m 0755 ${S}/mediaServer/live555MediaServer ${D}${bindir}/
 }
 
-RPROVIDES =+ "live555-libusageenvironment live555-libbasicusageenvironment live555-libgroupsock live555-liblivemedia"
+#RPROVIDES =+ "live555-libusageenvironment live555-libbasicusageenvironment live555-libgroupsock live555-liblivemedia"
 
 PACKAGES =+ "live555-openrtsp live555-playsip live555-mediaserver live555-examples"
 PACKAGES =+ "live555-proxyserver live555-test live555-libusageenvironment" 
