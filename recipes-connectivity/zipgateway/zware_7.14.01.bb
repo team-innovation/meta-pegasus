@@ -19,7 +19,6 @@ SRC_URI = " \
 	git://${GIT_ZWARE_SERVER}/zware_controller_sdk;protocol=${GIT_ZWARE_PROTOCOL};branch=${SRCBRANCH} \
 	file://zware.pc \
 	"
-
 S = "${WORKDIR}/git/zware-7.14.01/src/zwave/hcapi"
 
 do_compile() {

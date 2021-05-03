@@ -22,17 +22,12 @@ do_install_append () {
 	${RSYNC_CMD} ${S}/code/pcamd/ ${D}/${INSTALL_DIR}/pcamd/
 	chmod +x ${D}/${INSTALL_DIR}/pcamd/pcamd.pyc
 
-	# pcamd library and binary
-	install -d ${D}/${INSTALL_DIR}/lib
-	cp -a ${S}/code/pcamd/libpcam/libpcam.so ${D}/${INSTALL_DIR}/lib
-
 	# remove pcam libpcam dir
 	rm -rf ${D}/${INSTALL_DIR}/pcamd/libpcam
 }
 
 FILES_${PN}-pcamd = " \
 	${INSTALL_DIR}/pcamd/*   \
-	${INSTALL_DIR}/lib/libpcam.so	\
 	${sysconfdir}/init.d/pcamd \
 	${sysconfdir}/procman.d/pcamd \
 	"

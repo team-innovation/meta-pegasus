@@ -72,10 +72,6 @@ do_install_append () {
 	${RSYNC_CMD} ${S}/code/dvrd/ ${D}/${INSTALL_DIR}/dvrd/
 	chmod +x ${D}/${INSTALL_DIR}/dvrd/dvrd.pyc
 
-	# dvrd library and binary
-        install -d ${D}/${INSTALL_DIR}/lib
-        cp -a ${S}/code/dvrd/libdvr/libdvr.so ${D}/${INSTALL_DIR}/lib
-
 	# remove dvr libdvr dir
         rm -rf ${D}/${INSTALL_DIR}/dvrd/libdvr
 }
@@ -83,7 +79,6 @@ do_install_append () {
 
 FILES_${PN}-dvrd = "\
        ${INSTALL_DIR}/dvrd/*   \
-       ${INSTALL_DIR}/lib/libdvr.so	\
 	${sysconfdir}/init.d/dvrd \
 	${sysconfdir}/procman.d/dvrd \
        "
