@@ -1,0 +1,13 @@
+# Package Information for pkg-config
+
+prefix=/usr
+exec_prefix=${prefix}
+includedir=${prefix}/include/variant-lite/include
+
+Name: variant-lite
+Description: Header only C++17 like variant for C++11
+Version: 1.0.0
+URL: https://github.com/martinmoene/variant-lite
+Requires:
+Libs: 
+Cflags: -I${includedir}
