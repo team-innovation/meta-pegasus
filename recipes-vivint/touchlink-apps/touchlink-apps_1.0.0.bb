@@ -264,10 +264,10 @@ do_compile() {
 	# generate proxies
 	if [ ${UPDATE_STRING_TABLE} ] ; then
 			bbnote "This is a buildbot build"
-		        ${S}/scripts/generate_all_proxies.py --allow-new-entries
+		        CAMERA_PROTOBUF_BRANCH=${CAMERA_PROTOBUF_BRANCH} CAMERA_PROTOBUF_SERVER=${CAMERA_PROTOBUF_SERVER} ${S}/scripts/generate_all_proxies.py --allow-new-entries
 	else
 	        bbnote "This is NOT a buildbot build"
-	        ${S}/scripts/generate_all_proxies.py --verbose
+	        CAMERA_PROTOBUF_BRANCH=${CAMERA_PROTOBUF_BRANCH} CAMERA_PROTOBUF_SERVER=${CAMERA_PROTOBUF_SERVER} ${S}/scripts/generate_all_proxies.py --verbose
 	fi
 
 	# generate .pyc files
