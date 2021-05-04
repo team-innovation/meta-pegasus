@@ -73,6 +73,9 @@ GIT_APPS_SERVER ?= "${GIT_SERVER}"
 GIT_APPS_PROTOCOL ?= "ssh"
 GIT_STRINGS_SERVER ?= "/home/localRepos/constants/boilerplate/python"
 
+CAMERA_PROTOBUF_BRANCH ?= "master"
+CAMERA_PROTOBUF_SERVER ?= "ssh://git@source.vivint.com:7999/em/camera-connect.git"
+
 SRC_URI = "git://${GIT_APPS_SERVER}/${GIT_APPS_TAG};protocol=${GIT_APPS_PROTOCOL};branch=${SRCBRANCH} \
     file://procman.d \
     file://procman.d-fcc \
