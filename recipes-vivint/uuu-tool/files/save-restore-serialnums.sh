@@ -9,8 +9,7 @@ set -e
 
 echo "$SCRIPTNAME"
 
-#BSPART=/dev/mmcblk0p3
-BSPART=/dev/mmcblk2p4
+BSPART=/dev/mmcblk2p1
 BSMNTPT=/media/bootscript
 
 # Utility functions
