@@ -66,7 +66,8 @@ savestuff()
     if [ -e "$BSPART" ]; then
 		mntbootscript
 		mkdir -p $saveloc
-		cp ${BSMNTPT}/* $saveloc || true
+		cp ${BSMNTPT}/id* $saveloc || true
+		cp ${BSMNTPT}/*.txt $saveloc || true
 		# for uuu - pack everything into a single archive
 		tar cvf $saveloc.tar -C ${BSMNTPT} $(ls ${BSMNTPT})
 		umntbootscript
