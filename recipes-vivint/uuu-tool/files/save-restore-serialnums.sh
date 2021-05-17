@@ -81,6 +81,7 @@ savestuff()
 		# don't need all
 		cp ${BSMNTPT}/id* $saveloc || true
 		cp ${BSMNTPT}/*.txt $saveloc || true
+		cp ${BSMNTPT}/*.bin $saveloc || true
 		#tar cvf $saveloc.tar -C ${BSMNTPT} $(ls ${BSMNTPT}) || true
 		tar cvf $saveloc.tar -C $saveloc $(ls $saveloc) || true
 		umntbootscript
