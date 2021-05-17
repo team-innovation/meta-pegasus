@@ -9,8 +9,19 @@ set -e
 
 echo "$SCRIPTNAME"
 
-BSPART=/dev/mmcblk2p1
-BSMNTPT=/media/bootscript
+# a. This will pick the lowest index emmc block device
+# EMMCDEV=$(ls /dev/mmcblk[0-9] | head -n1 | awk '{print $1;}')
+# b. Hardcode
+EMMCDEV=/dev/mmcblk2
+
+BSLABEL=bootscript
+
+# re-read partition table
+blockdev --rereadpt -v $EMMCDEV
+
+# find by label = partition number independent
+BSPART=$(findfs LABEL=$BSLABEL || true)
+BSMNTPT=/media/$BSLABEL
 
 # Utility functions
 carp() {
@@ -43,7 +54,7 @@ debuginfo() {
 mntbootscript()
 {
 	mount | grep -q ${BSPART} ||
-		mount ${BSPART}
+		mount ${BSPART} ${BSMNTPT}
 }
 
 umntbootscript()
@@ -55,7 +66,7 @@ umntbootscript()
 mntbootscriptrw()
 {
 	umntbootscript || true
-	mount ${BSPART} -o rw ||
+	mount ${BSPART} ${BSMNTPT} -o rw ||
 		carp "unable to mount ${BSPART} read/write"
 }
 
@@ -63,27 +74,38 @@ saveloc=/tmp/savedfiles
 
 savestuff()
 {
-    if [ -e "$BSPART" ]; then
+	if [ -e "$BSPART" ]; then
 		mntbootscript
 		mkdir -p $saveloc
+		#cp ${BSMNTPT}/* $saveloc || true
+		# don't need all
 		cp ${BSMNTPT}/id* $saveloc || true
 		cp ${BSMNTPT}/*.txt $saveloc || true
-		# for uuu - pack everything into a single archive
-		tar cvf $saveloc.tar -C ${BSMNTPT} $(ls ${BSMNTPT})
+		#tar cvf $saveloc.tar -C ${BSMNTPT} $(ls ${BSMNTPT}) || true
+		tar cvf $saveloc.tar -C $saveloc $(ls $saveloc) || true
 		umntbootscript
-		info "Done saving serial numbers etc."
+		if [ -e $saveloc.tar ]; then
+			info "Done saving serial numbers etc.."
+		else
+			info "Done. Nothing to backup."
+		fi
 	else
-        info "The parition does not exist. Storing serial numbers failed."
-    fi
+		info "The parition does not exist. Storing serial numbers failed."
+	fi
+	touch $saveloc.tar
 	exit 0
 }
 
 restorestuff()
 {
-	mntbootscriptrw
-	cp $saveloc/* ${BSMNTPT} || true
-	umntbootscript
-	info "Done restoring serial numbers etc."
+	if [ -e "$BSPART" ]; then
+		mntbootscriptrw
+		cp $saveloc/* ${BSMNTPT} || true
+		umntbootscript
+		info "Done restoring serial numbers etc.."
+	else
+		info "The parition does not exist. Nothing to be restored."
+	fi
 	exit 0
 }
 
