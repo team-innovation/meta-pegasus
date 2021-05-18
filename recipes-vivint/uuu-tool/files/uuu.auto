@@ -39,6 +39,11 @@ FBK: acmd bzip2 -dc | dd of=/dev/mmcblk2 bs=1k conv=fsync
 FBK: ucp image.wic.bz2 t:-
 FBK: sync
 
+# flash bootloader
+FBK: ucp imx-boot t:/tmp
+FBK: ucmd echo 0 > /sys/block/mmcblk2boot0/force_ro
+FBK: ucmd dd if=/tmp/imx-boot of=/dev/mmcblk2boot0 bs=1K seek=33
+
 # restore serial numbers
 FBK: ucmd /tmp/save-restore-serialnums.sh restore
 
