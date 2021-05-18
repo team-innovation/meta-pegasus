@@ -7,8 +7,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=2d5025d4aa3495befef8f17206a5b0a1"
 
 SRC_URI = "https://github.com/lathiat/avahi/releases/download/v${PV}/avahi-${PV}.tar.gz"
 
-SRC_URI[md5sum] = "22b5e705d3eabb31d26f2e1e7b074013"
-SRC_URI[sha256sum] = "d54991185d514a0aba54ebeb408d7575b60f5818a772e28fa0e18b98bc1db454"
+SRC_URI[md5sum] = "229c6aa30674fc43c202b22c5f8c2be7"
+SRC_URI[sha256sum] = "060309d7a333d38d951bc27598c677af1796934dbd98e1024e7ad8de798fedda"
 
 S = "${WORKDIR}/avahi-${PV}"
 
@@ -30,6 +30,8 @@ do_install () {
 }
 
 BBCLASSEXTEND = "native nativesdk"
-RDEPENDS_${PN} += "python3-core python3-dbus"
+RDEPENDS_${PN} += "python3 python3-core python3-dbus"
 
 FILES_${PN} = "${PYTHON_SITEPACKAGES_DIR}/avahi"
+
+INSANE_SKIP_${PN} += "file-rdeps"

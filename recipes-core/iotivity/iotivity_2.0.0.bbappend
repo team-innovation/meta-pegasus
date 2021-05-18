@@ -16,3 +16,5 @@ FILES_${PN}-dev += "${libdir}/pkgconfig"
 CC_append = " -Os"
 CXX_append = " -Os"
 CPP_append = " -Os"
+
+PARALLEL_MAKE = "-j 1"

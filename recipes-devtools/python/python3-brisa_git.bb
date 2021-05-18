@@ -11,7 +11,7 @@ SRCREV = "6815632cd377f456eedfc5b4d203a107e291fc8a"
 SRC_URI="git://github.com/aleixq/python3-brisa.git;protocol=git"
 S = "${WORKDIR}/git"
 
-RDEPENDS_${PN} = "\
+RDEPENDS_${PN} += "\
   ${PYTHON_PN}-requests \
   ${PYTHON_PN}-cherrypy \
 "
@@ -19,3 +19,4 @@ RDEPENDS_${PN} = "\
 do_install_append() {
     sed -i  '1i#!/usr/bin/python3\n' ${D}/${bindir}/brisa-conf
 }
+

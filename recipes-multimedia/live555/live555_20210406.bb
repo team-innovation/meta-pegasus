@@ -10,7 +10,7 @@ SECTION = "devel"
 DEPENDS = "openssl"
 
 SRCREV = "${GIT_LIVE555_REV}"
-SRCBRANCH = "nextgenhub"
+SRCBRANCH = "${GIT_LIVE555_BRANCH}"
 SRC_URI = "git://${GIT_LIVE555_SERVER}/live555;protocol=${GIT_LIVE555_PROTOCOL};branch=${SRCBRANCH}"
 
 S = "${WORKDIR}/git"
@@ -48,6 +48,8 @@ do_install() {
     done
     install -m 0755 ${S}/mediaServer/live555MediaServer ${D}${bindir}/
 }
+
+#RPROVIDES =+ "live555-libusageenvironment live555-libbasicusageenvironment live555-libgroupsock live555-liblivemedia"
 
 PACKAGES =+ "live555-openrtsp live555-playsip live555-mediaserver live555-examples"
 PACKAGES =+ "live555-proxyserver live555-test live555-libusageenvironment" 
