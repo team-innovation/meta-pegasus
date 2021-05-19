@@ -1,7 +1,7 @@
 DESCRIPTION = "Python YAML library"
 SECTION = "devel/python"
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=e04f70f331d3fc1e7623959f9a48244c"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=7bbd28caa69f81f5cd5f48647236663d"
 PR = "3.5.1"
 SRCNAME = "PyYAML"
 
