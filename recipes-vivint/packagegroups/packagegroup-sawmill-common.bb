@@ -108,4 +108,5 @@ RDEPENDS_${PN} = " \
 	xdelta3 \
 	xz \
 	vivintkeys \
+	touchlink-ntpsync \
 "
