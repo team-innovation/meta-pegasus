@@ -109,4 +109,7 @@ RDEPENDS_${PN} = " \
 	xz \
 	vivintkeys \
 	touchlink-ntpsync \
+	speedtest-cli \
+	tonegen	\
+	sndfix \
 "
