@@ -28,8 +28,8 @@ python do_uuu_zip_image() {
     #         * image.wic.bz2 - written to emmc by dd
 
     uboot = d.getVar('IMAGE_BOOTLOADER')
-    # ideally: if KERNEL_DEVICETREE is not a single one then pick one that matches UBOOT_DTB_NAME
-    devicetree = d.getVar('UBOOT_DTB_NAME')
+    # if KERNEL_DEVICETREE is not a single one then pick the 1st one
+    devicetree = os.path.basename(d.getVar('KERNEL_DEVICETREE').split()[0])
     kernel = d.getVar('KERNEL_IMAGETYPE')
     initramfs = INITRAMFS_PRE+"-"+d.getVar('MACHINE')+".cpio.gz.u-boot"
 
