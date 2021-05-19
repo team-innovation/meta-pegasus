@@ -31,6 +31,9 @@ RDEPENDS_${PN} = " \
 	python3-aioconsole \
 	python3-aiodns \
 	python3-aiohttp \
+	python3-aiohttp-security \
+	python3-aiohttp-session \
+	python3-aiohttp-sse \
 	python3-async-generator \
 	python3-async-timeout \
 	python3-atomicwrites \
@@ -60,6 +63,7 @@ RDEPENDS_${PN} = " \
 	python3-markupsafe \
 	python3-math \
 	python3-misc \
+	python3-mixpanel \
 	python3-msgpack \
 	python3-multidict \
 	python3-more-itertools \
@@ -73,6 +77,7 @@ RDEPENDS_${PN} = " \
 	python3-protobuf \
 	python3-pycparser \
 	python3-pyftpdlib \
+	python3-pyjwt \
 	python3-pyserial \
 	python3-pyssh-ctypes \
 	python3-pytest \
@@ -88,6 +93,8 @@ RDEPENDS_${PN} = " \
 	python3-shell \
 	python3-sqlite3 \
 	python3-terminal \
+	python3-typing \
+        python3-typing-extensions \
 	python3-threading \
 	python3-tkinter \
 	python3-toolz \
