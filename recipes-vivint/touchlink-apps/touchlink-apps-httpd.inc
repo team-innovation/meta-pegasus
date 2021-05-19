@@ -9,6 +9,7 @@ PKGR_${PN}-httpd = "${PR}${HTTPD_PREPEND}${HTTPD_REVISION}"
 RDEPENDS_${PN}-httpd = "\
     python3-zeroconf \
     python3-sseclient \
+	python3-pyyaml \
 	"
 
 do_install_append () {

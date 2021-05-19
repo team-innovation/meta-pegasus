@@ -166,6 +166,7 @@ DEPENDS = " \
 	python3-py-native \
 	python3-pyjwt-native \
 	python3-pytz-native \
+	python3-pyyaml-native \
 	python3-requests-native \
 	python3-requests-toolbelt-native \
 	python3-easydict-native \
