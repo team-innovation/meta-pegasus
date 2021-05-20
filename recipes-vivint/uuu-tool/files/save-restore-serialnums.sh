@@ -77,12 +77,15 @@ savestuff()
 	if [ -e "$BSPART" ]; then
 		mntbootscript
 		mkdir -p $saveloc
-		#cp ${BSMNTPT}/* $saveloc || true
-		# don't need all
-		cp ${BSMNTPT}/id* $saveloc || true
-		cp ${BSMNTPT}/*.txt $saveloc || true
-		cp ${BSMNTPT}/*.bin $saveloc || true
-		#tar cvf $saveloc.tar -C ${BSMNTPT} $(ls ${BSMNTPT}) || true
+		# copy all
+		cp ${BSMNTPT}/* $saveloc || true
+		# remove unneeded
+		rm $saveloc/Image \
+		   $saveloc/*.dtb \
+		   $saveloc/boot.scr \
+		   $saveloc/Date \
+		   $saveloc/SW_Ver || true
+
 		tar cvf $saveloc.tar -C $saveloc $(ls $saveloc) || true
 		umntbootscript
 		if [ -e $saveloc.tar ]; then
