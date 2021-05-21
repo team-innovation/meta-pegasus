@@ -1,0 +1,117 @@
+#!/bin/sh
+SERVERS="/media/extra/conf/ntp.addresses"
+
+# Usage: ntpsync [timezone] [ntp-server]
+#   timezone is optional. When supplied, changes the timezone of the system to
+#     the specified timezone
+#   ntp-server is optional, and if not specified, use the addresses contained
+#     in the $SERVERS file
+#
+# Usage examples:
+#    ntpsync
+#    ntpsync timepool.vivintsky.com
+#    ntpsync US/Mountain 10.255.255.10
+
+if [ -z $2 ]; then
+	time_zone=''
+	address=$1
+else
+	# there is a $2 so assume time_zone=$1 and address=$2
+	time_zone=$1
+	address=$2
+fi
+
+if [ -n "$time_zone" ]; then
+	if [ -e /usr/share/zoneinfo/$time_zone ]; then
+		_current_zone=$(cat /etc/timezone)
+		if [ $time_zone != $_current_zone ]; then
+			echo "$time_zone" > /etc/timezone
+		fi
+
+		rm -f /etc/localtime
+		cd /etc && ln -s /usr/share/zoneinfo/$time_zone  localtime
+	else
+		exit 1
+	fi
+fi
+
+if [ -e /usr/bin/chronyc ]; then
+        if [ -n "$address" ]; then
+                # Resolve IP address first to handle pools
+                ip=`nslookup $address | awk 'f{print $3;f=0} /Name:/{f=1}'`
+                if [ -z "${ip}" ]; then
+                    exit 1
+                fi
+                chronyc add server $ip offline > /dev/null
+                present=$?
+                chronyc burst 4/6 $ip > /dev/null
+                sleep 10
+                chronyc makestep 1 -1 > /dev/null
+                chronyc waitsync 1 1 > /dev/null
+                ret=$?
+                if ((! $present)); then
+                    chronyc delete $ip > /dev/null
+                fi
+        elif [ -e $SERVERS ]; then
+                for line in `cat $SERVERS` ; do
+                        ip=`echo $line | head -n1 | cut -d'=' -f2`
+                        if [ -n "$ip" ]; then
+                                chronyc add server $ip offline > /dev/null
+                                chronyc burst 4/6 $ip > /dev/null
+                                sleep 10
+                                chronyc makestep 1 -1 > /dev/null
+                                chronyc waitsync 1 1 > /dev/null
+                                ret=$?
+                                chronyc delete $ip > /dev/null
+
+                                if [ $ret -eq 0 ]; then
+                                    break
+                                fi
+                        fi
+                done
+        else
+                chronyc burst 4/6 > /dev/null
+                sleep 10
+                chronyc makestep 1 -1 > /dev/null
+                chronyc waitsync 1 1 > /dev/null
+                ret=$?
+        fi
+else 
+version=$(ntpd -v 2>&1 | head -n 2 | grep BusyBox)
+if [ -n "$version" ]; then
+        # -q means quit after clock is set.
+        # -n means do not daemonize
+        # Add -d to show verbose output
+        # The -p is to specify a peer (busybox ntpd only)
+        NTPD_CALL="ntpd -n -q -p"
+else 
+        # Add -d to show verbose output
+        NTPD_CALL='ntpd -g -q'
+fi
+
+if [ -n "$address" ]; then
+        $NTPD_CALL $address
+        ret=$?
+elif [ -e $SERVERS ]; then 
+        for line in `cat $SERVERS` ; do
+                        ip=`echo $line | head -n1 | cut -d'=' -f2`
+                        if [ -n "$ip" ]; then
+                                $NTPD_CALL $ip
+                                ret=$?
+                                if [ $ret -eq 0 ]; then
+                                        break
+                                fi
+                        fi 
+        done 
+else 
+        $NTPD_CALL timepool.vivintsky.com
+        ret=$?
+fi
+fi
+
+if [ $ret -eq 0 ]; then
+	# set the hwclock
+	hwclock -w -u
+	exit 0
+fi
+exit 1
