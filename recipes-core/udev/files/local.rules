@@ -1,0 +1,5 @@
+#Create zwave tty
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0658", PROGRAM="/etc/udev/scripts/zwavettyid.sh", SYMLINK+="ttyzwave$result"
+
+#Create symlinks to Quectel modem USB ttys
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2c7c", ATTRS{idProduct}=="0191" SYMLINK+="ttyQT%E{ID_USB_INTERFACE_NUM}"
