@@ -131,6 +131,7 @@ pkg_postinst_ontarget_${PN}-sundance () {
 
 FILES_${PN}-sundance-proxies = "\
 	${INSTALL_DIR}/sundance/proxies/*	\
+    ${INSTALL_DIR}/sundance/services/devices/generated/grpc/*   \
 	"
 
 FILES_${PN}-sundance = "\
