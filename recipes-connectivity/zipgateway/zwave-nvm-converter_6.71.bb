@@ -2,15 +2,15 @@ SUMMARY = "Zwave NVM Converter"
 HOMEPAGE = "http://zts.sigmadesigns.com"
 SECTION = "network"
 LICENSE = "CLOSED"
-LIC_FILES_CHKSUM = "file://../zware-7.13.01/LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
+LIC_FILES_CHKSUM = "file://../zware_1_20/LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
 
 DEPENDS = ""
 
 PR = "r1"
 PV = "6.71+git${SRCPV}"
 
-SRCREV = "ace817ccd812cc491b22a260c1f3691621299aa0"
-SRCBRANCH = "v7.13.1"
+SRCREV = "fd74377b458bb62f498b50f365df5185f86dbcf4"
+SRCBRANCH = "v7.14.1"
 
 GIT_ZWAVE_SERVER ?= "${GIT_SERVER}"
 GIT_ZWAVE_PROTOCOL ?= "ssh"
