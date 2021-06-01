@@ -2,24 +2,25 @@ SUMMARY = "Zware SDK"
 HOMEPAGE = "http://zts.sigmadesigns.com"
 SECTION = "network"
 LICENSE = "CLOSED"
-LIC_FILES_CHKSUM = "file://../../../LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
 
 DEPENDS = "python-native openssl"
 
 PR = "r1"
-PV = "7.13.01+git${SRCPV}"
+PV = "7.14.01+git${SRCPV}"
 
-SRCREV = "ace817ccd812cc491b22a260c1f3691621299aa0"
-SRCBRANCH = "v7.13.1"
+SRCREV = "fd74377b458bb62f498b50f365df5185f86dbcf4"
+SRCBRANCH = "v7.14.1"
 
 GIT_ZWARE_SERVER ?= "${GIT_SERVER}"
 GIT_ZWARE_PROTOCOL ?= "ssh"
 
-SRC_URI = "git://${GIT_ZWARE_SERVER}/zware_controller_sdk;protocol=${GIT_ZWARE_PROTOCOL};branch=${SRCBRANCH} \
+SRC_URI = " \
+	git://${GIT_ZWARE_SERVER}/zware_controller_sdk;protocol=${GIT_ZWARE_PROTOCOL};branch=${SRCBRANCH} \
 	file://zware.pc \
 "
 
-S = "${WORKDIR}/git/zware-7.13.01/src/zwave/hcapi"
+S = "${WORKDIR}/git/zware-7.14.01/src/zwave/hcapi"
 
 do_compile() {
     cd ${S}
@@ -32,8 +33,9 @@ do_install_append() {
     install -d ${D}${libdir}
     install -m 644 ${S}/lib/libzip_api.a ${D}${libdir}/libzip_api.a
     install -m 644 ${S}/src/libzip_ctl.a ${D}${libdir}/libzip_ctl.a
+
     install -d ${D}${libdir}/pkgconfig
-    install -m 644 ${WORKDIR}/zware.pc ${D}${libdir}/pkgconfig
+    install -m 644 ${WORKDIR}/zware.pc ${D}${libdir}/pkgconfig	
 }
 
 FILES_${PN} += "${libdir}/libzip_api.a"

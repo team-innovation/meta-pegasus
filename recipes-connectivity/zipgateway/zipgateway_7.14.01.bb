@@ -7,11 +7,11 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
 DEPENDS = "python-native libusb flex-native bison-native json-c openssl libxslt-native libusb-native json-c-native"
 RDEPENDS_${PN} = "bridge-utils openssl bash"
 
-PR = "r2"
-PV = "7.13.01+git${SRCPV}"
+PR = "r3"
+PV = "7.14.01+git${SRCPV}"
 
-SRCREV = "ace817ccd812cc491b22a260c1f3691621299aa0"
-SRCBRANCH = "v7.13.1"
+SRCREV = "fd74377b458bb62f498b50f365df5185f86dbcf4"
+SRCBRANCH = "v7.14.1"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
 GIT_ZGATE_PROTOCOL ?= "ssh"
@@ -19,12 +19,15 @@ GIT_ZGATE_PROTOCOL ?= "ssh"
 SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_PROTOCOL};branch=${SRCBRANCH} \
            file://zwaved \
            file://zwaved.service \
+           file://zipgateway.logrotate \
+           file://zip_zeus.patch \
            "
 
-S = "${WORKDIR}/git/zipgateway-7.13.01-Source/usr/local"
+S = "${WORKDIR}/git/zipgateway-7.14.01-Source/usr/local"
 
-inherit pkgconfig cmake python-dir pythonnative update-rc.d
+inherit pkgconfig cmake python3-dir python3native update-rc.d
 
+# Create runlevel links
 INITSCRIPT_NAME = "zwaved"
 INITSCRIPT_PARAMS = "start 30 5 ."
 
@@ -32,12 +35,14 @@ EXTRA_OECMAKE = " \
     -DCMAKE_INSTALL_PREFIX=${prefix}/local \
     -DSKIP_TESTING=TRUE \
     -DDISABLE_MOCK=TRUE \
-    -DDISABLE_DTLS=TRUE \
+    -DJSON_C_SRC=/usr \
 "
 
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwaved ${D}${sysconfdir}/init.d
+    install -d "${D}${sysconfdir}/logrotate.d"
+    install -m 0600 "${WORKDIR}/zipgateway.logrotate" "${D}${sysconfdir}/logrotate.d/zipgateway"
 
     rm -f ${D}/${prefix}/local/etc/zipgateway_node_identify_rpi3b+_led.sh
 
