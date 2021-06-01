@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f826fad..425c64e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -37,7 +37,7 @@ if(NOT CMAKE_CONFIGURATION_TYPES)
+ endif()
+ 
+ include( ExternalProject )
+-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pipe -Werror -Wparentheses -Wno-array-bounds -Wno-unused-result -std=gnu99 -D_DEFAULT_SOURCE")
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pipe -Werror -Wparentheses -Wno-array-bounds -Wno-unused-result -std=gnu99 -D_DEFAULT_SOURCE -Wno-address-of-packed-member")
+ set(CONFIGURE_HOST arm-linux)
+ 
+ if(DEFINED ENABLE_CODE_COVERAGE)

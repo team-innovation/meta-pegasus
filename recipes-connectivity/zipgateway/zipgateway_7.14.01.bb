@@ -20,6 +20,7 @@ SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_P
            file://zwaved \
            file://zwaved.service \
            file://zipgateway.logrotate \
+           file://zip_zeus.patch \
            "
 
 S = "${WORKDIR}/git/zipgateway-7.14.01-Source/usr/local"
@@ -31,11 +32,12 @@ INITSCRIPT_NAME = "zwaved"
 INITSCRIPT_PARAMS = "start 30 5 ."
 
 EXTRA_OECMAKE = " \
-    -DCMAKE_INSTALL_PREFIX=/usr/local \
+    -DCMAKE_INSTALL_PREFIX=${prefix}/local \
     -DSKIP_TESTING=TRUE \
     -DDISABLE_MOCK=TRUE \
     -DJSON_C_SRC=/usr \
 "
+
 do_install_append() {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwaved ${D}${sysconfdir}/init.d
