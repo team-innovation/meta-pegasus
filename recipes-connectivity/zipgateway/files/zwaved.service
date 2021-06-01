@@ -1,0 +1,15 @@
+[Unit]
+Description=Vivint zwaved/zipgateway service.
+After=iot-radio-fw-verify.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=forking
+PIDFile=/run/zipgateway.pid
+ExecStart=/usr/bin/python3 /opt/2gig/zwaved/zwaved.pyc start
+ExecStop=/usr/bin/python3 /opt/2gig/zwaved/zwaved.pyc stop
+Restart=on-failure
+TimeoutStartSec=600
+TimeoutStopSec=10
