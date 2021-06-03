@@ -1,9 +1,9 @@
 DESCRIPTION = "Vivint Keypad Firmware"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
-PR = "r57"
+PR = "r58"
 
-FIRMWARE_VIVINT_KEYPAD = "VivintKeypad_0156_4B50_0001_5001_b50e_1.8.hex"
+FIRMWARE_VIVINT_KEYPAD = "VivintKeypad_0156_4B50_0001_5001_7c5a_1.9.hex"
 
 FIRMWARE_DIR = "/var/lib/firmware/zwave"
 
