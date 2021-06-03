@@ -13,6 +13,10 @@ VERBOSITY=0
 platform=$(strings /proc/device-tree/compatible | grep vivint | sed s/^vivint,//)
 
 if [ -s "$IF_WPA_CONF" ]; then
+	if [ -f /media/extra/conf/network/wpa_supplicant_wireless.conf ]; then
+		IF_WPA_CONF="/media/extra/conf/network/wpa_supplicant_wireless.conf"
+	fi
+
         WPA_SUP_CONF="-c $IF_WPA_CONF"
 else
         exit 0
