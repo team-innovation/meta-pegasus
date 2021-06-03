@@ -10,7 +10,7 @@ PR = "r1"
 
 DEPENDS += "python3 python3-native"
 
-inherit distutils3 python3-dir
+inherit setuptools3
 
 SRC_URI = "http://updateseng.vivint.com/innovation/downloads/speedtest-cli-${PV}.tar.gz \
 	   file://ping-display-${PV}.patch"
@@ -20,13 +20,12 @@ SRC_URI[sha256sum] = "5e2773233cedb5fa3d8120eb7f97bcc4974b5221b254d33ff16e2f1d41
 
 S = "${WORKDIR}/speedtest-cli-${PV}"
 
-do_install_prepend() {
-	install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
-}
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install() {
-	cp -a ${WORKDIR}/speedtest-cli-${PV}/* ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
+	install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
+
+	cp -dR ${WORKDIR}/speedtest-cli-${PV}/* ${D}/${libdir}/${PYTHON_DIR}/site-packages/speedtest-cli/
 }
