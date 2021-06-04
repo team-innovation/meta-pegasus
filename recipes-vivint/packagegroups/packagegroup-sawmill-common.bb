@@ -119,4 +119,5 @@ RDEPENDS_${PN} = " \
 	speedtest-cli \
 	tonegen	\
 	sndfix \
+	avahi-utils \
 "
