@@ -8,6 +8,7 @@ set -e
 echo "$SCRIPTNAME"
 
 modprobe board_info
+modprobe cell
 BSPART=/dev/mmcblk0p3
 
 # Utility functions
@@ -384,20 +385,15 @@ fusecheck || {
 function chk_board()
 {
 	local result
-	if [ -f /media/bootscript/sku.txt ]; then
-		read -r result </media/bootscript/sku.txt
-		echo "${result##*-}"
-	else
-		read -r result </sys/class/cell/cell0/id
-		case "$result" in
-			3)
-				echo "C00"
-				;;
-			*)
-				echo "000"
-				;;
-		esac
-	fi
+	read -r result </sys/class/cell/cell0/id
+	case "$result" in
+		3)
+			echo "C00"
+			;;
+		*)
+			echo "000"
+			;;
+	esac
 }
 
 function chk_rev()
@@ -445,6 +441,7 @@ addboardrevfromdevtree() {
 		return
 	is_wallsly &&
 		sed --in-place '/V-FIX-ME/d' $pit &&
+		sed --in-place "s/-000/-$(chk_board)/" /media/bootscript/sku.txt &&
 		echo export WS_BOARD_REV=VS-SH2000-"$(chk_board)"-Rev-"$(chk_rev)" >> $pit &&
 		return
 }
