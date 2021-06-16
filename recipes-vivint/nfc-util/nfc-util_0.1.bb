@@ -6,7 +6,7 @@ DESCRIPTION = "nfc-util interface to CR95HF"
 HOMEPAGE = "https://source.vivint.com/projects/EM/repos/nfc-util/browse"
 LICENSE = "CLOSED"
 SECTION = "devel"
-PR = "r1.4"
+PR = "r1.5"
 
 SRCREV = "75ebb39bbe6b42da3bbee81e1e7f5a95eb4f9262"
 MODULE = "nfc-util"
