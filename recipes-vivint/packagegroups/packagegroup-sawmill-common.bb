@@ -94,7 +94,7 @@ RDEPENDS_${PN} = " \
 	python3-sqlite3 \
 	python3-terminal \
 	python3-typing \
-        python3-typing-extensions \
+	python3-typing-extensions \
 	python3-threading \
 	python3-tkinter \
 	python3-toolz \
@@ -106,8 +106,17 @@ RDEPENDS_${PN} = " \
 	python3-yarl \
 	pv \
 	sqlite3 \
-	tzdata \
+	tzdata-africa \
 	tzdata-americas \
+	tzdata-antarctica \
+	tzdata-arctic \
+	tzdata-asia \
+	tzdata-atlantic \
+	tzdata-australia \
+	tzdata-core \
+	tzdata-europe \
+	tzdata-misc \
+	tzdata-pacific \
 	util-linux \
 	usbinit \
 	vim \
