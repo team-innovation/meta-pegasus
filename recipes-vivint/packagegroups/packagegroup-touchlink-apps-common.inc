@@ -3,7 +3,6 @@
 require packagegroup-touchlink-apps-base.inc
 
 VIVINT_APPS_COMMON = "\
-	touchlink-apps-launcherd \
 	touchlink-apps-qml-framework \
 	touchlink-apps-qml-framework-images-controls \
 	touchlink-apps-qml-framework-images-controls-shared \

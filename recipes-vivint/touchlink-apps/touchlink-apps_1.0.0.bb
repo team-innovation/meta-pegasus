@@ -14,13 +14,10 @@ require touchlink-apps-baguette.inc
 require touchlink-apps-rtspd.inc
 require touchlink-apps-videod.inc
 
-require touchlink-apps-launcherd.inc
-
 # fcc test apps
 require touchlink-apps-test-ui.inc
 require touchlink-apps-test-daemon.inc
 
-require touchlink-apps-pcamd.inc
 require touchlink-apps-iod.inc
 require touchlink-apps-345d.inc
 require touchlink-apps-cloudd.inc
@@ -388,6 +385,11 @@ pkg_postinst_ontarget_${PN} () {
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
+FILES_${PN}-dbg += "\
+       /usr/lib/.debug/* \
+       /opt/2gig/lib/.debug/* \
+       "
+
 # Make sure the proxies are in the list before their non-proxy counterparts
 # otherwise we end up with empty proxy packages and the build will fail
 PACKAGES = " \
@@ -411,10 +413,8 @@ PACKAGES = " \
 	${PN}-httpd \
 	${PN}-huei \
 	${PN}-iod   \
-	${PN}-launcherd \
 	${PN}-modemd          \
 	${PN}-netd  \
-	${PN}-pcamd        \
 	${PN}-procmand \
 	${PN}-pyftpd \
 	${PN}-rtspd   \
@@ -431,5 +431,6 @@ PACKAGES = " \
 	${PN}-webd  \
 	${PN}-zwaved        \
 	${PN}-sound-wav-chimes \
+	${PN}-dbg \
 	${PN} \
 "
