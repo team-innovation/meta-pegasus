@@ -2,16 +2,17 @@ SUMMARY = "Z/IP Gateway"
 HOMEPAGE = "http://zts.sigmadesigns.com"
 SECTION = "network"
 LICENSE = "CLOSED"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=c5572362acb437d9c5e365a4198a459b"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=d8940d2702ac72abe9e3994316807ff3"
 
 DEPENDS = "python-native libusb openssl flex-native bison-native libxslt-native json-c"
 RDEPENDS_${PN} = "bridge-utils openssl bash"
 
-PR = "r3"
-PV = "7.14.01+git${SRCPV}"
+PR = "r4"
+PV = "7.15.04+git${SRCPV}"
 
-SRCREV = "fd74377b458bb62f498b50f365df5185f86dbcf4"
-SRCBRANCH = "v7.14.1"
+#SRCREV = "64e75bb5596062d7fac742f677122537f34002a7"
+SRCREV = "${AUTOREV}"
+SRCBRANCH = "v7.15.4_wip"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
 GIT_ZGATE_PROTOCOL ?= "ssh"
@@ -21,7 +22,7 @@ SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_P
            file://zipgateway.logrotate \
            "
 
-S = "${WORKDIR}/git/zipgateway-7.14.01-Source/usr/local"
+S = "${WORKDIR}/git/zipgateway-7.15.04-Source/usr/local"
 
 inherit pkgconfig cmake python3-dir python3native update-rc.d
 
@@ -64,6 +65,8 @@ FILES_${PN} += "${prefix}/local/bin/zgw_recover.sh"
 FILES_${PN} += "${prefix}/local/bin/zgw_restore"
 FILES_${PN} += "${prefix}/local/bin/zw_nvm_converter"
 FILES_${PN} += "${prefix}/local/bin/zw_programmer"
+FILES_${PN} += "${prefix}/local/bin/zgw_eeprom_to_sqlite"
+FILES_${PN} += "${prefix}/local/bin/zgw_eeprom_2_25_to_2_61"
 
 FILES_${PN}-dbg += "${prefix}/local/bin/.debug"
 FILES_${PN}-dbg += "${prefix}/local/sbin/.debug"
