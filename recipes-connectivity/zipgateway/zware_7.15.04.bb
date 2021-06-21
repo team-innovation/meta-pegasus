@@ -6,11 +6,12 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=3ac958de15d720d5bb5067dd818b8eae"
 
 DEPENDS = "python-native openssl"
 
-PR = "r1"
-PV = "7.14.01+git${SRCPV}"
+PR = "r2"
+PV = "7.15.04+git${SRCPV}"
 
-SRCREV = "fd74377b458bb62f498b50f365df5185f86dbcf4"
-SRCBRANCH = "v7.14.1"
+#SRCREV = "64e75bb5596062d7fac742f677122537f34002a7"
+SRCREV = "${AUTOREV}"
+SRCBRANCH = "v7.15.4_wip"
 
 GIT_ZWARE_SERVER ?= "${GIT_SERVER}"
 GIT_ZWARE_PROTOCOL ?= "ssh"
@@ -20,7 +21,7 @@ SRC_URI = " \
 	file://zware.pc \
 "
 
-S = "${WORKDIR}/git/zware-7.14.01/src/zwave/hcapi"
+S = "${WORKDIR}/git/zware-7.15.04/src/zwave/hcapi"
 
 do_compile() {
     cd ${S}
