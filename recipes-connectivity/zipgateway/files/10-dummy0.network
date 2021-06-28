@@ -1,0 +1,8 @@
+[Match]
+Name=dummy0
+
+[Network]
+Address=169.254.1.1
+
+[Link]
+Multicast=true
