@@ -24,6 +24,10 @@ RDEPENDS_${PN} = " \
     ${PYTHON_PN}-more-itertools \
     ${PYTHON_PN}-zclockfile \
     ${PYTHON_PN}-jaracocollections \
+    ${PYTHON_PN}-jaracoclasses \
+    ${PYTHON_PN}-jaracotext \
+    ${PYTHON_PN}-jaracotempora \
+    ${PYTHON_PN}-jaracofunctools \
 "
 
 # Allows us to create a native package for staging in OE
