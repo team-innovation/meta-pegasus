@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=d8940d2702ac72abe9e3994316807ff3"
 DEPENDS = "python-native libusb flex-native bison-native json-c openssl libxslt-native libusb-native json-c-native"
 RDEPENDS_${PN} = "bridge-utils openssl bash"
 
-PR = "r5"
+PR = "r4"
 PV = "7.15.04+git${SRCPV}"
 
 #SRCREV = "64e75bb5596062d7fac742f677122537f34002a7"
@@ -21,8 +21,6 @@ SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_P
            file://zwaved \
            file://zwaved.service \
            file://zipgateway.logrotate \
-	   file://10-dummy0.netdev \
-	   file://10-dummy0.network \
            "
 
 S = "${WORKDIR}/git/zipgateway-7.15.04-Source/usr/local"
@@ -53,11 +51,6 @@ do_install_append() {
     echo "enable zwaved.service" > ${D}${systemd_unitdir}/system-preset/98-zwaved.preset
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/zwaved.service ${D}${systemd_unitdir}/system
-
-    # add dummy0 interface to systemd network setup
-    install -d ${D}${systemd_unitdir}/network
-    install -m 0644 ${WORKDIR}/10-dummy0.netdev ${D}${systemd_unitdir}/network
-    install -m 0644 ${WORKDIR}/10-dummy0.network ${D}${systemd_unitdir}/network
 }
 
 do_install_append_class-nativesdk() {
@@ -135,8 +128,6 @@ FILES_${PN} += "${prefix}/local/bin/zgw_eeprom_to_sqlite"
 FILES_${PN} += "${prefix}/local/bin/zgw_eeprom_2_25_to_2_61"
 FILES_${PN} += "${systemd_unitdir}/system/zwaved.service"
 FILES_${PN} += "${systemd_unitdir}/system-preset/98-zwaved.preset"
-FILES_${PN} += "${systemd_unitdir}/network/10-dummy0.netdev"
-FILES_${PN} += "${systemd_unitdir}/network/10-dummy0.network"
 
 FILES_${PN}-dbg += "${prefix}/local/bin/.debug"
 FILES_${PN}-dbg += "${prefix}/local/sbin/.debug"
