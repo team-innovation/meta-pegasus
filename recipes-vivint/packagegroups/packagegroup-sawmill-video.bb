@@ -36,6 +36,16 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-good-wavenc \
 	gstreamer1.0-plugins-good-wavparse \
 	gstreamer1.0-rtsp-server \
+	imx-gst1.0-plugin \
+        imx-gst1.0-plugin-gplay \
+        imx-gst1.0-plugin-grecorder \
+        libgstcodecparsers-1.0-0 \
+        libgstriff-1.0-0 \
+        libgstrtp-1.0-0 \
+        libgstrtsp-1.0-0 \
+        libgstrtspserver-1.0-0 \
+        libgstsdp-1.0-0 \
+        libgsturidownloader-1.0-0 \
 	ffmpeg \
 	libopus \
 "
