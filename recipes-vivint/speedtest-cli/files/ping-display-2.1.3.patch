@@ -1,0 +1,22 @@
+diff -u speedtest-cli-2.1.3.orig/speedtest.py speedtest-cli-2.1.3/speedtest.py
+--- speedtest-cli-2.1.3.orig/speedtest.py	2021-04-08 07:45:29.000000000 -0600
++++ speedtest-cli-2.1.3/speedtest.py	2021-04-12 09:07:46.329652024 -0600
+@@ -1933,7 +1933,7 @@
+     results = speedtest.results
+ 
+     printer('Hosted by %(sponsor)s (%(name)s) [%(d)0.2f km]: '
+-            '%(latency)s ms' % results.server, quiet)
++            '%(latency)0.2f ms' % results.server, quiet)
+ 
+     if args.download:
+         printer('Testing download speed', quiet,
+@@ -1970,7 +1970,7 @@
+         results.share()
+ 
+     if args.simple:
+-        printer('Ping: %s ms\nDownload: %0.2f M%s/s\nUpload: %0.2f M%s/s' %
++        printer('Ping: %0.2f ms\nDownload: %0.2f M%s/s\nUpload: %0.2f M%s/s' %
+                 (results.ping,
+                  (results.download / 1000.0 / 1000.0) / args.units[1],
+                  args.units[0],
+Common subdirectories: speedtest-cli-2.1.3.orig/tests and speedtest-cli-2.1.3/tests
