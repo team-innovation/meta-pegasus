@@ -881,7 +881,7 @@ class NetworkModuleInfo:
 
     def get_arp_info(self, s):
         self.logger.info('get_arp_info: {}'.format(s._server))
-        result = s.execute_cmd('arp | grep br-lan')
+        result = s.execute_cmd('arp -n | grep br-lan')
         wlan_mac = s._server_mac
         self.logger.debug('ARP {} - {}'.format(s._server, wlan_mac))
         rows = self._parse_arp_info(result)
