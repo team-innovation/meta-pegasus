@@ -7,7 +7,7 @@ SECTION = "base"
 LICENSE = "MIT" 
 LIC_FILES_CHKSUM = "file://LICENSE-MIT;md5=d147f14c7e6b7edc53fc9053bef1e483"
 
-PR = "r12"
+PR = "r13"
 
 DEPENDS="vivutils"
 
