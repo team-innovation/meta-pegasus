@@ -6,4 +6,4 @@ if [ ! -f /etc/udev/rules.d/51-imx-permissions.rules ]; then
 	echo
 fi
 
-./mfgtoocli -c "Linux" -l "Wallsly-Reflash-Save-Serial-Etc"
+./mfgtoolcli -c "Linux" -l "Wallsly-Reflash-Save-Serial-Etc"
