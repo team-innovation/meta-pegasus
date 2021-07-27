@@ -7,7 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtbase qtdeclarative qtgraphicaleffects qtmultimedia qrencode qtbase-native qtdeclarative-native"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r20"
+PR = "r21"
 
 DEPENDS += " \
         gstreamer1.0-plugins-bad \
@@ -57,6 +57,7 @@ DEPENDS += " \
         python3-phue-native \
         python3-pluggy-native \
         python3-protobuf-native \
+	python3-pyjwt-native \
         python3-ptyprocess-native \
         python3-psutil-native \
         python3-pyalsaaudio-native \
