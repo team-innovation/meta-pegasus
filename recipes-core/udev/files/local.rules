@@ -28,3 +28,6 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="0658", PROGRAM="/etc/udev/scripts/zwavettyid
 
 # Create symlinks to Quectel modem USB ttys
 SUBSYSTEM=="tty", ATTRS{idVendor}=="2c7c", ATTRS{idProduct}=="0191" SYMLINK+="ttyQT%E{ID_USB_INTERFACE_NUM}"
+# Hotplug usb gadget
+KERNEL=="ttyGS0", SUBSYSTEMS=="tty", ACTION=="add", RUN+="/bin/systemctl start serial-getty@ttyGS0.service"
+KERNEL=="ttyGS0", SUBSYSTEMS=="tty", ACTION=="remove", RUN+="/bin/systemctl stop serial-getty@ttyGS0.service"
