@@ -1,9 +1,10 @@
 # Vivint extra configuration udev scripts and rules
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-PR = "r10"
+PR = "r11"
 
-SRC_URI_append = " file://mount.sh file://zwavettyid.sh file://local.rules file://mount.blacklist"
+SRC_URI_append = " file://mount.sh file://zwavettyid.sh file://local.rules file://mount.blacklist \
+		  file://99-atmel-touch.rules"
 
 do_install_append () {
     if [ -e "${WORKDIR}/mount.sh" ]; then
@@ -20,6 +21,7 @@ do_install_append () {
 			rm ${D}${sysconfdir}/udev/rules.d/local.rules
 		fi
         install -m 0644 ${WORKDIR}/local.rules ${D}${sysconfdir}/udev/rules.d/local.rules
+        install -m 0644 ${WORKDIR}/99-atmel-touch.rules ${D}${sysconfdir}/udev/rules.d/
     fi
     if [ -e "${WORKDIR}/mount.blacklist" ]; then
         install -d ${D}${sysconfdir}/udev

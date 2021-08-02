@@ -7,7 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtbase qtdeclarative qtgraphicaleffects qtmultimedia qrencode qtbase-native qtdeclarative-native"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r21"
+PR = "r22"
 
 DEPENDS += " \
         gstreamer1.0-plugins-bad \
@@ -152,7 +152,12 @@ FILES_${PN} += "${datadir} /opt/2gig/soundfiles/*"
 RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
     qtsvg-plugins \
     gstreamer1.0 \
-	libunwind \
+    libunwind \
+    weston \
+    weston-init \
+    qtwayland \
+    qtwayland-plugins \
+    qtwayland-qmlplugins \
 	"
 
 pkg_postinst_ontarget_${PN}-pumpernickel () {
