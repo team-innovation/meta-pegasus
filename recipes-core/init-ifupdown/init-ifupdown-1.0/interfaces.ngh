@@ -9,7 +9,7 @@ iface wlan0 inet dhcp
         wireless_mode managed
         wireless_essid any
         wpa-driver wext
-        wpa-conf /media/extra/conf/network/wpa_supplicant_wireless.conf
+        wpa-conf /etc/wpa_supplicant.conf
 
 iface atml0 inet dhcp
 
