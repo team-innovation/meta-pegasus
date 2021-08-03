@@ -1,14 +1,21 @@
 # /etc/network/interfaces -- configuration file for ifup(8), ifdown(8)
- 
+
 # The loopback interface
 auto lo
 iface lo inet loopback
 
+# Wireless interfaces
+iface wlan0 inet dhcp
+        wireless_mode managed
+        wireless_essid any
+        wpa-driver wext
+        wpa-conf /media/extra/conf/network/wpa_supplicant_wireless.conf
+
+iface atml0 inet dhcp
+
 # Wired or wireless interfaces
+auto eth0
 iface eth0 inet dhcp
-iface eth0 inet6 static
-        address fe80::411:22ff:fe33:4455
-        netmask 64
 iface eth1 inet dhcp
 
 # Ethernet/RNDIS gadget (g_ether)
@@ -18,9 +25,3 @@ iface usb0 inet dhcp
 # Bluetooth networking
 iface bnep0 inet dhcp
 
-# Wireless interfaces
-iface wlan0 inet dhcp
-        wireless_mode managed
-        wireless_essid any
-        wpa-driver nl80211
-        wpa-conf /etc/network/wpa_supplicant_wireless.conf

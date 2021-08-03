@@ -1,6 +1,6 @@
 # Look for file in this layer first
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
-PR_append = "+viv1"
+PR_append = "+viv2"
 SRC_URI += "file://interfaces.ngh"
 
 do_install_append() {
