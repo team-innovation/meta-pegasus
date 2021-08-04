@@ -1,7 +1,7 @@
 LICENSE = "CLOSED"
 
 PV = "1.0.0"
-PR = "r5"
+PR = "r6"
 
 SRC_URI = "file://qt5.sh"
 

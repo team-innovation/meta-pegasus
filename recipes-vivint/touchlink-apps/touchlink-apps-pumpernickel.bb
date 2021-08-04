@@ -7,7 +7,7 @@ SECTION = "SOMETHING"
 DEPENDS = "qtbase qtdeclarative qtgraphicaleffects qtmultimedia qrencode qtbase-native qtdeclarative-native"
 EXTRA_QMAKEVARS_PRE += "CONFIG+=has_qrc"
 PV = "1.0.0+git${SRCPV}"
-PR = "r22"
+PR = "r23"
 
 DEPENDS += " \
         gstreamer1.0-plugins-bad \
@@ -142,12 +142,15 @@ do_install() {
     cp -dR ${S}/wav/* ${D}/opt/2gig/soundfiles/wav
     cp -dR ${S}/content/sounds/* ${D}/opt/2gig/soundfiles/wav/clicks
 
+    install -d ${D}/opt/2gig/images
+    install -m 0600 ${S}/content/images/wallpapers/splash_1024x600.png ${D}/opt/2gig/images
+
     install -d "${D}${sysconfdir}/logrotate.d"
     install -m 0600 "${WORKDIR}/pumpernickel.logrotate" "${D}${sysconfdir}/logrotate.d/pumpernickel"
 }
 
 FILES_${PN}-dbg += "${datadir}/${EXEC_DIR}/.debug"
-FILES_${PN} += "${datadir} /opt/2gig/soundfiles/*"
+FILES_${PN} += "${datadir} /opt/2gig/soundfiles/* /opt/2gig/images/*"
 
 RDEPENDS_${PN} = "qtdeclarative-qmlplugins qtgraphicaleffects-qmlplugins \
     qtsvg-plugins \

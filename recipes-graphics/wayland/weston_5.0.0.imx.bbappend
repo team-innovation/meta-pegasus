@@ -1,5 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-PR = "2"
+PR = "3"
 
-SRC_URI += "file://abgr-support.patch"
+SRC_URI += "file://abgr-support.patch \
+	    file://weston.ini"
