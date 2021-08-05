@@ -138,6 +138,7 @@ FILES_${PN}-sundance-proxies = "\
 
 FILES_${PN}-sundance = "\
 	${INSTALL_DIR}/sundance/connectors/*	\
+	${INSTALL_DIR}/sundance/conf_files/*	\
 	${INSTALL_DIR}/sundance/definitions/*	\
 	${INSTALL_DIR}/sundance/helpers/*	\
 	${INSTALL_DIR}/sundance/migrations/*	\
