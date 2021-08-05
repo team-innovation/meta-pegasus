@@ -91,7 +91,7 @@ test -d ${BUILD_DIR} &&
     sed -i '/IMAGE_INSTALL_remove/d' ${BUILD_DIR}/conf/local.conf && 
     sed -i '/CONNECTIVITY_CHECK_URIS/d' ${BUILD_DIR}/conf/local.conf && 
    	echo "CONNECTIVITY_CHECK_URIS = \"https://www.example.com\"" >> ${BUILD_DIR}/conf/local.conf &&
-	echo "DISTRO_FEATURES_remove = \"x11 wayland directfb bluetooth\"" >> ${BUILD_DIR}/conf/local.conf &&
+	echo "DISTRO_FEATURES_remove = \"x11 directfb bluetooth\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "IMAGE_INSTALL_remove = \" packagegroup-fsl-bluez5-tools\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_SERVER ?= \"git@source.vivint.com:7999/em\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_APPS_TAG ?= \"${_APPS_TAG}\"" >> ${BUILD_DIR}/conf/local.conf &&
