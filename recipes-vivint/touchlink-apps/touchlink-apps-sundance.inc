@@ -49,6 +49,7 @@ do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/sundance/
 	install -d ${D}/${INSTALL_DIR}/sundance/proxies/
 	install -d ${D}/${INSTALL_DIR}/sundance/connectors/
+	install -d ${D}/${INSTALL_DIR}/sundance/conf_files/
 	install -d ${D}/${INSTALL_DIR}/sundance/definitions/
 	install -d ${D}/${INSTALL_DIR}/sundance/helpers/
 	install -d ${D}/${INSTALL_DIR}/sundance/migrations/
@@ -58,6 +59,7 @@ do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/sundance/vivint_generated/
     ${RSYNC_CMD} ${S}/code/sundance/proxies/ ${D}/${INSTALL_DIR}/sundance/proxies/
     ${RSYNC_CMD} ${S}/code/sundance/connectors/ ${D}/${INSTALL_DIR}/sundance/connectors/
+    ${RSYNC_CMD} ${S}/code/sundance/conf_files/ ${D}/${INSTALL_DIR}/sundance/conf_files/
     ${RSYNC_CMD} ${S}/code/sundance/definitions/ ${D}/${INSTALL_DIR}/sundance/definitions/
     ${RSYNC_CMD} ${S}/code/sundance/helpers/ ${D}/${INSTALL_DIR}/sundance/helpers/
     ${RSYNC_CMD} ${S}/code/sundance/migrations/ ${D}/${INSTALL_DIR}/sundance/migrations/
