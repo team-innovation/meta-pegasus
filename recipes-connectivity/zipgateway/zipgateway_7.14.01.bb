@@ -10,7 +10,7 @@ RDEPENDS_${PN} = "bridge-utils openssl11"
 PR = "r1"
 PV = "7.14.01+git${SRCPV}"
 
-SRCREV = "24fbd08d27ec36a12d3ca0979e07121cdb822119"
+SRCREV = "9ffb818d6921bca0a89a30d15b2fce238b7a1893"
 SRCBRANCH = "v7.14.1"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
