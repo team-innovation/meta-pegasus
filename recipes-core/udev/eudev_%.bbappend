@@ -1,7 +1,7 @@
 # Vivint extra configuration udev scripts and rules
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-PR = "r11"
+PR = "r12"
 
 SRC_URI_append = " file://mount.sh file://zwavettyid.sh file://local.rules file://mount.blacklist \
 		  file://99-atmel-touch.rules"
