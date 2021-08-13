@@ -23,7 +23,6 @@ RDEPENDS_${PN} = " \
 	kmod \
 	libsodium \
 	logrotate \
-	packagegroup-sawmill-debugtools \
 	packagegroup-sawmill-min \
 	procps \
 	python3-asn1crypto \
