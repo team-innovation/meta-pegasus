@@ -68,3 +68,5 @@ FILES_live555-libbasicusageenvironment = "${libdir}/libBasicUsageEnvironment.so.
 FILES_live555-libgroupsock = "${libdir}/libgroupsock.so.*"
 FILES_live555-liblivemedia = "${libdir}/libliveMedia.so.*"
 
+
+ALLOW_EMPTY_${PN} = "1"
