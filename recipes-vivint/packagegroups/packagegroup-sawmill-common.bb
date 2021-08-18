@@ -124,7 +124,6 @@ RDEPENDS_${PN} = " \
 	webrtc-audio-processing \
 	xdelta3 \
 	xz \
-	vivintkeys \
 	touchlink-ntpsync \
 	speedtest-cli \
 	tonegen	\
