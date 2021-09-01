@@ -9,7 +9,7 @@ DEPENDS = "python-native openssl openssl11"
 PR = "r1"
 PV = "7.14.01+git${SRCPV}"
 
-SRCREV = "24fbd08d27ec36a12d3ca0979e07121cdb822119"
+SRCREV = "cfde844a3fb712be704230182690020a65471753"
 SRCBRANCH = "v7.14.1"
 
 GIT_ZWARE_SERVER ?= "${GIT_SERVER}"
