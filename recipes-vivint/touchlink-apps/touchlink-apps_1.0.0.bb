@@ -60,7 +60,7 @@ require touchlink-apps-pyftpd.inc
 
 DISTRO_PR = ".1"
 
-PR = "ml123"
+PR = "ml124"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -413,8 +413,8 @@ PACKAGES = " \
 	${PN}-httpd \
 	${PN}-huei \
 	${PN}-iod   \
-	${PN}-modemd          \
 	${PN}-modemd-proxies      \
+	${PN}-modemd          \
 	${PN}-netd  \
 	${PN}-procmand \
 	${PN}-pyftpd \
