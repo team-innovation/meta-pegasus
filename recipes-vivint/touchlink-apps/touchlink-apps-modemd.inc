@@ -1,7 +1,7 @@
 ###
 ### Change MODEMD_PREPEND everytime you touch this script
 ###
-MODEMD_PREPEND = "-5"
+MODEMD_PREPEND = "-6"
 
 MODEMD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-modemd = "${PR}${MODEMD_PREPEND}${MODEMD_REVISION}"

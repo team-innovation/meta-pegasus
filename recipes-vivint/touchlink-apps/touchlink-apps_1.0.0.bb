@@ -60,7 +60,7 @@ require touchlink-apps-pyftpd.inc
 
 DISTRO_PR = ".1"
 
-PR = "ml122"
+PR = "ml123"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
