@@ -102,8 +102,8 @@ cx_dumpregs() {
 patch_lm48511_amp() {
 	cd /sys/class/lm48511/lm485110
 	echo 1 > access
-	echo 1 > sd_boost
-	echo 1 > fb_sel
+	echo 0 > sd_boost
+	echo 0 > fb_sel
 }
 
 patch_cx_aec() {
