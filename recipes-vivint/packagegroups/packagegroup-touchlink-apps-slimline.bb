@@ -8,5 +8,6 @@ PR = "r26"
 require packagegroup-touchlink-apps-common.inc
 
 RDEPENDS_${PN} += " \
+	touchlink-apps-audmgrd \
 "
 
