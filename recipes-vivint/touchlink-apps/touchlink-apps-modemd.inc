@@ -29,3 +29,6 @@ FILES_${PN}-modemd = "\
 	"
 
 
+FILES_${PN}-modemd-proxies = "\
+               ${INSTALL_DIR}/modemd/proxies/* \
+               "

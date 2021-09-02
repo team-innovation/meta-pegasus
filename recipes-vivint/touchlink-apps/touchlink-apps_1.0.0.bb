@@ -414,6 +414,7 @@ PACKAGES = " \
 	${PN}-huei \
 	${PN}-iod   \
 	${PN}-modemd          \
+	${PN}-modemd-proxies      \
 	${PN}-netd  \
 	${PN}-procmand \
 	${PN}-pyftpd \
