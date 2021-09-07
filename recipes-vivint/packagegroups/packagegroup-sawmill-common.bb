@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "58"
+PR = "57"
 
 inherit packagegroup
 
@@ -24,7 +24,6 @@ RDEPENDS_${PN} = " \
 	packagegroup-sawmill-debugtools \
 	packagegroup-sawmill-min \
 	procps \
-	python3-avahi \
 	python3-asn1crypto \
 	python3-asyncio \
 	python3-aioconsole \
