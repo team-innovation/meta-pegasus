@@ -12,10 +12,9 @@ RSRC_URI[md5sum] = "1ce1ddf2582060f8f971652ea54cc17e"
 SRC_URI[sha256sum] = "32f29c17172cdb9cb61c68b1f1a71dfe7351506fc830869029c47449bd04faeb"
 S = "${WORKDIR}/dbus-python-${PV}"
 
-inherit distutils3-base autotools pkgconfig
+inherit distutils3-base autotools pkgconfig python3native
 
 BBCLASSEXTEND = "native"
-NATIVE_INSTALL_WORKS = "1"
 
 PACKAGECONFIG ?= ""
 PACKAGECONFIG[docs] = "--enable-html-docs,--disable-html-docs,python3-docutils-native"
