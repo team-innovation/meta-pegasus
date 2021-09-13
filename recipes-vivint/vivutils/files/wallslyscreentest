@@ -14,16 +14,16 @@ cleanup() {
 
 gensolids() {
         test -f /tmp/scrtest/red.rgba && return
-        convert.im6 -size 1024x600 -depth 8 xc:#ffffff -fill '#ff0000' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/red.rgba
-        convert.im6 -size 1024x600 -depth 8 xc:#ffffff -fill '#00ff00' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/green.rgba
-        convert.im6 -size 1024x600 -depth 8 xc:#ffffff -fill '#0000ff' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/blue.rgba
-        convert.im6 -size 1024x600 -depth 8 xc:#ffffff -fill '#ffffff' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/white.rgba
+        convert.im7 -size 1024x600 -depth 8 xc:#ffffff -fill '#ff0000' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/red.rgba
+        convert.im7 -size 1024x600 -depth 8 xc:#ffffff -fill '#00ff00' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/green.rgba
+        convert.im7 -size 1024x600 -depth 8 xc:#ffffff -fill '#0000ff' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/blue.rgba
+        convert.im7 -size 1024x600 -depth 8 xc:#ffffff -fill '#ffffff' -draw "rectangle 0,0 1024,600" -depth 8 -endian MSB /tmp/scrtest/white.rgba
 }
 
 gengrad() {
         test -f /tmp/scrtest/top-bottom.rgba && return
-        convert.im6 -size 1024x600 -define gradient:direction=north gradient:black-white -depth 8 -endian MSB /tmp/scrtest/top-bottom.rgba
-        convert.im6 -size 1024x600 -define gradient:direction=north gradient:white-black -depth 8 -endian MSB /tmp/scrtest/bottom-top.rgba
+        convert.im7 -size 1024x600 -define gradient:direction=north gradient:black-white -depth 8 -endian MSB /tmp/scrtest/top-bottom.rgba
+        convert.im7 -size 1024x600 -define gradient:direction=north gradient:white-black -depth 8 -endian MSB /tmp/scrtest/bottom-top.rgba
 }
 
 dispall() {
