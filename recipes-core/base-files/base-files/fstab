@@ -1,9 +1,9 @@
 # stock fstab - you probably want to override this with a machine specific one
-/dev/root           /                    auto       defaults,noatime      1  1
-/dev/mmcblk2p1      /media/bootscript    auto       defaults,noatime      1  2
-/dev/mmcblk2p2      /media/mmcblk2p2     auto       defaults,noatime      1  0
-/dev/mmcblk2p3      /media/mmcblk2p3     auto       defaults,noatime      1  0
-/dev/mmcblk2p4      /media/extra         auto       defaults,noatime      1  2
+/dev/root           /                    auto       defaults,noatime,nodiratime,barrier=0      1  1
+/dev/mmcblk2p1      /media/bootscript    auto       rw,noatime,nodiratime,async      	       0  0
+/dev/mmcblk2p2      /media/mmcblk2p2     auto       rw,noatime,nodiratime,async                0  0
+/dev/mmcblk2p3      /media/mmcblk2p3     auto       rw,noatime,nodiratime,async                0  0
+/dev/mmcblk2p4      /media/extra         auto       rw,noatime,nodiratime,async,barrier=0      0  0
 proc                /proc                proc       defaults              0  0
 devpts              /dev/pts             devpts     mode=0620,gid=5       0  0
 tmpfs               /run                 tmpfs      mode=0755,nodev,nosuid,strictatime 0  0
