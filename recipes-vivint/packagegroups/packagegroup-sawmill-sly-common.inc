@@ -2,7 +2,7 @@
 DESCRIPTION = "packages needed just for sly and future primary panels etc"
 LICENSE = "MIT"
 
-PR = "r4"
+PR = "r5"
 
 inherit packagegroup
 
@@ -30,6 +30,7 @@ RDEPENDS_${PN} += " \
 	touchlink-sierra-firmware-hl7588-v \
 	touchlink-quectel-firmware-eg91-f \
 	touchlink-quectel-firmware-eg91-version \
+	touchlink-keypad-firmware \
 	vaudio-wallsly \
 	mfr-audio-test-wallsly \
 	mfr-piezo-test \
