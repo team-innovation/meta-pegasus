@@ -18,8 +18,10 @@ SRC_URI = "git://${GIT_LIVE555_SERVER}/live555;protocol=${GIT_LIVE555_PROTOCOL};
 S = "${WORKDIR}/git"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=d32239bcb673463ab874e80d47fae504 \
-                    file://COPYING.LESSER;md5=e6a600fd5e1d9cbde2d983680233ad02 \
                    "
+
+# it we build from live555 staging branch we don't need this
+#file://COPYING.LESSER;md5=e6a600fd5e1d9cbde2d983680233ad02
 
 TARGET_CC_ARCH += "${LDFLAGS}"
 
