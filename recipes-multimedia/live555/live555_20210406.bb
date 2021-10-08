@@ -50,7 +50,7 @@ do_install() {
     mv ${D}/usr/lib/* ${D}${libdir} || true
     rmdir ${D}/usr/lib || true
     install -d ${D}${bindir}
-    for i in MPEG2TransportStreamIndexer openRTSP playSIP sapWatch testMPEG1or2ProgramToTransportStream testMPEG1or2Splitter testMPEG1or2VideoReceiver testMPEG2TransportStreamTrickPlay testOnDemandRTSPServer testRelay testAMRAudioStreamer testDVVideoStreamer testMP3Receiver testMP3Streamer testMPEG1or2AudioVideoStreamer testMPEG1or2VideoStreamer testMPEG2TransportStreamer testMPEG4VideoStreamer testWAVAudioStreamer vobStreamer; do
+    for i in openRTSP playSIP sapWatch testRelay testAMRAudioStreamer testDVVideoStreamer testMP3Receiver testMP3Streamer testMPEG1or2AudioVideoStreamer testMPEG1or2VideoStreamer testMPEG2TransportStreamer testMPEG4VideoStreamer testWAVAudioStreamer vobStreamer; do
         install -m 0755 ${S}/testProgs/${i} ${D}${bindir}/
     done
     install -m 0755 ${S}/mediaServer/live555MediaServer ${D}${bindir}/
