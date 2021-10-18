@@ -19,6 +19,7 @@ GIT_ZGATE_PROTOCOL ?= "ssh"
 SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_PROTOCOL};branch=${SRCBRANCH} \
            file://zwaved \
            file://zipgateway.logrotate \
+	   file://libpcap_url.patch \
            "
 
 S = "${WORKDIR}/git/zipgateway-7.14.01-Source/usr/local"
