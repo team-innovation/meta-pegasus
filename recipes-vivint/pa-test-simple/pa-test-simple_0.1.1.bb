@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=b022f53d2c5f4c04151c3eb748ef18a8"
 PR = "r0"
 PV = "0.1.1+git${SRCPV}"
 
-DEPENDS += "alsa-lib pulseaudio"
+DEPENDS += "alsa-lib pulseaudio pkgconfig-native"
 
 GIT_AUDIO_SERVER ?= "${GIT_SERVER}"
 GIT_AUDIO_BRANCH ?= "develop"

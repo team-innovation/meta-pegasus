@@ -18,6 +18,11 @@ elif grep -q sly /proc/device-tree/compatible; then
 	if ! grep -q skyhub /etc/hostname; then
         	echo "imx6dl-skyhub" > /etc/hostname
 	fi
+elif grep -q brazen /proc/device-tree/compatible; then
+        if ! grep -q brazen /etc/hostname; then
+                echo "imx6dl-brazen" > /etc/hostname
+        fi
+
 fi
 
 hostname -b -F /etc/hostname 2> /dev/null

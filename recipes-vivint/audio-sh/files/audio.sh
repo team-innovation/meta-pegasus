@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 rmmods() {
 	lsmod | grep -q snd_soc_imx_cx20704 &&
 		rmmod snd_soc_imx_cx20704
@@ -102,8 +102,8 @@ cx_dumpregs() {
 patch_lm48511_amp() {
 	cd /sys/class/lm48511/lm485110
 	echo 1 > access
-	echo 1 > sd_boost
-	echo 1 > fb_sel
+	echo 0 > sd_boost
+	echo 0 > fb_sel
 }
 
 patch_cx_aec() {
@@ -207,7 +207,7 @@ platform=$(strings /proc/device-tree/compatible |
         sed s/^vivint,//)
 	echo $platform " reported to audio.sh"
 
-if [ "$platform" == "wallsly" ]; then
+if [ "$platform" == "wallsly" ] || [ "$platform" == "brazen" ]; then
 	init_wallsly
 elif [ "$platform" == "sly" ]; then
 	init_slimline

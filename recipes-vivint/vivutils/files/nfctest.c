@@ -56,7 +56,7 @@ static void ttyraw(void)
 
 const char *get_nfc_tty_path()
 {
-	if (access("/etc/wallsly-version", F_OK) != -1) {
+	if (access("/etc/wallsly-version", F_OK) != -1 || access("/etc/brazen-version", F_OK) != -1) {
 		return WALL_SLY_PATH;
 	} else if (access("/etc/slimline-version", F_OK) != -1) {
 		return SLIMLINE_PATH;

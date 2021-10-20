@@ -663,6 +663,15 @@ if __name__ == "__main__":
     MODEM_IDS_FILE = "/media/extra/conf/modemids"
     AT_PORT_HL7588 = "/dev/ttyACM0"
     AT_PORT_EG91 = "/dev/ttyUSB4"
+
+    # HubPlus use ttyUSB3
+    try:
+        with open('/proc/device-tree/compatible') as f:
+            if "vivint,brazen" in f.read():
+                AT_PORT_EG91 = "/dev/ttyUSB3"
+    except Exception as why:
+        pass
+
     FIRMWARE_FOLDER = "/var/lib/firmware"
     modem = None
     update_firmware = False

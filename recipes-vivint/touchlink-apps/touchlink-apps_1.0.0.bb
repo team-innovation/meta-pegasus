@@ -14,13 +14,10 @@ require touchlink-apps-baguette.inc
 require touchlink-apps-rtspd.inc
 require touchlink-apps-videod.inc
 
-require touchlink-apps-launcherd.inc
-
 # fcc test apps
 require touchlink-apps-test-ui.inc
 require touchlink-apps-test-daemon.inc
 
-require touchlink-apps-pcamd.inc
 require touchlink-apps-iod.inc
 require touchlink-apps-345d.inc
 require touchlink-apps-cloudd.inc
@@ -63,7 +60,7 @@ require touchlink-apps-pyftpd.inc
 
 DISTRO_PR = ".1"
 
-PR = "ml122"
+PR = "ml124"
 PV = "1.0.0+git${SRCPV}"
 
 SRCREV = "${GIT_APPS_REV}"
@@ -91,10 +88,10 @@ PREFERRED_VERSION_python3 = "3.5.3"
 PREFERRED_VERSION_python-native = "3.5.3"
 PREFERRED_VERSION_iotivity = "2.0.0"
 
-inherit autotools update-rc.d python3-dir pythonnative
+inherit autotools update-rc.d python3-dir python3native
 
-RSYNC_CMD = "rsync -azv --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage --exclude=_user_conf \
-	     --exclude=.pytest_cache"
+RSYNC_CMD = "rsync -azv --no-o --no-g --exclude=.svn --exclude=test --exclude=.coverage --exclude=_coverage \
+             --exclude=_user_conf --exclude=.pytest_cache"
 
 FRAMEWORK_DIR = "${PYTHON_SITEPACKAGES_DIR}"
 INSTALL_DIR = "/opt/2gig"
@@ -107,6 +104,8 @@ DEPENDS = " \
 	gstreamer1.0-plugins-base \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0 \
+	python3 \
+	python3-native \
 	python3-setuptools-native \
 	python3-aiodns-native \
 	python3-aioconsole-native \
@@ -167,6 +166,7 @@ DEPENDS = " \
 	python3-py-native \
 	python3-pyjwt-native \
 	python3-pytz-native \
+	python3-pyyaml-native \
 	python3-requests-native \
 	python3-requests-toolbelt-native \
 	python3-easydict-native \
@@ -183,12 +183,20 @@ DEPENDS = " \
 	python3-urllib3-native \
 	python3-xmltodict-native \
 	python3-yarl-native \
+	rsync-native \
 	libsodium-native \
 	python3-pyopenssl-native \
 	python3-cryptography-native \
 	python3-cffi-native \
 	python3-asn1crypto-native \
 	python3-pycparser-native \
+	python3-chardet-native \
+	python3-certifi-native \
+        python3-avahi-native \
+        python3-dbus-native \
+    	python3-ifaddr-native \
+    	python3-zeroconf-native \
+    	python3-sseclient-native \
 	breakpad \
 	variant-lite \
 	taocpp-json \
@@ -201,8 +209,8 @@ DEPENDS = " \
 
 
 RDEPENDS_${PN} = "\
+	bash \
 	python3-intelhex \
-	python3-subprocess \
 	python3-pyserial \
 	python3-pyalsaaudio \
 	python3-pytz \
@@ -212,9 +220,10 @@ RDEPENDS_${PN} = "\
  	python3-jsonschema \
 	python3-sparsedict \
 	python3-phue \
+	python3-mixpanel \
  	iotivity-resource \
  	iotivity-bridging-plugins \
-    zwave-nvm-converter \
+    	zwave-nvm-converter \
  	breakpad \
 "
 
@@ -346,11 +355,8 @@ do_install_append() {
     rm -f ${D}/${sysconfdir}/init.d/zwaved
 }
 
-pkg_postinst_${PN} () {
-#!/bin/sh -e
-# Post install to make sure we have the correct setup 
-#
-if [ x"$D" = "x" ]; then
+pkg_postinst_ontarget_${PN} () {
+
      logging()
      {
         if busybox ps | grep psplash | grep -qv grep
@@ -378,12 +384,14 @@ if [ x"$D" = "x" ]; then
         rm -f /media/extra/log/*error.log*
     fi
 
-else
-    exit 1
-fi
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
+
+FILES_${PN}-dbg += "\
+       /usr/lib/.debug/* \
+       /opt/2gig/lib/.debug/* \
+       "
 
 # Make sure the proxies are in the list before their non-proxy counterparts
 # otherwise we end up with empty proxy packages and the build will fail
@@ -408,11 +416,9 @@ PACKAGES = " \
 	${PN}-httpd \
 	${PN}-huei \
 	${PN}-iod   \
-	${PN}-launcherd \
 	${PN}-modemd-proxies      \
 	${PN}-modemd          \
 	${PN}-netd  \
-	${PN}-pcamd        \
 	${PN}-procmand \
 	${PN}-pyftpd \
 	${PN}-rtspd   \
@@ -429,5 +435,6 @@ PACKAGES = " \
 	${PN}-webd  \
 	${PN}-zwaved        \
 	${PN}-sound-wav-chimes \
+	${PN}-dbg \
 	${PN} \
 "

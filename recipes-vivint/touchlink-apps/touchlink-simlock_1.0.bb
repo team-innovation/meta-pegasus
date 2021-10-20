@@ -21,6 +21,7 @@ SRC_URI = "git://${GIT_SIMLOCK_SERVER}/${MODULE};protocol=${GIT_SIMLOCK_PROTOCOL
 
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
+TARGET_CC_ARCH += "${LDFLAGS}"
 
 FILES_${PN} = "\
 	/opt/2gig/lib/libsimLock.so \
@@ -28,15 +29,15 @@ FILES_${PN} = "\
 FILES_${PN}-dbg += "\
 	/opt/2gig/lib/.debug/ \
 "
+ALLOW_EMPTY_${PN} = "1"
+
+do_configure() {
+    sed -i '/^CC/d' ${S}/Makefile    
+    sed -i '/^CFLAGS/d' ${S}/Makefile    
+}
 
 do_compile() {
  	oe_runmake CFLAGS+="-shared -fPIC -I../../boost_1_53_0 -lstdc++"
-}
-
-
-# TODO - For now just skip this, need to fix to only skip the firmware files
-do_package_qa(){
-	:
 }
 
 do_install() {

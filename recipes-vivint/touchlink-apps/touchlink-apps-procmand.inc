@@ -7,6 +7,7 @@ PROCMAND_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-procmand = "${PR}${PROCMAND_PREPEND}${PROCMAND_REVISION}"
 
 RDEPENDS_${PN}-procmand = "\
+	bash \
 	python3-pyinotify \
 	python3-psutil \
  	python3-cherrypy	\
@@ -28,12 +29,12 @@ do_install_append() {
 
 	# Install procman startup
 	install -d ${D}/${sysconfdir}/procman.d/
-	cp -a ${WORKDIR}/procman.d/* ${D}/${sysconfdir}/procman.d/
+	install ${WORKDIR}/procman.d/* ${D}/${sysconfdir}/procman.d/
 	install -d ${D}/${sysconfdir}/procman.d-fcc/
-	cp -a ${WORKDIR}/procman.d-fcc/* ${D}/${sysconfdir}/procman.d-fcc/
+	install ${WORKDIR}/procman.d-fcc/* ${D}/${sysconfdir}/procman.d-fcc/
 
 	install -d ${D}/usr/local/bin
-	cp -a ${S}/code/procmand/scripts/procman ${D}/usr/local/bin
+	install ${S}/code/procmand/scripts/procman ${D}/usr/local/bin
 	chmod 0755 ${D}/usr/local/bin/*
 }
 

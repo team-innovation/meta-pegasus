@@ -1,7 +1,7 @@
 ###
 ### Change MODEMD_PREPEND everytime you touch this script
 ###
-MODEMD_PREPEND = "-5"
+MODEMD_PREPEND = "-6"
 
 MODEMD_REVISION ?= "${DISTRO_PR}"
 PKGR_${PN}-modemd = "${PR}${MODEMD_PREPEND}${MODEMD_REVISION}"
@@ -16,28 +16,20 @@ do_install_append () {
 	chmod +x ${D}/${INSTALL_DIR}/modemd/modemd.pyc
 }
 
-pkg_postinst_${PN}-modemd () {
-#!/bin/bash -e
-# Post install to flash the modem to default carrier on WallSly
-# then check configuration and get SIM Ids
-#
-if [ x"$D" = "x" ]
-then
+pkg_postinst_ontarget_${PN}-modemd () {
+
     /usr/local/bin/mfr_modem_test.py
-else
-    echo "Not flashing modem"
-    exit 1
-fi
+
 }
 
+
 FILES_${PN}-modemd-proxies = "\
-		${INSTALL_DIR}/modemd/proxies/* \
-		"
+               ${INSTALL_DIR}/modemd/proxies/* \
+               "
 
 FILES_${PN}-modemd = "\
 	${INSTALL_DIR}/modemd/*	\
 	${sysconfdir}/init.d/modemd		\
 	${sysconfdir}/procman.d/modemd		\
 	"
-
 

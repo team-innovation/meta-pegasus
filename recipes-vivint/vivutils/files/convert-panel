@@ -1,0 +1,202 @@
+#!/bin/bash
+#set -x
+
+QUIET=no
+SCRIPTNAME=$(basename "${BASH_SOURCE[0]}")
+#set -e
+
+echo "$SCRIPTNAME"
+
+modprobe board_info
+BSPART=/dev/mmcblk0p3
+
+# Utility functions
+carp() {
+	echo "$SCRIPTNAME: fatalerror: $1"
+	exit 1
+}
+
+usage() {
+	carp "usage: $SCRIPTNAME brazen | wallsly"
+}
+
+info() {
+	test "$QUIET" == "yes" ||
+		echo "$SCRIPTNAME: $1"
+}
+
+is_wallsly() {
+	grep -q vivint,wallsly "/proc/device-tree/compatible"
+}
+
+is_brazen() {
+	grep -q vivint,brazen "/proc/device-tree/compatible"
+}
+
+# The u-boot bootloader lives in the first eMMC boot partition, known in linux
+# as /dev/mmcblk0boot0.  The u-boot environment lives in the second eMMC boot
+# partition known in linux as /dev/mmcblk0boot1
+#
+
+# Utility functions to enable/disable writing to eMMC boot partitions
+emmcrw() {
+	local num=$1
+	echo 0 > /sys/block/mmcblk0boot"${num}"/force_ro
+}
+
+emmcro() {
+	local num=$1
+	echo 1 > /sys/block/mmcblk0boot"${num}"/force_ro
+}
+
+# slimline and sly share a common u-boot binary
+# wallsly has a specific version
+ubootbinary() {
+	is_wallsly &&
+		echo "/boot/u-boot-brazen.imx" &&
+		return
+	is_brazen &&
+		echo "/boot/u-boot-wallsly.imx" &&
+		return
+
+	carp "unsupported platform looking for u-boot binary"
+}
+
+setbootnum() {
+	echo "Setting bootnum to $1"
+	fw_setenv bootnum $1
+}
+
+retry=0 
+verifybootnum(){
+        echo ***** Verify bootnum...  ****
+        new=$(fw_printenv bootnum)
+        echo "****  bootnum set to: $new ****"
+        if [ "$new"x != "bootnum=$1"x ]; then
+                let retry=$(expr $retry + 1)
+                echo "ERROR, incorrect bootnum. RETRY setting bootnum count $retry"
+                if [ $retry -gt 10 ]; then
+                        echo "###############################################################################"
+                        echo "### !!! FAILED to set bootnum, please re-run the convert script again. !!!! ###"
+                        echo "##############################################################################"
+                        emmcro 1
+                        exit 1
+		else
+                        setbootnum $1
+                        verifybootnum $1
+                fi
+        else
+                echo "Bootnum set!!!"
+        fi
+}
+
+
+setubootenv_brazen(){
+	fw_setenv setfdtfilename "echo Testing Brazen board version"
+
+	if [ $1 = "WallSly" ]; then
+		_fdt_file="imx6dl-brazen-ldo.dtb"
+	elif [ $1 = "WallSly-net" ] ; then
+		_fdt_file="imx6dl-brazen-net-ldo.dtb"
+	elif [ $1 = "WallSly-v3" ]; then
+		_fdt_file="imx6dl-brazen-v3-ldo.dtb"
+	elif [ $1 = "WallSly-v4" ]; then
+		_fdt_file="imx6dl-brazen-v4-ldo.dtb"
+	else
+		_fdt_file="imx6dl-hubplus-v0-ldo.dtb"
+	fi
+
+	fw_setenv fdt_file $_fdt_file
+}
+
+setubootenv_ws(){
+        fw_setenv setfdtfilename "echo Testing WallSly board version"
+
+        if [ $1 = "Brazen" ]; then
+                _fdt_file="imx6dl-wallsly-ldo.dtb"
+        elif [ $1 = "Brazen-net" ] ; then
+                _fdt_file="imx6dl-wallsly-net-ldo.dtb"
+        elif [ $1 = "Brazen-v3" ]; then
+                _fdt_file="imx6dl-wallsly-v3-ldo.dtb"
+        elif [ $1 = "Brazen-v4" ]; then
+                _fdt_file="imx6dl-wallsly-v4-ldo.dtb"
+        else
+                _fdt_file="imx6dl-wallsly-v6-ldo.dtb"
+        fi
+
+        fw_setenv fdt_file $_fdt_file
+}
+
+#
+ubootupdate() {
+
+	if  grep -q mmcblk0p6 /proc/cmdline ; then
+		echo
+		echo "###############################################################"
+		echo "# NOTE: IF AFTER PANEL REBOOT AND LOGIN PROMPT DOES NOT SHOW  #"
+		echo "# THE CORRECT HOSTNAME, PLEASE RE-RUN THE QUICK-UPDATE AND    #"
+		echo "# RUN THE CONVERT-PANEL SCRIPT AGAIN. 			    #"
+		echo "###############################################################"
+		echo
+
+		confirmconversion
+	else
+		confirmconversion
+	fi
+
+	emmcrw 0
+	dd if=/dev/zero of=/dev/mmcblk0boot0 bs=1024 count=2048
+	dd if="$(ubootbinary)" of=/dev/mmcblk0boot0 bs=512 seek=2
+
+	sync
+	emmcro 0
+
+	# clearing u-boot env loses bootnum so re-set it after
+	emmcrw 1
+	if  grep -q mmcblk0p6 /proc/cmdline ; then
+		_board=$(fw_printenv board | cut -d= -f2)
+		if is_wallsly; then
+			setubootenv_brazen $_board
+		else
+			setubootenv_ws $_board
+		fi
+
+		# set bootnum to 2
+		verifybootnum 2
+	else
+		dd if=/dev/zero of=/dev/mmcblk0boot1 bs=1024 count=2048
+	fi
+	emmcro 1
+	
+	info "board re-setup complete, reboot..."
+	reboot -f
+
+	exit 0
+}
+
+confirmconversion(){
+	read -p "This will clear out all databases and logs. Do you want to continue? (Y/N)" yn
+         case $yn in
+                [Nn]* )
+                        echo "Wussy... Exiting script"
+                        exit 0
+                        ;;
+                [Yy]* )
+                        echo "Deleting databases..."
+                        rm -rf /media/extra/db/*
+                        echo "Clearing out all logs..."
+                        rm -rf /media/extra/log/*
+                        ;;
+                 * ) echo "Type Y for yes, N for no"; exit 0;;
+        esac
+}
+
+if [ "$1" == "wallsly" ]; then
+	is_brazen && ubootupdate
+	echo 'Panel is already Wallsly'
+else
+	is_wallsly && ubootupdate
+	echo 'Panel is already Brazen'
+fi
+
+exit 0

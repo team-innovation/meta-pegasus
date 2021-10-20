@@ -18,9 +18,10 @@ RDEPENDS_${PN}-sundance = "\
 	python3-multiprocessing \
 	python3-mmap \
 	python3-soco \
-    python3-jsonschema \
-    python3-httpsig-na \
-    zipgateway \
+        python3-jsonschema \
+    	python3-httpsig-na \
+    	zipgateway \
+    	bash \
 	"
 
 inherit distutils3
@@ -48,6 +49,7 @@ do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/sundance/
 	install -d ${D}/${INSTALL_DIR}/sundance/proxies/
 	install -d ${D}/${INSTALL_DIR}/sundance/connectors/
+	install -d ${D}/${INSTALL_DIR}/sundance/conf_files/
 	install -d ${D}/${INSTALL_DIR}/sundance/definitions/
 	install -d ${D}/${INSTALL_DIR}/sundance/helpers/
 	install -d ${D}/${INSTALL_DIR}/sundance/migrations/
@@ -57,6 +59,7 @@ do_install_append () {
 	install -d ${D}/${INSTALL_DIR}/sundance/vivint_generated/
     ${RSYNC_CMD} ${S}/code/sundance/proxies/ ${D}/${INSTALL_DIR}/sundance/proxies/
     ${RSYNC_CMD} ${S}/code/sundance/connectors/ ${D}/${INSTALL_DIR}/sundance/connectors/
+    ${RSYNC_CMD} ${S}/code/sundance/conf_files/ ${D}/${INSTALL_DIR}/sundance/conf_files/
     ${RSYNC_CMD} ${S}/code/sundance/definitions/ ${D}/${INSTALL_DIR}/sundance/definitions/
     ${RSYNC_CMD} ${S}/code/sundance/helpers/ ${D}/${INSTALL_DIR}/sundance/helpers/
     ${RSYNC_CMD} ${S}/code/sundance/migrations/ ${D}/${INSTALL_DIR}/sundance/migrations/
@@ -64,39 +67,30 @@ do_install_append () {
     ${RSYNC_CMD} ${S}/code/sundance/services/ ${D}/${INSTALL_DIR}/sundance/services/
     ${RSYNC_CMD} ${S}/code/sundance/rulecore/ ${D}/${INSTALL_DIR}/sundance/rulecore/
     ${RSYNC_CMD} ${S}/code/sundance/vivint_generated/ ${D}/${INSTALL_DIR}/sundance/vivint_generated/
-    cp -a ${S}/code/sundance/sundance.pyc ${D}/${INSTALL_DIR}/sundance/
-    cp -a ${S}/code/sundance/sundance_conf.json ${D}/${INSTALL_DIR}/sundance/
-    cp -a ${S}/code/sundance/sundance_log.json ${D}/${INSTALL_DIR}/sundance/
+    install -m 644 ${S}/code/sundance/sundance.pyc ${D}/${INSTALL_DIR}/sundance/
+    install -m 644 ${S}/code/sundance/sundance_conf.json ${D}/${INSTALL_DIR}/sundance/
+    install -m 644 ${S}/code/sundance/sundance_log.json ${D}/${INSTALL_DIR}/sundance/
     chmod +x ${D}/${INSTALL_DIR}/sundance/sundance.pyc
 
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
-    cp -a ${S}/code/sundance/build/lib.linux-x86_64-3.5/iotivity_current.cpython-35m-arm-linux-gnueabihf.so ${D}/${libdir}/${PYTHON_DIR}/site-packages
-    cp -a ${S}/code/sundance/build/lib.linux-x86_64-3.5/iotivity_legacy.cpython-35m-arm-linux-gnueabihf.so ${D}/${libdir}/${PYTHON_DIR}/site-packages
+    install -m 644 ${S}/code/sundance/build/lib.linux-x86_64-3.5/iotivity_current.cpython-35m-arm-linux-gnueabihf.so ${D}/${libdir}/${PYTHON_DIR}/site-packages
+    install -m 644 ${S}/code/sundance/build/lib.linux-x86_64-3.5/iotivity_legacy.cpython-35m-arm-linux-gnueabihf.so ${D}/${libdir}/${PYTHON_DIR}/site-packages
 
     install -d ${D}/${prefix}/local/etc
-    cp -a ${S}/code/sundance/zwave_cmd_class.cfg ${D}/${prefix}/local/etc
-
-    install -d ${D}/${prefix}/local/etc
-    cp -a ${S}/code/sundance/zwave_device_rec.txt ${D}/${prefix}/local/etc
+    install -m 644 ${S}/code/sundance/zwave_cmd_class.cfg ${D}/${prefix}/local/etc
+    install -m 644 ${S}/code/sundance/zwave_device_rec.txt ${D}/${prefix}/local/etc
 
     install -d ${D}/${libdir}
-    cp -a ${S}/code/sundance/plugins/libplugin_server_legacy.so ${D}/${libdir}
-    
-    install -d ${D}/${libdir}
-    cp -a ${S}/code/sundance/plugins/libplugin_server_current.so ${D}/${libdir}
-    
-    install -d ${D}/${libdir}
-    cp -a ${S}/code/sundance/plugins/hue/libhueplugin.so ${D}/${libdir}
-    
-    install -d ${D}/${libdir}
-    cp -a ${S}/code/sundance/plugins/nest/libnestplugin.so ${D}/${libdir}
+    install -m 644 ${S}/code/sundance/plugins/libplugin_server_legacy.so ${D}/${libdir}
+    install -m 644 ${S}/code/sundance/plugins/libplugin_server_current.so ${D}/${libdir}
+    install -m 644 ${S}/code/sundance/plugins/hue/libhueplugin.so ${D}/${libdir}
+    install -m 644 ${S}/code/sundance/plugins/nest/libnestplugin.so ${D}/${libdir}
 }
 
-pkg_postinst_${PN}-sundance () {
+pkg_postinst_ontarget_${PN}-sundance () {
 #!/bin/sh -e
 # Post install to make sure we have the correct setup for sundance
 #
-if [ x"$D" = "x" ]; then
      logging()
      {
         if busybox ps | grep psplash | grep -qv grep
@@ -135,17 +129,16 @@ if [ x"$D" = "x" ]; then
             logging "Removing all error log in /media/extra/log..."
             rm -f /media/extra/log/*_error.log*
     fi
-else
-    exit 1
-fi
 }
 
 FILES_${PN}-sundance-proxies = "\
 	${INSTALL_DIR}/sundance/proxies/*	\
+    ${INSTALL_DIR}/sundance/services/devices/generated/grpc/*   \
 	"
 
 FILES_${PN}-sundance = "\
 	${INSTALL_DIR}/sundance/connectors/*	\
+	${INSTALL_DIR}/sundance/conf_files/*	\
 	${INSTALL_DIR}/sundance/definitions/*	\
 	${INSTALL_DIR}/sundance/helpers/*	\
 	${INSTALL_DIR}/sundance/migrations/*	\
@@ -157,12 +150,14 @@ FILES_${PN}-sundance = "\
 	${sysconfdir}/init.d/sundance		\
 	${sysconfdir}/init.d/mpm_client		\
 	${sysconfdir}/procman.d/sundance	\
-    ${prefix}/local/etc/zwave_cmd_class.cfg \
-    ${prefix}/local/etc/zwave_device_rec.txt \
-    ${libdir}/libplugin_server_legacy.so \
-    ${libdir}/libplugin_server_current.so \
-    ${libdir}/libhueplugin.so \
-    ${libdir}/libnestplugin.so \
+    	${prefix}/local/etc/zwave_cmd_class.cfg \
+    	${prefix}/local/etc/zwave_device_rec.txt \
+    	${libdir}/libplugin_server_legacy.so \
+    	${libdir}/libplugin_server_current.so \
+    	${libdir}/libhueplugin.so \
+    	${libdir}/libnestplugin.so \
+    	${libdir}/liboc.so \
+    	${libdir}/liboctbstack.so \
 	"
 
              

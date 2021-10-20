@@ -39,6 +39,9 @@ boardcheck() {
 		return 0
 	grep -q vivint,wallsly /proc/device-tree/compatible &&
 		return 0
+	grep -q vivint,brazen /proc/device-tree/compatible &&
+		return 0
+
 	carp "Unknown board type, exiting..."
 }
 

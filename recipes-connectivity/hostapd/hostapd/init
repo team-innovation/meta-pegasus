@@ -11,12 +11,14 @@ set -e
 # source function library
 . /etc/init.d/functions
 
+
 delay_stop() {
 	count=0
 	while [ $count -lt 9 ] ; do
 	        if pidof $DAEMON >/dev/null; then
 	                sleep 1
 	        else
+			killall -9 udhcpd
 	                return 0
 	        fi
 		count=`expr $count + 1`
@@ -25,11 +27,40 @@ delay_stop() {
 	return 1
 }
 
+setup() {
+    read macaddr </sys/class/net/wlan0/address
+    serialnum=$(python3 - <<'__END_PYTHON'
+try:
+    with open("/media/bootscript/serialnumber2.txt") as f:
+        print("{:0>13}".format(f.readline().strip().upper()))
+except FileNotFoundError:
+    try:
+        with open("/media/bootscript/serialnumber.txt") as f:
+            # hex format
+            print("{:0>13d}".format(int(f.readline().strip(), 16)))
+    except Exception:
+        print()
+__END_PYTHON
+)
+
+    if [ -z "$serialnum" ]; then
+        echo "Error: No serial number"
+        exit 1
+    fi
+
+    macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
+    platform=$(strings /proc/device-tree/compatible | grep vivint | sed s/^vivint,//)
+    password=$(echo -n $serialnum | sha256sum)
+
+    # Chop the password town to the length allowed by WPA2:
+    password=${password:0:63}
+
+    sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
+}
+
 case "$1" in
     start)
-    read macaddr </sys/class/net/wlan0/address
-    macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
-    sed -i "s/ssid=.*/ssid=VIVINT_GLANCE_(${macaddrup:9})/" /etc/hostapd.conf
+	setup
 	echo -n "Starting $DESC: "
 	start-stop-daemon -S -x $DAEMON -- $ARGS
 	echo "$NAME."
@@ -37,6 +68,7 @@ case "$1" in
     stop)
 	echo -n "Stopping $DESC: "
 	start-stop-daemon -K --oknodo -x $DAEMON
+	killall -9 udhcpd
 	echo "$NAME."
 	;;
     restart)

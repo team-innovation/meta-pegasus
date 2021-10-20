@@ -17,8 +17,6 @@ S = "${WORKDIR}/httpsig-${PV}"
 RDEPENDS_${PN} = "python3-pysodium"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
-NATIVE_INSTALL_WORKS = "1"
-
-inherit setuptools3 python3-dir
+inherit setuptools3 

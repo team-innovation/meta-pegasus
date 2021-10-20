@@ -91,7 +91,7 @@ if [ ! -d /media/clips ]; then
   $MKDIR /media/clips
 fi
 
-if [ "$platform" = "sly" -o "$platform" = "wallsly" ]; then
+if [ "$platform" = "sly" -o "$platform" = "wallsly" -o "$platform" = "brazen" ]; then
     if [ ! -e $STORAGE/$IMAGE ]; then
     logging "Creating clips partition, please wait..."
     # 1G size

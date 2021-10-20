@@ -23,14 +23,15 @@ TARGET_CC_ARCH += "${LDFLAGS}"
 
 do_configure() {
 	./genMakefiles linux-with-shared-libraries
+	sed -i 's/#include <xlocale.h>.*/#include <locale.h>/' ${S}/liveMedia/include/Locale.hh
 }
 
 do_compile() {
-	make
+	oe_runmake
 }
 
 do_install() {
-	make install DESTDIR=${D} PREFIX=/usr
+	oe_runmake install DESTDIR=${D} PREFIX=/usr
 	install -d ${D}${includedir}/BasicUsageEnvironment
 	install -d ${D}${includedir}/groupsock
 	install -d ${D}${includedir}/liveMedia

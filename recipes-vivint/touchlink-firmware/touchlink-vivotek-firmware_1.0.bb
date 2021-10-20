@@ -12,33 +12,13 @@ require touchlink-vivotek-db8332w-firmware.inc
 
 FIRMWARE_DIR = "/var/lib/firmware/Vivotek"
 
-do_compile() {
-     :
-}
-
-do_configure() {
-     :
-}
-
-do_compileconfigs() {
-     :
-}
-
-do_setscene() {
-     :
-}
-
-do_distribute_sources() {
-     :
-}
-
-do_create_srcipk() {
-     :
-}
-
-do_copy_license() {
-     :
-}
+do_compile[noexec] = "1"
+do_configure[noexec] = "1"
+do_compileconfigs[noexec] = "1"
+do_setscene[noexec] = "1"
+do_distribute_sources[noexec] = "1"
+do_create_srcipk[noexec] = "1"
+do_copy_license[noexec] = "1"
 
 do_install() {
      install -d ${D}/${FIRMWARE_DIR}

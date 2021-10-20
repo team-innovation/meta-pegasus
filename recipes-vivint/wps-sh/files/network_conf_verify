@@ -1,34 +1,131 @@
 #!/bin/sh
 
-#make sure we have network wireless.conf and wpa_supplicant_wireless.conf
-# symlink
-media_extra_conf_network_dir="/media/extra/conf/network"
 
-etc_wireless_conf="/etc/network/wireless.conf"
-media_extra_wireless_conf="$media_extra_conf_network_dir/wireless.conf"
 
-media_extra_wpa_supplicant_conf="$media_extra_conf_network_dir/wpa_supplicant_wireless.conf"
-etc_wpa_supplicant_conf="/etc/network/wpa_supplicant_wireless.conf"
 
-mkdir -p $media_extra_conf_network_dir
+# update mediatek profile
+if [ -e /sys/class/net/ra0/address ]; then
 
-if [ ! -h $etc_wireless_conf ]
-then
-   echo "Create $etc_wireless_conf link"
-   rm -f $etc_wireless_conf
-   ln -sf $media_extra_wireless_conf $etc_wireless_conf
-fi
+    read macaddr </sys/class/net/ra0/address
+    serialnum=$(python3 - <<'__END_PYTHON'
+try:
+    with open("/media/bootscript/serialnumber2.txt") as f:
+        print("{:0>13}".format(f.readline().strip().upper()))
+except FileNotFoundError:
+    try:
+        with open("/media/bootscript/serialnumber.txt") as f:
+            # hex format
+            print("{:0>13d}".format(int(f.readline().strip(), 16)))
+    except Exception as ex:
+        print("Failed to get serial")
+__END_PYTHON
+)
 
-if [ ! -h $etc_wpa_supplicant_conf ]
-then
-   echo "Create $etc_wpa_supplicant_conf link"
-   rm -f $etc_wpa_supplicant_conf
-   ln -sf $media_extra_wpa_supplicant_conf $etc_wpa_supplicant_conf
-fi
+    if [ -z "$serialnum" ]; then
+        echo "Error: No serial number"
+        exit 1
+    fi
 
-# Fix open network connection
-if [ -f $media_extra_wpa_supplicant_conf ]; then
-    grep -q -e 'disabled=1' $media_extra_wpa_supplicant_conf || sed -i "/key_mgmt=NONE/a\\\        disabled=1" $wpafile
+    macaddrup="$(echo $macaddr | tr '[:lower:]' '[:upper:]')"
+    password=$(echo -n $serialnum | sha256sum)
+
+    # Chop the password town to the length allowed by WPA2:
+    password=${password:0:63}
+
+
+    sed -i "s/WPAPSK1=.*/WPAPSK1=${password}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+    sed -i "s/SSID1=.*/SSID1=VIVINT_HUB_${serialnum}/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+
+
+    if [ -f /media/bootscript/wifiinfo.txt ]; then
+            mac=$(cat /media/bootscript/wifiinfo.txt)
+            sed -i "s/MacAddress=.*/MacAddress=$mac/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+            if [ -f /media/extra/conf/network/mt7663.1.dat ]; then
+                    sed -i "s/MacAddress=.*/MacAddress=$mac/" /media/extra/conf/network/mt7663.1.dat
+            fi
+    fi
+
+
+    if [ -f /media/extra/conf/network/mt7663.1.dat ]; then
+	    # use old one then remove - migration path
+	    SSID=$(grep ^ApCliSsid= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+	    KEY=$(grep ^ApCliWPAPSK= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+	    AUTH=$(grep ^ApCliAuthMode= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+	    ENC=$(grep ^ApCliEncrypType= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+	    CHANNEL=$(grep ^Channel= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+	    WMODE=$(grep ^WirelessMode= /media/extra/conf/network/mt7663.1.dat | cut -d= -f2)
+
+	    # create new setting dat file
+	    echo SSID="\"$SSID\"" > /media/extra/conf/network/vivint.dat
+            echo KEY="\"$KEY\"" >> /media/extra/conf/network/vivint.dat
+            echo AUTH="$AUTH" >> /media/extra/conf/network/vivint.dat
+            echo ENC="$ENC" >> /media/extra/conf/network/vivint.dat
+            echo CHANNEL="$CHANNEL" >> /media/extra/conf/network/vivint.dat
+            echo WMODE="$WMODE" >> /media/extra/conf/network/vivint.dat
+
+	    rm -f /media/extra/conf/network/mt7663.1.dat
+    fi
+
+
+    # check if current dat has SSID define or not
+    # update if it different then setup file
+    if [ -f /media/extra/conf/network/vivint.dat ]; then
+	source /media/extra/conf/network/vivint.dat
+
+	cur_ssid=$(grep ^ApCliSsid= /etc/wireless/mediatek/mt7663/mt7663.1.dat | cut -d= -f2)
+	if [ -z "$cur_ssid" ] || [ "$cur_ssid"x != "$SSID"x ]; then
+		sed -i "s/^WirelessMode=.*$/WirelessMode=$WMODE/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliAuthMode=.*$/ApCliAuthMode=$AUTH/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliEncrypType=.*$/ApCliEncrypType=$ENC/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliSsid=.*$/ApCliSsid=$SSID/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^ApCliWPAPSK=.*$/ApCliWPAPSK=$KEY/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+		sed -i "s/^Channel=.*$/Channel=$CHANNEL/" /etc/wireless/mediatek/mt7663/mt7663.1.dat
+	fi
+    fi
+
+    if ! grep -q apcli0 /etc/network/interfaces ; then
+        echo -e "\niface apcli0 inet dhcp" >> /etc/network/interfaces
+    fi
+
+    sync
+
+    ifconfig ra0 up
+
+    # perform site-survey in the background and cache it
+    /usr/local/bin/mtk-net-ctrl site_survey &
+
+else
+
+   #make sure we have network wireless.conf and wpa_supplicant_wireless.conf
+   # symlink
+   media_extra_conf_network_dir="/media/extra/conf/network"
+
+   etc_wireless_conf="/etc/network/wireless.conf"
+   media_extra_wireless_conf="$media_extra_conf_network_dir/wireless.conf"
+
+   media_extra_wpa_supplicant_conf="$media_extra_conf_network_dir/wpa_supplicant_wireless.conf"
+   etc_wpa_supplicant_conf="/etc/network/wpa_supplicant_wireless.conf"
+
+   mkdir -p $media_extra_conf_network_dir
+
+   if [ ! -h $etc_wireless_conf ]
+   then
+      echo "Create $etc_wireless_conf link"
+      rm -f $etc_wireless_conf
+      ln -sf $media_extra_wireless_conf $etc_wireless_conf
+   fi
+
+   if [ ! -h $etc_wpa_supplicant_conf ]
+   then
+      echo "Create $etc_wpa_supplicant_conf link"
+      rm -f $etc_wpa_supplicant_conf
+      ln -sf $media_extra_wpa_supplicant_conf $etc_wpa_supplicant_conf
+   fi
+
+   # Fix open network connection
+   if [ -f $media_extra_wpa_supplicant_conf ]; then
+       grep -q -e 'disabled=1' $media_extra_wpa_supplicant_conf || sed -i "/key_mgmt=NONE/a\\\        disabled=1" $wpafile
+   fi
 fi
 
 exit 0

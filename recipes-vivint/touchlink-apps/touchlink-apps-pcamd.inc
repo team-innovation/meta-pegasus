@@ -11,9 +11,7 @@ PKGR_${PN}-pcamd = "${PR}${PCAMD_PREPEND}${PCAMD_REVISION}"
 PR = "r7"
 
 do_compile_prepend() {
-	# compile pcamd C code
-	ln -sf ${STAGING_DIR}/${MACHINE}/usr/include/gnu/stubs-hard.h \
-		${STAGING_DIR}/${MACHINE}/usr/include/gnu/stubs-soft.h
+
 	make -C ${S}/code/pcamd/libpcam SYSTEM="SLIMLINE" 
 }
 

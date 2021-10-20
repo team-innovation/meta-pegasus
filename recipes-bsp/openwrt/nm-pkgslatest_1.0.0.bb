@@ -6,6 +6,7 @@
 DESCRIPTION = "Network Module Packages"
 HOMEPAGE = "www.vivint.com"
 LICENSE = "GPLv2"
+LIC_FILES_CHKSUM = "file://${WORKDIR}/COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
 GIT_ARTIFACTS_LATEST_BRANCH ?= "feature/18.06-staging"
 GIT_ARTIFACTS_LATEST_SERVER ?= "${GIT_SERVER}"
@@ -14,7 +15,9 @@ GIT_ARTIFACTS_LATEST_PROTOCOL ?= "ssh"
 GIT_ARTIFACTS_LATEST_REV ?= "${AUTOREV}"
 SRCREV = "${GIT_ARTIFACTS_LATEST_REV}"
 
-SRC_URI_append = "git://${GIT_ARTIFACTS_LATEST_SERVER}/artifacts;protocol=${GIT_ARTIFACTS_LATEST_PROTOCOL};branch=${GIT_ARTIFACTS_LATEST_BRANCH}"
+SRC_URI = "git://${GIT_ARTIFACTS_LATEST_SERVER}/artifacts;protocol=${GIT_ARTIFACTS_LATEST_PROTOCOL};branch=${GIT_ARTIFACTS_LATEST_BRANCH} \
+	file://COPYING \
+	"
 
 PR = "r5"
 PV = "${SRCPV}"
@@ -30,7 +33,7 @@ do_compile[noexec] = "1"
 
 do_install() {
     install -d ${D}${SRV_WWW_DIR}/packages
-    tar xzf ${WORKDIR}/${REPO_DIR}/${MT7620_update_pkg} -C ${D}${SRV_WWW_DIR}/packages
+    tar --no-same-owner -xzf ${WORKDIR}/${REPO_DIR}/${MT7620_update_pkg} -C ${D}${SRV_WWW_DIR}/packages
 }
 
 FILES_${PN} = "\

@@ -15,6 +15,7 @@ iface atml0 inet dhcp
 
 # Wired or wireless interfaces
 iface eth0 inet dhcp
+        down pkill -9 -f "udhcpc.*-i eth0"
 iface eth0 inet6 static
         address fe80::411:22ff:fe33:4455
         netmask 64

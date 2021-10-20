@@ -1,0 +1,36 @@
+diff -rupN git/src/client/configure.json qtwayland/src/client/configure.json
+--- git/src/client/configure.json	2021-08-02 14:10:54.793657992 -0600
++++ qtwayland/src/client/configure.json	2021-08-02 14:24:11.374926141 -0600
+@@ -149,7 +149,8 @@
+                     "#endif"
+                 ]
+             },
+-            "use": "egl drm"
++            "libs": "-ldrm",
++            "use": "egl"
+         },
+         "vulkan-server-buffer": {
+             "label": "Vulkan Buffer Sharing",
+diff -rupN git/src/compositor/configure.json qtwayland/src/compositor/configure.json
+--- git/src/compositor/configure.json	2021-08-02 14:10:54.823658212 -0600
++++ qtwayland/src/compositor/configure.json	2021-08-02 14:23:31.994531646 -0600
+@@ -151,7 +151,8 @@
+                     "#endif"
+                 ]
+             },
+-            "use": "egl drm"
++            "libs": "-ldrm",
++            "use": "egl"
+         },
+         "dmabuf-client-buffer": {
+             "label": "Linux Client dma-buf Buffer Sharing",
+@@ -175,7 +176,8 @@
+                     "return 0;"
+                 ]
+             },
+-            "use": "egl drm"
++            "libs": "-ldrm",
++            "use": "egl"
+         },
+         "vulkan-server-buffer": {
+             "label": "Vulkan Buffer Sharing",

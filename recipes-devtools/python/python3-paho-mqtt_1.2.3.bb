@@ -4,21 +4,16 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=eb48c6ee2cb9f5b8b9fe75e6f817bdfc \
                     file://epl-v10;md5=8d383c379e91d20ba18a52c3e7d3a979 \
                     file://edl-v10;md5=c09f121939f063aeb5235972be8c722c \
 "
-SRCNAME = "paho-mqtt"
-SRC_URI = "\
-            https://files.pythonhosted.org/packages/source/p/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
+SRC_URI += "\
             file://fixed_setup.patch \
            "
 
-S = "${WORKDIR}/${SRCNAME}-${PV}"
 PR = "r1"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
-NATIVE_INSTALL_WORKS = "1"
-
-inherit setuptools3 python3-dir
+inherit setuptools3 pypi
 
 SRC_URI[md5sum] = "4bd192ea24e7aa347f6d240101ef82f6"
 SRC_URI[sha256sum] = "0fd746d8650563290f1bd0fec01e74cb57c3ab7406bdb58e5d9252bb5fa5ca44"

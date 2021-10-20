@@ -4,7 +4,7 @@ DESCRIPTION = "CPU Loading Program"
 HOMEPAGE = "http://www.devin.com/lookbusy/"
 SECTION = "utilities"
 LIC_FILES_CHKSUM = "file://COPYING;md5=4325afd396febcb659c36b49533135d4"
-LICENSE = "GPL"
+LICENSE = "GPLv2"
 PR = "r0"
 
 SRC_URI =	"http://updateseng.vivint.com/innovation/downloads/lookbusy-${PV}.tar.gz \

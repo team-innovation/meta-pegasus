@@ -8,6 +8,8 @@ SRC_URI = "file://acm_usb_v6.c"
 
 DEPENDS = "libusb1"
 
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+TARGET_CC_ARCH += "${LDFLAGS}"
 S = "${WORKDIR}"
 
 do_compile() {

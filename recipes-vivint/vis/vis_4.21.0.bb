@@ -33,23 +33,24 @@ ${SERVER_ROOT}/svglib.js \
 ${SERVER_ROOT}/node_map.html \
 /usr/bin/*"
 
-do_configure() {
-}
+do_configure[noexec] = "1"
 
-do_compile() {
-}
+do_compile[noexec] = "1"
 
 do_install() {
 	install -d ${D}/${SERVER_ROOT}/vis
 	install -d ${D}/${SERVER_ROOT}/cgi-bin
 	install -d ${D}/usr/bin
-	cp -a ${S}/* ${D}/${SERVER_ROOT}/vis
+	cp -a --no-preserve=ownership ${S}/* ${D}/${SERVER_ROOT}/vis
         install -m 0755 ${WORKDIR}/networkDot.html ${D}/${SERVER_ROOT}/vis/test
         install -m 0755 ${WORKDIR}/oui.csv ${D}/${SERVER_ROOT}
         install -m 0755 ${WORKDIR}/svglib.js ${D}/${SERVER_ROOT}
         install -m 0755 ${WORKDIR}/node_map.html ${D}/${SERVER_ROOT}
-        install -m 0755 ${WORKDIR}///graph_me.cgi ${D}/${SERVER_ROOT}/cgi-bin
-        install -m 0755 ${WORKDIR}///iperf_me.cgi ${D}/${SERVER_ROOT}/cgi-bin
-        install -m 0755 ${WORKDIR}///build_dot_graph.py ${D}/usr/bin
-        install -m 0755 ${WORKDIR}///get_mesh_info.py ${D}/usr/bin
+        install -m 0755 ${WORKDIR}/graph_me.cgi ${D}/${SERVER_ROOT}/cgi-bin
+        install -m 0755 ${WORKDIR}/iperf_me.cgi ${D}/${SERVER_ROOT}/cgi-bin
+        install -m 0755 ${WORKDIR}/build_dot_graph.py ${D}/usr/bin
+        install -m 0755 ${WORKDIR}/get_mesh_info.py ${D}/usr/bin
+
+        ## remove examples to save 4.2M
+        rm -rf ${D}/${SERVER_ROOT}/vis/examples
 }

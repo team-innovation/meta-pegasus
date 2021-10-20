@@ -1,0 +1,119 @@
+From 603f108126e71e8a13011561b95f66f3deb69edc Mon Sep 17 00:00:00 2001
+From: VaL Doroshchuk <valentyn.doroshchuk@qt.io>
+Date: Tue, 28 Apr 2020 13:57:20 +0200
+Subject: [PATCH 091/111] GStreamer: Remove dependency to gstreamer_imxcommon
+
+gstreamer_imxcommon is not official plugin.
+Added extracting of physical memory instead.
+Available since gst 1.14.
+
+Fixes: QTBUG-83663
+Change-Id: I4c2823f1a965c1fc5a5ab9e50ab8325884f8f6e1
+Reviewed-by: Samuli Piippo <samuli.piippo@qt.io>
+(cherry picked from commit c94342497120dd8eb640afbeb770c01b0d717634)
+Reviewed-by: Qt Cherry-pick Bot <cherrypick_bot@qt-project.org>
+---
+ src/multimedia/configure.json                 | 19 +------------------
+ src/plugins/videonode/imx6/imx6.pro           |  8 ++------
+ .../imx6/qsgvivantevideomaterial.cpp          | 13 ++++++-------
+ 3 files changed, 9 insertions(+), 31 deletions(-)
+
+diff --git a/src/multimedia/configure.json b/src/multimedia/configure.json
+index e9480dfc5..7f9b5d064 100644
+--- a/src/multimedia/configure.json
++++ b/src/multimedia/configure.json
+@@ -54,7 +54,7 @@
+             "test": "gstreamer",
+             "sources": [
+                 { "type": "pkgConfig",
+-                  "args": "gstreamer-1.0 gstreamer-base-1.0 gstreamer-audio-1.0 gstreamer-video-1.0 gstreamer-pbutils-1.0" },
++                  "args": "gstreamer-1.0 gstreamer-base-1.0 gstreamer-audio-1.0 gstreamer-video-1.0 gstreamer-pbutils-1.0 gstreamer-allocators-1.0" },
+                 { "libs": "-lgstreamer-1.0 -lgstbase-1.0 -lgstaudio-1.0 -lgstvideo-1.0 -lgstpbutils-1.0 -lglib-2.0 -lgobject-2.0",
+                   "condition": "config.win32 || config.macos" },
+                 { "libs": "", "condition": "config.android && input.gstreamer != ''" }
+@@ -109,18 +109,6 @@
+                 { "type": "pkgConfig", "args": "gstreamer-gl-1.0" }
+             ]
+         },
+-        "gstreamer_imxcommon": {
+-            "label": "GStreamer i.MX common",
+-            "export": "gstreamer_imxcommon",
+-            "test": {
+-                "include": "gst/allocators/imx/phys_mem_meta.h"
+-            },
+-            "use": "gstreamer_1_0",
+-            "sources": [
+-                { "type": "pkgConfig",
+-                  "args": "gstimxcommon" }
+-            ]
+-        },
+         "libresourceqt5": {
+             "label": "libresourceqt5",
+             "test": "resourcepolicy",
+@@ -260,11 +248,6 @@
+             "condition": "features.opengl && features.gstreamer_1_0 && libs.gstreamer_gl_1_0",
+             "output": [ "privateFeature" ]
+         },
+-        "gstreamer_imxcommon": {
+-            "label": "GStreamer i.MX common",
+-            "condition": "(features.gstreamer_1_0 && libs.gstreamer_imxcommon)",
+-            "output": [ "privateFeature" ]
+-        },
+         "gpu_vivante": {
+             "label": "Vivante GPU",
+             "condition": "features.gui && features.opengles2 && tests.gpu_vivante",
+diff --git a/src/plugins/videonode/imx6/imx6.pro b/src/plugins/videonode/imx6/imx6.pro
+index 43e17e725..0e9ed8b73 100644
+--- a/src/plugins/videonode/imx6/imx6.pro
++++ b/src/plugins/videonode/imx6/imx6.pro
+@@ -1,12 +1,8 @@
+ TARGET = imx6vivantevideonode
+ 
+-QT += multimedia-private qtmultimediaquicktools-private
++QT += multimedia-private qtmultimediaquicktools-private multimediagsttools-private
+ 
+-qtConfig(gstreamer_imxcommon) {
+-    QT += multimediagsttools-private
+-    QMAKE_USE += gstreamer_imxcommon
+-    DEFINES += GST_USE_UNSTABLE_API
+-}
++QMAKE_USE += gstreamer
+ 
+ HEADERS += \
+     qsgvivantevideonode.h \
+diff --git a/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp b/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp
+index e8371d766..e200e8d16 100644
+--- a/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp
++++ b/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp
+@@ -50,10 +50,8 @@
+ #include <unistd.h>
+ 
+ #include <QtMultimedia/private/qtmultimediaglobal_p.h>
+-#if QT_CONFIG(gstreamer_imxcommon)
+ #include "private/qgstvideobuffer_p.h"
+-#include <gst/allocators/imx/phys_mem_meta.h>
+-#endif
++#include <gst/allocators/gstphysmemory.h>
+ 
+ //#define QT_VIVANTE_VIDEO_DEBUG
+ 
+@@ -225,11 +223,12 @@ GLuint QSGVivanteVideoMaterial::vivanteMapping(QVideoFrame vF)
+ #endif
+ 
+                 GLuint physical = ~0U;
+-#if QT_CONFIG(gstreamer_imxcommon)
++#if GST_CHECK_VERSION(1,14,0)
+                 auto buffer = reinterpret_cast<QGstVideoBuffer *>(vF.buffer());
+-                GstImxPhysMemMeta *meta = GST_IMX_PHYS_MEM_META_GET(buffer->buffer());
+-                if (meta && meta->phys_addr)
+-                    physical = meta->phys_addr;
++                auto mem = gst_buffer_peek_memory(buffer->buffer(), 0);
++                auto phys_addr = gst_is_phys_memory(mem) ? gst_phys_memory_get_phys_addr(mem) : 0;
++                if (phys_addr)
++                    physical = phys_addr;
+ #endif
+                 glBindTexture(GL_TEXTURE_2D, tmpTexId);
+                 glTexDirectVIVMap_LOCAL(GL_TEXTURE_2D,
+-- 
+2.32.0
+

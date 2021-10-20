@@ -9,7 +9,8 @@ PR = "1.3.2"
 SRC_URI = "file://Quectel_QFlash.tar.gz"
 
 DEPENDS = ""
-
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+TARGET_CC_ARCH += "${LDFLAGS}"
 S = "${WORKDIR}"
 
 do_compile() {

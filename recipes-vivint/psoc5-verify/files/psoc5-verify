@@ -8,7 +8,7 @@ platform=$(strings /proc/device-tree/compatible |
 	grep vivint |
 	sed s/^vivint,//)
 
-if [ "$platform" == "wallsly" ]; then
+if [ "$platform" == "wallsly" ] ; then
 	monpwr_module=monpwr_wall
 	monpwr_devlink=/sys/bus/i2c/devices/1-0034
 elif [ "$platform" == "sly" ]; then
@@ -33,6 +33,7 @@ psoc5_verify()
 	fi
 
 	path=vivint/$platform-psoc5.fw
+
 	# if sly use fcc version of fw if in fcc test mode
 	# FIXME: do we have fcc fw from wallsly?
 	if [ "$platform" == "sly" -a -f /etc/procman.d/test_ui ]; then

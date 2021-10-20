@@ -17,9 +17,7 @@ SRC_URI[md5sum] = "8ac802d79b318efa27d3a9949d0604d1"
 SRC_URI[sha256sum] = "18dfd4fd300f570d6c4536c1d987b7b7673b2a9d14346592c5d6ed716df0d104"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
-
-NATIVE_INSTALL_WORKS = "1"
+BBCLASSEXTEND = "native nativesdk"
 
 do_install_prepend() {
     install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages

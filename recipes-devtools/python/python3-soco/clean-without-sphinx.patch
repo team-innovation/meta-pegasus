@@ -1,0 +1,10 @@
+--- a/makefile	2017-06-06 17:59:18.206042163 +0000
++++ b/makefile	2017-06-06 17:54:57.097463329 +0000
+@@ -17,6 +17,6 @@
+ 	find . -name '__pycache__' -delete
+ 	rm -rf soco.egg-info
+ 	rm -rf dist
+-	$(MAKE) -C doc clean
++	$(MAKE) -C doc clean SPHINXBUILD=false
+ 
+ .PHONY: lint docs test clean

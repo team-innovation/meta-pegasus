@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "58"
+PR = "56"
 
 inherit packagegroup
 
@@ -12,19 +12,19 @@ inherit packagegroup
 #   then add it to packagegroup-sawmill-min not here.
 RDEPENDS_${PN} = " \
 	alsa-utils \
+	imx-gpu-viv-tools \
 	ca-certificates \
 	civetweb \
 	cronie \
 	gnupg \
 	iotivity-resource \
 	iotivity-bridging-plugins \
-	libsodium18 \
+	libsodium \
 	logrotate \
 	lookbusy \
 	packagegroup-sawmill-debugtools \
 	packagegroup-sawmill-min \
 	procps \
-	python3-avahi \
 	python3-asn1crypto \
 	python3-asyncio \
 	python3-aioconsole \
@@ -39,7 +39,7 @@ RDEPENDS_${PN} = " \
 	python3-attrs \
 	python3-bson \
 	python3-cachetools \
-	python3-cchardet \
+	python3-cchardet \	
 	python3-cffi \
 	python3-compile \
 	python3-cryptography \
@@ -48,13 +48,13 @@ RDEPENDS_${PN} = " \
 	python3-cstruct \
 	python3-cython \
 	python3-gdbm \
+	python3-setuptools \
 	python3-grpcio \
 	python3-idna \
 	python3-idna-ssl \
 	python3-pycares \
 	python3-terminaltables \
 	python3-idle \
-	python3-importlib \
 	python3-intelhex \
 	python3-jinja2 \
 	python3-json \
@@ -63,6 +63,7 @@ RDEPENDS_${PN} = " \
 	python3-markupsafe \
 	python3-math \
 	python3-misc \
+	python3-mixpanel \
 	python3-msgpack \
 	python3-multidict \
 	python3-more-itertools \
@@ -79,25 +80,18 @@ RDEPENDS_${PN} = " \
 	python3-pyjwt \
 	python3-pyserial \
 	python3-pyssh-ctypes \
-	python3-pytest \
-	python3-pytest-asyncio \
-	python3-pytest-cov \
 	python3-pyalsaaudio \
 	python3-py \
 	python3-pyopenssl \
 	python3-pytz \
-	python3-re \
 	python3-resource \
 	python3-setproctitle \
-	python3-setuptools \
 	python3-shell \
 	python3-sip \
 	python3-sqlite3 \
-	python3-subprocess \
 	python3-terminal \
 	python3-typing \
-	python3-typing-extensions \
-	python3-textutils \
+        python3-typing-extensions \
 	python3-threading \
 	python3-tkinter \
 	python3-toolz \
@@ -114,7 +108,6 @@ RDEPENDS_${PN} = " \
 	tzdata \
 	tzdata-americas \
 	util-linux \
-	vim \
 	webrtc-audio-processing \
 	panel-audio-test \
 	pa-test \
@@ -124,5 +117,7 @@ RDEPENDS_${PN} = " \
 	wps-sh \
 	xdelta3 \
 	xz \
-    touchlink-maxtouch-config \
+	vim \
+        lrzsz \
+	ser2net \
 "

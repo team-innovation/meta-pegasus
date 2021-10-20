@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Disable framebuffer timeout
+echo -e '\033[9;0]' > /dev/tty1
+
+export QT_QPA_EGLFS_PHYSICAL_HEIGHT=90
+export QT_QPA_EGLFS_PHYSICAL_WIDTH=153
+export QT_QPA_EGLFS_WIDTH=1024
+export QT_QPA_EGLFS_HEIGHT=600
+export QT_QPA_EGLFS_DEPTH=32
+export QT_QPA_EGLFS_HIDECURSOR=1
+export QT_QPA_PLATFORM=eglfs
+export QT_QPA_EGLFS_INTEGRATION=eglfs_viv
+export QT_QPA_EVDEV_MOUSE_PARAMETERS=rotate=270:dejitter=10
+export QT_QPA_EVDEV_TOUCHSCREEN_PARAMETERS=rotate=90
+export QT_QPA_EGLFS_FORCEVSYNC=1

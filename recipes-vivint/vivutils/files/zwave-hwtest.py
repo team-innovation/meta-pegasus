@@ -52,7 +52,11 @@ class ZwaveTest:
     """Get information from the zwave device for manufacturing test"""
 
     # Location of zwave sys class
-    _zwavesysclass = '/sys/class/zwave/zwave0/'
+    board = subprocess.check_output(['/sbin/fw_printenv', 'board']).decode('utf8')
+    if 'Hubplus' in board:
+        _zwavesysclass = '/sys/class/mighty_gecko/swd0/'
+    else:
+        _zwavesysclass = '/sys/class/zwave/zwave0'
 
     @staticmethod
     def sysclass_open(name, mode='w'):

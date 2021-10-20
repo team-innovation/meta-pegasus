@@ -1,0 +1,308 @@
+#!/bin/sh
+
+########## MAIN BOARD LEDs #####################
+# Main board LEDs Left 4
+declare -A mainboard_led_4
+
+mainboard_led_4["white"]="/sys/class/leds/lp5018_out12/brightness"
+mainboard_led_4["red"]="/sys/class/leds/lp5018_out1/brightness"
+mainboard_led_4["green"]="/sys/class/leds/lp5018_out2/brightness"
+mainboard_led_4["blue"]="/sys/class/leds/lp5018_out0/brightness"
+
+# Main board LEDs Left 3
+declare -A mainboard_led_3
+
+mainboard_led_3["white"]="/sys/class/leds/lp5018_out13/brightness"
+mainboard_led_3["red"]="/sys/class/leds/lp5018_out4/brightness"
+mainboard_led_3["green"]="/sys/class/leds/lp5018_out5/brightness"
+mainboard_led_3["blue"]="/sys/class/leds/lp5018_out3/brightness"
+
+# Main board LEDs Left 2
+declare -A mainboard_led_2
+
+mainboard_led_2["white"]="/sys/class/leds/lp5018_out14/brightness"
+mainboard_led_2["red"]="/sys/class/leds/lp5018_out7/brightness"
+mainboard_led_2["green"]="/sys/class/leds/lp5018_out8/brightness"
+mainboard_led_2["blue"]="/sys/class/leds/lp5018_out6/brightness"
+
+# Main board LEDs Left 1
+declare -A mainboard_led_1
+
+mainboard_led_1["white"]="/sys/class/leds/lp5018_out15/brightness"
+mainboard_led_1["red"]="/sys/class/leds/lp5018_out10/brightness"
+mainboard_led_1["green"]="/sys/class/leds/lp5018_out11/brightness"
+mainboard_led_1["blue"]="/sys/class/leds/lp5018_out9/brightness"
+
+#####################################################################
+
+########### KEYPAD BOARD LEDs #####################################
+# STAY button
+declare -A stay_led
+stay_led["white"]="/sys/class/leds/lp5024_out21/brightness"
+stay_led["red"]="/sys/class/leds/lp5024_out0/brightness"
+stay_led["green"]="/sys/class/leds/lp5024_out1/brightness"
+stay_led["blue"]="/sys/class/leds/lp5024_out2/brightness"
+
+# AWAY button
+declare -A away_led
+away_led["white"]="/sys/class/leds/lp5024_out22/brightness"
+away_led["red"]="/sys/class/leds/lp5024_out9/brightness"
+away_led["green"]="/sys/class/leds/lp5024_out10/brightness"
+away_led["blue"]="/sys/class/leds/lp5024_out11/brightness"
+
+# ICONS
+icon_1="/sys/class/leds/lp5024_out23/brightness"
+icon_2="/sys/class/leds/lp5024_out18/brightness"
+icon_3="/sys/class/leds/lp5024_out20/brightness"
+icon_4="/sys/class/leds/lp5024_out19/brightness"
+
+# Backlight
+declare -A backlight_leds
+backlight_leds[1]="/sys/class/leds/lp5024_out3/brightness"
+backlight_leds[2]="/sys/class/leds/lp5024_out4/brightness"
+backlight_leds[3]="/sys/class/leds/lp5024_out5/brightness"
+backlight_leds[4]="/sys/class/leds/lp5024_out6/brightness"
+backlight_leds[5]="/sys/class/leds/lp5024_out7/brightness"
+backlight_leds[6]="/sys/class/leds/lp5024_out8/brightness"
+backlight_leds[7]="/sys/class/leds/lp5024_out12/brightness"
+backlight_leds[8]="/sys/class/leds/lp5024_out13/brightness"
+backlight_leds[9]="/sys/class/leds/lp5024_out14/brightness"
+backlight_leds[10]="/sys/class/leds/lp5024_out15/brightness"
+backlight_leds[11]="/sys/class/leds/lp5024_out17/brightness"
+
+########################################################################
+colors="white red green blue"
+icon_leds="${icon_1} ${icon_2} ${icon_3} ${icon_4}"
+
+
+all_on()
+{
+	# $1 - color
+	# $2 - brightness
+
+	set_progress all $1 $2
+	set_stay $1 $2
+	set_away $1 $2
+	all_icons $2
+	set_backlight $2
+}
+
+set_progress()
+{
+	# $1 - arg
+	# $2 - color
+	# $3 - brightness
+
+	case $1 in
+	    all)
+		mainboard_leds="${mainboard_led_1["$2"]} ${mainboard_led_2["$2"]} ${mainboard_led_3["$2"]} ${mainboard_led_4["$2"]}"
+		for led in ${mainboard_leds}
+        	do
+                    echo $3 > $led
+        	done
+		;;
+
+	    led1)
+		echo $3 > ${mainboard_led_1["$2"]}
+		;;
+
+	    led2)
+		echo $3 > ${mainboard_led_2["$2"]}
+		;;
+
+	    led3)
+		echo $3 > ${mainboard_led_3["$2"]}
+		;;
+
+	    led4)
+		echo $3 > ${mainboard_led_4["$2"]}
+		;;
+
+	    status)
+		while [ 1 ] 
+		do
+		    mainboard_leds="${mainboard_led_1["$2"]} ${mainboard_led_2["$2"]} ${mainboard_led_3["$2"]} ${mainboard_led_4["$2"]}"		
+		    for led in ${mainboard_leds}
+		    do
+		        echo $3 > $led
+		        sleep 1		    
+		    done
+		    set_progress off
+		    sleep 1
+	        done
+		;;
+
+	    off)
+	       for color in ${colors}
+	       do
+	           mainboard_leds="${mainboard_led_1["$color"]} ${mainboard_led_2["$color"]} ${mainboard_led_3["$color"]} ${mainboard_led_4["$color"]}"
+	           for led in ${mainboard_leds}
+	           do
+	 	       echo 0 > $led
+	           done
+	       done
+	       ;;
+	esac
+}
+
+set_disarm()
+{
+	for color in ${colors}
+	do
+	    set_stay $color 0
+	    set_away $color 0
+	done
+	set_stay white 255
+	set_away white 255
+}
+
+set_stay()
+{
+	# $1 - color
+	# $2 - brightness
+	echo 0 > ${stay_led["white"]}
+	echo $2 > ${stay_led["$1"]}
+}
+
+
+
+set_away()
+{
+	# $1 - color
+	# $2 - brightness
+	echo 0 > ${away_led["white"]}
+	echo $2 > ${away_led["$1"]}
+}
+
+
+all_icons()
+{
+	#$1 brightness
+	for led in ${icon_leds}
+	do
+	    echo $1 > $led
+	done
+}
+
+set_backlight()
+{
+	set_stay white $1
+	set_away white $1
+
+	# $1 - brightness
+	for i in {1..11}
+	do
+	    echo $1 > ${backlight_leds[$i]}
+	done
+}
+
+all_off()
+{	
+	for color in ${colors}
+	do
+	    set_progress all $color 0
+	    set_stay $color 0
+	    set_away $color 0
+	done
+	
+	all_icons 0
+	set_backlight 0
+}
+
+print_help()
+{
+	echo
+	echo "GENERAL USAGE"
+	echo 
+	echo -e "\t$0 all red|white|green|blue 0..255"
+	echo -e "\t$0 progress all|led1|led2|led3|led4|status|off red|white|green|blue 0..255"
+	echo -e "\t$0 away red|white|green|blue 0..255"
+	echo -e "\t$0 stay red|white|green|blue 0..255"
+	echo -e "\t$0 disarm"
+	echo -e "\t$0 wifi 0..255"
+	echo -e "\t$0 ac 0..255"
+	echo -e "\t$0 battery 0..255"
+	echo -e "\t$0 alerts 0..255"
+	echo -e "\t$0 backlight 0..255"
+	echo -e "\t$0 disco"
+	echo
+}
+
+trap "all_off; exit 0" SIGHUP SIGINT SIGTERM
+
+# main
+main() {
+   case "$1" in
+      all)
+	 shift
+         all_on $@
+         ;;
+      progress)
+         shift
+         set_progress $@
+         ;;
+
+      away) 
+         shift
+         set_away $@
+         ;;
+
+      stay)
+         shift
+         set_stay $@
+         ;;
+
+      disarm)
+         set_disarm
+         ;;
+
+      wifi)
+          echo $2 > $icon_1
+          ;;
+      
+      ac)
+          echo $2 > $icon_2
+          ;;
+      
+      battery)
+          echo $2 > $icon_3
+          ;;
+
+      alerts)
+          echo $2 > $icon_4
+         ;;
+
+      backlight)
+         set_backlight $2
+         ;;
+
+      disco)
+         while [ 1 ]; do
+	    for color in ${colors}
+	    do
+                all_on $color 255
+                sleep 1
+                all_on $color 0
+	    done
+         done
+         ;;
+
+      off)
+        all_off
+        ;;
+
+      help)
+	 print_help
+         ;;
+
+      *)
+	print_help
+        ;;
+
+   esac
+}
+
+main $@
+
+exit 0
+

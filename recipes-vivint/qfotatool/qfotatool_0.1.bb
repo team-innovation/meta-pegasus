@@ -7,6 +7,9 @@ PR = "r1"
 
 SRC_URI = "file://DTool.c"
 
+PACKAGE_ARCH = "${MACHINE_ARCH}"
+TARGET_CC_ARCH += "${LDFLAGS}"
+
 S = "${WORKDIR}"
 
 do_compile() {

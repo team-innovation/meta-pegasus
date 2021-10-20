@@ -12,12 +12,9 @@ RSRC_URI[md5sum] = "1ce1ddf2582060f8f971652ea54cc17e"
 SRC_URI[sha256sum] = "32f29c17172cdb9cb61c68b1f1a71dfe7351506fc830869029c47449bd04faeb"
 S = "${WORKDIR}/dbus-python-${PV}"
 
-inherit distutils3-base autotools pkgconfig  python3-dir
+inherit distutils3-base autotools pkgconfig
 
-PYTHON="${STAGING_BINDIR_NATIVE}/${PYTHON_PN}-native/${PYTHON_PN}"
-export PYTHON
-
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 PACKAGECONFIG ?= ""
 PACKAGECONFIG[docs] = "--enable-html-docs,--disable-html-docs,python3-docutils-native"
@@ -26,9 +23,3 @@ PACKAGECONFIG[api-docs] = "--enable-api-docs,--disable-api-docs,python3-docutils
 RDEPENDS_${PN} = "python3-io python3-logging python3-stringold python3-threading python3-xml"
 
 FILES_${PN}-dev += "${libdir}/pkgconfig"
-
-# Avoid a conflict with python-dbus, don't install the development packages
-do_install_append() {
-	rm ${D}/${libdir}/pkgconfig/dbus-python.pc
-	rm ${D}/${includedir}/dbus-1.0/dbus/dbus-python.h
-}

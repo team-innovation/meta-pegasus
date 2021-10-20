@@ -5,10 +5,15 @@ PIDFILE=/var/run/chronyd.pid
 
 test -x /usr/sbin/chronyd || exit 0
 if [ ! -f /etc/chrony.conf ]; then
-    platform=`strings /proc/device-tree/compatible |	\
+    platform=$(strings /proc/device-tree/compatible |	\
             grep vivint |				\
 	    head -n 1 |					\
-	    cut -d"," -f2`
+	    cut -d"," -f2)
+
+    # slimline is Glance
+    if [ "$platform"x != "slimlinex" ]; then
+	    platform="hub"
+    fi
 
     test -f /etc/chrony.conf.$platform || exit 0
     ln -s /etc/chrony.conf.$platform /etc/chrony.conf

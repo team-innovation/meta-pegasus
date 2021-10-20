@@ -1,7 +1,7 @@
 DESCRIPTION = "Kwikset lock firmware"
 LICENSE = "CLOSED"
 HOMEPAGE = "http://www.vivint.com"
-PR = "r53"
+PR = "r54"
 
 FIRMWARE_MCU    = "Kwikset2017_0090_0003_0541_4100_26a3_65.05.hex"
 FIRMWARE_ZWAVE  =  "Kwikset2017_0090_0003_0541_1400_59d7_4.96.hex"
@@ -24,33 +24,19 @@ SRC_URI = "file://${FIRMWARE_MCU} \
            file://${FIRMWARE_MCU_892} \
            file://${FIRMWARE_ZWAVE_892}"
 
-do_compile() {
-     :
-}
+do_compile[noexec] = "1"
 
-do_configure() {
-     :
-}
+do_configure[noexec] = "1"
 
-do_compileconfigs() {
-     :
-}
+do_compileconfigs[noexec] = "1"
 
-do_setscene() {
-     :
-}
+do_setscene[noexec] = "1"
 
-do_distribute_sources() {
-     :
-}
+do_distribute_sources[noexec] = "1"
 
-do_create_srcipk() {
-     :
-}
+do_create_srcipk[noexec] = "1"
 
-do_copy_license() {
-     :
-}
+do_copy_license[noexec] = "1"
 
 do_install() {
      install -d ${D}/${FIRMWARE_DIR}

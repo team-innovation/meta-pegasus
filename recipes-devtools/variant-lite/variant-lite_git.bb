@@ -5,8 +5,9 @@ LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE.txt;md5=e4224ccaecb14d942c71d3
 PR = "r1"
 
 SRCREV = "b0aa7a4f6fcf0bcdbf01ecc426c6cb4856640a40"
-SRC_URI = "git://github.com/martinmoene/variant-lite.git;protocol=https \
-	   file://variant-lite.pc"
+SRC_URI = "git://github.com/martinmoene/variant-lite.git \
+	   file://variant-lite.pc \
+"
 
 S = "${WORKDIR}/git"
 
@@ -16,9 +17,8 @@ do_compile[noexec] = "1"
 do_install() {
 	install -d ${D}/${includedir}/variant-lite/
 	cp -a ${S}/include/ ${D}/${includedir}/variant-lite
-
 	install -d ${D}/${libdir}/pkgconfig
-	install -m 644 ${WORKDIR}/variant-lite.pc ${D}/${libdir}/pkgconfig
+        install -m 644 ${WORKDIR}/variant-lite.pc ${D}/${libdir}/pkgconfig
 }
 
 FILES_${PN}-dev = "${includedir}/variant-lite/* ${libdir}/pkgconfig"

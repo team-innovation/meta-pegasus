@@ -3,15 +3,16 @@ DESCRIPTION = "Various Vivint authored utilities for development and hw test"
 SECTION = "utilities"
 LICENSE = "CLOSED"
 PV = "1.0.0"
-PR = "r103"
+PR = "r120"
 
-PACKAGES = "${PN} ${PN}-dbg"
+DEPENDS_append = "update-rc.d-native"
 
 RDEPENDS_${PN} = " \
+    bash \
     python3-pysodium \
     libpulse-simple \
     libpulse \
-    libasound \
+    alsa-lib \
 "
 
 SRC_URI = "\
@@ -30,8 +31,7 @@ SRC_URI = "\
 	   file://mfr_modem_test.py \
 	   file://nfctest.c \
 	   file://pcamtest \
-	   file://resize.c \
-	   file://resize.sh \
+           file://resize.sh \
 	   file://serialnumset \
 	   file://set-u-boot-part \
 	   file://simplesuspend \
@@ -59,14 +59,18 @@ SRC_URI = "\
 	   file://wallslyscreentest \
 	   file://netm-macaddrs.py \
 	   file://ssid-verify.py \
+	   file://convert-panel \
 	   file://mmcstress.sh \
+	   file://earlymod.sh \
+	   file://led_ctrl \
+	   file://transmit_counter_via_i2c \
 "
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
+TARGET_CC_ARCH += "${LDFLAGS}"
 S = "${WORKDIR}"
 
 do_compile() {
-	${CC} resize.c -o resize
 	${CC} nfctest.c -o nfctest
 }
 
@@ -78,7 +82,6 @@ do_install() {
 	install -m 0755 ${S}/firstboot-setup ${D}/usr/local/bin
 	install -m 0755 ${S}/gadgetsetup ${D}/usr/local/bin
 	install -m 0755 ${S}/hwrevset ${D}/usr/local/bin
-	install -m 0755 ${S}/resize ${D}/usr/local/bin
 	install -m 0755 ${S}/nfctest ${D}/usr/local/bin
 	install -m 0755 ${S}/pcamtest ${D}/usr/local/bin
 	install -m 0755 ${S}/serialnumset ${D}/usr/local/bin
@@ -112,7 +115,10 @@ do_install() {
 	install -m 0755 ${S}/wallslyscreentest ${D}/usr/local/bin
 	install -m 0755 ${S}/netm-macaddrs.py ${D}/usr/local/bin
 	install -m 0755 ${S}/ssid-verify.py ${D}/usr/local/bin
+	install -m 0755 ${S}/convert-panel ${D}/usr/local/bin
 	install -m 0755 ${S}/mmcstress.sh ${D}/usr/local/bin
+	install -m 0755 ${S}/led_ctrl ${D}/usr/local/bin
+	install -m 0755 ${S}/transmit_counter_via_i2c ${D}/usr/local/bin
 
 	install -d ${D}/${sysconfdir}/init.d
 	install -m 0755 ${S}/firstboot ${D}/${sysconfdir}/init.d/firstboot
@@ -125,24 +131,29 @@ do_install() {
 	update-rc.d -r ${D} bootgadgets.sh start 34 S .
 
 	install -d ${D}/${sysconfdir}/profile.d
-	install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
-
+        install -m 0755 ${S}/resize.sh ${D}/${sysconfdir}/profile.d
+	
 	install -d ${D}/home/root/
+
+	install -m 0755 ${S}/earlymod.sh ${D}/${sysconfdir}/init.d/earlymod.sh
+	update-rc.d -r ${D} earlymod.sh start 03 S .
+
 }
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug/"
 FILES_${PN} += "/home/root /usr/local/bin/* /etc/profile.d/*"
 
 
-pkg_postinst_${PN} () {
+pkg_postinst_ontarget_${PN} () {
 #!/bin/sh
-if [ "x$D" != "x" ]; then
-        exit 1
-fi
 
 # Overwrite existing files.
-if grep -q wallsly /proc/device-tree/compatible; then
-	rm /usr/local/bin/mfr_audio_test.py 
+platform=$(strings /proc/device-tree/compatible |
+        grep vivint |
+        sed s/^vivint,//)
+
+if [ "$platform" == "wallsly" ] || [ "$platform" == "brazen" ]; then
+	rm -f /usr/local/bin/mfr_audio_test.py
 	cp /usr/local/bin/mfr-audio-test-wallsly    /usr/local/bin/mfr-audio-test
 	cp /usr/local/bin/vaudio-wallsly    /usr/local/bin/vaudio
 fi

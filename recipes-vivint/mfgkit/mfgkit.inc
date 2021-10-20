@@ -4,6 +4,7 @@ inherit meta
 
 LICENSE = "CLOSED"
 
+DEPENDS += "rsync-native zip-native"
 DEPLOY_DIR_MFG = "${DEPLOY_DIR}/mfgkit"
 
 latest() {
@@ -51,6 +52,7 @@ do_compile() {
 	cp -L ${tmpdir}/boot/imx6dl-slimline-ldo-nofec.dtb  ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/imx6dl-sly*.dtb  ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/imx6dl-wallsly*.dtb  ${tmpdir}/staging/
+	cp -L ${tmpdir}/boot/imx6dl-brazen*.dtb  ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/boot.scr ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/usb-reflash-boot.scr ${tmpdir}/staging/
 	cp -L ${tmpdir}/boot/binshell-boot.scr ${tmpdir}/staging/

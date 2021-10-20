@@ -1,7 +1,0 @@
-/var/log/watchdog.log {
-    missingok
-    size 1M
-    copytruncate
-    rotate 5
-    compress
-}

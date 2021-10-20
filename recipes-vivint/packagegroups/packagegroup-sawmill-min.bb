@@ -7,35 +7,34 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "24"
+PR = "25"
 
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
 	chrony \
+	chronyc \
 	dosfstools \
 	e2fsprogs-dumpe2fs \
 	e2fsprogs-resize2fs \
 	e2fsprogs-mke2fs \
 	iw \
-	kernel-devicetree \
-	kernel-image \
-	kernel-modules \
 	memtester \
 	obp-utils \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
-	psoc5-verify \
+	mighty-gecko-verify \
+	mmc-utils \
 	slimline-modules \
 	sly-modules \
 	strace \
 	u-boot-fw-utils \
 	u-boot-script-slimline \
-	u-boot-slimline \
-	u-boot-wallsly \
 	util-linux-mkfs \
 	util-linux-sfdisk \
 	vivutils \
 	wallsly-modules \
 	mmc-utils \
+	openssl-bin \
+	openssl-engines \
 "

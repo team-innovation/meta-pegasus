@@ -12,9 +12,7 @@ SRC_URI = "https://files.pythonhosted.org/packages/c4/b8/3512f0e93e0db23a71d8248
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
-
-NATIVE_INSTALL_WORKS = "1"
+BBCLASSEXTEND = "native nativesdk"
 
 inherit setuptools3 python3-dir
 

@@ -16,6 +16,10 @@ function whitewash_int {
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_WALLSLY_UBOOT_BRANCH"
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_WALLSLY_UBOOT_PROTOCOL"
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_WALLSLY_UBOOT_REV"
+	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_BRAZEN_UBOOT_SERVER"
+	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_BRAZEN_UBOOT_BRANCH"
+	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_BRAZEN_UBOOT_PROTOCOL"
+	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_BRAZEN_UBOOT_REV"
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_KERNEL_SERVER"
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_KERNEL_BRANCH"
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_KERNEL_PROTOCOL"
@@ -90,7 +94,7 @@ test -d ${BUILD_DIR} &&
     sed -i '/IMAGE_INSTALL_remove/d' ${BUILD_DIR}/conf/local.conf && 
     sed -i '/CONNECTIVITY_CHECK_URIS/d' ${BUILD_DIR}/conf/local.conf && 
    	echo "CONNECTIVITY_CHECK_URIS = \"https://www.example.com\"" >> ${BUILD_DIR}/conf/local.conf &&
-	echo "DISTRO_FEATURES_remove = \"x11 wayland directfb bluetooth\"" >> ${BUILD_DIR}/conf/local.conf &&
+	echo "DISTRO_FEATURES_remove = \"x11 directfb bluetooth\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "IMAGE_INSTALL_remove = \" packagegroup-fsl-bluez5-tools\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_SERVER ?= \"git@source.vivint.com:7999/em\"" >> ${BUILD_DIR}/conf/local.conf &&
 	echo "GIT_APPS_TAG ?= \"${_APPS_TAG}\"" >> ${BUILD_DIR}/conf/local.conf &&
@@ -100,7 +104,6 @@ test -d ${BUILD_DIR} &&
 	echo "UPDATESENG ?= \"updateseng.vivint.com/innovation\"" >> ${BUILD_DIR}/conf/local.conf &&
     echo "PRSERV_HOST = \"localhost:0\"" >> ${BUILD_DIR}/conf/local.conf &&
 	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
-	grep -q oe-meta-go ${BUILD_DIR}/conf/bblayers.conf &&
 	grep -q meta-oic ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
 	whitewash_int &&
@@ -122,10 +125,6 @@ source ./fsl-setup-release.sh -b ${BUILD_DIR}
 
 grep -q meta-vivint ./conf/bblayers.conf ||
 	echo "BBLAYERS += \" \${BSPDIR}/sources/meta-vivint \"" \
-		>> ./conf/bblayers.conf
-
-grep -q oe-meta-go ./conf/bblayers.conf ||
-	echo "BBLAYERS += \" \${BSPDIR}/sources/oe-meta-go \"" \
 		>> ./conf/bblayers.conf
 
 grep -q meta-oic ./conf/bblayers.conf ||

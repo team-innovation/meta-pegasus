@@ -19,18 +19,7 @@ SRC_URI = "git://${GIT_LIVE555PROXY_SERVER}/${MODULE};protocol=${GIT_LIVE555PROX
 S = "${WORKDIR}/git"
 
 # Allows us to create a native package for staging in OE
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
-NATIVE_INSTALL_WORKS = "1"
+inherit setuptools3 
 
-inherit setuptools3 python3-dir
-
-do_install_prepend() {
-    install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
-}
-
-do_package_qa() {
-    echo "Skipping QA ..."
-}
-
-INSANE_SKIP_${PN} = "True"

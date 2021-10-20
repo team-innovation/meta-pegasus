@@ -21,11 +21,10 @@ do_install_append () {
 	chmod 0755 ${D}/${INSTALL_DIR}/zwaved/scripts/*
 }
 
-pkg_postinst_${PN}-zwaved () {
+pkg_postinst_ontarget_${PN}-zwaved () {
 #!/bin/sh -e
 # Post install to setup the home id directories
 #
-if [ x"$D" = "x" ]; then
     if [ -f /proc/device-tree/compatible ]; then
         exit 0
     fi
@@ -77,9 +76,6 @@ if [ x"$D" = "x" ]; then
          logging "Creating log directory..."
          mkdir -p /media/extra/log/error
     fi
-else
-    exit 1
-fi
 }
 
 

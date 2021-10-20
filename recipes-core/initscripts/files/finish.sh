@@ -52,6 +52,7 @@ validate_public_key()
     fi
 
     echo "Public key checksum is" $(md5sum /media/extra/conf/vivintbuild_gpg.pub | cut -c1-32)
+    [ ! -d "$HOME"/.gnupg ] && mkdir -p "$HOME"/.gnupg
 }
 
 rm_roubaix_logs()
@@ -60,6 +61,29 @@ rm_roubaix_logs()
     then
         echo "Remove roubaix logs from /media/extra/log"
         rm /media/extra/log/roubaix*
+    fi
+}
+
+update_start_sshd_count()
+{
+    count_file="/media/bootscript/start_sshd_count"
+    if [ -f $count_file ] ; then
+	count=$(cat $count_file)
+	if [ $count -gt 0 ]; then
+	    count=$(expr $count - 1)
+
+	    echo "Set start_sshd_count count to $count"
+	    mount -o remount,rw /media/bootscript 
+            echo $count > $count_file
+	    mount -o remount,ro /media/bootscript 
+
+	    # bring eth0 up
+	    ifup eth0
+
+	    # start sshd
+	    /etc/init.d/sshd force-start
+	    /opt/2gig/utils/password_utils --fixroot
+	fi
     fi
 }
 
@@ -72,5 +96,15 @@ rm_roubaix_logs
 # set the system root password to a random value when touchlink starts
 /opt/2gig/utils/password_utils --random
 
+
 # Give touchscreen a quick reset to clear and re-initialize
-echo 1 > /sys/class/input/input0/device/reset
+if [ -e /sys/class/input/input0/device/reset ] ; then
+	echo 1 > /sys/class/input/input0/device/reset
+else
+	# HUB PLUS mod
+	# decrement start_sshd_count
+	update_start_sshd_count
+
+	# comment mosquitto bind address
+	sed -i '/bind_address/ s/^#*/#/' /etc/mosquitto/mosquitto.conf
+fi

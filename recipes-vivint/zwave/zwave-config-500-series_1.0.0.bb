@@ -10,6 +10,8 @@ RDEPENDS_${PN} = " \
     python3-pyserial \
 "
 
+inherit update-rc.d
+
 # TODO uncomment this section
 #GIT_ARTIFACTS_BRANCH ?= "develop"
 #GIT_ARTIFACTS_PROTOCOL ?= "ssh"
@@ -40,6 +42,9 @@ FW_DIR = "/lib/firmware/vivint"
 S = "${WORKDIR}"
 # End notice
 
+INITSCRIPT_NAME = "zwave-program"
+INITSCRIPT_PARAMS = "start 08 S ."
+
 do_compile() {
     :
 }
@@ -56,8 +61,6 @@ do_install () {
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/zwave-program ${D}${sysconfdir}/init.d
 
-    # Create runlevel links
-    update-rc.d -r ${D} zwave-program start 08 S .
 }
 
 FILES_${PN} = "\

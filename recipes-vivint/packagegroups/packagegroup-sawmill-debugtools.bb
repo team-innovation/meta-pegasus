@@ -17,6 +17,8 @@ DEBUG_PACKAGES += "${PANEL_DEBUG_PACKAGES} \
 RDEPENDS_${PN} += " \
         python3-flent \
         netperf \
+	gdb \
+	perf \
         fping \
 	dhrystone \
 	i2c-tools \
@@ -28,5 +30,5 @@ RDEPENDS_${PN} += " \
 	lsof \
 	netcat \
 	tcpdump \
-	${@base_contains('BUILD_TYPE', 'dbg','${DEBUG_PACKAGES}', '', d)} \
+	${@bb.utils.contains('BUILD_TYPE', 'dbg','${DEBUG_PACKAGES}', '', d)} \
 "

@@ -11,7 +11,7 @@ GIT_AUDIO_PROTOCOL ?= "ssh"
 GIT_AUDIO_REV ?= "${AUTOREV}"
 
 SRCREV = "${GIT_AUDIO_REV}"
-DEPENDS += "alsa-lib pulseaudio"
+DEPENDS += "alsa-lib pulseaudio pkgconfig-native"
 
 MODULE = "voice-audio"
 SRC_URI = "git://${GIT_AUDIO_SERVER}/audio;protocol=${GIT_AUDIO_PROTOCOL};branch=${GIT_AUDIO_BRANCH} \

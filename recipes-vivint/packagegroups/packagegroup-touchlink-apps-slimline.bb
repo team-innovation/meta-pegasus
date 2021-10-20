@@ -3,10 +3,12 @@
 DESCRIPTION = "slimline aka primary panel touchlink apps packages, framework, roubaix, etc"
 LICENSE = "MIT"
 
-PR = "r26"
+PR = "r27"
 
 require packagegroup-touchlink-apps-common.inc
 
 RDEPENDS_${PN} += " \
+	touchlink-apps-audmgrd \
+	touchlink-apps-modemd-proxies \
 "
 

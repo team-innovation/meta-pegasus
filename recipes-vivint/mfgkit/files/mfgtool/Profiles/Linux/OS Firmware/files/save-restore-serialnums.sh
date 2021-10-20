@@ -67,7 +67,8 @@ savestuff()
 	mkdir -p $saveloc
 	cp ${BSMNTPT}/id* $saveloc || true
 	cp ${BSMNTPT}/*.txt $saveloc || true
-	info "Done saving serial numbers etc."
+	cp ${BSMNTPT}/*.bin $saveloc || true
+	info "Done saving serial numbers, settings etc."
 	exit 0
 }
 

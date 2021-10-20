@@ -52,7 +52,7 @@ PACKAGECONFIG[server] = "-DCIVETWEB_INSTALL_EXECUTABLE=ON,-DCIVETWEB_INSTALL_EXE
 PACKAGECONFIG[ssl] = "-DCIVETWEB_ENABLE_SSL=ON -DCIVETWEB_SSL_OPENSSL_API_1_1=OFF -DCIVETWEB_ENABLE_SSL_DYNAMIC_LOADING=OFF,-DCIVETWEB_ENABLE_SSL=OFF,openssl (=1.0.2%),"
 PACKAGECONFIG[websockets] = "-DCIVETWEB_ENABLE_WEBSOCKETS=ON,-DCIVETWEB_ENABLE_WEBSOCKETS=OFF,"
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
 
 do_install_append() {
 	install -d ${D}${sysconfdir}/civetweb
@@ -64,13 +64,9 @@ do_install_append() {
 	install -d ${D}/srv/www
 }
 
-pkg_postinst_civetweb() {
-	if [ "x$D" = "x" ]; then
-		if [ ! -f /srv/www/.htpasswd ]; then
-			civetweb -A /srv/www/.htpasswd vivint.panel admin admin
-		fi
-	else
-		exit 1
+pkg_postinst_ontarget_${PN}() {
+	if [ ! -f /srv/www/.htpasswd ]; then
+		civetweb -A /srv/www/.htpasswd vivint.panel admin admin
 	fi
 }
 
