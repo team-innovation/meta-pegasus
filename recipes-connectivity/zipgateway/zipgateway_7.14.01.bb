@@ -10,7 +10,7 @@ RDEPENDS_${PN} = "bridge-utils openssl11"
 PR = "r1"
 PV = "7.14.01+git${SRCPV}"
 
-SRCREV = "cfde844a3fb712be704230182690020a65471753"
+SRCREV = "eb124bd1868e2a2b82180485c5e66a3ed2e96a08"
 SRCBRANCH = "v7.14.1"
 
 GIT_ZGATE_SERVER ?= "${GIT_SERVER}"
@@ -19,6 +19,7 @@ GIT_ZGATE_PROTOCOL ?= "ssh"
 SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_PROTOCOL};branch=${SRCBRANCH} \
            file://zwaved \
            file://zipgateway.logrotate \
+	   file://libpcap_url.patch \
            "
 
 S = "${WORKDIR}/git/zipgateway-7.14.01-Source/usr/local"
