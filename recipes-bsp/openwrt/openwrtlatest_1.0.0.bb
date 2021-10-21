@@ -27,14 +27,10 @@ FILES_${PN}-mt7620 += "\
     ${sysconfdir}/init.d/networkmodule \
     "
 
-pkg_postinst_${PN}-mt7620() {
+pkg_postinst_ontarget_${PN}-mt7620() {
 #!/bin/sh -e
 # create symlink to /lib/firmware for MT7620_* to use
 
-if [ x"$D" = "x" ]; then
     echo "Changing directory and creating links."
     (cd /lib/firmware; ln -sf latest/* .)
-else
-    exit 1
-fi
 }
