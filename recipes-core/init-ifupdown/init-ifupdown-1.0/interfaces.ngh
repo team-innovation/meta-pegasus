@@ -6,7 +6,7 @@ iface lo inet loopback
 
 # Wireless interfaces
 iface wlan0 inet dhcp
-	down pkill -9 -f "udhcpc.*-i wlan0"
+	post-down pkill -9 -f "udhcpc.*-i wlan0"
         wireless_mode managed
         wireless_essid any
         wpa-driver wext
@@ -17,7 +17,7 @@ iface atml0 inet dhcp
 # Wired or wireless interfaces
 auto eth0
 iface eth0 inet dhcp
-	down pkill -9 -f "udhcpc.*-i eth0"
+	post-down pkill -9 -f "udhcpc.*-i eth0"
 
 iface eth1 inet dhcp
 
@@ -30,4 +30,4 @@ iface bnep0 inet dhcp
 
 # p2p0 for AP mode use
 iface p2p0 inet dhcp
-	down pkill -9 -f "udhcpc.*-i p2p0"
+	post-down pkill -9 -f "udhcpc.*-i p2p0"
