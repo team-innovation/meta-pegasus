@@ -21,9 +21,7 @@ do_install_append () {
         chmod +x ${D}/${INSTALL_DIR}/baguette/baguette.pyc
 
 	install -d ${D}/opt/2gig/soundfiles/wav
-	install -d ${D}/opt/2gig/soundfiles/wav/clicks
-	cp -dR ${S}/code/pumpernickel/wav/* ${D}/opt/2gig/soundfiles/wav
-	cp -dR ${S}/code/pumpernickel/content/sounds/* ${D}/opt/2gig/soundfiles/wav/clicks
+	cp -dR ${S}/soundfiles/* ${D}/opt/2gig/soundfiles
 }
 
 FILES_${PN}-baguette = "\
