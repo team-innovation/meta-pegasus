@@ -21,6 +21,7 @@ SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_P
            file://zwaved \
            file://zwaved.service \
            file://zipgateway.logrotate \
+           file://libpcap_url.patch \
            "
 
 S = "${WORKDIR}/git/zipgateway-7.15.04-Source/usr/local"
