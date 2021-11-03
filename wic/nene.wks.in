@@ -18,6 +18,6 @@ part u-boot --source rawcopy --sourceparams="file=imx-boot" --ondisk mmcblk --no
 part /media/bootscript --source bootimg-partition --ondisk mmcblk --fstype=ext4 --label bootscript --align 8192 --fixed-size 64
 part / --source rootfs --ondisk mmcblk --fstype=ext4 --label root1  --align 8192 --fixed-size 2000
 part --ondisk mmcblk --fstype=ext4 --label root2 --align 8192 --fixed-size 2000
-part /media/extra --ondisk mmcblk --fstype=ext4 --label extra  --align 8192 --fixed-size 1656
+part /media/extra --ondisk mmcblk --fstype=ext4 --label extra  --align 8192 --fixed-size 3385
 
 bootloader --ptable gpt
