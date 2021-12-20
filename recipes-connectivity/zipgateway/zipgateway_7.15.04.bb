@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=d8940d2702ac72abe9e3994316807ff3"
 DEPENDS = "python-native libusb flex-native bison-native json-c openssl libxslt-native libusb-native json-c-native"
 RDEPENDS_${PN} = "bridge-utils openssl bash"
 
-PR = "r4"
+PR = "r5"
 PV = "7.15.04+git${SRCPV}"
 
 #SRCREV = "64e75bb5596062d7fac742f677122537f34002a7"
@@ -26,11 +26,14 @@ SRC_URI = "git://${GIT_ZGATE_SERVER}/zware_controller_sdk;protocol=${GIT_ZGATE_P
 
 S = "${WORKDIR}/git/zipgateway-7.15.04-Source/usr/local"
 
-inherit pkgconfig cmake python3-dir python3native update-rc.d
+inherit pkgconfig cmake python3-dir python3native systemd
 
-# Create runlevel links
-INITSCRIPT_NAME = "zwaved"
-INITSCRIPT_PARAMS = "start 30 5 ."
+SYSTEMD_SERVICE_${PN} = "zwaved.service"
+SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+SYSTEMD_PACKAGES = "${PN}"
+
+# Allow init.d scripts to be added
+INIT_D_DIR="/etc/fake.d"
 
 EXTRA_OECMAKE = " \
     -DCMAKE_INSTALL_PREFIX=${prefix}/local \
@@ -48,8 +51,6 @@ do_install_append() {
     rm -f ${D}/${prefix}/local/etc/zipgateway_node_identify_rpi3b+_led.sh
 
     # systemd services
-    install -d ${D}${systemd_unitdir}/system-preset
-    echo "enable zwaved.service" > ${D}${systemd_unitdir}/system-preset/98-zwaved.preset
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/zwaved.service ${D}${systemd_unitdir}/system
 }
@@ -69,38 +70,9 @@ pkg_postinst_ontarget_${PN} () {
 # Post install to make sure systemd is setup
 #
         mkdir -p /media/extra/log/error
-        if type systemctl >/dev/null 2>/dev/null; then
-                OPTS=""
-
-                if [ "enable" = "enable" ]; then
-                        for service in zwaved.service; do
-                                case "${service}" in
-                                *@*)
-                                        systemctl ${OPTS} enable "${service}"
-                                        ;;
-                                esac
-                        done
-                fi
-
-                systemctl daemon-reload
-                systemctl preset zwaved.service
-
-                if [ "enable" = "enable" ]; then
-                        systemctl --no-block restart zwaved.service
-                fi
-        fi
-
 	# update /usr/local/etc/zipgateway.cfg to use ttymxc3 for Nene
         if grep -q vivint,nene "/proc/device-tree/compatible" ; then
                 sed -i 's/ttymxc2/ttymxc3/g' /usr/local/etc/zipgateway.cfg
-        fi
-}
-
-pkg_prerm_ontarget_${PN} () {
-#!/bin/sh -e
-        if type systemctl >/dev/null 2>/dev/null; then
-                systemctl stop zwaved.service
-                systemctl disable zwaved.service
         fi
 }
 
@@ -128,7 +100,6 @@ FILES_${PN} += "${prefix}/local/bin/zw_programmer"
 FILES_${PN} += "${prefix}/local/bin/zgw_eeprom_to_sqlite"
 FILES_${PN} += "${prefix}/local/bin/zgw_eeprom_2_25_to_2_61"
 FILES_${PN} += "${systemd_unitdir}/system/zwaved.service"
-FILES_${PN} += "${systemd_unitdir}/system-preset/98-zwaved.preset"
 
 FILES_${PN}-dbg += "${prefix}/local/bin/.debug"
 FILES_${PN}-dbg += "${prefix}/local/sbin/.debug"
