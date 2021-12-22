@@ -1,7 +1,7 @@
 [Unit]
 Description=Vivint zwaved/zipgateway service.
 Before=systemd-networkd-wait-online.service sundance.service procmand.service
-After=syslog.target finish-vivint.service iot-radio-fw-verify.service
+After=syslog.target finish-vivint.service iot-radio-fw-verify.service mfg-test.service
 
 [Install]
 WantedBy=multi-user.target
