@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=d8940d2702ac72abe9e3994316807ff3"
 DEPENDS = "python-native libusb flex-native bison-native json-c openssl libxslt-native libusb-native json-c-native"
 RDEPENDS_${PN} = "bridge-utils openssl bash"
 
-PR = "r6"
+PR = "r7"
 PV = "7.15.04+git${SRCPV}"
 
 #SRCREV = "64e75bb5596062d7fac742f677122537f34002a7"
