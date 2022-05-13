@@ -17,7 +17,7 @@ SRCNAME = "python-pulseaudio"
 PR = "ml7"
 SRCREV = "${AUTOREV}"
 
-SRC_URI = "git://git@source.vivint.com:7999/em/python-pulseaudio.git;protocol=ssh;branch=pa-12.2 \
+SRC_URI = "git://${GIT_SERVER}/python-pulseaudio.git;protocol=ssh;branch=pa-12.2 \
 "
 S = "${WORKDIR}/git"
 
