@@ -1,7 +1,7 @@
 HOMEPAGE = "https://github.com/jmespath/jmespath.py"
 DESCRIPTION = "JMESPath (pronounced “james path”) allows you to declaratively specify how to extract elements from a JSON document."
 SECTION = "devel/python"
-LICENSE = "Amazon"
+LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=2683790f5fabb41a3f75b70558799eb4"
 
 SRC_URI[md5sum] = "65bdcb5fa5bcf1cc710ffa508e78e408"
