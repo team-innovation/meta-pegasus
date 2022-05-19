@@ -27,5 +27,3 @@ do_install_append() {
 
 FILES_${PN}-dbg += "/usr/local/bin/.debug"
 FILES_${PN} = "/usr/local/bin/*"
-
-BBCLASSEXTEND = "native nativesdk"
