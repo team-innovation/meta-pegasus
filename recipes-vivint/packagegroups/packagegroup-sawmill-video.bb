@@ -21,6 +21,7 @@ RDEPENDS_${PN} = " \
 	gstreamer1.0-plugins-base-videotestsrc \
 	gstreamer1.0-plugins-base-volume \
 	gstreamer1.0-plugins-base-opus \
+	gstreamer1.0-plugins-bad-opusparse \
 	gstreamer1.0-plugins-good \
 	gstreamer1.0-plugins-good-imagefreeze \
 	gstreamer1.0-plugins-good-isomp4 \
