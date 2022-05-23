@@ -1,0 +1,93 @@
+From 25dbfc2224fc135ac91582013ee96a426fe248b2 Mon Sep 17 00:00:00 2001
+From: Tanner Oakes <tanner.oakes@vivint.com>
+Date: Wed, 1 Sep 2021 10:26:54 -0600
+Subject: [PATCH 5/5] Fixes 1080p-clip-playback on imx6
+
+---
+ src/gsttools/qgstutils.cpp                    |  7 ++++++
+ src/multimedia/video/qvideoframe.cpp          | 23 +++++++++++++++++++
+ src/multimedia/video/qvideoframe.h            |  1 +
+ .../imx6/qsgvivantevideomaterial.cpp          |  3 ++-
+ 4 files changed, 33 insertions(+), 1 deletion(-)
+
+diff --git a/src/gsttools/qgstutils.cpp b/src/gsttools/qgstutils.cpp
+index ab550cbfa..7ced7507f 100644
+--- a/src/gsttools/qgstutils.cpp
++++ b/src/gsttools/qgstutils.cpp
+@@ -1262,6 +1262,13 @@ QVideoSurfaceFormat QGstUtils::formatForCaps(
+         if (bytesPerLine)
+             *bytesPerLine = ((size.width() * bitsPerPixel / 8) + 3) & ~3;
+ 
++	if (info.finfo->format == GST_VIDEO_FORMAT_I420) {
++	   if (size.width() == 1920) {
++		//SC-4336 for the imx6, crop the 8 extra lines on the bottom
++		format.setViewport(QRect(0, 0, 1920, 1072));
++	   }
++        }	
++
+         return format;
+     }
+     return QVideoSurfaceFormat();
+diff --git a/src/multimedia/video/qvideoframe.cpp b/src/multimedia/video/qvideoframe.cpp
+index fd7b74075..7803d8d2d 100644
+--- a/src/multimedia/video/qvideoframe.cpp
++++ b/src/multimedia/video/qvideoframe.cpp
+@@ -469,6 +469,29 @@ int QVideoFrame::height() const
+     return d->size.height();
+ }
+ 
++/*!
++    Returns the extra height of padding for an imx6 frame
++*/
++int QVideoFrame::extraHeight() const
++{
++    //Fixes SC-4336 and SC-4678.
++    //The gstreamer-imx decodes 1080p and 360p video frames with
++    //8 extra lines of padding for the GPU but doesn't
++    //pass this information along the GstVideoMetadata.
++    //So this is a fix for Qt to inform the GPU and to
++    //crop the boundary of the extra 8 lines.
++    switch (d->size.height()) {
++    // The height might need to be divisible by 16
++    // the documentation doesn't say why.
++    // 368, 448, and 1088 are all divisible by 16 
++    	case 360:
++    	case 1080:
++      		return 8;
++    	default: 
++      		return 0;
++    }	
++}
++
+ /*!
+     Returns the field an interlaced video frame belongs to.
+ 
+diff --git a/src/multimedia/video/qvideoframe.h b/src/multimedia/video/qvideoframe.h
+index d043442a3..90082f650 100644
+--- a/src/multimedia/video/qvideoframe.h
++++ b/src/multimedia/video/qvideoframe.h
+@@ -131,6 +131,7 @@ public:
+     QSize size() const;
+     int width() const;
+     int height() const;
++    int extraHeight() const; // This is to patch 1080p video on imx6
+ 
+     FieldType fieldType() const;
+     void setFieldType(FieldType);
+diff --git a/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp b/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp
+index e1468fe34..a2be6a0ad 100644
+--- a/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp
++++ b/src/plugins/videonode/imx6/qsgvivantevideomaterial.cpp
+@@ -203,7 +203,8 @@ GLuint QSGVivanteVideoMaterial::vivanteMapping(QVideoFrame vF)
+                 // In other words, if the planes aren't tightly packed, then the direct textures won't be able
+                 // to render the frame correctly anyway.
+                 int fullWidth = vF.bytesPerLine() / QSGVivanteVideoNode::getBytesForPixelFormat(vF.pixelFormat());
+-                int fullHeight = (vF.planeCount() > 1) ? ((vF.bits(1) - vF.bits(0)) / vF.bytesPerLine()) : vF.height();
++                int fullHeight = (vF.planeCount() > 1) ? ((vF.bits(1) - vF.bits(0)) / vF.bytesPerLine()) : vF.height() +
++			vF.extraHeight();
+ 
+                 // The uscale is the ratio of actual width to the full width (same for vscale and height).
+                 // Since the vivante direct textures do not offer a way to explicitly specify the amount of padding
+-- 
+2.33.0
+
