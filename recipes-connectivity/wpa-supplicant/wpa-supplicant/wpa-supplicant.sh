@@ -45,7 +45,7 @@ if [ "$MODE" = "start" ] ; then
 
         # if we have passed the criteria, start wpa_supplicant
         if [ -n "$WPA_SUP_CONF" ]; then
-		if [ $platform'x' == 'nenex' ] || [ $platform'x' == 'gallusx' ] || [ $platform'x' == 'magellanx' ] ||; then
+		if [ $platform'x' == 'nenex' ] || [ $platform'x' == 'gallusx' ] || [ $platform'x' == 'magellanx' ]; then
 			IF_WPA_DRIVER_OPTION="-Dnl80211"
 			WPA_P2P0_OPTIONS="-N -i p2p0 $IF_WPA_DRIVER_OPTION -c /etc/wpa_supplicant_p2p0.conf -puse_p2p_group_interface=1"
 		else
