@@ -1,6 +1,6 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-PR = "r2"
+PR = "r3"
 
 SRC_URI += "file://wpa_supplicant_p2p0.conf"
 
