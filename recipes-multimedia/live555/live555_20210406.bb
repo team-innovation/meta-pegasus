@@ -15,7 +15,7 @@ SRCBRANCH = "${GIT_LIVE555_BRANCH}"
 GIT_LIVE555_PROTOCOL ?= "ssh"
 SRC_URI = "git://${GIT_LIVE555_SERVER}/live555;protocol=${GIT_LIVE555_PROTOCOL};branch=${SRCBRANCH}"
 
-PR="r1"
+PR="r2"
 
 S = "${WORKDIR}/git"
 
