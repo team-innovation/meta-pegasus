@@ -1,6 +1,6 @@
 DEFAULT_TIMEZONE = "US/Mountain"
 
-pkg_postinst_ontarget_${PN} () {
+pkg_postinst_ontarget_${PN}-core () {
 #!/bin/sh -e
 # Copy over old timezone to new run partition
 
