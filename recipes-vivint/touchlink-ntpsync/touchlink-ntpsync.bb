@@ -12,6 +12,8 @@ do_config[noexec] = "1"
 
 do_compile[noexec] = "1" 
 
+RDEPENDS_${PN} += "bash"
+
 do_install() {
 	install -d ${D}/usr/local/bin
 	install -m 0755 ${WORKDIR}/ntpsync ${D}/usr/local/bin
