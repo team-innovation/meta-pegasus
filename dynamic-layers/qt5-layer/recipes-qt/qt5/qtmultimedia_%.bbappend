@@ -6,8 +6,8 @@ SRC_URI_append += " \
 	file://0004-Add-latency-control.patch \
 	file://0005-Fixes-1080p-clip-playback-on-imx6.patch \
 	file://0087-Vivante-Keep-only-one-frame.patch \
-	file://0091-GStreamer-Remove-dependency-to-gstreamer_imxcommon.patch \
     file://discard-bad-frames.patch \
+	file://0091-GStreamer-Remove-dependency-to-gstreamer_imxcommon.patch \
 "
 
 PACKAGECONFIG[imx] = ",,gstreamer1.0-plugins-base"

@@ -2,6 +2,7 @@ SUMMARY = "The Python Programming Language"
 HOMEPAGE = "http://www.python.org"
 LICENSE = "PSFv2"
 SECTION = "devel/python"
+PR = "r2"
 
 LIC_FILES_CHKSUM = "file://LICENSE;md5=acd1bbf042c2b53c51a38635f6d59095"
 

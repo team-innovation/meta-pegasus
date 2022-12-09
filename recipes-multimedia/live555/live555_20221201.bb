@@ -6,7 +6,7 @@ DESCRIPTION = "LIVE555 Streaming Media libraries"
 HOMEPAGE = "http://live.com/"
 LICENSE = "LGPL-3.0"
 SECTION = "devel"
-PR = "r7"
+PR = "r19"
 
 DEPENDS = "openssl"
 
@@ -15,6 +15,7 @@ SRC_URI = "https://download.videolan.org/pub/contrib/live555/live.${URLV}.tar.gz
         file://0001-Vivint-changes-for-20221001.patch \
         file://0002-VID-7204-fix-video-preload-issue.patch \
         file://0003-Play-sdp-packages.patch \
+        file://0004-Add-keyData-injection.patch \
 "
 
 # only latest live version stays on http://www.live555.com/liveMedia/public/, add mirror for older
@@ -36,17 +37,17 @@ do_configure() {
     sed -i -e "s:-I/usr/local/include::" config.linux-with-shared-libraries
     echo "COMPILE_OPTS+="-DALLOW_RTSP_SERVER_PORT_REUSE=1  -DDEBUG_SEND=1 \
     -DRTPINTERFACE_BLOCKING_WRITE_TIMEOUT_MS=5000 -DPREFER_LOW_LATENCY=1 -DCORK_PAYLOAD=1 \
-    -DXLOCALE_NOT_USED"" >> config.linux-with-shared-libraries
+    -DXLOCALE_NOT_USED -DDEBUG"" >> config.linux-with-shared-libraries
     ./genMakefiles linux-with-shared-libraries
 }
 
 do_install() {
-    oe_runmake install DESTDIR=${D} PREFIX=/usr
     install -d ${D}${includedir}/BasicUsageEnvironment
     install -d ${D}${includedir}/groupsock
     install -d ${D}${includedir}/liveMedia
     install -d ${D}${includedir}/UsageEnvironment
     install -d ${D}${libdir}
+    oe_runmake install DESTDIR=${D} PREFIX=/usr
     cp -R --no-dereference --preserve=mode,links -v ${S}/BasicUsageEnvironment/include/*.hh ${D}${includedir}/BasicUsageEnvironment/
     cp -R --no-dereference --preserve=mode,links -v ${S}/groupsock/include/*.h ${D}${includedir}/groupsock/
     cp -R --no-dereference --preserve=mode,links -v ${S}/groupsock/include/*.hh ${D}${includedir}/groupsock/
