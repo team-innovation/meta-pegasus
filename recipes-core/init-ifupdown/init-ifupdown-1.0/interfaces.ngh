@@ -6,6 +6,7 @@ iface lo inet loopback
 
 # Wireless interfaces
 iface wlan0 inet dhcp
+        hostname Vivint-$(hostname)
         post-down /bin/sh -c 'pkill -9 -f "[u]dhcpc.*-i wlan0" || true'
         wireless_mode managed
         wireless_essid any
@@ -17,6 +18,7 @@ iface atml0 inet dhcp
 # Wired or wireless interfaces
 auto eth0
 iface eth0 inet dhcp
+	hostname Vivint-$(hostname)
 	post-down /bin/sh -c 'pkill -9 -f "[u]dhcpc.*-i eth0" || true'
 
 iface eth1 inet dhcp
@@ -30,4 +32,5 @@ iface bnep0 inet dhcp
 
 # p2p0 for AP mode use
 iface p2p0 inet dhcp
+	hostname Vivint-$(hostname)
 	post-down /bin/sh -c 'pkill -9 -f "[u]dhcpc.*-i p2p0" || true'
