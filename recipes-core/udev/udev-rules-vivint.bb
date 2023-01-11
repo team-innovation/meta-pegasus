@@ -2,11 +2,12 @@ DESCRIPTION = "udev rules for Vivint NGH"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
+PR = "r1"
+
 SRC_URI = " \
 	file://local.rules \
 	file://99-goodix-touch.rules \
 	file://mount.sh \
-	file://zwavettyid.sh \
 	file://mount.blacklist \
 "
 
@@ -27,11 +28,6 @@ do_install() {
 	if [ -e "${WORKDIR}/mount.sh" ]; then
 		install -d ${D}${sysconfdir}/udev/scripts
 		install -m 0755 ${WORKDIR}/mount.sh ${D}${sysconfdir}/udev/scripts/mount.sh
-	fi
-
-	if [ -e "${WORKDIR}/zwavettyid.sh" ]; then
-		install -d ${D}${sysconfdir}/udev/scripts
-		install -m 0755 ${WORKDIR}/zwavettyid.sh ${D}${sysconfdir}/udev/scripts/zwavettyid.sh
 	fi
 
 	if [ -e "${WORKDIR}/mount.blacklist" ]; then
