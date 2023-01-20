@@ -1,6 +1,6 @@
 # Look for file in this layer first
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}-${PV}:"
-PR_append = "+viv8"
+PR_append = "+viv10"
 SRC_URI += "file://interfaces.ngh \
 	    file://add_default_lo_route"
 
