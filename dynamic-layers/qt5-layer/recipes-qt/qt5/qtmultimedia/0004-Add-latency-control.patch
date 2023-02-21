@@ -51,7 +51,7 @@ index 797229e69..1fcb1c67f 100644
      QGstreamerAudioProbeControl *m_audioProbe = nullptr;
  
      int m_volume = 100;
-+    int m_latency = 2500000000;
++    int m_latency = 2500;
      qreal m_playbackRate = 1.0;
      bool m_muted = false;
      bool m_audioAvailable = false;
