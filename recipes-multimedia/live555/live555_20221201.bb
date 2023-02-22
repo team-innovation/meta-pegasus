@@ -16,6 +16,7 @@ SRC_URI = "https://download.videolan.org/pub/contrib/live555/live.${URLV}.tar.gz
         file://0002-VID-7204-fix-video-preload-issue.patch \
         file://0003-Play-sdp-packages.patch \
         file://0004-Add-keyData-injection.patch \
+        file://TLSprotected.patch \
 "
 
 # only latest live version stays on http://www.live555.com/liveMedia/public/, add mirror for older
