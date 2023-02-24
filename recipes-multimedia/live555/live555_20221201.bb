@@ -11,7 +11,10 @@ PR = "r19"
 DEPENDS = "openssl"
 
 URLV = "${@d.getVar('PV')[0:4]}.${@d.getVar('PV')[4:6]}.${@d.getVar('PV')[6:8]}"
-SRC_URI = "https://download.videolan.org/pub/contrib/live555/live.${URLV}.tar.gz \
+
+#SRC_URI = "https://download.videolan.org/pub/contrib/live555/live.${URLV}.tar.gz 
+
+SRC_URI = "https://builds-archive.vivint.com/innovation/downloads/live.${URLV}.tar.gz \
         file://0001-Vivint-changes-for-20221001.patch \
         file://0002-VID-7204-fix-video-preload-issue.patch \
         file://0003-Play-sdp-packages.patch \
