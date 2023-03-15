@@ -1,0 +1,20 @@
+diff --git a/liveMedia/include/RTSPServer.hh b/liveMedia/include/RTSPServer.hh
+index c71cfb9..9095bbc 100644
+--- a/liveMedia/include/RTSPServer.hh
++++ b/liveMedia/include/RTSPServer.hh
+@@ -308,6 +308,7 @@ protected: // redefined virtual functions
+   // If you subclass "RTSPClientConnection", then you must also redefine this virtual function in order
+   // to create new objects of your subclass:
+   virtual ClientConnection* createNewClientConnection(int clientSocket, struct sockaddr_storage const& clientAddr);
++  Boolean fOurConnectionsUseTLS; // by default, False
+ 
+ protected:
+   // If you subclass "RTSPClientSession", then you must also redefine this virtual function in order
+@@ -339,7 +340,6 @@ private:
+   unsigned fRegisterOrDeregisterRequestCounter;
+   UserAuthenticationDatabase* fAuthDB;
+   Boolean fAllowStreamingRTPOverTCP; // by default, True
+-  Boolean fOurConnectionsUseTLS; // by default, False
+   Boolean fWeServeSRTP; // used only if "fOurConnectionsUseTLS" is True
+   Boolean fWeEncryptSRTP; // used only if "fWeServeSRTP" is True
+ };
