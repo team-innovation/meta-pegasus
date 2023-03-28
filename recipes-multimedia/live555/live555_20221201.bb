@@ -6,7 +6,7 @@ DESCRIPTION = "LIVE555 Streaming Media libraries"
 HOMEPAGE = "http://live.com/"
 LICENSE = "LGPL-3.0"
 SECTION = "devel"
-PR = "r19"
+PR = "r20"
 
 DEPENDS = "openssl"
 
