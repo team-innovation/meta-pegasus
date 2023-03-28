@@ -651,10 +651,10 @@ index a90ba9c..8b985d4 100644
      fMIKEYState(NULL), fCrypto(NULL) {
    fSourceFilterAddr = nullAddress();
  
++    memset(fKeyData, 0, 31);
 +    if (keyData != NULL)
 +        strncpy(fKeyData, keyData, 30);
-+    else
-+        fKeyData[0]=0;
++
    // Get our host name, and use this for the RTCP CNAME:
    const unsigned maxCNAMElen = 100;
    char CNAME[maxCNAMElen+1];
@@ -772,10 +772,10 @@ index e61e424..0d7bf1c 100644
      fTranscodingTable(transcodingTable),
      fInitialPortNum(initialPortNum), fMultiplexRTCPWithRTP(multiplexRTCPWithRTP) {
 +
++     memset(fKeyData, 0, 31); 
 +     if (keyData != NULL)
 +         strncpy(fKeyData, keyData, 30);
-+     else
-+         fKeyData[0] = 0;
++
 +
    // Open a RTSP connection to the input stream, and send a "DESCRIBE" command.
    // We'll use the SDP description in the response to set ourselves up.
