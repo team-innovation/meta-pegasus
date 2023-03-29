@@ -6,7 +6,7 @@ DESCRIPTION = "LIVE555 Streaming Media libraries"
 HOMEPAGE = "http://live.com/"
 LICENSE = "LGPL-3.0"
 SECTION = "devel"
-PR = "r20"
+PR = "r23"
 
 DEPENDS = "openssl"
 
@@ -19,7 +19,6 @@ SRC_URI = "https://builds-archive.vivint.com/innovation/downloads/live.${URLV}.t
         file://0002-VID-7204-fix-video-preload-issue.patch \
         file://0003-Play-sdp-packages.patch \
         file://0004-Add-keyData-injection.patch \
-        file://TLSprotected.patch \
 "
 
 # only latest live version stays on http://www.live555.com/liveMedia/public/, add mirror for older

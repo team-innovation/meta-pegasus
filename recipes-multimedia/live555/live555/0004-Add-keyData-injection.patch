@@ -1,4 +1,4 @@
-From 28cc9ac7a1f3cc18e8787b359c609c5ee3be0b0f Mon Sep 17 00:00:00 2001
+From fac0e4fb30c3633b435901948d3ee8e6ee143e78 Mon Sep 17 00:00:00 2001
 From: Tanner Oakes <tanner.oakes@vivint.com>
 Date: Thu, 8 Dec 2022 15:05:46 -0700
 Subject: [PATCH] Add keyData injection
@@ -6,15 +6,18 @@ Subject: [PATCH] Add keyData injection
 ---
  .gitignore                                    |  75 +++
  build.sh                                      |  14 +
- config.linux-gdb                              |   2 +-
+ config.linux-gdb                              |   3 +-
  liveMedia/#GenericMediaServer.cpp#            | 487 ------------------
- liveMedia/MediaSession.cpp                    |  35 +-
- liveMedia/ProxyServerMediaSession.cpp         |  22 +-
+ liveMedia/MediaSession.cpp                    |  38 +-
+ liveMedia/ProxyServerMediaSession.cpp         |  21 +-
  liveMedia/SRTPCryptographicContext.cpp        |  10 +
  liveMedia/include/MediaSession.hh             |   6 +-
  liveMedia/include/ProxyServerMediaSession.hh  |   5 +-
+ liveMedia/include/RTSPServer.hh               |   2 +-
  liveMedia/include/SRTPCryptographicContext.hh |   2 +
- 10 files changed, 149 insertions(+), 509 deletions(-)
+ proxyServer/live555ProxyServer.cpp            |   3 +-
+ testProgs/testOnDemandRTSPServer.cpp          |   4 +-
+ 13 files changed, 156 insertions(+), 514 deletions(-)
  create mode 100644 .gitignore
  create mode 100755 build.sh
  delete mode 100644 liveMedia/#GenericMediaServer.cpp#
@@ -121,12 +124,13 @@ index 0000000..949abeb
 +
 +
 diff --git a/config.linux-gdb b/config.linux-gdb
-index 800e0d3..930f47f 100644
+index 800e0d3..734c2db 100644
 --- a/config.linux-gdb
 +++ b/config.linux-gdb
-@@ -1,4 +1,4 @@
+@@ -1,4 +1,5 @@
 -COMPILE_OPTS =		$(INCLUDES) -I/usr/local/include -I. -O -DSOCKLEN_T=socklen_t -g -D_LARGEFILE_SOURCE=1 -D_FILE_OFFSET_BITS=64
-+COMPILE_OPTS =		$(INCLUDES) -I/usr/local/include -I. -O -DSOCKLEN_T=socklen_t -g -D_LARGEFILE_SOURCE=2 -D_FILE_OFFSET_BITS=64 -DDEBUG
++COMPILE_OPTS =		$(INCLUDES) -I/usr/local/include -I. -O -DSOCKLEN_T=socklen_t -g -D_LARGEFILE_SOURCE=3 -D_FILE_OFFSET_BITS=64 -DDEBUG -DSERVER_USE_TLS -DPATHNAME_TO_PRIVATE_KEY_FILE=\"/home/toakes/.pki/certs/rtsps.pem\" -DPATHNAME_TO_CERTIFICATE_FILE=\"/home/toakes/.pki/certs/rtsps.pem\"
++#COMPILE_OPTS =		$(INCLUDES) -I/usr/local/include -I. -O -DSOCKLEN_T=socklen_t -g -D_LARGEFILE_SOURCE=3 -D_FILE_OFFSET_BITS=64 -DDEBUG
  C =			c
  C_COMPILER =		cc
  C_FLAGS =		$(COMPILE_OPTS)
@@ -624,7 +628,7 @@ index 80f5413..0000000
 -  return (char const*)(fTable->Lookup(username));
 -}
 diff --git a/liveMedia/MediaSession.cpp b/liveMedia/MediaSession.cpp
-index a90ba9c..8b985d4 100644
+index a90ba9c..c74215d 100644
 --- a/liveMedia/MediaSession.cpp
 +++ b/liveMedia/MediaSession.cpp
 @@ -28,8 +28,8 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
@@ -647,18 +651,17 @@ index a90ba9c..8b985d4 100644
    : Medium(env),
      fSubsessionsHead(NULL), fSubsessionsTail(NULL),
      fConnectionEndpointName(NULL), fConnectionEndpointNameAddressFamily(AF_UNSPEC),
-@@ -67,6 +67,10 @@ MediaSession::MediaSession(UsageEnvironment& env)
+@@ -67,6 +67,9 @@ MediaSession::MediaSession(UsageEnvironment& env)
      fMIKEYState(NULL), fCrypto(NULL) {
    fSourceFilterAddr = nullAddress();
  
 +    memset(fKeyData, 0, 31);
 +    if (keyData != NULL)
 +        strncpy(fKeyData, keyData, 30);
-+
    // Get our host name, and use this for the RTCP CNAME:
    const unsigned maxCNAMElen = 100;
    char CNAME[maxCNAMElen+1];
-@@ -78,6 +82,7 @@ MediaSession::MediaSession(UsageEnvironment& env)
+@@ -78,6 +81,7 @@ MediaSession::MediaSession(UsageEnvironment& env)
  #endif
    CNAME[maxCNAMElen] = '\0'; // just in case
    fCNAME = strDup(CNAME);
@@ -666,7 +669,7 @@ index a90ba9c..8b985d4 100644
  }
  
  MediaSession::~MediaSession() {
-@@ -346,7 +351,7 @@ static MIKEYState* parseSDPAttribute_key_mgmtToMIKEY(char const* sdpLine) {
+@@ -346,25 +350,31 @@ static MIKEYState* parseSDPAttribute_key_mgmtToMIKEY(char const* sdpLine) {
    return resultMIKEYState;
  }
  
@@ -675,7 +678,14 @@ index a90ba9c..8b985d4 100644
    char* cryptoSuite = NULL;
    char* cryptoData = NULL;
    MIKEYState* resultMIKEYState = NULL;
-@@ -358,13 +363,17 @@ static MIKEYState* parseSDPAttribute_cryptoToMIKEY(char const* sdpLine) {
+ 
+   do {
+     // Check for a "a=crypto:<id> <crypto-suite> inline:<cryptoData>" line:
+-    if (!parseTwoStringValues(sdpLine, "a=crypto:1 %s inline:%s", cryptoSuite, cryptoData)) break;
++    if (!parseTwoStringValues(sdpLine, "a=crypto:1 %s inline:%s", cryptoSuite, cryptoData)) {
++        if (!parseStringValue(sdpLine, "a=crypto:1 %s", cryptoSuite)) break;
++    }
+ 
      // We understand only the 'crypto suite' "AES_CM_128_HMAC_SHA1_80":
      if (strcmp(cryptoSuite, "AES_CM_128_HMAC_SHA1_80") != 0) break;
  
@@ -699,7 +709,7 @@ index a90ba9c..8b985d4 100644
    } while (0);
  
    delete[] cryptoSuite;
-@@ -498,7 +507,7 @@ Boolean MediaSession::parseSDPAttribute_key_mgmt(char const* sdpLine) {
+@@ -498,7 +508,7 @@ Boolean MediaSession::parseSDPAttribute_key_mgmt(char const* sdpLine) {
  }
  
  Boolean MediaSession::parseSDPAttribute_crypto(char const* sdpLine) {
@@ -708,7 +718,7 @@ index a90ba9c..8b985d4 100644
    if (newMIKEYState == NULL) return False;
  
    delete fCrypto; delete fMIKEYState;
-@@ -750,7 +759,6 @@ static Boolean const honorSDPPortChoice
+@@ -750,7 +760,6 @@ static Boolean const honorSDPPortChoice
  
  Boolean MediaSubsession::initiate(int useSpecialRTPoffset) {
    if (fReadSource != NULL) return True; // has already been initiated
@@ -716,7 +726,7 @@ index a90ba9c..8b985d4 100644
    do {
      if (fCodecName == NULL) {
        env().setResultMsg("Codec is unspecified");
-@@ -1279,7 +1287,7 @@ Boolean MediaSubsession::parseSDPAttribute_key_mgmt(char const* sdpLine) {
+@@ -1279,7 +1288,7 @@ Boolean MediaSubsession::parseSDPAttribute_key_mgmt(char const* sdpLine) {
  }
  
  Boolean MediaSubsession::parseSDPAttribute_crypto(char const* sdpLine) {
@@ -725,7 +735,7 @@ index a90ba9c..8b985d4 100644
    if (newMIKEYState == NULL) return False;
  
    delete fCrypto; delete fMIKEYState;
-@@ -1289,7 +1297,6 @@ Boolean MediaSubsession::parseSDPAttribute_crypto(char const* sdpLine) {
+@@ -1289,7 +1298,6 @@ Boolean MediaSubsession::parseSDPAttribute_crypto(char const* sdpLine) {
    return True;
  }
  
@@ -734,7 +744,7 @@ index a90ba9c..8b985d4 100644
    do {
      // First, check "fProtocolName"
 diff --git a/liveMedia/ProxyServerMediaSession.cpp b/liveMedia/ProxyServerMediaSession.cpp
-index e61e424..0d7bf1c 100644
+index e61e424..65270e5 100644
 --- a/liveMedia/ProxyServerMediaSession.cpp
 +++ b/liveMedia/ProxyServerMediaSession.cpp
 @@ -53,7 +53,7 @@ private:
@@ -767,20 +777,19 @@ index e61e424..0d7bf1c 100644
  			  createNewProxyRTSPClientFunc* ourCreateNewProxyRTSPClientFunc,
  			  portNumBits initialPortNum, Boolean multiplexRTCPWithRTP)
    : ServerMediaSession(env, streamName, NULL, NULL, False, NULL),
-@@ -108,6 +109,12 @@ ProxyServerMediaSession
+@@ -108,6 +109,11 @@ ProxyServerMediaSession
      fCreateNewProxyRTSPClientFunc(ourCreateNewProxyRTSPClientFunc),
      fTranscodingTable(transcodingTable),
      fInitialPortNum(initialPortNum), fMultiplexRTCPWithRTP(multiplexRTCPWithRTP) {
 +
-+     memset(fKeyData, 0, 31); 
++     memset(fKeyData, 0, 31);
 +     if (keyData != NULL)
-+         strncpy(fKeyData, keyData, 30);
-+
++        strncpy(fKeyData, keyData, 30);
 +
    // Open a RTSP connection to the input stream, and send a "DESCRIBE" command.
    // We'll use the SDP description in the response to set ourselves up.
    fProxyRTSPClient
-@@ -162,7 +169,7 @@ void ProxyServerMediaSession::continueAfterDESCRIBE(char const* sdpDescription)
+@@ -162,7 +168,7 @@ void ProxyServerMediaSession::continueAfterDESCRIBE(char const* sdpDescription)
    // Create a (client) "MediaSession" object from the stream's SDP description ("resultString"), then iterate through its
    // "MediaSubsession" objects, to set up corresponding "ServerMediaSubsession" objects that we'll use to serve the stream's tracks.
    do {
@@ -789,7 +798,7 @@ index e61e424..0d7bf1c 100644
      if (fClientMediaSession == NULL) break;
  
      MediaSubsessionIterator iter(*fClientMediaSession);
-@@ -612,9 +619,16 @@ FramedSource* ProxyServerMediaSubsession::createNewStreamSource(unsigned clientS
+@@ -612,9 +618,16 @@ FramedSource* ProxyServerMediaSubsession::createNewStreamSource(unsigned clientS
    }
  
    ProxyRTSPClient* const proxyRTSPClient = sms->fProxyRTSPClient;
@@ -893,6 +902,26 @@ index 3812014..8f977b0 100644
  };
  
  
+diff --git a/liveMedia/include/RTSPServer.hh b/liveMedia/include/RTSPServer.hh
+index c71cfb9..9095bbc 100644
+--- a/liveMedia/include/RTSPServer.hh
++++ b/liveMedia/include/RTSPServer.hh
+@@ -308,6 +308,7 @@ protected: // redefined virtual functions
+   // If you subclass "RTSPClientConnection", then you must also redefine this virtual function in order
+   // to create new objects of your subclass:
+   virtual ClientConnection* createNewClientConnection(int clientSocket, struct sockaddr_storage const& clientAddr);
++  Boolean fOurConnectionsUseTLS; // by default, False
+ 
+ protected:
+   // If you subclass "RTSPClientSession", then you must also redefine this virtual function in order
+@@ -339,7 +340,6 @@ private:
+   unsigned fRegisterOrDeregisterRequestCounter;
+   UserAuthenticationDatabase* fAuthDB;
+   Boolean fAllowStreamingRTPOverTCP; // by default, True
+-  Boolean fOurConnectionsUseTLS; // by default, False
+   Boolean fWeServeSRTP; // used only if "fOurConnectionsUseTLS" is True
+   Boolean fWeEncryptSRTP; // used only if "fWeServeSRTP" is True
+ };
 diff --git a/liveMedia/include/SRTPCryptographicContext.hh b/liveMedia/include/SRTPCryptographicContext.hh
 index e13e3aa..46176e3 100644
 --- a/liveMedia/include/SRTPCryptographicContext.hh
@@ -906,6 +935,42 @@ index e13e3aa..46176e3 100644
  #ifndef NO_OPENSSL
  private:
    // Definitions specific to the "SRTP_AES128_CM_HMAC_SHA1_80" ciphersuite.
+diff --git a/proxyServer/live555ProxyServer.cpp b/proxyServer/live555ProxyServer.cpp
+index df3586e..d3a7aa8 100644
+--- a/proxyServer/live555ProxyServer.cpp
++++ b/proxyServer/live555ProxyServer.cpp
+@@ -232,7 +232,8 @@ int main(int argc, char** argv) {
+     ServerMediaSession* sms
+       = ProxyServerMediaSession::createNew(*env, rtspServer,
+ 					   proxiedStreamURL, streamName,
+-					   username, password, tunnelOverHTTPPortNum, verbosityLevel);
++					   username, password, tunnelOverHTTPPortNum, verbosityLevel, -1, NULL,
++                       "Svhq1jNXI5wrGjSZX1k4102OhImMSp");
+     rtspServer->addServerMediaSession(sms);
+ 
+     char* proxyStreamURL = rtspServer->rtspURL(sms);
+diff --git a/testProgs/testOnDemandRTSPServer.cpp b/testProgs/testOnDemandRTSPServer.cpp
+index efa1320..ec0fef8 100644
+--- a/testProgs/testOnDemandRTSPServer.cpp
++++ b/testProgs/testOnDemandRTSPServer.cpp
+@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
+   // Create the RTSP server:
+ #ifdef SERVER_USE_TLS
+   // Serve RTSPS: RTSP over a TLS connection:
+-  RTSPServer* rtspServer = RTSPServer::createNew(*env, 322, authDB);
++  RTSPServer* rtspServer = RTSPServer::createNew(*env, 8322, authDB);
+ #else
+   // Serve regular RTSP (over a TCP connection):
+   RTSPServer* rtspServer = RTSPServer::createNew(*env, 8554, authDB);
+@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
+   }
+ #ifdef SERVER_USE_TLS
+ #ifndef STREAM_USING_SRTP
+-#define STREAM_USING_SRTP True
++#define STREAM_USING_SRTP False
+ #endif
+   rtspServer->setTLSState(PATHNAME_TO_CERTIFICATE_FILE, PATHNAME_TO_PRIVATE_KEY_FILE,
+ 			  STREAM_USING_SRTP);
 -- 
-2.39.0
+2.40.0
 
