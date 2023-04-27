@@ -17,8 +17,6 @@ RDEPENDS_${PN} = " \
 	cronie \
 	gnupg \
 	hostapd \
-	iotivity-resource \
-	iotivity-bridging-plugins \
 	iproute2 \
 	init-ifupdown \
 	kernel-module-g-mass-storage \
