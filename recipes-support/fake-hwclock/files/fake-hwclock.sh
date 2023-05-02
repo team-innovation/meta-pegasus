@@ -13,7 +13,7 @@ loadclock() {
     if [ "$(date +%s)" -lt "$savedtime" ]; then
         echo "Restoring saved system time"
         date -s @"$savedtime"
-        hwclock -u -w
+        hwclock -u -w || true
     else
         echo "Not restoring old system time"
     fi

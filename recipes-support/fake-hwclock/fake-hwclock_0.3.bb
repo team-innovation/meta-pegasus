@@ -2,6 +2,7 @@ SUMMARY = "Utility to save time on a system without a rtc"
 DESCRIPTION = "If the rtc isn't battery backedup or is not available it will reset everytime power is lost. This utility fakes a hw clock by saving the clock periodically and restoring it on boot, it is only acurate to the save interval and needs NTP to be really useful"
 LICENSE="GPLv2"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0;md5=801f80980d171dd6425610833a22dbe6"
+PR = "2"
 
 inherit systemd
 
