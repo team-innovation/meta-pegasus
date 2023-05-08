@@ -7,7 +7,6 @@ inherit packagegroup
 RDEPENDS_${PN} += " \
 	graphviz \
 	openvpn \
-	zwave-nvm-converter \
         mosquitto \
         python3-paho-mqtt \
         python3-ubus \

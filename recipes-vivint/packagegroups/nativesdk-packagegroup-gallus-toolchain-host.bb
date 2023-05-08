@@ -14,11 +14,6 @@ RDEPENDS_${PN} += " \
 	nativesdk-python3-setuptools \
 	nativesdk-breakpad-dev \
 	nativesdk-breakpad-staticdev \
-	nativesdk-zipgateway \
-	nativesdk-zipgateway-dev \
-	nativesdk-zware-dev \
-	nativesdk-zware-staticdev \
-	nativesdk-zwave-nvm-converter \
 	nativesdk-variant-lite-dev \
 	nativesdk-taocpp-json-dev \
 	nativesdk-rapidjson-dev \
