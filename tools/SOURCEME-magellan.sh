@@ -113,6 +113,10 @@ grep -q meta-wnc ./conf/bblayers.conf ||
     echo "BBLAYERS += \" \${BSPDIR}/sources/meta-wnc \"" \
             >> ./conf/bblayers.conf
 
+grep -q meta-rust-bin ./conf/bblayers.conf ||
+    echo "BBLAYERS += \" \${BSPDIR}/sources/meta-rust-bin \"" \
+            >> ./conf/bblayers.conf
+
 grep -q package_rpm ./conf/local.conf &&
 	sed -i -e s/package_rpm/package_ipk/ ./conf/local.conf
 
