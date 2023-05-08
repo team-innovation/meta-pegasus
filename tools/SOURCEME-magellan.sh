@@ -96,6 +96,7 @@ test -d ${BUILD_DIR} &&
 
 # If we fail the above, just re-create the conf/ files
 rm -rf ${BUILD_DIR}/conf/
+sed -i '/meta-rust/d' ./imx-setup-release.sh
 
 # it is a new dir
 echo Setting up new dir \"${BUILD_DIR}\"
