@@ -9,6 +9,7 @@ SRC_URI = " \
 	file://99-goodix-touch.rules \
 	file://mount.sh \
 	file://mount.blacklist \
+	file://69-disable-usb-hid.rules \
 "
 
 S = "${WORKDIR}"
@@ -16,6 +17,7 @@ S = "${WORKDIR}"
 do_install() {
 	install -d ${D}${sysconfdir}/udev/rules.d
 	install -m 0644 ${WORKDIR}/99-goodix-touch.rules ${D}${sysconfdir}/udev/rules.d/
+	install -m 0644 ${WORKDIR}/69-disable-usb-hid.rules ${D}${sysconfdir}/udev/rules.d/
 
 	if [ -e "${WORKDIR}/local.rules" ]; then
 		install -d ${D}${sysconfdir}/udev/rules.d
@@ -29,6 +31,7 @@ do_install() {
 		install -d ${D}${sysconfdir}/udev/scripts
 		install -m 0755 ${WORKDIR}/mount.sh ${D}${sysconfdir}/udev/scripts/mount.sh
 	fi
+
 
 	if [ -e "${WORKDIR}/mount.blacklist" ]; then
 		install -d ${D}${sysconfdir}/udev
