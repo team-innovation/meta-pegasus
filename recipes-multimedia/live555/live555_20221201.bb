@@ -19,6 +19,7 @@ SRC_URI = "https://builds-archive.vivint.com/innovation/downloads/live.${URLV}.t
         file://0002-VID-7204-fix-video-preload-issue.patch \
         file://0003-Play-sdp-packages.patch \
         file://0004-Add-keyData-injection.patch \
+        file://0005-Inject-keydata-into-openRTSP.patch \
 "
 
 # only latest live version stays on http://www.live555.com/liveMedia/public/, add mirror for older
