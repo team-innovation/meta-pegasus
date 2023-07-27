@@ -3,7 +3,8 @@
 /dev/mmcblk2p1      /media/bootscript    auto       rw,noatime,nodiratime,async      	       0  0
 /dev/mmcblk2p2      /media/mmcblk2p2     auto       rw,noatime,nodiratime,async                0  0
 /dev/mmcblk2p3      /media/mmcblk2p3     auto       rw,noatime,nodiratime,async                0  0
-/dev/mmcblk2p4      /media/extra         auto       rw,noatime,nodiratime,async,barrier=0      0  0
+/dev/mmcblk2p4      /media/extra         auto       rw,nofail,noatime,nodiratime,async,barrier=0      0  0
+/dev/mapper/mmcblk2p4-encrypted   /media/extra     auto       rw,nofail,noatime,nodiratime,async,barrier=0      0  0
 proc                /proc                proc       defaults              0  0
 devpts              /dev/pts             devpts     mode=0620,gid=5       0  0
 tmpfs               /run                 tmpfs      mode=0755,nodev,nosuid,strictatime 0  0

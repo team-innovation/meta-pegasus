@@ -1,0 +1,1 @@
+ACTION=="add", KERNEL=="mmcblk2p*", RUN+="/usr/local/bin/decryptdrive '%E{DEVNAME}'"
