@@ -1,14 +1,15 @@
 diff --git a/src/quick/items/qquickmousearea.cpp b/src/quick/items/qquickmousearea.cpp
-index f54858e4eb..4164bd3199 100644
+index 867a36a362..e0318bc209 100644
 --- a/src/quick/items/qquickmousearea.cpp
 +++ b/src/quick/items/qquickmousearea.cpp
-@@ -1203,6 +1203,9 @@ bool QQuickMouseArea::setPressed(Qt::MouseButton button, bool p, Qt::MouseEventS
+@@ -1210,6 +1210,10 @@ bool QQuickMouseArea::setPressed(Qt::MouseButton button, bool p, Qt::MouseEventS
      bool isclick = wasPressed && p == false && dragged == false && d->hovered == true;
      Qt::MouseButtons oldPressed = d->pressed;
  
 +    if (wasPressed && p) { // we received a _mouse_ press event on the same button that is already pressed (shouldn't happen), just go ahead and process it like new
 +        wasPressed = false;
 +    }
++
      if (wasPressed != p) {
          QQuickMouseEvent &me = d->quickMouseEvent;
          me.reset(d->lastPos.x(), d->lastPos.y(), d->lastButton, d->lastButtons, d->lastModifiers, isclick, d->longPress, d->lastFlags);

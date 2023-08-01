@@ -1,0 +1,25 @@
+diff --git a/tests/auto/corelib/kernel/qmetatype/tst_qmetatype.cpp b/tests/auto/corelib/kernel/qmetatype/tst_qmetatype.cpp
+index 2e2209ac5d..4d0cdf8b5f 100644
+--- a/tests/auto/corelib/kernel/qmetatype/tst_qmetatype.cpp
++++ b/tests/auto/corelib/kernel/qmetatype/tst_qmetatype.cpp
+@@ -35,7 +35,7 @@
+ #include "tst_qvariant_common.h"
+ 
+ #ifdef Q_OS_LINUX
+-# include <pthread.h>
++# include <sched.h>
+ #endif
+ 
+ #include <algorithm>
+diff --git a/tests/auto/network/socket/qtcpsocket/tst_qtcpsocket.cpp b/tests/auto/network/socket/qtcpsocket/tst_qtcpsocket.cpp
+index 0a58a5cf3b..3b882d3cf9 100644
+--- a/tests/auto/network/socket/qtcpsocket/tst_qtcpsocket.cpp
++++ b/tests/auto/network/socket/qtcpsocket/tst_qtcpsocket.cpp
+@@ -78,6 +78,7 @@
+ #include <stdlib.h>
+ #include <sys/stat.h>
+ #include <unistd.h>
++#include <sched.h>
+ #endif
+ 
+ #include <memory>
