@@ -1,3 +1,3 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-PR = "r5"
+PR = "r6"
