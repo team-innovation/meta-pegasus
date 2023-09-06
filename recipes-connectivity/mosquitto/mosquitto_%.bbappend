@@ -5,6 +5,7 @@ SRC_URI += "file://mosquitto.conf"
 do_install_append() {
     install -d ${D}${sysconfdir}/mosquitto
     install -m 0644 ${WORKDIR}/mosquitto.conf ${D}/${sysconfdir}/mosquitto/
+    touch ${D}${sysconfdir}/mosquitto/password_file
 }
 
 

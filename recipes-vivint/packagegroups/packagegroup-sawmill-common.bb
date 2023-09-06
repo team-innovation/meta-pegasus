@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "3"
+PR = "4"
 
 inherit packagegroup
 
@@ -13,7 +13,6 @@ inherit packagegroup
 RDEPENDS_${PN} = " \
 	alsa-utils \
 	ca-certificates \
-	civetweb \
 	cronie \
 	gnupg \
 	hostapd \

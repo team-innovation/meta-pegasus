@@ -211,6 +211,7 @@
         "rdepends": [],
         "files": [
             "${bindir}/python*[!-config]",
+            "${bindir}/32/python*[!-config]",
             "${includedir}/python${PYTHON_BINABI}/pyconfig*.h",
             "${prefix}/lib/python${PYTHON_MAJMIN}/config*/*[!.a]",
             "${libdir}/python${PYTHON_MAJMIN}/UserDict.py",
