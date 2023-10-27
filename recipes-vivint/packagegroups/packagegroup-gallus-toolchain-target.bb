@@ -90,5 +90,5 @@ RDEPENDS_${PN} += " \
 	python3-yarl \
 	qtdeclarative-tools \
     paho-mqtt-c \
-    paho-mqtt-cpp 
+    paho-mqtt-cpp \ 
 "
