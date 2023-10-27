@@ -89,4 +89,6 @@ RDEPENDS_${PN} += " \
 	python3-wheel \
 	python3-yarl \
 	qtdeclarative-tools \
+    paho-mqtt-c \
+    paho-mqtt-cpp 
 "

@@ -96,4 +96,7 @@ RDEPENDS_${PN} += " \
 	nativesdk-python3-asn1crypto \
 	nativesdk-python3-pycparser \
 	nativesdk-qtdeclarative-tools \
+    nativesdk-protobuf \
+    nativesdk-taocpp-json \
+    nativesdk-variant-lite \
 "
