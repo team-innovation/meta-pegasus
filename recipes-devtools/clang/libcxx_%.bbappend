@@ -1,3 +1,5 @@
 do_install_append() {
-    mv ${D}/usr/lib32 ${D}/usr/lib
+    if [ -d ${D}/usr/lib32 ]; then
+        mv ${D}/usr/lib32 ${D}/usr/lib
+    fi
 }
