@@ -41,3 +41,4 @@ inherit cmake
 
 EXTRA_OECMAKE += "-DPAHO_WITH_SSL=ON"
 
+BBCLASSEXTEND = "native nativesdk"

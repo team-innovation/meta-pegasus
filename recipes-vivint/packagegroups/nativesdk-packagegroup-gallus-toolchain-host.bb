@@ -2,8 +2,8 @@
 DESCRIPTION = "packages for slimline native sdk" 
 LICENSE = "MIT"
 
-PR = "r3"
-inherit nativesdk packagegroup
+PR = "r8"
+inherit packagegroup nativesdk
 
 PACKAGEGROUP_DISABLE_COMPLEMENTARY = "1"
 
@@ -14,8 +14,6 @@ RDEPENDS_${PN} += " \
 	nativesdk-python3-setuptools \
 	nativesdk-breakpad-dev \
 	nativesdk-breakpad-staticdev \
-	nativesdk-variant-lite-dev \
-	nativesdk-taocpp-json-dev \
 	nativesdk-rapidjson-dev \
 	nativesdk-python3-setuptools \
 	nativesdk-python3-aiodns \
@@ -98,4 +96,8 @@ RDEPENDS_${PN} += " \
 	nativesdk-qtdeclarative-tools \
     nativesdk-protobuf \
     nativesdk-grpc \
+    nativesdk-taocpp-json \
+    nativesdk-variant-lite \
+    nativesdk-paho-mqtt-c \
+    nativesdk-paho-mqtt-cpp \
 "

@@ -4,6 +4,7 @@ LICENSE = "MIT"
 inherit packagegroup
 
 PACKAGEGROUP_DISABLE_COMPLEMENTARY = "1"
+PR = "r3"
 
 RDEPENDS_${PN} += " \
 	breakpad-dev \
@@ -11,8 +12,8 @@ RDEPENDS_${PN} += " \
 	zipgateway-dev \
 	zware-dev \
 	zware-staticdev \
-	variant-lite-dev \
-	taocpp-json-dev \
+	variant-lite \
+	taocpp-json \
 	rapidjson-dev \
 	python3-asn1crypto \
 	python3-asyncio \
@@ -91,4 +92,5 @@ RDEPENDS_${PN} += " \
 	qtdeclarative-tools \
     paho-mqtt-c \
     paho-mqtt-cpp \ 
+    grpc \
 "
