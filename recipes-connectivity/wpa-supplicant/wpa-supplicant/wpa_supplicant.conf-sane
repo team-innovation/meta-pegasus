@@ -3,4 +3,5 @@ driver_param=p2p_capable=0
 ctrl_interface_group=0
 update_config=1
 p2p_disabled=1
+ignore_old_scan_res=1
 
