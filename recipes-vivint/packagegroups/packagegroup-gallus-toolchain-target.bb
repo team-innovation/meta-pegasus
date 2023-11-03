@@ -4,7 +4,7 @@ LICENSE = "MIT"
 inherit packagegroup
 
 PACKAGEGROUP_DISABLE_COMPLEMENTARY = "1"
-PR = "r3"
+PR = "r4"
 
 RDEPENDS_${PN} += " \
 	breakpad-dev \
@@ -14,6 +14,11 @@ RDEPENDS_${PN} += " \
 	zware-staticdev \
 	variant-lite \
 	taocpp-json \
+	lib32-zipgateway-dev \
+	lib32-zware-dev \
+	lib32-zware-staticdev \
+	lib32-variant-lite \
+	lib32-taocpp-json \
 	rapidjson-dev \
 	python3-asn1crypto \
 	python3-asyncio \
@@ -63,6 +68,7 @@ RDEPENDS_${PN} += " \
 	python3-pluggy \
 	python3-protobuf \
 	protobuf-compiler \
+	lib32-protobuf-compiler \
 	python3-pycparser \
 	python3-pyftpdlib \
 	python3-pyserial \
@@ -93,4 +99,7 @@ RDEPENDS_${PN} += " \
     paho-mqtt-c \
     paho-mqtt-cpp \ 
     grpc \
+    lib32-paho-mqtt-c \
+    lib32-paho-mqtt-cpp \ 
+    lib32-grpc \
 "
