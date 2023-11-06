@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "4"
+PR = "5"
 
 inherit packagegroup
 
@@ -122,7 +122,6 @@ RDEPENDS_${PN} = " \
 	xdelta3 \
 	xz \
 	touchlink-ntpsync \
-	speedtest-cli \
 	tonegen	\
 	sndfix \
 	avahi-utils \
