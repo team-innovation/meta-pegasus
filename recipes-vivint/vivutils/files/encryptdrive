@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 DEVPATH="$1"
 DEVNAME=$(basename "$DEVPATH")
@@ -12,6 +11,9 @@ if [ -f "$KEYPATH/$DEVNAME"-key.bb ]; then
 fi
 
 systemctl stop procmand dect-audio syslog.socket openvpn@server baguette
+
+set -e
+
 if mountpoint -q /media/clips; then
 	umount /media/clips
 fi

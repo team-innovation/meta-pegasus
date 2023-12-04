@@ -1,8 +1,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI_append = "\
-                  file://encryptdrive \
                   file://decryptdrive \
+                  file://encryptdrive \
 "
 
 do_install_append() {
