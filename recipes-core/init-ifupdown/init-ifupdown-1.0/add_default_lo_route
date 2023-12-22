@@ -16,7 +16,11 @@ is_magellan() {
         grep -q vivint,magellan "/proc/device-tree/compatible"
 }
 
-is_nene || is_magellan && {
+is_yellowstone() {
+        grep -q vivint,yellowstone "/proc/device-tree/compatible"
+}
+
+is_nene || is_magellan || is_yellowstone && {
 	if ! ip route show default | grep "dev lo"
 	then
 		ip route add default dev lo metric 2000

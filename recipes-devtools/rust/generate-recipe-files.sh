@@ -23,7 +23,7 @@ TMPDIR=`mktemp -p "$PWD" -d`
 cd "$TMPDIR"
 
 TARGET_TRIPLES=(
-    aarch64-unknown-linux-gnu       # Nene/Gallus/Magellan
+    aarch64-unknown-linux-gnu       # Nene/Gallus/Magellan/Yellowstone
     armv7-unknown-linux-gnueabihf   # Wallsly
     x86_64-unknown-linux-gnu        # Your PC
     # aarch64-unknown-linux-musl
