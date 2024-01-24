@@ -34,3 +34,6 @@ KERNEL=="ttyGS0", SUBSYSTEMS=="tty", ACTION=="add", RUN+="/bin/systemctl start s
 KERNEL=="ttyGS0", SUBSYSTEMS=="tty", ACTION=="remove", RUN+="/bin/systemctl stop serial-getty@ttyGS0.service"
 # Symlink NFC dongle
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="ttyNFC"
+# Symlink supported Zigbee dongles
+#  Sonoff ZBDongle-E
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", SYMLINK+="ttyZigbee0"
