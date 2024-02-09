@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "5"
+PR = "6"
 
 inherit packagegroup
 
@@ -51,6 +51,7 @@ RDEPENDS_${PN} = " \
 	python3-idna \
 	python3-idna-ssl \
 	python3-pycares \
+	python3-pyping \
 	python3-terminaltables \
 	python3-idle \
 	python3-intelhex \
