@@ -52,7 +52,7 @@ sendtopipe() {
 	if [ -p $PIPE ]
 	then
 		PID=$$
-		sh -c "echo -n $MNTPNT $1 > $PIPE; kill -s 1 $PID" &
+		sh -c "echo -n $MNTPNT $1\  > $PIPE; kill -s 1 $PID" &
 		BGPID=$!
 		sleep $TIMEOUT
 
