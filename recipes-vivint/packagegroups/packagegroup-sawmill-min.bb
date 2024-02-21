@@ -7,13 +7,11 @@ DESCRIPTION = "Minimal package list used for \
 
 LICENSE = "MIT"
 
-PR = "24"
+PR = "25"
 
 inherit packagegroup
 
 RDEPENDS_${PN} = " \
-	chrony \
-	chronyc \
 	dosfstools \
 	e2fsprogs-dumpe2fs \
 	e2fsprogs-resize2fs \
@@ -21,6 +19,7 @@ RDEPENDS_${PN} = " \
 	iw \
 	iptables \
 	memtester \
+    ntp \
 	openssh-sftp-server \
 	packagegroup-core-ssh-openssh \
 	strace \
