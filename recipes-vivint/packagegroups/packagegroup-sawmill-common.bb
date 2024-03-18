@@ -3,7 +3,7 @@
 DESCRIPTION = "Common packages needed above the minimum "
 LICENSE = "MIT"
 
-PR = "6"
+PR = "7"
 
 inherit packagegroup
 
@@ -116,6 +116,7 @@ RDEPENDS_${PN} = " \
 	tzdata-europe \
 	tzdata-misc \
 	tzdata-pacific \
+    u-boot-imx \
 	util-linux \
 	usbinit \
 	vim \

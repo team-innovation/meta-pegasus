@@ -1,6 +1,0 @@
-SRC_URI = " \
-     ${QT_GIT}/${QT_MODULE}.git;name=${QT_MODULE};${QT_MODULE_BRANCH_PARAM};protocol=${QT_GIT_PROTOCOL} \
-"
-
-SRCREV = "9e0ec09db176f688cddea0607296322e9fb823e9"
-

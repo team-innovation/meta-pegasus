@@ -1,9 +1,0 @@
-prefix=/usr
-includedir=${prefix}/include
-libdir=${prefix}/lib
-
-Name: paho-mqtt-cpp
-Description: MQTT C++ wrapper library
-Version: 1.2.0
-Libs: -L${libdir} -lpaho-mqttpp3 -lpaho-mqtt3a
-Cflags: -I${includedir}/mqtt

@@ -1,8 +1,0 @@
-/var/log/vsftpd.log {
-    missingok
-    size 1M
-    copytruncate
-    rotate 5
-    compress
-    nodateext
-}
