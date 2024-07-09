@@ -96,7 +96,6 @@ test -d ${BUILD_DIR} &&
 
 # If we fail the above, just re-create the conf/ files
 rm -rf ${BUILD_DIR}/conf/
-sed -i '/meta-rust/d' ./imx-setup-release.sh
 
 # it is a new dir
 echo Setting up new dir \"${BUILD_DIR}\"
@@ -112,10 +111,6 @@ grep -q meta-vivint ./conf/bblayers.conf ||
 
 grep -q meta-wnc ./conf/bblayers.conf ||
     echo "BBLAYERS += \" \${BSPDIR}/sources/meta-wnc \"" \
-            >> ./conf/bblayers.conf
-
-grep -q meta-rust-bin ./conf/bblayers.conf ||
-    echo "BBLAYERS += \" \${BSPDIR}/sources/meta-rust-bin \"" \
             >> ./conf/bblayers.conf
 
 grep -q package_rpm ./conf/local.conf &&

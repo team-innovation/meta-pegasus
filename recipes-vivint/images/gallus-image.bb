@@ -19,12 +19,12 @@ IMAGE_FEATURES += " \
 CONFLICT_DISTRO_FEATURES = "directfb"
 
 IMAGE_INSTALL += " \
-    packagegroup-sawmill-common \
-    packagegroup-sawmill-debugtools \
-    packagegroup-sawmill-min \
-    packagegroup-sawmill-sly \
-    packagegroup-sawmill-video \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston-init', '', d)} \
     packagegroup-core-full-cmdline-utils \
     packagegroup-tools-bluetooth \
+    u-boot-scr \
+    u-boot-imx \
+    imx-boot \
+    kernel-devicetree \
+    evtest \
+    weston-examples \
 "

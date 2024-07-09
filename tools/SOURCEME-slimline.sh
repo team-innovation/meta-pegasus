@@ -83,7 +83,6 @@ function whitewash_int {
 	BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE GIT_HWD_REV"
 	export BB_ENV_EXTRAWHITE
 }
-sed -i '/meta-rust[^-]/d' ${BUILD_DIR}/conf/bblayers.conf
 
 # if already set up then we just run the setup-environment script
 test -d ${BUILD_DIR} &&
@@ -110,8 +109,6 @@ test -d ${BUILD_DIR} &&
     echo "PRSERV_HOST = \"localhost:0\"" >> ${BUILD_DIR}/conf/local.conf &&
 	grep -q meta-vivint ${BUILD_DIR}/conf/bblayers.conf &&
 	grep -q oe-meta-go ${BUILD_DIR}/conf/bblayers.conf &&
-	grep -q meta-oic ${BUILD_DIR}/conf/bblayers.conf &&
-	grep -q meta-rust-bin ${BUILD_DIR}/conf/bblayers.conf &&
 	source setup-environment ${BUILD_DIR} &&
 	whitewash_int &&
 	sed -i -e '/rm_work/d' ./conf/local.conf &&
@@ -123,7 +120,6 @@ test -d ${BUILD_DIR} &&
 
 # If we fail the above, just re-create the conf/ files
 rm -rf ${BUILD_DIR}/conf/
-sed -i '/meta-rust/d' ./imx-setup-release.sh
 
 # it is a new dir
 echo Setting up new dir \"${BUILD_DIR}\"
@@ -145,14 +141,6 @@ grep -q meta-vivint ./conf/bblayers.conf ||
 grep -q oe-meta-go ./conf/bblayers.conf ||
 	echo "BBLAYERS += \" \${BSPDIR}/sources/oe-meta-go \"" \
 		>> ./conf/bblayers.conf
-
-grep -q meta-oic ./conf/bblayers.conf ||
-    echo "BBLAYERS += \" \${BSPDIR}/sources/meta-oic \"" \
-            >> ./conf/bblayers.conf
-
-grep -q meta-rust-bin ./conf/bblayers.conf ||
-    echo "BBLAYERS += \" \${BSPDIR}/sources/meta-rust-bin \"" \
-            >> ./conf/bblayers.conf
 
 ln -s ../sstate-cache . || true
 
