@@ -6,9 +6,9 @@
 /dev/mmcblk2p4      /media/extra         auto       rw,nofail,noatime,nodiratime,async,barrier=0      0  0
 /dev/mapper/mmcblk2p4-encrypted   /media/extra     auto       rw,nofail,noatime,nodiratime,async,barrier=0      0  0
 proc                /proc                proc       defaults              0  0
-devpts              /dev/pts             devpts     mode=0620,gid=5       0  0
+devpts              /dev/pts             devpts     mode=0620,ptmxmode=0666,gid=5       0  0
 tmpfs               /run                 tmpfs      mode=0755,nodev,nosuid,strictatime 0  0
 tmpfs               /var/volatile        tmpfs      defaults              0  0
 
 # Loop mount local clips directory to limit size of clips directory
-/media/extra/clips.img	/media/clips	auto	loop,noatime,nodiratime,sync,noauto 	0 0
+/media/extra/clips.img	/media/clips	auto	loop,noatime,nodiratime,noauto 	0 0
