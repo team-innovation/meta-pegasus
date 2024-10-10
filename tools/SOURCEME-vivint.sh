@@ -129,10 +129,6 @@ grep -q meta-vivint ./conf/bblayers.conf ||
 	echo "BBLAYERS += \" \${BSPDIR}/sources/meta-vivint \"" \
 		>> ./conf/bblayers.conf
 
-grep -q meta-vivint ./conf/bblayers.conf ||
-	echo "BBLAYERS += \" \${BSPDIR}/sources/meta-vivint-apps \"" \
-		>> ./conf/bblayers.conf
-
 grep -q meta-wnc ./conf/bblayers.conf ||
     echo "BBLAYERS += \" \${BSPDIR}/sources/meta-wnc \"" \
             >> ./conf/bblayers.conf
