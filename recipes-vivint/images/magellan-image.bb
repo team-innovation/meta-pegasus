@@ -5,18 +5,17 @@ DESCRIPTION = "Image for Vivint next gen hub"
 LICENSE = "MIT"
 
 inherit core-image
+inherit uuu-zip-image
 
 IMAGE_FEATURES += " \
     package-management \
     splash \
     hwcodecs \
     ssh-server-openssh \
-    u-boot-script-vivint \
-    libubootenv \
-    u-boot-imx-env \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston', \
        bb.utils.contains('DISTRO_FEATURES',     'x11', 'x11-base x11-sato', \
                                                        '', d), d)} \
+"
 
 CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-core-full-cmdline \
@@ -26,4 +25,16 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-fsl-gstreamer1.0 \
     packagegroup-fsl-gstreamer1.0-full \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland xterm', '', d)} \
+"
+
+IMAGE_INSTALL += " \
+    u-boot-script-vivint \
+    libubootenv-bin \
+    bmaptool \
+    u-boot-imx-env \
+    kernel-image \
+    kernel-devicetree \
+    imx-boot \
+    mmc-utils \
+    viv-mfg-utils \
 "
