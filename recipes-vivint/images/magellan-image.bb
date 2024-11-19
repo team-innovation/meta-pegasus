@@ -28,7 +28,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
 "
 
 IMAGE_INSTALL += " \
-    u-boot-script-vivint \
     libubootenv-bin \
     bmaptool \
     u-boot-imx-env \
@@ -36,5 +35,4 @@ IMAGE_INSTALL += " \
     kernel-devicetree \
     imx-boot \
     mmc-utils \
-    viv-mfg-utils \
 "
