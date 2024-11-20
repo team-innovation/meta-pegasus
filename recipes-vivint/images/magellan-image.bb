@@ -29,10 +29,10 @@ CORE_IMAGE_EXTRA_INSTALL += " \
 
 IMAGE_INSTALL += " \
     libubootenv-bin \
-    bmaptool \
     u-boot-imx-env \
     kernel-image \
     kernel-devicetree \
     imx-boot \
     mmc-utils \
+    i2c-tools \
 "
