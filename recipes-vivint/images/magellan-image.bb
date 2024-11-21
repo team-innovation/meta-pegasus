@@ -35,4 +35,6 @@ IMAGE_INSTALL += " \
     imx-boot \
     mmc-utils \
     i2c-tools \
+    udev-rules-vivint \
+    evtest \
 "
