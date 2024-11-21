@@ -37,4 +37,5 @@ IMAGE_INSTALL += " \
     i2c-tools \
     udev-rules-vivint \
     evtest \
+    linux-firmware-mediatek \
 "
