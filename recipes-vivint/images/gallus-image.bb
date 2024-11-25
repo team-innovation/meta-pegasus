@@ -5,6 +5,7 @@ DESCRIPTION = "Image for Vivint next gen hub"
 LICENSE = "MIT"
 
 inherit core-image
+inherit uuu-zip-image
 
 IMAGE_FEATURES += " \
     package-management \
@@ -15,9 +16,6 @@ IMAGE_FEATURES += " \
        bb.utils.contains('DISTRO_FEATURES',     'x11', 'x11-base x11-sato', \
                                                        '', d), d)} \
 "
-G2D_SAMPLES              = ""
-G2D_SAMPLES:imxgpu2d     = "imx-g2d-samples"
-G2D_SAMPLES:mx93-nxp-bsp = "imx-g2d-samples"
 
 CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-core-full-cmdline \
@@ -27,5 +25,17 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-fsl-gstreamer1.0 \
     packagegroup-fsl-gstreamer1.0-full \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland xterm', '', d)} \
-    ${G2D_SAMPLES} \
+"
+
+IMAGE_INSTALL += " \
+    libubootenv-bin \
+    u-boot-imx-env \
+    kernel-image \
+    kernel-devicetree \
+    imx-boot \
+    mmc-utils \
+    i2c-tools \
+    udev-rules-vivint \
+    evtest \
+    linux-firmware-mediatek \
 "
