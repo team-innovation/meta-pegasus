@@ -20,3 +20,16 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-fsl-gstreamer1.0 \
     packagegroup-fsl-gstreamer1.0-full \
 "
+
+IMAGE_INSTALL += " \
+    libubootenv-bin \
+    u-boot-imx-env \
+    kernel-image \
+    kernel-devicetree \
+    imx-boot \
+    mmc-utils \
+    i2c-tools \
+    udev-rules-vivint \
+    evtest \
+    linux-firmware-mediatek \
+"
