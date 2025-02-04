@@ -5,6 +5,7 @@ DESCRIPTION = "Image for Vivint next gen hub"
 LICENSE = "MIT"
 
 inherit core-image
+inherit uuu-zip-image
 
 IMAGE_FEATURES += " \
     package-management \
@@ -14,7 +15,6 @@ IMAGE_FEATURES += " \
 
 CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-core-full-cmdline \
-    packagegroup-tools-bluetooth \
     packagegroup-fsl-tools-audio \
     packagegroup-imx-security \
     packagegroup-fsl-gstreamer1.0 \
