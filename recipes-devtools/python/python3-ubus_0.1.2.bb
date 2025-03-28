@@ -1,5 +1,5 @@
 SUMMARY = "Python bindings for libubus."
-HOMEPAGE = "https://pypi.org/project/pythonping/"
+HOMEPAGE = "https://pypi.org/project/ubus/"
 SECTION = "devel/python"
 
 LICENSE = "LGPL-2.0-or-later"
