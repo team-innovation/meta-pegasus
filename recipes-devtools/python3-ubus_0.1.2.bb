@@ -1,4 +1,6 @@
 SUMMARY = "Python bindings for libubus."
+HOMEPAGE = "https://pypi.org/project/pythonping/"
+SECTION = "devel/python"
 
 LICENSE = "LGPL-2.0-or-later"
 # The actual license files live in the upstream libgpiod from which the pypi
