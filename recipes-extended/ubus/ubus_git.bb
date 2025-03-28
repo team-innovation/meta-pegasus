@@ -10,6 +10,8 @@ DEPENDS = "json-c libubox"
 
 SRC_URI = "git://git.openwrt.org/project/ubus.git"
 
+SRC_REV = "afa57cce0aff82f4a7a0e509d4387ebc23dd3be7"
+
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig
