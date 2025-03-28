@@ -6,7 +6,7 @@ HOMEPAGE = "http://git.openwrt.org/?p=project/libubox.git;a=summary"
 LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://ubusd.c;beginline=1;endline=12;md5=1b6a7aecd35bdd25de35da967668485d"
 SECTION = "base"
-DEPENDS = "json-c libubox lua"
+DEPENDS = "json-c libubox lua-native"
 
 SRC_URI = "git://git.openwrt.org/project/ubus.git;branch=master"
 
