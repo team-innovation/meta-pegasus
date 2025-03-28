@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "file://ubusd.c;beginline=1;endline=12;md5=1b6a7aecd35bdd25de
 SECTION = "base"
 DEPENDS = "json-c libubox lua"
 
-SRC_URI = "git://git.openwrt.org/project/ubus.git:branch=master"
+SRC_URI = "git://git.openwrt.org/project/ubus.git;branch=master"
 
 SRCREV = "afa57cce0aff82f4a7a0e509d4387ebc23dd3be7"
 
