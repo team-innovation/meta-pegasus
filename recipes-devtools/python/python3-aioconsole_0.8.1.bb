@@ -1,5 +1,5 @@
 SUMMARY = "Asynchronous console and interfaces for asyncio"
-HOMEPAGE = "https://pypi.org/project/aioconsole/"
+HOMEPAGE = "https://github.com/vxgmichel/aioconsole"
 SECTION = "devel/python"
 
 LICENSE = "GPLv3"
