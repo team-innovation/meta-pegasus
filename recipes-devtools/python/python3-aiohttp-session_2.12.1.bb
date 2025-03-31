@@ -9,4 +9,4 @@ SRC_URI[sha256sum] = ""
 
 RDEPENDS.${PN} = "${PYTHON_PN}-aiohttp"
 
-inherit setuptools3 pytest pypi
+inherit setuptools3 pypi
