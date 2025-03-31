@@ -12,8 +12,4 @@ S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 RDEPENDS.${PN} = "${PYTHON_PN}-aiohttp"
 
-do_install_prepend() {
-    install -d ${D}/${libdir}/${PYTHON_DIR}/site-packages
-}
-
 inherit setuptools3 pypi
