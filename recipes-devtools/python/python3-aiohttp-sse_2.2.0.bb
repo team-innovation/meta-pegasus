@@ -5,7 +5,7 @@ SECTION = "devel/python"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5="
 
-SRC_URI[sha256sum] = "" 
+SRC_URI[sha256sum] = "a48dd5774031d3f41a29e159ebdbb93e89c8f37c1e9e83e196296be51885a5c2"
 
 RDEPENDS.${PN} = "${PYTHON_PN}-aiohttp"
 
