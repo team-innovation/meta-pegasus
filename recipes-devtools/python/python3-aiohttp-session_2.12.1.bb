@@ -13,5 +13,5 @@ RDEPENDS.${PN} = "${PYTHON_PN}-aiohttp"
 inherit setuptools3 pypi
 
 do_fetch:prepend() {
-    bb.note("TESTING")
+    bb.note(d.getVar('SRC_URI'))
 }
