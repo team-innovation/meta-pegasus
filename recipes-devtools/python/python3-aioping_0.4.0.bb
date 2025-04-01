@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/stellarbit/aioping"
 SECTION = "devel/python"
 
 LICENSE = "GPLv2"
-LIC_FILES_CHKSUM = "file://LICENSE;md5="
+LIC_FILES_CHKSUM = "file://LICENSE.txt;md5="
 
 SRC_URI[sha256sum] = "00257705b64811334b65c7346fa8cdb7156d4ba6af712c13c02c4f74418d5050"
 
