@@ -5,6 +5,7 @@ SECTION = "devel/python"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5="
 
+SRC_URI += "https://pypi.io/packages/source/a/aiohttp-session/aiohttp-session-${PV}.tar.gz"
 SRC_URI[sha256sum] = ""
 
 RDEPENDS.${PN} = "${PYTHON_PN}-aiohttp"
