@@ -10,3 +10,7 @@ SRC_URI[sha256sum] = "50cb724d310e1d0289798bb98ae852c3b75b77e8f51ce5159c57b7261d
 RDEPENDS.${PN} = "${PYTHON_PN}-aiohttp"
 
 inherit setuptools3 pypi
+
+do_fetch:prepend() {
+    bb.note(d.getVar('SRC_URI'))
+}
