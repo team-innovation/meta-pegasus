@@ -11,3 +11,7 @@ SRC_URI[sha256sum] = "15e6e0288e9bcccd4b1d0c28aae9c20e19a252b12d0cb682223ca9c831
 RDEPENDS.${PN} = "${PYTHON_PN}-aiohttp"
 
 inherit setuptools3 pypi
+
+do_fetch_prepend() {
+    echo $SRC_URI 
+}
