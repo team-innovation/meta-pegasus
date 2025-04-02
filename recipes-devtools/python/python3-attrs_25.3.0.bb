@@ -13,4 +13,6 @@ DEPENDS += "\
     python3-hatch-vcs-native \
 "
 
+EXTRA_OE_TUNABLES += "SETUPTOOLS_SCM_PRETEND_VERSION=${PV}"
+
 inherit python_pep517 pypi
