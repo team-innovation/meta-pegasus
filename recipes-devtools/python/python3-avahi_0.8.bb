@@ -7,4 +7,8 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5="
 
 SRC_URI[sha256sum] = ""
 
+do_install_append() {
+    install -Dm 0644 ${S}/LICENSE ${D}${datadir}/licenses/${PN}/LICENSE
+}
+
 inherit setuptools3
