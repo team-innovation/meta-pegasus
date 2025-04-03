@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/aleixq/python3-brisa"
 SECTION = "devel/python"
 
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://setup.py;md5="
+LIC_FILES_CHKSUM = "file://setup.py;md5=de9199ce566e24392604d7bb073de4d2"
 
 PYPI_PACKAGE = "python3-brisa"
 
