@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/boto/botocore"
 SECTION = "devel/python"
 
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://LICENSE.txt;md5="
+LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=2ee41112a44fe7014dce33e26468ba93"
 
 SRC_URI[sha256sum] = "b4b08daa9b4b2c379ef978a75a48907d72ac5b3b9247280488109eb41c19be36"
 
