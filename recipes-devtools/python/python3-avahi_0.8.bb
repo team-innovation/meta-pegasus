@@ -7,5 +7,6 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5="
 
 SRC_URI = "https://github.com/avahi/avahi/releases/download/v0.8/avahi-0.8.tar.gz"
 SRC_URI[sha256sum] = "060309d7a333d38d951bc27598c677af1796934dbd98e1024e7ad8de798fedda"
+S = "${WORKDIR}/avahi-${PV}"
 
 inherit setuptools3-base
