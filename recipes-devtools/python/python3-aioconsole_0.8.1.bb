@@ -10,4 +10,6 @@ S = "${WORKDIR}/aioconsole-${PV}"
 
 RDEPENDS.${PN} = "${PYTHON_PN}-asyncio"
 
+DEPENDS = "python3-setuptools"
+
 inherit python_setuptools_build_meta pypi
