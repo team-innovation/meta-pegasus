@@ -11,4 +11,4 @@ S = "${WORKDIR}/aioconsole-${PV}"
 
 RDEPENDS.${PN} = "${PYTHON_PN}-asyncio"
 
-inherit python_poetry_core pypi
+inherit python_poetry_core setuptools3 pypi
