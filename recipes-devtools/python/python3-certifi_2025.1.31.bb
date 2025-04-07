@@ -5,6 +5,6 @@ SECTION = "devel/python"
 LICENSE = "MPL-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5="
 
-SRC_URI[sha256sum] = ""
+SRC_URI[sha256sum] = "3d5da6925056f6f18f119200434a4780a94263f10d1c21d032a6f6b2baa20651"
 
 inherit setuptools3 pypi
