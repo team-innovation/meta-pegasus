@@ -16,6 +16,8 @@ DEPENDS = "\
 inherit python_setuptools_build_meta pypi
 
 do_patch:append() {
+    echo "***PATCHING ATTRS***"
+
     toml_file="${S}/pyproject.toml"
     if grep -q 'license-files = \["LICENSE"\]' "$toml_file"; then
         replacement=$(printf '[tool.hatch.metadata]\nlicense-files = { paths = ["LICENSE"] }')
