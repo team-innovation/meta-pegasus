@@ -9,4 +9,4 @@ SRC_URI[sha256sum] = "304762f86fd53a8031b1bf006d12572a2aa0a5235485031113195cc015
 
 RDEPENDS:${PN} += "python3-setuptools python3-wheel"
 
-inherit python_setuptools_build_meta cargo pypi
+inherit python_setuptools_build_meta pypi
