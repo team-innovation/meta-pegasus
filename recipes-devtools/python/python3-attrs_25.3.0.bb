@@ -13,4 +13,4 @@ RDEPENDS.${PN} = "\
     {PYTHON_PN}-hatch-vcs-native \
 "
 
-inherit python_setuptools_build_meta pypi
+inherit setuptools3-base pypi
