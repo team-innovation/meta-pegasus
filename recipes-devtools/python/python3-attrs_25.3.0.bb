@@ -16,8 +16,12 @@ DEPENDS = "\
 inherit python_setuptools_build_meta pypi
 
 do_patch:append() {
-    echo "***PATCHING ATTRS***"
+    # Call shell commands via bb.build.exec_func which fixes retrieving the license in the package
+    bb.build.exec_func('patch_do_patch', d)
+}
 
+python patch_do_patch() {
+    # This function executes the shell patch commands in a safe manner
     toml_file="${S}/pyproject.toml"
     if grep -q 'license-files = \["LICENSE"\]' "$toml_file"; then
         replacement=$(printf '[tool.hatch.metadata]\nlicense-files = { paths = ["LICENSE"] }')
