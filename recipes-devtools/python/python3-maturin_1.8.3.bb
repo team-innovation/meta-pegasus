@@ -7,6 +7,10 @@ LIC_FILES_CHKSUM = "file://setup.py;md5=d967e2fea472bd8fb6b1e74da465e9c8"
 SRC_URI = "https://files.pythonhosted.org/packages/source/m/maturin/maturin-${PV}.tar.gz"
 SRC_URI[sha256sum] = "304762f86fd53a8031b1bf006d12572a2aa0a5235485031113195cc0152e1e12"
 
-RDEPENDS:${PN} += "python3-setuptools python3-wheel"
+DEPENDS += "python3-setuptools-rust-native"
+RDEPENDS:${PN} += "\
+    python3-setuptools \
+    python3-wheel \
+"
 
-inherit python_setuptools_build_meta pypi
+inherit python_setuptools_build_meta cargo pypi
