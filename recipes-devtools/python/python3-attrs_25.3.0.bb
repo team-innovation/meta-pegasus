@@ -18,6 +18,7 @@ inherit python_setuptools_build_meta pypi
 do_patch:append() {
     toml_file="${S}/pyproject.toml"
     if grep -q 'license-files = \["LICENSE"\]' "$toml_file"; then
-        sed -i 's/license-files = \["LICENSE"\]/[tool.hatch.metadata]\nlicense-files = { paths = ["LICENSE"] }/' "$toml_file"
+        replacement=$(printf '[tool.hatch.metadata]\nlicense-files = { paths = ["LICENSE"] }')
+        sed -i "s/license-files = \[\"LICENSE\"\]/$replacement/" "$toml_file"
     fi
 }
