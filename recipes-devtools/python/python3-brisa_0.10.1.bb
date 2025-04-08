@@ -11,4 +11,4 @@ SRC_URI = "https://files.pythonhosted.org/packages/1b/d7/de51a2bc561ee7f39586808
 SRC_URI[sha256sum] = "b90d1ddffa1b2f0a6e000958c498d80853b82bc8fd55b9d2398f69df4a8f455a"
 S = "${WORKDIR}/brisa-${PV}"
 
-inherit python_setuptools_build_meta pypi
+inherit setuptools3-base pypi
