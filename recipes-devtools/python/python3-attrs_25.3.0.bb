@@ -13,4 +13,4 @@ DEPENDS = "\
     {PYTHON_PN}-hatch-fancy-pypi-readme-native \
 "
 
-inherit setuptools3-base pypi
+inherit python_setuptools_build_meta pypi
