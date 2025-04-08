@@ -8,6 +8,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=8c3617db4fb6fae01f1d253ab91511e4"
 SRC_URI[sha256sum] = "c63454aa261a0cf0c5b4718349629793e9e634993538db841165b3df74f37ec0"
 
 DEPENDS = "\
+    python3-cffi-native \
     python3-cffi \
     python3-maturin-native \
     rust-native \
