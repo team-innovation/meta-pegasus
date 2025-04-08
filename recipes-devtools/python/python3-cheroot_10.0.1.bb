@@ -1,5 +1,5 @@
 SUMMARY = "Highly-optimized, pure-python HTTP server"
-HOMEPAGE = "https://pypi.org/project/cheroot"
+HOMEPAGE = "https://github.com/cherrypy/cheroot"
 SECTION = "devel/python"
 
 LICENSE = "BSD-3-Clause"
