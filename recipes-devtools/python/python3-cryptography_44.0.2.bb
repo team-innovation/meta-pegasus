@@ -12,6 +12,8 @@ DEPENDS = "\
     python3-cffi \
     python3-maturin-native \
     rust-native \
+    virtual/${TARGET_PREFIX}gcc \
+    virtual/${TARGET_PREFIX}compilerlibs \
 "
 
 inherit python_setuptools_build_meta pypi
