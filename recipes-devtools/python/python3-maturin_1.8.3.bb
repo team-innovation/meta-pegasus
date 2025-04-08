@@ -2,7 +2,7 @@ SUMMARY = "Build and publish Rust crates as Python packages"
 HOMEPAGE = "https://github.com/pyo3/maturin"
 
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://setup.py;md5="
+LIC_FILES_CHKSUM = "file://setup.py;md5=d967e2fea472bd8fb6b1e74da465e9c8"
 
 SRC_URI = "https://files.pythonhosted.org/packages/source/m/maturin/maturin-${PV}.tar.gz"
 SRC_URI[sha256sum] = "304762f86fd53a8031b1bf006d12572a2aa0a5235485031113195cc0152e1e12"
