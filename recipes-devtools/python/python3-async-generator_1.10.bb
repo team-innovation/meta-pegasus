@@ -4,8 +4,8 @@ SECTION = "devel/python"
 
 LICENSE = "MIT | Apache-2.0"
 LIC_FILES_CHKSUM = "\
-    file://LICENSE.MIT;md5= \
-    file://LICENSE.APACHE2;md5= \
+    file://LICENSE.MIT;md5=e62ba5042d5983462ad229f5aec1576c \
+    file://LICENSE.APACHE2;md5=3b83ef96387f14655fc854ddc3c6bd57 \
 "
 
 PYPI_PACKAGE = "async_generator"
