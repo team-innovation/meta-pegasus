@@ -10,10 +10,16 @@ LIC_FILES_CHKSUM = "\
 
 SRC_URI[sha256sum] = "c63454aa261a0cf0c5b4718349629793e9e634993538db841165b3df74f37ec0"
 
-DEPENDS = "\
+DEPENDS += "\
     rust-native \
     cargo-native \
+    openssl \
+    openssl-native \
 "
-RDEPENDS.${PN} = "${PYTHON_PN}-setuptools-rust"
+RDEPENDS.${PN} += "\
+    ${PYTHON_PN}-setuptools-rust \
+    ${PYTHON_PN}-cffi \
+    ${PYTHON_PN}-pybind11 \
+"
 
 inherit python_setuptools_build_meta cargo pypi
