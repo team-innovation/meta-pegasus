@@ -22,4 +22,4 @@ RDEPENDS.${PN} += "\
     ${PYTHON_PN}-pybind11 \
 "
 
-inherit python_setuptools_rust pypi
+inherit python_setuptools3_rust pypi
