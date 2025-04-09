@@ -22,4 +22,4 @@ RDEPENDS.${PN} += "\
     ${PYTHON_PN}-pybind11 \
 "
 
-inherit python_setuptools_build_meta cargo pypi
+inherit python_setuptools_rust pypi
