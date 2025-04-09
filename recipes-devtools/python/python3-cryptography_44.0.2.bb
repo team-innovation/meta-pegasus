@@ -15,6 +15,7 @@ DEPENDS += "\
     cargo-native \
     openssl \
     openssl-native \
+    python3-cffi-native \
 "
 RDEPENDS.${PN} += "\
     ${PYTHON_PN}-setuptools-rust \
