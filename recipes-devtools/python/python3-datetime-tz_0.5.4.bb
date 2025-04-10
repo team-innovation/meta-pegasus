@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5="
 
 PYPI_PACKAGE = "python-datetime-tz"
 
-SRC_URI[sha256sum] = ""
+SRC_URI[sha256sum] = "bfa3bf297b632bf1bb216eb1f974d3155dfe4aee1245b186444306378603cf00"
 
 RDEPENDS.${PN} = "\
     ${PYTHON_PN}-pytz \
