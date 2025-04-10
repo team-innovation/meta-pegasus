@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/mithro/python-datetime-tz"
 SECTION = "devel/python"
 
 LICENSE = "Apache-2.0"
-LIC_FILES_CHKSUM = "file://setup.py;md5="
+LIC_FILES_CHKSUM = "file://setup.py;md5=7e31d1012903d8cc9f0e9919148e3658"
 
 PYPI_PACKAGE = "python-datetime-tz"
 
