@@ -7,6 +7,7 @@ LIC_FILES_CHKSUM = "file://setup.py;md5=7e31d1012903d8cc9f0e9919148e3658"
 
 PYPI_PACKAGE = "python-datetime-tz"
 
+SRC_URI += "file://python3-datetime-tz_0.5.4.patch"
 SRC_URI[sha256sum] = "bfa3bf297b632bf1bb216eb1f974d3155dfe4aee1245b186444306378603cf00"
 
 RDEPENDS.${PN} = "\

@@ -1,0 +1,22 @@
+diff --git a/requirements.txt b/requirements.txt
+index 63e0490..19cbc28 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,3 +1,3 @@
+ defusedxml
+ python-dateutil
+-pytz>=2011g
++pytz>=2023.3
+diff --git a/setup.py b/setup.py
+index 5816dd6..46369bd 100644
+--- a/setup.py
++++ b/setup.py
+@@ -62,7 +62,7 @@ A drop in replacement for Python's datetime module which cares deeply about time
+     install_requires=[
+         "defusedxml",
+         "python-dateutil >= 2.0",
+-        "pytz >= 2011g",
++        "pytz >= 2023.3",
+     ],
+     py_modules=['datetime_tz','datetime_tz.pytz_abbr'],
+     test_suite='tests',
