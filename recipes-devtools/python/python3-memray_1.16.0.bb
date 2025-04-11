@@ -10,7 +10,7 @@ SRC_URI[sha256sum] = "57319f74333a58a9b3d5fba411b0bff3f2974a37e362a09a577e7c6fe1
 DEPENDS = "\
     ${PYTHON_PN}-setuptools-scm-native \
     ${PYTHON_PN}-pkgconfig-native \
-    cython-native \
+    ${PYTHON_PN}-cython-native \
 "
 
 inherit python_setuptools_build_meta pypi
