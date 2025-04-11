@@ -8,6 +8,6 @@ LIC_FILES_CHKSUM = "\
     file://COPYING;md5= \
 "
 
-SRC_URI[sha256sum] = ""
+SRC_URI[sha256sum] = "3951d360f2daf0e0eacf839e15d2d1d2f4f5e7830231eb3188eeffef2dd17bad"
 
 inherit setuptools3 pypi
