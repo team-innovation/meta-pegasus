@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5="
 
 PYPI_PACKAGE = "importlib_resources"
 
-SRC_URI[sha256sum] = ""
+SRC_URI[sha256sum] = "185f87adef5bcc288449d98fb4fba07cea78bc036455dd44c5fc4a2fe78fed2c"
 
 DEPENDS = "${PYTHON_PN}-setuptools-scm-native"
 
