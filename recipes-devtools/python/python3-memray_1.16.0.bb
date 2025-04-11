@@ -11,6 +11,10 @@ DEPENDS = "\
     ${PYTHON_PN}-setuptools-scm-native \
     ${PYTHON_PN}-pkgconfig-native \
     ${PYTHON_PN}-cython-native \
+    autoconf-native \
+    automake-native \
+    libtool-native \
+    gettext-native \
 "
 
-inherit setuptools3 pypi
+inherit python_setuptools_build_meta pypi
