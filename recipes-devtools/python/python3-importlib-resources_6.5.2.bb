@@ -5,7 +5,8 @@ SECTION = "devel/python"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5="
 
-SRC_URI = "https://github.com/python/importlib_resources/archive/refs/tags/v${PV}.tar.gz"
+PYPI_PACKAGE = "importlib_resources"
+
 SRC_URI[sha256sum] = ""
 
 DEPENDS = "${PYTHON_PN}-setuptools-scm-native"
