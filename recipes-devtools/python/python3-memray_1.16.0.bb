@@ -13,4 +13,4 @@ DEPENDS = "\
     ${PYTHON_PN}-cython-native \
 "
 
-inherit python_setuptools_build_meta pypi
+inherit setuptools3 pypi
