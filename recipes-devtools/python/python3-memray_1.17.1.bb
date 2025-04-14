@@ -9,8 +9,8 @@ SRC_URI[sha256sum] = "99f6672d435878e3251a9c4600bb8f14cf205d2d6da3d6f0e6b309e535
 
 DEPENDS += "\
     ${PYTHON_PN}-setuptools-scm-native \
-    ${PYTHON_PN}-pkgconfig-native \
     ${PYTHON_PN}-cython-native \
+    pkgconfig-native \
     lz4 \
     libunwind \
     autoconf-native \
