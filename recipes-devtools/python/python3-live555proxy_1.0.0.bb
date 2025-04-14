@@ -9,13 +9,7 @@ DEPENDS += "\
     python3  \
     live555 \
 "
-#RDEPENDS = "live555-lib"
-RDEPENDS:${PN} = "\
-    live555-libusageenvironment \
-    live555-libbasicusageenvironment \
-    live555-libgroupsock \
-    live555-liblivemedia \
-"
+RDEPENDS:${PN} = "live555"
 
 SRCREV = "${GIT_LIVE555PROXY_REV}"
 SRCBRANCH = "${GIT_LIVE555PROXY_BRANCH}"
