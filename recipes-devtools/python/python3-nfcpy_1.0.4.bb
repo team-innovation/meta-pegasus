@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/nfcpy/nfcpy"
 SECTION = "devel/python"
 
 LICENSE = "EUPL-1.1"
-LIC_FILES_CHKSUM = "file://LICENSE;md5="
+LIC_FILES_CHKSUM = "file://LICENSE;md5=c547f12426ad5b4a3ac93658503ab096"
 
 SRC_URI[sha256sum] = "e5bd08d0119e1d9e95d05215f838b07b44d03b651adddc523cc1a38892b8af6b"
 
