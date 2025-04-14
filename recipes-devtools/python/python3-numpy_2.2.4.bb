@@ -8,8 +8,8 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=1de863c37a83e71b1e97b64d036ea78b"
 SRC_URI[sha256sum] = "9ba03692a45d3eef66559efe1d1096c4b9b75c0986b5dff5530c378fb8331d4f"
 
 DEPENDS += " \
-    meson-native \
     ninja-native \
+    python3-meson-python-native \
     python3-cython-native \
     python3-mesonpy-native \
 "
