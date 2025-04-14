@@ -5,7 +5,7 @@ SECTION = "devel/python"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5de5671aa80e3d8ebba56399d18cad14"
 
-SRC_URI[sha256sum] = "57319f74333a58a9b3d5fba411b0bff3f2974a37e362a09a577e7c6fe1d29a36"
+SRC_URI[sha256sum] = "99f6672d435878e3251a9c4600bb8f14cf205d2d6da3d6f0e6b309e535f9fc4a"
 
 DEPENDS += "\
     ${PYTHON_PN}-setuptools-scm-native \
