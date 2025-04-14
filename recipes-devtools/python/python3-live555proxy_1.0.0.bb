@@ -7,6 +7,7 @@ PR = "ml68"
 
 DEPENDS += "\
     python3  \
+    python3-setuptools-scm-native \
     live555 \
 "
 RDEPENDS:${PN} = "live555"
@@ -20,4 +21,4 @@ MODULE = "live555-proxy-server"
 SRC_URI = "git://${GIT_LIVE555PROXY_SERVER}/${MODULE};protocol=${GIT_LIVE555PROXY_PROTOCOL};branch=${SRCBRANCH}"
 S = "${WORKDIR}/git"
 
-inherit setuptools3 
+inherit python_setuptools_build_meta 
