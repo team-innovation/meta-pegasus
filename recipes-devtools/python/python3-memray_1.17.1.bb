@@ -13,6 +13,9 @@ DEPENDS += "\
     ${PYTHON_PN}-cython-native \
     lz4 \
     libunwind \
+    autoconf-native \
+    automake-native \
+    libtool-native \
 "
 
 inherit python_setuptools_build_meta pypi
