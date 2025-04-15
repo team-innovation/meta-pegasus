@@ -12,8 +12,4 @@ SRC_URI[sha256sum] = "3bf12b0fda68447806a7ad847bfa591613177275d35b6724b1ee573faa
 
 DEPENDS += "python3-cython"
 
-do_compile:prepend() {
-    export LIBUV_CONFIGURE_HOST=${HOST_SYS}
-}
-
 inherit python_setuptools_build_meta pypi
