@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/niwinz/py-libssh"
 SECTION = "devel/python"
 
 LICENSE = "BSD"
-LIC_FILES_CHKSUM = "file://README.rst;md5=29ac2c60ecada9c125781fc6975494e6"
+LIC_FILES_CHKSUM = "file://setup.py;md5="
 
 SRC_URI[sha256sum] = "5cb795dd920543b58768402149e73d73c326277d93c26b54d812e99469f44290"
 
