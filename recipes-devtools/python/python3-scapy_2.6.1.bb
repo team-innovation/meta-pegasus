@@ -5,7 +5,7 @@ SECTION = "devel/python"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5="
 
-SRC_URI[sha256sum] = "5b260c2b754fd8d409ba83ee7aee294ecdbb2c235f9f78fe90bc11cb6e5debc2"
+SRC_URI[sha256sum] = "7600d7e2383c853e5c3a6e05d37e17643beebf2b3e10d7914dffcc3bc3c6e6c5"
 
 RDEPENDS:${PN} += "libpcap"
 
