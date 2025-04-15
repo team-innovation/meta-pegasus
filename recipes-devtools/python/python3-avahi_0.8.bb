@@ -9,4 +9,4 @@ SRC_URI = "https://github.com/avahi/avahi/releases/download/v${PV}/avahi-${PV}.t
 SRC_URI[sha256sum] = "060309d7a333d38d951bc27598c677af1796934dbd98e1024e7ad8de798fedda"
 S = "${WORKDIR}/avahi-${PV}"
 
-inherit setuptools3-base
+inherit python_setuptools_build_meta
