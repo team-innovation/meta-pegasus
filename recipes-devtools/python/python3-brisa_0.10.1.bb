@@ -17,7 +17,3 @@ RDEPENDS:${PN} += "\
 "
 
 inherit setuptools3 pypi
-
-do_install_append() {
-    sed -i  '1i#!/usr/bin/python3\n' ${D}/${bindir}/brisa-conf
-}
