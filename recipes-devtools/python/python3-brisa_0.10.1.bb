@@ -16,4 +16,4 @@ RDEPENDS:${PN} += "\
   ${PYTHON_PN}-cherrypy \
 "
 
-inherit python_setuptools_build_meta pypi
+inherit setuptools3 pypi
