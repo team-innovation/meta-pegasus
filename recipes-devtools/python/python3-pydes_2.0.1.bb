@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/twhiteman/pyDes"
 SECTION = "devel/python"
 
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://LICENSE.txt;md5="
+LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=d0276dc92ad095b36adc6c89a390c154"
 
 PYPI_PACKAGE = "pyDes"
 
