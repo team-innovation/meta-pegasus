@@ -7,6 +7,6 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5="
 
 PYPI_PACKAGE = "zc.lockfile"
 
-SRC_URI[sha256sum] = ""
+SRC_URI[sha256sum] = "adb2ee6d9e6a2333c91178dcb2c9b96a5744c78edb7712dc784a7d75648e81ec"
 
 inherit setuptools3 pypi
