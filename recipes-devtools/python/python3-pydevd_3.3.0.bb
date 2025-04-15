@@ -11,6 +11,6 @@ inherit python_setuptools_build_meta pypi
 
 # Remove incompatible prebuilt .so binaries
 do_install:append() {
-    rm -f ${D}${PYTHON_SITEPACKAGES_DIR}/pydevd_attach_to_process/attach_linux_amd64.so || true
-    rm -f ${D}${PYTHON_SITEPACKAGES_DIR}/pydevd_attach_to_process/attach_linux_x86.so || true
+    rm -rf ${D}${prefix}/pydevd_attach_to_process || true
+    rm -f ${D}${PYTHON_SITEPACKAGES_DIR}/pydevd_attach_to_process/attach_linux_*.so || true
 }
