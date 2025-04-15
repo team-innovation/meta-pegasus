@@ -20,5 +20,6 @@ DEPENDS = "\
 
 inherit setuptools3 pypi
 
-export SETUPTOOLS_SCM_PRETEND_VERSION = "${PV}"
-export PKG_CONFIG = "${STAGING_BINDIR_NATIVE}/pkg-config"
+do_compile() {
+    python3 setup.py build
+}
