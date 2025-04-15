@@ -1,0 +1,976 @@
+From fac0e4fb30c3633b435901948d3ee8e6ee143e78 Mon Sep 17 00:00:00 2001
+From: Tanner Oakes <tanner.oakes@vivint.com>
+Date: Thu, 8 Dec 2022 15:05:46 -0700
+Subject: [PATCH] Add keyData injection
+
+---
+ .gitignore                                    |  75 +++
+ build.sh                                      |  14 +
+ config.linux-gdb                              |   3 +-
+ liveMedia/#GenericMediaServer.cpp#            | 487 ------------------
+ liveMedia/MediaSession.cpp                    |  38 +-
+ liveMedia/ProxyServerMediaSession.cpp         |  21 +-
+ liveMedia/SRTPCryptographicContext.cpp        |  10 +
+ liveMedia/include/MediaSession.hh             |   6 +-
+ liveMedia/include/ProxyServerMediaSession.hh  |   5 +-
+ liveMedia/include/RTSPServer.hh               |   2 +-
+ liveMedia/include/SRTPCryptographicContext.hh |   2 +
+ proxyServer/live555ProxyServer.cpp            |   3 +-
+ testProgs/testOnDemandRTSPServer.cpp          |   4 +-
+ 13 files changed, 156 insertions(+), 514 deletions(-)
+ create mode 100644 .gitignore
+ create mode 100755 build.sh
+ delete mode 100644 liveMedia/#GenericMediaServer.cpp#
+
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..ae1df19
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,75 @@
++# Prerequisites
++*.d
++
++# Compiled Object files
++*.slo
++*.lo
++*.o
++*.obj
++
++# Precompiled Headers
++*.gch
++*.pch
++
++# Compiled Dynamic libraries
++*.so
++*.so.*
++*.dylib
++*.dll
++
++# Fortran module files
++*.mod
++*.smod
++
++# Compiled Static libraries
++*.lai
++*.la
++*.a
++*.lib
++
++# Executables
++*.exe
++*.out
++*.app
++
++Makefile
++
++target/
++
++hlsProxy/live555HLSProxy
++mediaServer/live555MediaServer
++proxyServer/live555ProxyServer
++testProgs/MPEG2TransportStreamIndexer
++testProgs/mikeyParse
++testProgs/openRTSP
++testProgs/playSIP
++testProgs/registerRTSPStream
++testProgs/sapWatch
++testProgs/testAMRAudioStreamer
++testProgs/testDVVideoStreamer
++testProgs/testH264VideoStreamer
++testProgs/testH264VideoToHLSSegments
++testProgs/testH264VideoToTransportStream
++testProgs/testH265VideoStreamer
++testProgs/testH265VideoToTransportStream
++testProgs/testMKVSplitter
++testProgs/testMKVStreamer
++testProgs/testMP3Receiver
++testProgs/testMP3Streamer
++testProgs/testMPEG1or2AudioVideoStreamer
++testProgs/testMPEG1or2ProgramToTransportStream
++testProgs/testMPEG1or2Splitter
++testProgs/testMPEG1or2VideoReceiver
++testProgs/testMPEG1or2VideoStreamer
++testProgs/testMPEG2TransportReceiver
++testProgs/testMPEG2TransportStreamSplitter
++testProgs/testMPEG2TransportStreamTrickPlay
++testProgs/testMPEG2TransportStreamer
++testProgs/testMPEG4VideoStreamer
++testProgs/testOggStreamer
++testProgs/testOnDemandRTSPServer
++testProgs/testRTSPClient
++testProgs/testRelay
++testProgs/testReplicator
++testProgs/testWAVAudioStreamer
++testProgs/vobStreamer
+diff --git a/build.sh b/build.sh
+new file mode 100755
+index 0000000..949abeb
+--- /dev/null
++++ b/build.sh
+@@ -0,0 +1,14 @@
++#!/bin/sh
++
++make distclean
++rm -rf target
++
++./genMakefiles linux-gdb
++#./genMakefiles linux-cross
++mkdir -p target/usr/include
++make DESTDIR=`pwd`/target install PREFIX=/usr
++cd target/usr/include
++find . -name "*.h*" -exec ln -s '{}' . ';'
++cd -
++
++
+diff --git a/config.linux-gdb b/config.linux-gdb
+index 800e0d3..734c2db 100644
+--- a/config.linux-gdb
++++ b/config.linux-gdb
+@@ -1,4 +1,5 @@
+-COMPILE_OPTS =		$(INCLUDES) -I/usr/local/include -I. -O -DSOCKLEN_T=socklen_t -g -D_LARGEFILE_SOURCE=1 -D_FILE_OFFSET_BITS=64
++COMPILE_OPTS =		$(INCLUDES) -I/usr/local/include -I. -O -DSOCKLEN_T=socklen_t -g -D_LARGEFILE_SOURCE=3 -D_FILE_OFFSET_BITS=64 -DDEBUG -DSERVER_USE_TLS -DPATHNAME_TO_PRIVATE_KEY_FILE=\"/home/toakes/.pki/certs/rtsps.pem\" -DPATHNAME_TO_CERTIFICATE_FILE=\"/home/toakes/.pki/certs/rtsps.pem\"
++#COMPILE_OPTS =		$(INCLUDES) -I/usr/local/include -I. -O -DSOCKLEN_T=socklen_t -g -D_LARGEFILE_SOURCE=3 -D_FILE_OFFSET_BITS=64 -DDEBUG
+ C =			c
+ C_COMPILER =		cc
+ C_FLAGS =		$(COMPILE_OPTS)
+diff --git a/liveMedia/#GenericMediaServer.cpp# b/liveMedia/#GenericMediaServer.cpp#
+deleted file mode 100644
+index 80f5413..0000000
+--- a/liveMedia/#GenericMediaServer.cpp#
++++ /dev/null
+@@ -1,487 +0,0 @@
+-/**********
+-This library is free software; you can redistribute it and/or modify it under
+-the terms of the GNU Lesser General Public License as published by the
+-Free Software Foundation; either version 3 of the License, or (at your
+-option) any later version. (See <http://www.gnu.org/copyleft/lesser.html>.)
+-
+-This library is distributed in the hope that it will be useful, but WITHOUT
+-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+-FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+-more details.
+-
+-You should have received a copy of the GNU Lesser General Public License
+-along with this library; if not, write to the Free Software Foundation, Inc.,
+-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+-**********/
+-// "liveMedia"
+-// Copyright (c) 1996-2022 Live Networks, Inc.  All rights reserved.
+-// A generic media server class, used to implement a RTSP server, and any other server that uses
+-//  "ServerMediaSession" objects to describe media to be served.
+-// Implementation
+-
+-#include "GenericMediaServer.hh"
+-#include <GroupsockHelper.hh>
+-#if defined(__WIN32__) || defined(_WIN32) || defined(_QNX4)
+-#define snprintf _snprintf
+-#endif
+-
+-////////// GenericMediaServer implementation //////////
+-
+-void GenericMediaServer::addServerMediaSession(ServerMediaSession* serverMediaSession) {
+-  if (serverMediaSession == NULL) return;
+-  
+-  char const* sessionName = serverMediaSession->streamName();
+-  if (sessionName == NULL) sessionName = "";
+-  removeServerMediaSession(sessionName);
+-      // in case an existing "ServerMediaSession" with this name already exists
+-  
+-  fServerMediaSessions->Add(sessionName, (void*)serverMediaSession);
+-}
+-
+-void GenericMediaServer
+-::lookupServerMediaSession(char const* streamName,
+-			   lookupServerMediaSessionCompletionFunc* completionFunc,
+-			   void* completionClientData,
+-			   Boolean /*isFirstLookupInSession*/) {
+-  // Default implementation: Do a synchronous lookup, and call the completion function:
+-  if (completionFunc != NULL) {
+-    (*completionFunc)(completionClientData, getServerMediaSession(streamName));
+-  }
+-}
+-
+-struct lsmsMemberFunctionRecord {
+-  GenericMediaServer* fServer;
+-  void (GenericMediaServer::*fMemberFunc)(ServerMediaSession*);
+-};
+-
+-static void lsmsMemberFunctionCompletionFunc(void* clientData, ServerMediaSession* sessionLookedUp) {
+-  lsmsMemberFunctionRecord* memberFunctionRecord = (lsmsMemberFunctionRecord*)clientData;
+-  (memberFunctionRecord->fServer->*(memberFunctionRecord->fMemberFunc))(sessionLookedUp);
+-  delete memberFunctionRecord;
+-}
+-
+-void GenericMediaServer
+-::lookupServerMediaSession(char const* streamName,
+-			   void (GenericMediaServer::*memberFunc)(ServerMediaSession*)) {
+-  struct lsmsMemberFunctionRecord* memberFunctionRecord = new struct lsmsMemberFunctionRecord;
+-  memberFunctionRecord->fServer = this;
+-  memberFunctionRecord->fMemberFunc = memberFunc;
+-  
+-  GenericMediaServer
+-    ::lookupServerMediaSession(streamName,
+-			       lsmsMemberFunctionCompletionFunc, memberFunctionRecord);
+-}
+-
+-void GenericMediaServer::removeServerMediaSession(ServerMediaSession* serverMediaSession) {
+-  if (serverMediaSession == NULL) return;
+-  
+-  fServerMediaSessions->Remove(serverMediaSession->streamName());
+-  if (serverMediaSession->referenceCount() == 0) {
+-    Medium::close(serverMediaSession);
+-  } else {
+-    serverMediaSession->deleteWhenUnreferenced() = True;
+-  }
+-}
+-
+-void GenericMediaServer::removeServerMediaSession(char const* streamName) {
+-  lookupServerMediaSession(streamName, &GenericMediaServer::removeServerMediaSession);
+-}
+-
+-void GenericMediaServer::closeAllClientSessionsForServerMediaSession(ServerMediaSession* serverMediaSession) {
+-  if (serverMediaSession == NULL) return;
+-  
+-  HashTable::Iterator* iter = HashTable::Iterator::create(*fClientSessions);
+-  GenericMediaServer::ClientSession* clientSession;
+-  char const* key; // dummy
+-  while ((clientSession = (GenericMediaServer::ClientSession*)(iter->next(key))) != NULL) {
+-    if (clientSession->fOurServerMediaSession == serverMediaSession) {
+-      delete clientSession;
+-    }
+-  }
+-  delete iter;
+-}
+-
+-void GenericMediaServer::closeAllClientSessionsForServerMediaSession(char const* streamName) {
+-  lookupServerMediaSession(streamName,
+-			   &GenericMediaServer::closeAllClientSessionsForServerMediaSession);
+-}
+-
+-void GenericMediaServer::deleteServerMediaSession(ServerMediaSession* serverMediaSession) {
+-  if (serverMediaSession == NULL) return;
+-  
+-  closeAllClientSessionsForServerMediaSession(serverMediaSession);
+-  removeServerMediaSession(serverMediaSession);
+-}
+-
+-void GenericMediaServer::deleteServerMediaSession(char const* streamName) {
+-  lookupServerMediaSession(streamName, &GenericMediaServer::deleteServerMediaSession);
+-}
+-
+-GenericMediaServer
+-::GenericMediaServer(UsageEnvironment& env, int ourSocketIPv4, int ourSocketIPv6, Port ourPort,
+-		     unsigned reclamationSeconds)
+-  : Medium(env),
+-    fServerSocketIPv4(ourSocketIPv4), fServerSocketIPv6(ourSocketIPv6),
+-    fServerPort(ourPort), fReclamationSeconds(reclamationSeconds),
+-    fServerMediaSessions(HashTable::create(STRING_HASH_KEYS)),
+-    fClientConnections(HashTable::create(ONE_WORD_HASH_KEYS)),
+-    fClientSessions(HashTable::create(STRING_HASH_KEYS)),
+-    fPreviousClientSessionId(0),
+-    fTLSCertificateFileName(NULL), fTLSPrivateKeyFileName(NULL) {
+-  ignoreSigPipeOnSocket(fServerSocketIPv4); // so that clients on the same host that are killed don't also kill us
+-  ignoreSigPipeOnSocket(fServerSocketIPv6); // ditto
+-  
+-  // Arrange to handle connections from others:
+-  env.taskScheduler().turnOnBackgroundReadHandling(fServerSocketIPv4, incomingConnectionHandlerIPv4, this);
+-  env.taskScheduler().turnOnBackgroundReadHandling(fServerSocketIPv6, incomingConnectionHandlerIPv6, this);
+-}
+-
+-GenericMediaServer::~GenericMediaServer() {
+-  // Turn off background read handling:
+-  envir().taskScheduler().turnOffBackgroundReadHandling(fServerSocketIPv4);
+-  ::closeSocket(fServerSocketIPv4);
+-  envir().taskScheduler().turnOffBackgroundReadHandling(fServerSocketIPv6);
+-  ::closeSocket(fServerSocketIPv6);
+-
+-  delete[] fTLSCertificateFileName; delete[] fTLSPrivateKeyFileName;
+-}
+-
+-void GenericMediaServer::cleanup() {
+-  // This member function must be called in the destructor of any subclass of
+-  // "GenericMediaServer".  (We don't call this in the destructor of "GenericMediaServer" itself,
+-  // because by that time, the subclass destructor will already have been called, and this may
+-  // affect (break) the destruction of the "ClientSession" and "ClientConnection" objects, which
+-  // themselves will have been subclassed.)
+-
+-  // Close all client session objects:
+-  GenericMediaServer::ClientSession* clientSession;
+-  while ((clientSession = (GenericMediaServer::ClientSession*)fClientSessions->getFirst()) != NULL) {
+-    delete clientSession;
+-  }
+-  delete fClientSessions;
+-  
+-  // Close all client connection objects:
+-  GenericMediaServer::ClientConnection* connection;
+-  while ((connection = (GenericMediaServer::ClientConnection*)fClientConnections->getFirst()) != NULL) {
+-    delete connection;
+-  }
+-  delete fClientConnections;
+-  
+-  // Delete all server media sessions
+-  ServerMediaSession* serverMediaSession;
+-  while ((serverMediaSession = (ServerMediaSession*)fServerMediaSessions->getFirst()) != NULL) {
+-    removeServerMediaSession(serverMediaSession); // will delete it, because it no longer has any 'client session' objects using it
+-  }
+-  delete fServerMediaSessions;
+-}
+-
+-#define LISTEN_BACKLOG_SIZE 20
+-
+-int GenericMediaServer::setUpOurSocket(UsageEnvironment& env, Port& ourPort, int domain) {
+-  int ourSocket = -1;
+-  
+-  do {
+-    // The following statement is enabled by default.
+-    // Don't disable it (by defining ALLOW_SERVER_PORT_REUSE) unless you know what you're doing.
+-#if !defined(ALLOW_SERVER_PORT_REUSE) && !defined(ALLOW_RTSP_SERVER_PORT_REUSE)
+-    // ALLOW_RTSP_SERVER_PORT_REUSE is for backwards-compatibility #####
+-    NoReuse dummy(env); // Don't use this socket if there's already a local server using it
+-#endif
+-    
+-    ourSocket = setupStreamSocket(env, ourPort, domain, True, True);
+-        // later fix to support IPv6
+-    if (ourSocket < 0) break;
+-    
+-    // Make sure we have a big send buffer:
+-    if (!increaseSendBufferTo(env, ourSocket, 50*1024)) break;
+-    
+-    // Allow multiple simultaneous connections:
+-    if (listen(ourSocket, LISTEN_BACKLOG_SIZE) < 0) {
+-      env.setResultErrMsg("listen() failed: ");
+-      break;
+-    }
+-    
+-    if (ourPort.num() == 0) {
+-      // bind() will have chosen a port for us; return it also:
+-      if (!getSourcePort(env, ourSocket, domain, ourPort)) break;
+-    }
+-    
+-    return ourSocket;
+-  } while (0);
+-  
+-  if (ourSocket != -1) ::closeSocket(ourSocket);
+-  return -1;
+-}
+-
+-void GenericMediaServer::incomingConnectionHandlerIPv4(void* instance, int /*mask*/) {
+-  GenericMediaServer* server = (GenericMediaServer*)instance;
+-  server->incomingConnectionHandlerIPv4();
+-}
+-void GenericMediaServer::incomingConnectionHandlerIPv6(void* instance, int /*mask*/) {
+-  GenericMediaServer* server = (GenericMediaServer*)instance;
+-  server->incomingConnectionHandlerIPv6();
+-}
+-void GenericMediaServer::incomingConnectionHandlerIPv4() {
+-  incomingConnectionHandlerOnSocket(fServerSocketIPv4);
+-}
+-void GenericMediaServer::incomingConnectionHandlerIPv6() {
+-  incomingConnectionHandlerOnSocket(fServerSocketIPv6);
+-}
+-
+-void GenericMediaServer::incomingConnectionHandlerOnSocket(int serverSocket) {
+-  struct sockaddr_storage clientAddr;
+-  SOCKLEN_T clientAddrLen = sizeof clientAddr;
+-  int clientSocket = accept(serverSocket, (struct sockaddr*)&clientAddr, &clientAddrLen);
+-  if (clientSocket < 0) {
+-    int err = envir().getErrno();
+-    if (err != EWOULDBLOCK) {
+-      envir().setResultErrMsg("accept() failed: ");
+-    }
+-    return;
+-  }
+-  ignoreSigPipeOnSocket(clientSocket); // so that clients on the same host that are killed don't also kill us
+-  makeSocketNonBlocking(clientSocket);
+-  increaseSendBufferTo(envir(), clientSocket, 50*1024);
+-  
+-#ifdef DEBUG
+-  envir() << "accept()ed connection from " << AddressString(clientAddr).val() << "\n";
+-#endif
+-  
+-  // Create a new object for handling this connection:
+-  (void)createNewClientConnection(clientSocket, clientAddr);
+-}
+-
+-void GenericMediaServer
+-::setTLSFileNames(char const* certFileName, char const* privKeyFileName) {
+-  delete[] fTLSCertificateFileName; fTLSCertificateFileName = strDup(certFileName);
+-  delete[] fTLSPrivateKeyFileName; fTLSPrivateKeyFileName = strDup(privKeyFileName);
+-}
+-
+-
+-////////// GenericMediaServer::ClientConnection implementation //////////
+-
+-GenericMediaServer::ClientConnection
+-::ClientConnection(GenericMediaServer& ourServer,
+-		   int clientSocket, struct sockaddr_storage const& clientAddr,
+-		   Boolean useTLS)
+-  : fOurServer(ourServer), fOurSocket(clientSocket), fClientAddr(clientAddr), fTLS(envir()) {
+-  fInputTLS = fOutputTLS = &fTLS;
+-
+-  // Add ourself to our 'client connections' table:
+-  fOurServer.fClientConnections->Add((char const*)this, this);
+-  
+-  if (useTLS) {
+-    // Perform extra processing to handle a TLS connection:
+-    fTLS.setCertificateAndPrivateKeyFileNames(ourServer.fTLSCertificateFileName,
+-					      ourServer.fTLSPrivateKeyFileName);
+-    fTLS.isNeeded = True;
+-
+-    fTLS.tlsAcceptIsNeeded = True; // call fTLS.accept() the next time the socket is readable
+-  }
+-
+-  // Arrange to handle incoming requests:
+-  resetRequestBuffer();
+-  envir().taskScheduler()
+-    .setBackgroundHandling(fOurSocket, SOCKET_READABLE|SOCKET_EXCEPTION, incomingRequestHandler, this);
+-}
+-
+-GenericMediaServer::ClientConnection::~ClientConnection() {
+-  // Remove ourself from the server's 'client connections' hash table before we go:
+-  fOurServer.fClientConnections->Remove((char const*)this);
+-  
+-  closeSockets();
+-}
+-
+-void GenericMediaServer::ClientConnection::closeSockets() {
+-  // Turn off background handling on our socket:
+-  envir().taskScheduler().disableBackgroundHandling(fOurSocket);
+-  if (fOurSocket>= 0) ::closeSocket(fOurSocket);
+-
+-  fOurSocket = -1;
+-}
+-
+-void GenericMediaServer::ClientConnection::incomingRequestHandler(void* instance, int /*mask*/) {
+-  ClientConnection* connection = (ClientConnection*)instance;
+-  connection->incomingRequestHandler();
+-}
+-
+-void GenericMediaServer::ClientConnection::incomingRequestHandler() {
+-  if (fInputTLS->tlsAcceptIsNeeded) { // we need to successfully call fInputTLS->accept() first:
+-    if (fInputTLS->accept(fOurSocket) <= 0) return; // either an error, or we need to try again later
+-
+-    fInputTLS->tlsAcceptIsNeeded = False;
+-    // We can now read data, as usual:
+-  }
+-
+-  int bytesRead;
+-  if (fInputTLS->isNeeded) {
+-    bytesRead = fInputTLS->read(&fRequestBuffer[fRequestBytesAlreadySeen], fRequestBufferBytesLeft);
+-  } else {
+-    struct sockaddr_storage dummy; // 'from' address, meaningless in this case
+-  
+-    bytesRead = readSocket(envir(), fOurSocket, &fRequestBuffer[fRequestBytesAlreadySeen], fRequestBufferBytesLeft, dummy);
+-  }
+-  handleRequestBytes(bytesRead);
+-}
+-
+-void GenericMediaServer::ClientConnection::resetRequestBuffer() {
+-  fRequestBytesAlreadySeen = 0;
+-  fRequestBufferBytesLeft = sizeof fRequestBuffer;
+-}
+-
+-
+-////////// GenericMediaServer::ClientSession implementation //////////
+-
+-GenericMediaServer::ClientSession
+-::ClientSession(GenericMediaServer& ourServer, u_int32_t sessionId)
+-  : fOurServer(ourServer), fOurSessionId(sessionId), fOurServerMediaSession(NULL),
+-    fLivenessCheckTask(NULL) {
+-  noteLiveness();
+-}
+-
+-GenericMediaServer::ClientSession::~ClientSession() {
+-  // Turn off any liveness checking:
+-  envir().taskScheduler().unscheduleDelayedTask(fLivenessCheckTask);
+-
+-  // Remove ourself from the server's 'client sessions' hash table before we go:
+-  char sessionIdStr[8+1];
+-  sprintf(sessionIdStr, "%08X", fOurSessionId);
+-  fOurServer.fClientSessions->Remove(sessionIdStr);
+-  
+-  if (fOurServerMediaSession != NULL) {
+-    fOurServerMediaSession->decrementReferenceCount();
+-    if (fOurServerMediaSession->referenceCount() == 0
+-	&& fOurServerMediaSession->deleteWhenUnreferenced()) {
+-      fOurServer.removeServerMediaSession(fOurServerMediaSession);
+-      fOurServerMediaSession = NULL;
+-    }
+-  }
+-}
+-
+-void GenericMediaServer::ClientSession::noteLiveness() {
+-#ifdef DEBUG
+-  char const* streamName
+-    = (fOurServerMediaSession == NULL) ? "???" : fOurServerMediaSession->streamName();
+-  fprintf(stderr, "Client session (id \"%08X\", stream name \"%s\"): Liveness indication\n",
+-	  fOurSessionId, streamName);
+-#endif
+-  if (fOurServerMediaSession != NULL) fOurServerMediaSession->noteLiveness();
+-
+-  if (fOurServer.fReclamationSeconds > 0) {
+-    envir().taskScheduler().rescheduleDelayedTask(fLivenessCheckTask,
+-						  fOurServer.fReclamationSeconds*1000000,
+-						  (TaskFunc*)livenessTimeoutTask, this);
+-  }
+-}
+-
+-void GenericMediaServer::ClientSession::noteClientLiveness(ClientSession* clientSession) {
+-  clientSession->noteLiveness();
+-}
+-
+-void GenericMediaServer::ClientSession::livenessTimeoutTask(ClientSession* clientSession) {
+-  // If this gets called, the client session is assumed to have timed out, so delete it:
+-#ifdef DEBUG
+-  char const* streamName
+-    = (clientSession->fOurServerMediaSession == NULL) ? "???" : clientSession->fOurServerMediaSession->streamName();
+-  fprintf(stderr, "Client session (id \"%08X\", stream name \"%s\") has timed out (due to inactivity)\n",
+-	  clientSession->fOurSessionId, streamName);
+-#endif
+-  clientSession->fLivenessCheckTask = NULL;
+-  delete clientSession;
+-}
+-
+-
+-
+-GenericMediaServer::ClientSession* GenericMediaServer::createNewClientSessionWithId() {
+-  u_int32_t sessionId;
+-  char sessionIdStr[8+1];
+-
+-  // Choose a random (unused) 32-bit integer for the session id
+-  // (it will be encoded as a 8-digit hex number).  (We avoid choosing session id 0,
+-  // because that has a special use by some servers.  Similarly, we avoid choosing the same
+-  // session id twice in a row.)
+-  do {
+-    sessionId = (u_int32_t)our_random32();
+-    snprintf(sessionIdStr, sizeof sessionIdStr, "%08X", sessionId);
+-  } while (sessionId == 0 || sessionId == fPreviousClientSessionId
+-	   || lookupClientSession(sessionIdStr) != NULL);
+-  fPreviousClientSessionId = sessionId;
+-
+-  ClientSession* clientSession = createNewClientSession(sessionId);
+-  if (clientSession != NULL) fClientSessions->Add(sessionIdStr, clientSession);
+-
+-  return clientSession;
+-}
+-
+-GenericMediaServer::ClientSession*
+-GenericMediaServer::lookupClientSession(u_int32_t sessionId) {
+-  char sessionIdStr[8+1];
+-  snprintf(sessionIdStr, sizeof sessionIdStr, "%08X", sessionId);
+-  return lookupClientSession(sessionIdStr);
+-}
+-
+-GenericMediaServer::ClientSession*
+-GenericMediaServer::lookupClientSession(char const* sessionIdStr) {
+-  return (GenericMediaServer::ClientSession*)fClientSessions->Lookup(sessionIdStr);
+-}
+-
+-ServerMediaSession* GenericMediaServer::getServerMediaSession(char const* streamName) {
+-  return (ServerMediaSession*)(fServerMediaSessions->Lookup(streamName));
+-}
+-
+-
+-////////// ServerMediaSessionIterator implementation //////////
+-
+-GenericMediaServer::ServerMediaSessionIterator
+-::ServerMediaSessionIterator(GenericMediaServer& server)
+-  : fOurIterator((server.fServerMediaSessions == NULL)
+-		 ? NULL : HashTable::Iterator::create(*server.fServerMediaSessions)) {
+-}
+-
+-GenericMediaServer::ServerMediaSessionIterator::~ServerMediaSessionIterator() {
+-  delete fOurIterator;
+-}
+-
+-ServerMediaSession* GenericMediaServer::ServerMediaSessionIterator::next() {
+-  if (fOurIterator == NULL) return NULL;
+-
+-  char const* key; // dummy
+-  return (ServerMediaSession*)(fOurIterator->next(key));
+-}
+-
+-
+-////////// UserAuthenticationDatabase implementation //////////
+-
+-UserAuthenticationDatabase::UserAuthenticationDatabase(char const* realm,
+-						       Boolean passwordsAreMD5)
+-  : fTable(HashTable::create(STRING_HASH_KEYS)),
+-    fRealm(strDup(realm == NULL ? "LIVE555 Streaming Media" : realm)),
+-    fPasswordsAreMD5(passwordsAreMD5) {
+-}
+-
+-UserAuthenticationDatabase::~UserAuthenticationDatabase() {
+-  delete[] fRealm;
+-  
+-  // Delete the allocated 'password' strings that we stored in the table, and then the table itself:
+-  char* password;
+-  while ((password = (char*)fTable->RemoveNext()) != NULL) {
+-    delete[] password;
+-  }
+-  delete fTable;
+-}
+-
+-void UserAuthenticationDatabase::addUserRecord(char const* username,
+-					       char const* password) {
+-  char* oldPassword = (char*)fTable->Add(username, (void*)(strDup(password)));
+-  delete[] oldPassword; // if any
+-}
+-
+-void UserAuthenticationDatabase::removeUserRecord(char const* username) {
+-  char* password = (char*)(fTable->Lookup(username));
+-  fTable->Remove(username);
+-  delete[] password;
+-}
+-
+-char const* UserAuthenticationDatabase::lookupPassword(char const* username) {
+-  return (char const*)(fTable->Lookup(username));
+-}
+diff --git a/liveMedia/MediaSession.cpp b/liveMedia/MediaSession.cpp
+index a90ba9c..c74215d 100644
+--- a/liveMedia/MediaSession.cpp
++++ b/liveMedia/MediaSession.cpp
+@@ -28,8 +28,8 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
+ ////////// MediaSession //////////
+ 
+ MediaSession* MediaSession::createNew(UsageEnvironment& env,
+-				      char const* sdpDescription) {
+-  MediaSession* newSession = new MediaSession(env);
++				      char const* sdpDescription, char const* keyData) {
++  MediaSession* newSession = new MediaSession(env, keyData);
+   if (newSession != NULL) {
+     if (!newSession->initializeWithSDP(sdpDescription)) {
+       delete newSession;
+@@ -57,7 +57,7 @@ Boolean MediaSession::lookupByName(UsageEnvironment& env,
+   return True;
+ }
+ 
+-MediaSession::MediaSession(UsageEnvironment& env)
++MediaSession::MediaSession(UsageEnvironment& env, char const* keyData)
+   : Medium(env),
+     fSubsessionsHead(NULL), fSubsessionsTail(NULL),
+     fConnectionEndpointName(NULL), fConnectionEndpointNameAddressFamily(AF_UNSPEC),
+@@ -67,6 +67,9 @@ MediaSession::MediaSession(UsageEnvironment& env)
+     fMIKEYState(NULL), fCrypto(NULL) {
+   fSourceFilterAddr = nullAddress();
+ 
++    memset(fKeyData, 0, 31);
++    if (keyData != NULL)
++        strncpy(fKeyData, keyData, 30);
+   // Get our host name, and use this for the RTCP CNAME:
+   const unsigned maxCNAMElen = 100;
+   char CNAME[maxCNAMElen+1];
+@@ -78,6 +81,7 @@ MediaSession::MediaSession(UsageEnvironment& env)
+ #endif
+   CNAME[maxCNAMElen] = '\0'; // just in case
+   fCNAME = strDup(CNAME);
++
+ }
+ 
+ MediaSession::~MediaSession() {
+@@ -346,25 +350,31 @@ static MIKEYState* parseSDPAttribute_key_mgmtToMIKEY(char const* sdpLine) {
+   return resultMIKEYState;
+ }
+ 
+-static MIKEYState* parseSDPAttribute_cryptoToMIKEY(char const* sdpLine) {
++static MIKEYState* parseSDPAttribute_cryptoToMIKEY(char const* sdpLine, char const* keyData) {
+   char* cryptoSuite = NULL;
+   char* cryptoData = NULL;
+   MIKEYState* resultMIKEYState = NULL;
+ 
+   do {
+     // Check for a "a=crypto:<id> <crypto-suite> inline:<cryptoData>" line:
+-    if (!parseTwoStringValues(sdpLine, "a=crypto:1 %s inline:%s", cryptoSuite, cryptoData)) break;
++    if (!parseTwoStringValues(sdpLine, "a=crypto:1 %s inline:%s", cryptoSuite, cryptoData)) {
++        if (!parseStringValue(sdpLine, "a=crypto:1 %s", cryptoSuite)) break;
++    }
+ 
+     // We understand only the 'crypto suite' "AES_CM_128_HMAC_SHA1_80":
+     if (strcmp(cryptoSuite, "AES_CM_128_HMAC_SHA1_80") != 0) break;
+ 
+-    // Base64-decode the "crytpoData" string:
+-    unsigned cryptoData_decodedSize;
+-    u_int8_t* cryptoData_decoded = base64Decode(cryptoData, cryptoData_decodedSize);
+-    if (cryptoData_decoded == NULL) break;
++    if (keyData == NULL || strlen(keyData) == 0) {
++        // Base64-decode the "crytpoData" string:
++        unsigned cryptoData_decodedSize;
++        u_int8_t* cryptoData_decoded = base64Decode(cryptoData, cryptoData_decodedSize);
++        if (cryptoData_decoded == NULL) break;
+ 
+-    resultMIKEYState = MIKEYState::createKeyOnly(cryptoData_decoded, cryptoData_decodedSize);
+-    delete[] cryptoData_decoded;
++        resultMIKEYState = MIKEYState::createKeyOnly(cryptoData_decoded, cryptoData_decodedSize);
++        delete[] cryptoData_decoded;
++    } else {
++        resultMIKEYState = MIKEYState::createKeyOnly((u_int8_t*)keyData, strlen(keyData));
++    }
+   } while (0);
+ 
+   delete[] cryptoSuite;
+@@ -498,7 +508,7 @@ Boolean MediaSession::parseSDPAttribute_key_mgmt(char const* sdpLine) {
+ }
+ 
+ Boolean MediaSession::parseSDPAttribute_crypto(char const* sdpLine) {
+-  MIKEYState* newMIKEYState = parseSDPAttribute_cryptoToMIKEY(sdpLine);
++  MIKEYState* newMIKEYState = parseSDPAttribute_cryptoToMIKEY(sdpLine, fKeyData);
+   if (newMIKEYState == NULL) return False;
+ 
+   delete fCrypto; delete fMIKEYState;
+@@ -750,7 +760,6 @@ static Boolean const honorSDPPortChoice
+ 
+ Boolean MediaSubsession::initiate(int useSpecialRTPoffset) {
+   if (fReadSource != NULL) return True; // has already been initiated
+-
+   do {
+     if (fCodecName == NULL) {
+       env().setResultMsg("Codec is unspecified");
+@@ -1279,7 +1288,7 @@ Boolean MediaSubsession::parseSDPAttribute_key_mgmt(char const* sdpLine) {
+ }
+ 
+ Boolean MediaSubsession::parseSDPAttribute_crypto(char const* sdpLine) {
+-  MIKEYState* newMIKEYState = parseSDPAttribute_cryptoToMIKEY(sdpLine);
++  MIKEYState* newMIKEYState = parseSDPAttribute_cryptoToMIKEY(sdpLine, parentSession().getKeyData());
+   if (newMIKEYState == NULL) return False;
+ 
+   delete fCrypto; delete fMIKEYState;
+@@ -1289,7 +1298,6 @@ Boolean MediaSubsession::parseSDPAttribute_crypto(char const* sdpLine) {
+   return True;
+ }
+ 
+-
+ Boolean MediaSubsession::createSourceObjects(int useSpecialRTPoffset) {
+   do {
+     // First, check "fProtocolName"
+diff --git a/liveMedia/ProxyServerMediaSession.cpp b/liveMedia/ProxyServerMediaSession.cpp
+index e61e424..65270e5 100644
+--- a/liveMedia/ProxyServerMediaSession.cpp
++++ b/liveMedia/ProxyServerMediaSession.cpp
+@@ -53,7 +53,7 @@ private:
+   static void subsessionByeHandler(void* clientData);
+   void subsessionByeHandler();
+ 
+-  int verbosityLevel() const { return ((ProxyServerMediaSession*)fParentSession)->fVerbosityLevel; }
++  int verbosityLevel() const { return 1; } //{ return ((ProxyServerMediaSession*)fParentSession)->fVerbosityLevel; }
+ 
+ private:
+   friend class ProxyRTSPClient;
+@@ -85,10 +85,10 @@ ProxyServerMediaSession* ProxyServerMediaSession
+ 	    char const* inputStreamURL, char const* streamName,
+ 	    char const* username, char const* password,
+ 	    portNumBits tunnelOverHTTPPortNum, int verbosityLevel, int socketNumToServer,
+-	    MediaTranscodingTable* transcodingTable) {
++	    MediaTranscodingTable* transcodingTable, char const* keyData) {
+   return new ProxyServerMediaSession(env, ourMediaServer, inputStreamURL, streamName, username, password,
+ 				     tunnelOverHTTPPortNum, verbosityLevel, socketNumToServer,
+-				     transcodingTable);
++				     transcodingTable, keyData);
+ }
+ 
+ 
+@@ -99,6 +99,7 @@ ProxyServerMediaSession
+ 			  portNumBits tunnelOverHTTPPortNum, int verbosityLevel,
+ 			  int socketNumToServer,
+ 			  MediaTranscodingTable* transcodingTable,
++              char const* keyData,
+ 			  createNewProxyRTSPClientFunc* ourCreateNewProxyRTSPClientFunc,
+ 			  portNumBits initialPortNum, Boolean multiplexRTCPWithRTP)
+   : ServerMediaSession(env, streamName, NULL, NULL, False, NULL),
+@@ -108,6 +109,11 @@ ProxyServerMediaSession
+     fCreateNewProxyRTSPClientFunc(ourCreateNewProxyRTSPClientFunc),
+     fTranscodingTable(transcodingTable),
+     fInitialPortNum(initialPortNum), fMultiplexRTCPWithRTP(multiplexRTCPWithRTP) {
++
++     memset(fKeyData, 0, 31);
++     if (keyData != NULL)
++        strncpy(fKeyData, keyData, 30);
++
+   // Open a RTSP connection to the input stream, and send a "DESCRIBE" command.
+   // We'll use the SDP description in the response to set ourselves up.
+   fProxyRTSPClient
+@@ -162,7 +168,7 @@ void ProxyServerMediaSession::continueAfterDESCRIBE(char const* sdpDescription)
+   // Create a (client) "MediaSession" object from the stream's SDP description ("resultString"), then iterate through its
+   // "MediaSubsession" objects, to set up corresponding "ServerMediaSubsession" objects that we'll use to serve the stream's tracks.
+   do {
+-    fClientMediaSession = MediaSession::createNew(envir(), sdpDescription);
++    fClientMediaSession = MediaSession::createNew(envir(), sdpDescription, fKeyData);
+     if (fClientMediaSession == NULL) break;
+ 
+     MediaSubsessionIterator iter(*fClientMediaSession);
+@@ -612,9 +618,16 @@ FramedSource* ProxyServerMediaSubsession::createNewStreamSource(unsigned clientS
+   }
+ 
+   ProxyRTSPClient* const proxyRTSPClient = sms->fProxyRTSPClient;
++
++  SRTPCryptographicContext* ourCrypto = fClientMediaSubsession.getCrypto();
++  if (ourCrypto) {
++      ourCrypto->resetSRTPState();
++  }
++
+   if (clientSessionId != 0) {
+     // We're being called as a result of implementing a RTSP "SETUP".
+     if (!fHaveSetupStream) {
++
+       // This is our first "SETUP".  Send RTSP "SETUP" and later "PLAY" commands to the proxied server, to start streaming:
+       // (Before sending "SETUP", enqueue ourselves on the "RTSPClient"s 'SETUP queue', so we'll be able to get the correct
+       //  "ProxyServerMediaSubsession" to handle the response.  (Note that responses come back in the same order as requests.))
+diff --git a/liveMedia/SRTPCryptographicContext.cpp b/liveMedia/SRTPCryptographicContext.cpp
+index 7d86de3..9dad59a 100644
+--- a/liveMedia/SRTPCryptographicContext.cpp
++++ b/liveMedia/SRTPCryptographicContext.cpp
+@@ -372,6 +372,16 @@ Boolean SRTPCryptographicContext
+   return False;
+ }
+ 
++void SRTPCryptographicContext
++::resetSRTPState() {
++  fHaveReceivedSRTPPackets = False;
++  fPreviousHighRTPSeqNum = 0;
++  fReceptionROC = 0;
++  fHaveSentSRTPPackets = False;
++  fSendingROC = 0;
++  fSRTCPIndex = 0;
++}
++
+ #ifndef NO_OPENSSL
+ unsigned SRTPCryptographicContext
+ ::generateSRTPAuthenticationTag(u_int8_t const* dataToAuthenticate, unsigned numBytesToAuthenticate,
+diff --git a/liveMedia/include/MediaSession.hh b/liveMedia/include/MediaSession.hh
+index 1e52cf2..f067f49 100644
+--- a/liveMedia/include/MediaSession.hh
++++ b/liveMedia/include/MediaSession.hh
+@@ -63,7 +63,7 @@ class MediaSubsession; // forward
+ class MediaSession: public Medium {
+ public:
+   static MediaSession* createNew(UsageEnvironment& env,
+-				 char const* sdpDescription);
++				 char const* sdpDescription, char const* keyData=NULL);
+ 
+   static Boolean lookupByName(UsageEnvironment& env, char const* sourceName,
+ 			      MediaSession*& resultSession);
+@@ -97,12 +97,13 @@ public:
+ 
+   MIKEYState* getMIKEYState() const { return fMIKEYState; }
+   SRTPCryptographicContext* getCrypto() const { return fCrypto; }
++  char const* getKeyData() const { return fKeyData; }
+ 
+ protected: // redefined virtual functions
+   virtual Boolean isMediaSession() const;
+ 
+ protected:
+-  MediaSession(UsageEnvironment& env);
++  MediaSession(UsageEnvironment& env, char const* keyData=NULL);
+       // called only by createNew();
+   virtual ~MediaSession();
+ 
+@@ -152,6 +153,7 @@ protected:
+   // Optional key management and crypto state:
+   MIKEYState* fMIKEYState;
+   SRTPCryptographicContext* fCrypto;
++  char fKeyData[31]; // Optional out of band key for crypto
+ };
+ 
+ 
+diff --git a/liveMedia/include/ProxyServerMediaSession.hh b/liveMedia/include/ProxyServerMediaSession.hh
+index 3812014..8f977b0 100644
+--- a/liveMedia/include/ProxyServerMediaSession.hh
++++ b/liveMedia/include/ProxyServerMediaSession.hh
+@@ -115,7 +115,8 @@ public:
+ 					        // for streaming the *proxied* (i.e., back-end) stream
+ 					    int verbosityLevel = 0,
+ 					    int socketNumToServer = -1,
+-					    MediaTranscodingTable* transcodingTable = NULL);
++					    MediaTranscodingTable* transcodingTable = NULL,
++                        char const* keyData = NULL);
+       // Hack: "tunnelOverHTTPPortNum" == 0xFFFF (i.e., all-ones) means: Stream RTP/RTCP-over-TCP, but *not* using HTTP
+       // "verbosityLevel" == 1 means display basic proxy setup info; "verbosityLevel" == 2 means display RTSP client protocol also.
+       // If "socketNumToServer" is >= 0, then it is the socket number of an already-existing TCP connection to the server.
+@@ -138,6 +139,7 @@ protected:
+ 			  portNumBits tunnelOverHTTPPortNum, int verbosityLevel,
+ 			  int socketNumToServer,
+ 			  MediaTranscodingTable* transcodingTable,
++              char const* keyData,
+ 			  createNewProxyRTSPClientFunc* ourCreateNewProxyRTSPClientFunc
+ 			  = defaultCreateNewProxyRTSPClientFunc,
+ 			  portNumBits initialPortNum = 6970,
+@@ -179,6 +181,7 @@ private:
+   MediaTranscodingTable* fTranscodingTable;
+   portNumBits fInitialPortNum;
+   Boolean fMultiplexRTCPWithRTP;
++  char fKeyData[31]; // Optional out of band key for crypto
+ };
+ 
+ 
+diff --git a/liveMedia/include/RTSPServer.hh b/liveMedia/include/RTSPServer.hh
+index c71cfb9..9095bbc 100644
+--- a/liveMedia/include/RTSPServer.hh
++++ b/liveMedia/include/RTSPServer.hh
+@@ -308,6 +308,7 @@ protected: // redefined virtual functions
+   // If you subclass "RTSPClientConnection", then you must also redefine this virtual function in order
+   // to create new objects of your subclass:
+   virtual ClientConnection* createNewClientConnection(int clientSocket, struct sockaddr_storage const& clientAddr);
++  Boolean fOurConnectionsUseTLS; // by default, False
+ 
+ protected:
+   // If you subclass "RTSPClientSession", then you must also redefine this virtual function in order
+@@ -339,7 +340,6 @@ private:
+   unsigned fRegisterOrDeregisterRequestCounter;
+   UserAuthenticationDatabase* fAuthDB;
+   Boolean fAllowStreamingRTPOverTCP; // by default, True
+-  Boolean fOurConnectionsUseTLS; // by default, False
+   Boolean fWeServeSRTP; // used only if "fOurConnectionsUseTLS" is True
+   Boolean fWeEncryptSRTP; // used only if "fWeServeSRTP" is True
+ };
+diff --git a/liveMedia/include/SRTPCryptographicContext.hh b/liveMedia/include/SRTPCryptographicContext.hh
+index e13e3aa..46176e3 100644
+--- a/liveMedia/include/SRTPCryptographicContext.hh
++++ b/liveMedia/include/SRTPCryptographicContext.hh
+@@ -47,6 +47,8 @@ public:
+   Boolean processOutgoingSRTCPPacket(u_int8_t* buffer, unsigned inPacketSize,
+ 				     unsigned& outPacketSize);
+ 
++  void resetSRTPState();
++
+ #ifndef NO_OPENSSL
+ private:
+   // Definitions specific to the "SRTP_AES128_CM_HMAC_SHA1_80" ciphersuite.
+diff --git a/proxyServer/live555ProxyServer.cpp b/proxyServer/live555ProxyServer.cpp
+index df3586e..d3a7aa8 100644
+--- a/proxyServer/live555ProxyServer.cpp
++++ b/proxyServer/live555ProxyServer.cpp
+@@ -232,7 +232,8 @@ int main(int argc, char** argv) {
+     ServerMediaSession* sms
+       = ProxyServerMediaSession::createNew(*env, rtspServer,
+ 					   proxiedStreamURL, streamName,
+-					   username, password, tunnelOverHTTPPortNum, verbosityLevel);
++					   username, password, tunnelOverHTTPPortNum, verbosityLevel, -1, NULL,
++                       "Svhq1jNXI5wrGjSZX1k4102OhImMSp");
+     rtspServer->addServerMediaSession(sms);
+ 
+     char* proxyStreamURL = rtspServer->rtspURL(sms);
+diff --git a/testProgs/testOnDemandRTSPServer.cpp b/testProgs/testOnDemandRTSPServer.cpp
+index efa1320..ec0fef8 100644
+--- a/testProgs/testOnDemandRTSPServer.cpp
++++ b/testProgs/testOnDemandRTSPServer.cpp
+@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
+   // Create the RTSP server:
+ #ifdef SERVER_USE_TLS
+   // Serve RTSPS: RTSP over a TLS connection:
+-  RTSPServer* rtspServer = RTSPServer::createNew(*env, 322, authDB);
++  RTSPServer* rtspServer = RTSPServer::createNew(*env, 8322, authDB);
+ #else
+   // Serve regular RTSP (over a TCP connection):
+   RTSPServer* rtspServer = RTSPServer::createNew(*env, 8554, authDB);
+@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
+   }
+ #ifdef SERVER_USE_TLS
+ #ifndef STREAM_USING_SRTP
+-#define STREAM_USING_SRTP True
++#define STREAM_USING_SRTP False
+ #endif
+   rtspServer->setTLSState(PATHNAME_TO_CERTIFICATE_FILE, PATHNAME_TO_PRIVATE_KEY_FILE,
+ 			  STREAM_USING_SRTP);
+-- 
+2.40.0
+

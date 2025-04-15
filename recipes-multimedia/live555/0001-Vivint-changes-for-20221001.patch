@@ -1,0 +1,424 @@
+From c0d1c4f3add3f0767317ff3d0508e5287814d2ac Mon Sep 17 00:00:00 2001
+From: Tanner Oakes <tanner.oakes@vivint.com>
+Date: Mon, 24 Oct 2022 13:45:22 -0600
+Subject: [PATCH 1/2] Vivint changes for 20221001
+
+---
+ config.linux-with-shared-libraries           |  4 +
+ groupsock/GroupsockHelper.cpp                | 25 ++++++
+ groupsock/include/GroupsockHelper.hh         |  2 +
+ liveMedia/RTPInterface.cpp                   | 89 +++++++++++++++++++-
+ liveMedia/RTSPClient.cpp                     | 10 +--
+ liveMedia/include/ProxyServerMediaSession.hh | 10 ++-
+ liveMedia/include/RTPInterface.hh            |  1 +
+ liveMedia/include/RTSPClient.hh              |  2 +-
+ proxyServer/live555ProxyServer.cpp           | 27 ++++--
+ 9 files changed, 152 insertions(+), 18 deletions(-)
+
+diff --git a/config.linux-with-shared-libraries b/config.linux-with-shared-libraries
+index dc5bbcd..5ed3103 100644
+--- a/config.linux-with-shared-libraries
++++ b/config.linux-with-shared-libraries
+@@ -44,3 +44,7 @@ LIBS_FOR_GUI_APPLICATION =
+ LIBS_FOR_LIVEMEDIA_LIB = -lssl -lcrypto
+ EXE =
+ INSTALL2 =		install_shared_libraries
++
++COMPILE_OPTS += -DALLOW_RTSP_SERVER_PORT_REUSE=1  -DDEBUG_SEND=1 \
++    -DRTPINTERFACE_BLOCKING_WRITE_TIMEOUT_MS=5000 -DPREFER_LOW_LATENCY=1 -DCORK_PAYLOAD=1 \
++    -DXLOCALE_NOT_USED
+diff --git a/groupsock/GroupsockHelper.cpp b/groupsock/GroupsockHelper.cpp
+index 56b7096..1e977d9 100644
+--- a/groupsock/GroupsockHelper.cpp
++++ b/groupsock/GroupsockHelper.cpp
+@@ -47,6 +47,9 @@ extern "C" int initializeWinsockIfNecessary();
+ #include <net/if.h>
+ #endif
+ #include <stdio.h>
++#include <sys/socket.h>
++#include <netinet/in.h>
++#include <netinet/tcp.h>
+ 
+ // By default, use INADDR_ANY for the sending and receiving interfaces (IPv4 only):
+ ipv4AddressBits SendingInterfaceAddr = INADDR_ANY;
+@@ -211,6 +214,28 @@ int setupDatagramSocket(UsageEnvironment& env, Port port, int domain) {
+   return newSocket;
+ }
+ 
++void corkUncorkSocket( int sock, int cork) {
++#if defined(__WIN32__) || defined(_WIN32)
++#elif defined(VXWORKS)
++#else
++  setsockopt(sock, IPPROTO_TCP, TCP_CORK, (const char*)& cork, sizeof cork);
++#endif
++}
++
++Boolean makeSocketNoDelay(UsageEnvironment& env, int sock) {
++#if defined(__WIN32__) || defined(_WIN32)
++#elif defined(VXWORKS)
++#else
++  int value = 1;
++  if (setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, (const char*)&value, sizeof value) < 0) {
++    socketErr(env, "setsockopt(TCP_NODELAY) error: ");
++          // non-critical error – don’t close socket
++    return false;
++  }
++#endif
++  return true;
++}
++
+ Boolean makeSocketNonBlocking(int sock) {
+ #if defined(__WIN32__) || defined(_WIN32)
+   unsigned long arg = 1;
+diff --git a/groupsock/include/GroupsockHelper.hh b/groupsock/include/GroupsockHelper.hh
+index 960b56d..f1e4f72 100644
+--- a/groupsock/include/GroupsockHelper.hh
++++ b/groupsock/include/GroupsockHelper.hh
+@@ -56,6 +56,8 @@ unsigned increaseSendBufferTo(UsageEnvironment& env,
+ unsigned increaseReceiveBufferTo(UsageEnvironment& env,
+ 				 int socket, unsigned requestedSize);
+ 
++void corkUncorkSocket( int sock, int cork);
++Boolean makeSocketNoDelay(UsageEnvironment& env, int sock);
+ Boolean makeSocketNonBlocking(int sock);
+ Boolean makeSocketBlocking(int sock, unsigned writeTimeoutInMilliseconds = 0);
+   // A "writeTimeoutInMilliseconds" value of 0 means: Don't timeout
+diff --git a/liveMedia/RTPInterface.cpp b/liveMedia/RTPInterface.cpp
+index cf4dbed..e51c146 100644
+--- a/liveMedia/RTPInterface.cpp
++++ b/liveMedia/RTPInterface.cpp
+@@ -24,6 +24,11 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
+ #include <GroupsockHelper.hh>
+ #include <stdio.h>
+ 
++#ifdef PREFER_LOW_LATENCY
++#include <sys/ioctl.h>
++#include <linux/sockios.h>
++#endif
++
+ ////////// Helper Functions - Definition //////////
+ 
+ // Helper routines and data structures, used to implement
+@@ -136,7 +141,12 @@ RTPInterface::RTPInterface(Medium* owner, Groupsock* gs)
+     fTCPStreams(NULL),
+     fNextTCPReadSize(0), fNextTCPReadStreamSocketNum(-1),
+     fNextTCPReadStreamChannelId(0xFF), fNextTCPReadTLSState(NULL), fReadHandlerProc(NULL),
+-    fAuxReadHandlerFunc(NULL), fAuxReadHandlerClientData(NULL) {
++    fAuxReadHandlerFunc(NULL), fAuxReadHandlerClientData(NULL),
++    fVerbosityLevel(0) {
++  char *val = getenv("RTP_INTERFACE_VEBOSITY_LEVEL");
++  if (val) {
++     fVerbosityLevel = atoi(val);
++  }
+   // Make the socket non-blocking, even though it will be read from only asynchronously, when packets arrive.
+   // The reason for this is that, in some OSs, reads on a blocking socket can (allegedly) sometimes block,
+   // even if the socket was previously reported (e.g., by "select()") as having data available.
+@@ -343,8 +353,49 @@ Boolean RTPInterface::sendRTPorRTCPPacketOverTCP(u_int8_t* packet, unsigned pack
+ 						 int socketNum, unsigned char streamChannelId,
+ 						 TLSState* tlsState) {
+ #ifdef DEBUG_SEND
++  if (fVerbosityLevel >= 2) {
++    envir() << "sendRTPorRTCPPacketOverTCP: "<< packetSize << " bytes over channel " << streamChannelId
++       << " (socket "<< socketNum << ")\n";
+   fprintf(stderr, "sendRTPorRTCPPacketOverTCP: %d bytes over channel %d (socket %d)\n",
+ 	  packetSize, streamChannelId, socketNum); fflush(stderr);
++  }
++#endif
++
++#ifdef PREFER_LOW_LATENCY
++  //Check socket buffer availability before sending
++  int sndbufsize = 0;
++  socklen_t sndbufsizelen = sizeof(sndbufsize);
++  getsockopt(socketNum, SOL_SOCKET, SO_SNDBUF, &sndbufsize, &sndbufsizelen);
++  int inbuffer = 0;
++
++#ifdef __linux__
++  ioctl(socketNum, SIOCOUTQ, &inbuffer);
++#ifdef DEBUG_SEND
++  if (fVerbosityLevel >= 2) {
++    envir() << "sendRTPorRTCPPacketOverTCP(" << this << ") sndbuffer: " <<
++       inbuffer << "/" << sndbufsize << "\n";
++    //fprintf(stderr, "sendRTPorRTCPPacketOverTCP(%0x) sndbuffer: %13i/%6i", this, inbuffer, sndbufsize);
++  }
++#endif
++#endif
++
++    // if no room available, dump the entire packet
++    if (((int)packetSize) + 4 + inbuffer > sndbufsize)
++    {
++#ifdef DEBUG_SEND
++  if (fVerbosityLevel >= 2) {
++        envir() << "sendRTPorRTCPPacketOverTCP(" << this << ") sndbuffer full, dropping video packet: " <<
++               inbuffer << "/" << sndbufsize  << "\n";
++        //fprintf(stderr, "sendRTPorRTCPPacketOverTCP(%0x) sndbuffer full, dropping video packet: %13i/%6i", this, inbuffer, sndbufsize);
++  }
++#endif
++        return True;
++    }
++
++#endif
++
++#ifdef CORK_PAYLOAD
++  corkUncorkSocket(socketNum, 1);
+ #endif
+   // Send a RTP/RTCP packet over TCP, using the encoding defined in RFC 2326, section 10.12:
+   //     $<streamChannelId><packetSize><packet>
+@@ -361,14 +412,28 @@ Boolean RTPInterface::sendRTPorRTCPPacketOverTCP(u_int8_t* packet, unsigned pack
+ 
+     if (!sendDataOverTCP(socketNum, tlsState, packet, packetSize, True)) break;
+ #ifdef DEBUG_SEND
++  if (fVerbosityLevel >= 2) {
++    envir() << "sendRTPorRTCPPacketOverTCP: completed\n";
+     fprintf(stderr, "sendRTPorRTCPPacketOverTCP: completed\n"); fflush(stderr);
++  }
+ #endif
+ 
++#ifdef CORK_PAYLOAD
++    corkUncorkSocket(socketNum, 0);
++#endif
+     return True;
+   } while (0);
+ 
++#ifdef CORK_PAYLOAD
++    corkUncorkSocket(socketNum, 0);
++#endif
++
+ #ifdef DEBUG_SEND
+   fprintf(stderr, "sendRTPorRTCPPacketOverTCP: failed! (errno %d)\n", envir().getErrno()); fflush(stderr);
++  if (fVerbosityLevel >= 2) {
++       fprintf(stderr, "sendRTPorRTCPPacketOverTCP: failed! (errno %d)\n", envir().getErrno()); fflush(stderr);
++       envir() << "sendRTPorRTCPPacketOverTCP: failed! (errno " << envir().getErrno() << ")\n";
++  }
+ #endif
+   return False;
+ }
+@@ -393,6 +458,7 @@ Boolean RTPInterface::sendDataOverTCP(int socketNum, TLSState* tlsState,
+       // Force this data write to succeed, by blocking if necessary until it does:
+       unsigned numBytesRemainingToSend = dataSize - numBytesSentSoFar;
+ #ifdef DEBUG_SEND
++      envir() << "sendDataOverTCP: resending " << numBytesRemainingToSend << "-byte send (blocking)\n";
+       fprintf(stderr, "sendDataOverTCP: resending %d-byte send (blocking)\n", numBytesRemainingToSend); fflush(stderr);
+ #endif
+       makeSocketBlocking(socketNum, RTPINTERFACE_BLOCKING_WRITE_TIMEOUT_MS);
+@@ -407,6 +473,7 @@ Boolean RTPInterface::sendDataOverTCP(int socketNum, TLSState* tlsState,
+ 	// (If we kept using the socket here, the RTP or RTCP packet write would be in an
+ 	//  incomplete, inconsistent state.)
+ #ifdef DEBUG_SEND
++        envir() << "sendDataOverTCP: blocking send() failed (delivering " <<  sendResult << "  bytes out of " << numBytesRemainingToSend << "); closing socket " << socketNum << "\n";
+ 	fprintf(stderr, "sendDataOverTCP: blocking send() failed (delivering %d bytes out of %d); closing socket %d\n", sendResult, numBytesRemainingToSend, socketNum); fflush(stderr);
+ #endif
+ 	removeStreamSocket(socketNum, 0xFF);
+@@ -417,9 +484,29 @@ Boolean RTPInterface::sendDataOverTCP(int socketNum, TLSState* tlsState,
+     } else if (sendResult < 0 && envir().getErrno() != EAGAIN) {
+       // Because the "send()" call failed, assume that the socket is now unusable, so stop
+       // using it (for both RTP and RTCP):
++#ifdef DEBUG_SEND
++        envir() << "sendDataOverTCP: ERROR  failed (delivering " <<  sendResult << "  error " <<  envir().getErrno() << ")\n";
++#endif
+       removeStreamSocket(socketNum, 0xFF);
+     }
+ 
++#if 0
++   if (numBytesSentSoFar > 0 || (forceSendToSucceed && envir().getErrno() == EAGAIN)) {
++      // The OS's TCP send buffer has filled up (because the stream's bitrate has exceeded
++      // the capacity of the TCP connection!).
++      // Force this data write to succeed, by blocking if necessary until it does:
++      unsigned numBytesRemainingToSend = dataSize - numBytesSentSoFar;
++#ifdef DEBUG_SEND
++      envir() << "sendDataOverTCP: resending " << numBytesRemainingToSend << "-byte send (blocking)\n";
++      fprintf(stderr, "sendDataOverTCP: resending %d-byte send (blocking)\n", numBytesRemainingToSend); fflush(stderr);
++#endif
++    makeSocketBlocking(socketNum);
++      sendResult = send(socketNum, (char const*)(&data[numBytesSentSoFar]), numBytesRemainingToSend, 0/*flags*/);
++      makeSocketNonBlocking(socketNum);
++      return sendResult == (int)numBytesRemainingToSend;
++    }
++#endif
++
+     return False;
+   }
+ 
+diff --git a/liveMedia/RTSPClient.cpp b/liveMedia/RTSPClient.cpp
+index 130baa9..d8b15b3 100644
+--- a/liveMedia/RTSPClient.cpp
++++ b/liveMedia/RTSPClient.cpp
+@@ -567,14 +567,14 @@ unsigned RTSPClient::sendRequest(RequestRecord* request) {
+     if (extraHeadersWereAllocated) delete[] extraHeaders;
+     if (contentLengthHeaderWasAllocated) delete[] contentLengthHeader;
+ 
+-    if (fVerbosityLevel >= 1) envir() << "Sending request: " << cmd << "\n";
++    if (fVerbosityLevel >= 3) envir() << "Sending request: " << cmd << "\n";
+ 
+     if (fTunnelOverHTTPPortNum != 0 && strcmp(request->commandName(), "GET") != 0 && strcmp(request->commandName(), "POST") != 0) {
+       // When we're tunneling RTSP-over-HTTP, we Base-64-encode the request before we send it.
+       // (However, we don't do this for the HTTP "GET" and "POST" commands that we use to set up the tunnel.)
+       char* origCmd = cmd;
+       cmd = base64Encode(origCmd, strlen(cmd));
+-      if (fVerbosityLevel >= 1) envir() << "\tThe request was base-64 encoded to: " << cmd << "\n\n";
++      if (fVerbosityLevel >= 3) envir() << "\tThe request was base-64 encoded to: " << cmd << "\n\n";
+       delete[] origCmd;
+     }
+ 
+@@ -1733,7 +1733,7 @@ void RTSPClient::handleResponseBytes(int newBytesRead) {
+   fResponseBufferBytesLeft -= newBytesRead;
+   fResponseBytesAlreadySeen += newBytesRead;
+   fResponseBuffer[fResponseBytesAlreadySeen] = '\0';
+-  if (fVerbosityLevel >= 1 && newBytesRead > 1) envir() << "Received " << newBytesRead << " new bytes of response data.\n";
++  if (fVerbosityLevel >= 3 && newBytesRead > 1) envir() << "Received " << newBytesRead << " new bytes of response data.\n";
+   
+   unsigned numExtraBytesAfterResponse = 0;
+   Boolean responseSuccess = False; // by default
+@@ -1908,7 +1908,7 @@ void RTSPClient::handleResponseBytes(int newBytesRead) {
+ 	  break;
+ 	}
+ 	
+-	if (fVerbosityLevel >= 1) {
++	if (fVerbosityLevel >= 3) {
+ 	  envir() << "Have received " << fResponseBytesAlreadySeen << " total bytes of a "
+ 		  << (foundRequest != NULL ? foundRequest->commandName() : "(unknown)")
+ 		  << " RTSP response; awaiting " << numExtraBytesNeeded << " bytes more.\n";
+@@ -1922,7 +1922,7 @@ void RTSPClient::handleResponseBytes(int newBytesRead) {
+       char* responseEnd = bodyStart + contentLength;
+       numExtraBytesAfterResponse = &fResponseBuffer[fResponseBytesAlreadySeen] - responseEnd;
+ 
+-      if (fVerbosityLevel >= 1) {
++      if (fVerbosityLevel >= 3) {
+ 	char saved = *responseEnd;
+ 	*responseEnd = '\0';
+ 	envir() << "Received a complete "
+diff --git a/liveMedia/include/ProxyServerMediaSession.hh b/liveMedia/include/ProxyServerMediaSession.hh
+index 1c41ee5..a45a19b 100644
+--- a/liveMedia/include/ProxyServerMediaSession.hh
++++ b/liveMedia/include/ProxyServerMediaSession.hh
+@@ -52,14 +52,18 @@ public:
+   void continueAfterPLAY(int resultCode);
+   void scheduleReset();
+ 
++protected:
++  virtual void scheduleLivenessCommand();
++  static void sendLivenessCommand(void* clientData);
++
++  TaskToken fLivenessCommandTask;
++
+ private:
+   void reset();
+   int connectToServer(int socketNum, portNumBits remotePortNum);
+ 
+   Authenticator* auth() { return fOurAuthenticator; }
+ 
+-  void scheduleLivenessCommand();
+-  static void sendLivenessCommand(void* clientData);
+   void doReset();
+   static void doReset(void* clientData);
+ 
+@@ -81,7 +85,7 @@ private:
+   unsigned fNumSetupsDone;
+   unsigned fNextDESCRIBEDelay; // in seconds
+   Boolean fServerSupportsGetParameter, fLastCommandWasPLAY, fDoneDESCRIBE;
+-  TaskToken fLivenessCommandTask, fDESCRIBECommandTask, fSubsessionTimerTask, fResetTask;
++  TaskToken fDESCRIBECommandTask, fSubsessionTimerTask, fResetTask;
+ };
+ 
+ 
+diff --git a/liveMedia/include/RTPInterface.hh b/liveMedia/include/RTPInterface.hh
+index c1afc87..edbd1cc 100644
+--- a/liveMedia/include/RTPInterface.hh
++++ b/liveMedia/include/RTPInterface.hh
+@@ -110,6 +110,7 @@ private:
+ 
+   AuxHandlerFunc* fAuxReadHandlerFunc;
+   void* fAuxReadHandlerClientData;
++  int fVerbosityLevel;
+ };
+ 
+ #endif
+diff --git a/liveMedia/include/RTSPClient.hh b/liveMedia/include/RTSPClient.hh
+index 295fc85..8304fd2 100644
+--- a/liveMedia/include/RTSPClient.hh
++++ b/liveMedia/include/RTSPClient.hh
+@@ -254,6 +254,7 @@ protected:
+ 				   char*& extraHeaders, Boolean& extraHeadersWereAllocated);
+       // used to implement "sendRequest()"; subclasses may reimplement this (e.g., when implementing a new command name)
+   virtual int connectToServer(int socketNum, portNumBits remotePortNum); // used to implement "openConnection()"; result values: -1: failure; 0: pending; 1: success
++  virtual void handleResponseBytes(int newBytesRead);
+ 
+ private: // redefined virtual functions
+   virtual Boolean isRTSPClient() const;
+@@ -323,7 +324,6 @@ private:
+   // Support for handling data sent back by a server:
+   static void incomingDataHandler(void*, int /*mask*/);
+   void incomingDataHandler1();
+-  void handleResponseBytes(int newBytesRead);
+ 
+   // Writing/reading data over a (already set-up) connection:
+   int write(const char* data, unsigned count);
+diff --git a/proxyServer/live555ProxyServer.cpp b/proxyServer/live555ProxyServer.cpp
+index ecbe324..d03e7f3 100644
+--- a/proxyServer/live555ProxyServer.cpp
++++ b/proxyServer/live555ProxyServer.cpp
+@@ -32,6 +32,8 @@ portNumBits tunnelOverHTTPPortNum = 0;
+ portNumBits rtspServerPortNum = 554;
+ char* username = NULL;
+ char* password = NULL;
++char* g_username = NULL;
++char* g_password = NULL;
+ Boolean proxyREGISTERRequests = False;
+ char* usernameForREGISTER = NULL;
+ char* passwordForREGISTER = NULL;
+@@ -51,6 +53,7 @@ void usage() {
+        << " [-p <rtspServer-port>]"
+        << " [-u <username> <password>]"
+        << " [-R] [-U <username-for-REGISTER> <password-for-REGISTER>]"
++       << " [-A <username> <password>]"
+        << " <rtsp-url-1> ... <rtsp-url-n>\n";
+   exit(1);
+ }
+@@ -135,6 +138,14 @@ int main(int argc, char** argv) {
+       break;
+     }
+ 
++    case 'A': { // specify a username and password (to be used if the 'front end'  stream requires authentication)
++      if (argc < 4) usage(); // there's no argv[3] (for the "password")
++      g_username = argv[2];
++      g_password = argv[3];
++      argv += 2; argc -= 2;
++      break;
++    }
++
+     case 'U': { // specify a username and password to use to authenticate incoming "REGISTER" commands
+       if (argc < 4) usage(); // there's no argv[3] (for the "password")
+       usernameForREGISTER = argv[2];
+@@ -179,12 +190,12 @@ int main(int argc, char** argv) {
+     }
+   }
+ 
+-#ifdef ACCESS_CONTROL
+-  // To implement client access control to the RTSP server, do the following:
+-  authDB = new UserAuthenticationDatabase;
+-  authDB->addUserRecord("username1", "password1"); // replace these with real strings
+-      // Repeat this line with each <username>, <password> that you wish to allow access to the server.
+-#endif
++  if (g_username && g_password) {
++    // To implement client access control to the RTSP server, do the following:
++    authDB = new UserAuthenticationDatabase;
++    authDB->addUserRecord(g_username, g_password); // replace these with real strings
++	// Repeat this line with each <username>, <password> that you wish to allow access to the server.
++  }
+ 
+   // Create the RTSP server. Try first with the configured port number,
+   // and then with the default port number (554) if different,
+@@ -214,9 +225,9 @@ int main(int argc, char** argv) {
+     char const* proxiedStreamURL = argv[i];
+     char streamName[30];
+     if (argc == 2) {
+-      sprintf(streamName, "%s", "proxyStream"); // there's just one stream; give it this name
++      sprintf(streamName, "%s", "Video"); // there's just one stream; give it this name
+     } else {
+-      sprintf(streamName, "proxyStream-%d", i); // there's more than one stream; distinguish them by name
++      sprintf(streamName, "Video-%d", i); // there's more than one stream; distinguish them by name
+     }
+     ServerMediaSession* sms
+       = ProxyServerMediaSession::createNew(*env, rtspServer,
+-- 
+2.38.1
+

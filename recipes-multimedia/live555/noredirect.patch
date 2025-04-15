@@ -1,0 +1,22 @@
+diff --git a/liveMedia/GenericMediaServer.cpp b/liveMedia/GenericMediaServer.cpp
+index c4b5065..53269f0 100644
+--- a/liveMedia/GenericMediaServer.cpp
++++ b/liveMedia/GenericMediaServer.cpp
+@@ -307,14 +307,13 @@ void GenericMediaServer::ClientConnection::incomingRequestHandler(void* instance
+ 
+ void GenericMediaServer::ClientConnection::incomingRequestHandler() {
+   if (fInputTLS->tlsAcceptIsNeeded) { // we need to successfully call fInputTLS->accept() first:
+-    if (fInputTLS->accept(fOurSocket) <= 0) return; // either an error, or we need to try again later
+-
+-    fInputTLS->tlsAcceptIsNeeded = False;
++    if (fInputTLS->accept(fOurSocket) > 0) // Do not return we need to handle the case that they need a redirect
++        fInputTLS->tlsAcceptIsNeeded = False;
+     // We can now read data, as usual:
+   }
+ 
+   int bytesRead;
+-  if (fInputTLS->isNeeded) {
++  if (fInputTLS->isNeeded && !fInputTLS->tlsAcceptIsNeeded) {
+     bytesRead = fInputTLS->read(&fRequestBuffer[fRequestBytesAlreadySeen], fRequestBufferBytesLeft);
+   } else {
+     struct sockaddr_storage dummy; // 'from' address, meaningless in this case
