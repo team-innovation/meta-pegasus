@@ -11,6 +11,7 @@ DEPENDS += "\
     python3-cython-native \
     python3-pkgconfig-native \
     pkgconfig-native \
+    lz4 \
 "
 
 inherit setuptools3 pypi
