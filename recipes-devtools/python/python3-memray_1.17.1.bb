@@ -16,4 +16,4 @@ DEPENDS += "\
     elfutils \
 "
 
-inherit setuptools3 pypi
+inherit python_setuptools_build_meta pypi
