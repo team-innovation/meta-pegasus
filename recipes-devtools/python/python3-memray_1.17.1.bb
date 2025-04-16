@@ -10,9 +10,10 @@ SRC_URI[sha256sum] = "99f6672d435878e3251a9c4600bb8f14cf205d2d6da3d6f0e6b309e535
 DEPENDS += "\
     python3-cython-native \
     python3-pkgconfig-native \
-    lz4 \
+    pkgconfig-native \
+    liblz4 \
     libunwind \
     elfutils \
 "
 
-inherit python_setuptools_build_meta pypi pkgconfig
+inherit python_setuptools_build_meta pypi
