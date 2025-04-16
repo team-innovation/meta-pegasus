@@ -18,9 +18,15 @@ DEPENDS += "\
 
 inherit python_setuptools_build_meta pypi
 
+
 do_configure:prepend() {
-    sed -i 's|./configure|./configure --host=${HOST_SYS} --build=${BUILD_SYS}|' \
+    sed -i 's|./configure|./configure --host=${HOST_SYS} --build=${BUILD_SYS} --prefix=${prefix}|' \
         ${S}/src/vendor/regenerate_libbacktrace.sh
+
+    export CC="${HOST_CC}"
+    export CXX="${HOST_CXX}"
+    export CPP="${HOST_CPP}"
+    export LDFLAGS="${HOST_LDFLAGS}"
 }
 
 do_compile:prepend() {
