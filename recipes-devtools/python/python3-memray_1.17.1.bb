@@ -19,6 +19,21 @@ DEPENDS += "\
 inherit python_setuptools_build_meta pypi
 
 
+do_compile:prepend() {
+    cd ${S}/src/vendor && ./regenerate_libbacktrace.sh
+
+    export LIBBACKTRACE_INCLUDEDIRS=${S}/src/vendor/libbacktrace/install/include
+    export LIBBACKTRACE_LIBDIR=${S}/src/vendor/libbacktrace/install/lib
+    export CC="${CC}"
+    export CXX="${CXX}"
+    export CPP="${CPP}"
+    export LD="${LD}"
+    export CFLAGS="${CFLAGS}"
+    export LDFLAGS="${LDFLAGS}"
+
+    python3 setup.py build
+}
+
 do_configure:prepend() {
     sed -i 's|./configure|./configure --host=${HOST_SYS} --build=${BUILD_SYS} --prefix=${prefix}|' \
         ${S}/src/vendor/regenerate_libbacktrace.sh
@@ -30,11 +45,6 @@ do_configure:prepend() {
     export CONFIGURE_OPTS="--host=${HOST_SYS} --build=${BUILD_SYS}"
 }
 
-do_compile:prepend() {
-    export CC="${CC}"
-    export CXX="${CXX}"
-    export CPP="${CPP}"
-    export LD="${LD}"
-    export CFLAGS="${CFLAGS}"
-    export LDFLAGS="${LDFLAGS}"
+do_install() {
+    python3 setup.py install --prefix=${D}${prefix}
 }
