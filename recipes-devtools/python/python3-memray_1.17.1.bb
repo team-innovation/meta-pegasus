@@ -18,16 +18,16 @@ DEPENDS += "\
 
 inherit python_setuptools_build_meta pypi
 
+do_configure:prepend() {
+    sed -i 's|./configure|./configure --host=${HOST_SYS} --build=${BUILD_SYS}|' \
+        ${S}/src/vendor/regenerate_libbacktrace.sh
+}
+
 do_compile:prepend() {
-    export HOST_SYS="${HOST_SYS}"
-    export BUILD_SYS="${BUILD_SYS}"
     export CC="${CC}"
     export CXX="${CXX}"
     export CPP="${CPP}"
     export LD="${LD}"
-
-    # Patch libbacktrace's configure call with cross args
-    sed -i \
-        's|./configure|./configure --host=${HOST_SYS} --build=${BUILD_SYS}|' \
-        ${S}/src/memray/allocator/build_libbacktrace.py
+    export CFLAGS="${CFLAGS}"
+    export LDFLAGS="${LDFLAGS}"
 }
