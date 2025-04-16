@@ -11,7 +11,7 @@ DEPENDS += "\
     python3-cython-native \
     python3-pkgconfig-native \
     pkgconfig-native \
-    liblz4 \
+    lz4 \
     libunwind \
     elfutils \
 "
