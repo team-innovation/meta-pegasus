@@ -13,6 +13,7 @@ DEPENDS += "\
     pkgconfig-native \
     lz4 \
     libunwind \
+    debuginfod \
 "
 
 inherit setuptools3 pypi
