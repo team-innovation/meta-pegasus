@@ -12,6 +12,7 @@ DEPENDS += "\
     python3-pkgconfig-native \
     pkgconfig-native \
     lz4 \
+    libunwind \
 "
 
 inherit setuptools3 pypi
