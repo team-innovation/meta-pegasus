@@ -19,24 +19,3 @@ DEPENDS = "\
 "
 
 inherit setuptools3 pypi
-
-do_compile() {
-    export CC="${CC}"
-    export CXX="${CXX}"
-    export LD="${LD}"
-    export AR="${AR}"
-    export RANLIB="${RANLIB}"
-    export READELF="${READELF}"
-
-    cd ${S}/src/vendor/libbacktrace
-    ./configure \
-        --with-pic \
-        --host=${HOST_SYS} \
-        --prefix=${S}/src/vendor/libbacktrace/install \
-        --includedir=${S}/src/vendor/libbacktrace/install/include/libbacktrace
-
-    oe_runmake
-
-    cd ${S}
-    python3 setup.py build
-}
