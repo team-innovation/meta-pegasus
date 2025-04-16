@@ -27,6 +27,7 @@ do_configure:prepend() {
     export CXX="${HOST_CXX}"
     export CPP="${HOST_CPP}"
     export LDFLAGS="${HOST_LDFLAGS}"
+    export CONFIGURE_OPTS="--host=${HOST_SYS} --build=${BUILD_SYS}"
 }
 
 do_compile:prepend() {
