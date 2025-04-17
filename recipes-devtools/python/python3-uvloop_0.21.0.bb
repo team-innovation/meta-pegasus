@@ -19,5 +19,5 @@ DEPENDS += "\
 inherit python_setuptools_build_meta pypi
 
 do_compile:prepend() {
-	export LIBUV_CONFIGURE_HOST = ${HOST_SYS}
+	export LIBUV_CONFIGURE_HOST=${HOST_SYS}
 }
