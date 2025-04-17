@@ -22,3 +22,16 @@ RDEPENDS:${PN} += "\
 "
 
 inherit python_pep517 pypi
+
+export PEP517_BUILD_BACKEND = "mesonpy"
+export PEP517_INSTALL_ARGS = "--skip-dependency-check"
+export SETUPTOOLS_USE_DISTUTILS = "stdlib"
+
+do_configure:prepend() {
+    export CFLAGS="${CFLAGS}"
+    export LDFLAGS="${LDFLAGS}"
+    export CC="${CC}"
+    export AR="${AR}"
+    export RANLIB="${RANLIB}"
+    export NM="${NM}"
+}
