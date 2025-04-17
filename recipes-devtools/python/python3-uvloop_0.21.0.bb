@@ -13,9 +13,6 @@ SRC_URI[sha256sum] = "3bf12b0fda68447806a7ad847bfa591613177275d35b6724b1ee573faa
 DEPENDS += "\
     python3-cython-native \
     python3-packaging-native \
-    python3-build-native \
-    python3-wheel-native \
-    python3-setuptools-native \
 "
 
-inherit python_pep517 pypi
+inherit python_setuptools_build_meta pypi
