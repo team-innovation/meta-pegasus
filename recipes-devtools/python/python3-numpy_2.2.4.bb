@@ -21,4 +21,4 @@ RDEPENDS:${PN} += "\
     python3-numbers \
 "
 
-inherit pyproject_build pypi
+inherit python_pep517 pypi
