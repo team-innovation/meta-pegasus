@@ -9,6 +9,7 @@ SRC_URI[sha256sum] = "9ba03692a45d3eef66559efe1d1096c4b9b75c0986b5dff5530c378fb8
 
 DEPENDS += " \
     python3-cython-native \
+    python3-wheel-native \
     python3-meson-python-native \
     meson-native \
     ninja-native \
@@ -20,4 +21,4 @@ RDEPENDS:${PN} += "\
     python3-numbers \
 "
 
-inherit python_setuptools_build_meta pypi
+inherit pyproject_build pypi
