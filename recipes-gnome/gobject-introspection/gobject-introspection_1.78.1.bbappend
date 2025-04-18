@@ -1,1 +1,3 @@
-DEPENDS += " python3-setuptools"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+
+SRC_URI += "file://nomsvcc.patch"
