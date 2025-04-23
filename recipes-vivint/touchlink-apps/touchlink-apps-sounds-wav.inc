@@ -13,5 +13,5 @@ do_install_append() {
 }
 
 FILES_${PN}-sound-wav = "\
-       ${INSTALL_DIR}/soundfiles/wav/* \
+    ${INSTALL_DIR}/soundfiles/wav/* \
 "
