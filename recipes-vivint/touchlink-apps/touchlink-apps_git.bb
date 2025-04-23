@@ -9,6 +9,10 @@ SUMMARY = "Vivint Touchlink Apps"
 DESCRIPTION = "Vivint Python daemons for security panel."
 LICENSE = "CLOSED"
 
+
+require touchlink-apps-iod.inc
+
+
 PR = "ml131"
 PV = "1.0.0+git${SRCPV}"
 
@@ -20,12 +24,19 @@ GIT_APPS_PROTOCOL ?= "ssh"
 GIT_STRINGS_SERVER ?= "/home/localRepos/constants/boilerplate/python"
 GIT_APPS_REPO ?= "embedded_apps"
 
-inherit externalsrc systemd
+inherit externalsrc systemd python3native
 
-EXTERNALSRC = "${TOPDIR}/../../../../../../embedded-apps"
-SRC_URI = ""
+EXTERNALSRC = "${TOPDIR}/../embedded-apps"
+SRC_URI = " \
+    file://procman.d \
+    file://systemd \
+"
 
 S = "${WORKDIR}/git"
+
+DEPENDS = " \
+    rsync-native \
+"
 
 RSYNC_CMD = "rsync -azv --no-o --no-g --exclude=.git --exclude=test --exclude=.coverage --exclude=_coverage \
              --exclude=_user_conf --exclude=.pytest_cache"
@@ -69,11 +80,10 @@ do_compile() {
 
 	# generate .pyc files
 	python3 -OO -m compileall -x '/docs/|/test/' -d${INSTALL_DIR} ${S}/code
-
-    # remove __pycache__ dir
-    find ${S}/code -type d -name __pycache__ | xargs rm -rf
 }
 
 # Make sure the proxies are in the list before their non-proxy counterparts
 # otherwise we end up with empty proxy packages and the build will fail
-PACKAGES = ""
+PACKAGES = " \
+    ${PN}-iod \
+"
