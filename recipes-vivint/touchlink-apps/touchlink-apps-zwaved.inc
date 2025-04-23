@@ -7,24 +7,23 @@ RDEPENDS_${PN}-zwaved = "\
 "
 
 do_install_append () {
-        install -d ${D}/${INSTALL_DIR}/zwaved/
-        ${RSYNC_CMD} ${S}/code/zwaved/ ${D}/${INSTALL_DIR}/zwaved/
-        chmod +x ${D}/${INSTALL_DIR}/zwaved/zwaved.pyc
+    install -d ${D}/${INSTALL_DIR}/zwaved/
+    ${RSYNC_CMD} ${S}/code/zwaved/ ${D}/${INSTALL_DIR}/zwaved/
+    chmod +x ${D}/${INSTALL_DIR}/zwaved/zwaved.pyc
 
 	# make zwaved/scripts executable
 	chmod 0755 ${D}/${INSTALL_DIR}/zwaved/scripts/*
 }
 
 pkg_postinst_ontarget_${PN}-zwaved () {
-#!/bin/sh -e
-# Post install to setup the home id directories
-#
+    #!/bin/sh -e
+    # Post install to setup the home id directories
+    
     if [ -f /proc/device-tree/compatible ]; then
         exit 0
     fi
 
-    logging()
-    {
+    logging() {
         if busybox ps | grep psplash | grep -qv grep
         then
             psplash-write "MSG $*" || true
@@ -56,7 +55,6 @@ pkg_postinst_ontarget_${PN}-zwaved () {
                 python3 /opt/2gig/zwaved/scripts/setup_home_id.pyc -hid ${serial_number}
             else
                 logging "setup_home_id.pyc does not exist, can not setup home id of "${serial_number}
-
             fi
         else
             logging "No serial number found, can not setup zwave home id"

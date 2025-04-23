@@ -18,8 +18,8 @@ do_install_append () {
 }
 
 FILES_${PN}-iod = "\
-    ${INSTALL_DIR}/iod/*   \
-	${sysconfdir}/init.d/iod		\
-	${sysconfdir}/procman.d/iod		\
+    ${INSTALL_DIR}/iod/* \
+	${sysconfdir}/init.d/iod \
+	${sysconfdir}/procman.d/iod \
     ${systemd_unitdir}/system/iod.service \
 "

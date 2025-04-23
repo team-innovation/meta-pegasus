@@ -22,7 +22,7 @@ GIT_APPS_REPO ?= "embedded_apps"
 
 inherit externalsrc systemd
 
-EXTERNALSRC = "${WORKDIR}/../../../../../../embedded-apps"
+EXTERNALSRC = "${TOPDIR}/../../../../../../embedded-apps"
 SRC_URI = ""
 
 S = "${WORKDIR}/git"
@@ -77,4 +77,3 @@ do_compile() {
 # Make sure the proxies are in the list before their non-proxy counterparts
 # otherwise we end up with empty proxy packages and the build will fail
 PACKAGES = ""
-
