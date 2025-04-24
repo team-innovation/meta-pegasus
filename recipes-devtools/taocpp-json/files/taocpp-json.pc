@@ -1,0 +1,13 @@
+# Package Information for pkg-config
+
+prefix=/usr
+exec_prefix=${prefix}
+includedir=${prefix}/include/taocpp-json/include/tao
+
+Name: taocpp-json
+Description: Header only JSON library for c++ 
+Version: 1.0.0
+URL: https://github.com/taocpp/json
+Requires:
+Libs: 
+Cflags: -I${includedir}
