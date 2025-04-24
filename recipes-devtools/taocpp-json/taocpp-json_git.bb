@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${WORKDIR}/git/LICENSE;md5=4645f81bc2c1aba6f23c838241
 PR = "r1"
 
 SRCREV = "a7bac095c8e4e77d88ce807360c2346f55d86b5b"
-SRC_URI = "git://github.com/taocpp/json.git;branch=main \
+SRC_URI = "git://github.com/taocpp/json.git;branch=main;protocol=https \
 	file://taocpp-json.pc \
 "
 
