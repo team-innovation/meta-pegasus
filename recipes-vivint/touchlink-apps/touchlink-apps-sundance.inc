@@ -1,21 +1,19 @@
 SYSTEMD_SERVICE_${PN}-sundance = "sundance.service"
 SYSTEMD_AUTO_ENABLE_${PN}-sundance = "enable"
 
-RDEPENDS_${PN}-sundance = "\
-    dect-python-cmnd \
+RDEPENDS:${PN}-sundance = " \
 	python3-pyinotify \
 	python3-requests \
 	python3-multiprocessing \
 	python3-mmap \
 	python3-soco \
     python3-jsonschema \
-    python3-httpsig-na \
+    python3-httpsig \
     python3-paho-mqtt \
     python3-phue \
     python3-requests \
     python3-requests-toolbelt \
     python3-soco \
-    python3-brisa \
     python3-certifi \
     python3-transitions \
     python3-sentry-sdk \
@@ -38,8 +36,7 @@ export HOST_SYS
 export STATIC_LIB_DIR
 export INC_DIR
 
-
-do_compile_prepend() {
+do_compile:prepend() {
     export NO_MAPCS_FRAME
 
     # aarch64-poky-linux-g++ does not support -mapcs-frame so don't use it
@@ -55,7 +52,7 @@ do_compile_prepend() {
     python3 setup.py build ${DISTUTILS_BUILD_ARGS}
 }
 
-do_install_append () {
+do_install:append () {
 	install -d ${D}/${INSTALL_DIR}/sundance/
 	install -d ${D}/${INSTALL_DIR}/sundance/proxies/
 	install -d ${D}/${INSTALL_DIR}/sundance/connectors/
@@ -139,12 +136,12 @@ pkg_postinst_ontarget_${PN}-sundance () {
     fi
 }
 
-FILES_${PN}-sundance-proxies = "\
+FILES:${PN}-sundance-proxies = " \
 	${INSTALL_DIR}/sundance/proxies/* \
 	${INSTALL_DIR}/sundance/services/devices/generated/grpc/* \
 "
 
-FILES_${PN}-sundance = "\
+FILES:${PN}-sundance = " \
 	${INSTALL_DIR}/sundance/connectors/* \
 	${INSTALL_DIR}/sundance/conf_files/* \
 	${INSTALL_DIR}/sundance/definitions/* \
