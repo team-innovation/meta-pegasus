@@ -5,7 +5,6 @@ PR="r6"
 SRC_URI += "file://logrotate \
             file://weston.ini \
             file://weston.ini_yellowstone \
-            file://weston.service \
 "
 
 BUILD_PLATFORM = "other"
@@ -21,10 +20,4 @@ do_install:append(){
     else
         install -m 0755 ${WORKDIR}/weston.ini ${D}/etc/xdg/weston
     fi
-
-    # override systemd unit
-    install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/weston.service ${D}${systemd_unitdir}/system/weston@.service
 }
-
-FILES:${PN} += "${sysconfdir}/logrotate.d/weston"
