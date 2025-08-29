@@ -8,8 +8,11 @@ inherit packagegroup
 RDEPENDS:${PN} = " \
     i2c-tools \
     imx-boot \
+    kernel-image \
     kernel-devicetree \
+    mmc-utils \
     libgpiod \
+    libubootenv-bin \
     nmap \
     pulseaudio-misc \
     pulseaudio-server \

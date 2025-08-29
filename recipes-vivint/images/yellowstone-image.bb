@@ -24,17 +24,8 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-imx-security \
     packagegroup-fsl-gstreamer1.0 \
     packagegroup-fsl-gstreamer1.0-full \
+    packagegroup-vivint-base \
+    packagegroup-vivint-debug \
+    packagegroup-vivint-wireless \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland xterm', '', d)} \
-"
-
-IMAGE_INSTALL += " \
-    libubootenv-bin \
-    u-boot-imx-env \
-    kernel-image \
-    kernel-devicetree \
-    imx-boot \
-    mmc-utils \
-    i2c-tools \
-    udev-rules-vivint \
-    evtest \
 "

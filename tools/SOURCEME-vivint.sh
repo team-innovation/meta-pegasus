@@ -119,7 +119,7 @@ rm -rf "${BUILD_DIR}"/conf/
 
 # it is a new dir
 echo Setting up new dir \""${BUILD_DIR}"\"
-export MACHINE=imx8mm-magellan
+export MACHINE=imx8mm-yellowstone
 export EULA=1
 export DISTRO=vivint-wayland
 
@@ -132,6 +132,14 @@ grep -q meta-vivint ./conf/bblayers.conf ||
 grep -q meta-wnc ./conf/bblayers.conf ||
     echo "BBLAYERS += \" \${BSPDIR}/sources/meta-wnc \"" \
             >> ./conf/bblayers.conf
+
+grep -q meta-wnc ./conf/bblayers.conf ||
+    echo "BBLAYERS += \" \${BSPDIR}/sources/meta-lts-mixins \"" \
+            >> ./conf/bblayers.conf
+
+grep -q meta-qt5 ./conf/bblayers.conf ||
+	echo "BBLAYERS += \" \${BSPDIR}/sources/meta-qt5 \"" \
+		>> ./conf/bblayers.conf
 
 grep -q package_ ./conf/local.conf &&
 	sed -i -e s/package_rpm/package_ipk/ ./conf/local.conf
