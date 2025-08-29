@@ -10,7 +10,6 @@ PANEL_DEBUG_PACKAGES = "gdb gdbserver valgrind"
 RDEPENDS:${PN} = " \
     iperf3 \
     nmap \
-    python3-flent \
     netperf \
     iproute2-tc \
     iproute2-ss \
@@ -22,6 +21,4 @@ RDEPENDS:${PN} = " \
     netcat \
     lsof \
     iftop \
-    dhrystone \
-    ${@bb.utils.contains('BUILD_TYPE', 'dbg','${DEBUG_PACKAGES}', '', d)} \
 "
