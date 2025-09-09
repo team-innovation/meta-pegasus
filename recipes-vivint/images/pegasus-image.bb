@@ -24,8 +24,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-imx-security \
     packagegroup-fsl-gstreamer1.0 \
     packagegroup-fsl-gstreamer1.0-full \
-    packagegroup-vivint-base \
-    packagegroup-vivint-debug \
-    packagegroup-vivint-wireless \
+    packagegroup-pegasus \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland xterm', '', d)} \
 "
