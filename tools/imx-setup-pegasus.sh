@@ -118,7 +118,6 @@ imx6*|imx7*)
     ;;
 esac
 
-EULA=1
 # Override the click-through in meta-freescale
 FSL_EULA_FILE=$CWD/sources/meta-imx/LICENSE.txt
 
