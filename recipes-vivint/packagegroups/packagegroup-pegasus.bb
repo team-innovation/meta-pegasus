@@ -8,7 +8,6 @@ inherit packagegroup
 RDEPENDS:${PN} = " \
     mosquitto \
     mosquitto-clients \
-    qt6-base \
-    qt6-declarative \
-    qt6-multimedia \
+    qtdeclarative \
+    qtmultimedia \
 "
