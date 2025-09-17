@@ -16,7 +16,7 @@ RDEPENDS:${PN} = " \
 	mmc-utils \
     mosquitto \
     mosquitto-clients \
-	pacho-mqtt-cpp \
+	paho-mqtt-cpp \
 	paho-mqtt-c \
 	protobuf \
 	protobuf-c \
