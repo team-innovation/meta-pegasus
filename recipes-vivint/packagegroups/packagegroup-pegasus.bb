@@ -13,6 +13,7 @@ RDEPENDS:${PN} = " \
 	kernel-devicetree \
 	libgpiod \
 	libubootenv-bin \
+    lrzsz \
 	mmc-utils \
     mosquitto \
     mosquitto-clients \
