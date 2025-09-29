@@ -16,4 +16,6 @@ SSID=*
 
 [Network]
 DHCP=yes
+
+[DHCP]
 RouteMetric=20
