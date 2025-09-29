@@ -1,5 +1,3 @@
-SRC_URI += "file://test"
-
 do_install:append() {
     install -d ${D}${sysconfdir}/wpa_supplicant
     install -m 600 ${WORKDIR}/wpa_supplicant.conf-sane ${D}${sysconfdir}/wpa_supplicant/wpa_supplicant-wfd0.conf
