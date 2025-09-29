@@ -12,7 +12,7 @@
 [Match]
 Type=wlan
 WLANInterfaceType=station
-SSID=*
+Name=wfd*
 
 [Network]
 DHCP=yes
