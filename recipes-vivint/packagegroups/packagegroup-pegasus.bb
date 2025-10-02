@@ -33,4 +33,6 @@ RDEPENDS:${PN} = " \
 	bridge-utils \
 	strace \
 	zeroconf \
+    weston \
+    weston-examples \
 "
