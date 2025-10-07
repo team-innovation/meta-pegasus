@@ -28,5 +28,6 @@ RDEPENDS:${PN} = " \
     qtmultimedia \
     qtmultimedia-qmlplugins \
 	u-boot-imx \
+        udev-rules-vivint \
 	zeroconf \
 "
