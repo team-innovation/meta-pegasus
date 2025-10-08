@@ -31,5 +31,6 @@ RDEPENDS:${PN} = " \
         udev-rules-vivint \
         avahi-utils \
 	bridge-utils \
+	strace \
 	zeroconf \
 "
