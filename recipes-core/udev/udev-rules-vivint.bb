@@ -6,7 +6,6 @@ PR = "r5"
 
 SRC_URI = " \
 	file://60-vivint.rules \
-	file://60-goodix-touch.rules \
 	file://mount.sh \
 	file://mount.blacklist \
 	file://69-disable-usb-hid.rules \
@@ -16,7 +15,6 @@ S = "${WORKDIR}"
 
 do_install() {
     install -d ${D}${sysconfdir}/udev/rules.d
-    install -m 0644 ${WORKDIR}/60-goodix-touch.rules ${D}${sysconfdir}/udev/rules.d/
     install -m 0644 ${WORKDIR}/69-disable-usb-hid.rules ${D}${sysconfdir}/udev/rules.d/
 
     install -m 0644 ${WORKDIR}/60-vivint.rules ${D}${sysconfdir}/udev/rules.d/

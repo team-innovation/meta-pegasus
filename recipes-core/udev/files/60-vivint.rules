@@ -32,6 +32,7 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="0658", ATTRS{idProduct}=="0200", OPTIONS+="l
 # Hotplug usb gadget
 KERNEL=="ttyGS0", SUBSYSTEMS=="tty", ACTION=="add", RUN+="/bin/systemctl start serial-getty@ttyGS0.service"
 KERNEL=="ttyGS0", SUBSYSTEMS=="tty", ACTION=="remove", RUN+="/bin/systemctl stop serial-getty@ttyGS0.service"
+
 # Symlink NFC dongle
 SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="ttyNFC"
 
