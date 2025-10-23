@@ -1,5 +1,6 @@
 DESCRIPTION = "Boot script for launching images with U-Boot distro boot"
 LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 
 DEPENDS = "u-boot-mkimage-native"
 
@@ -18,11 +19,11 @@ do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
 do_install () {
-    install -D -m 644 ${S}/boot.scr ${D}/boot.scr
+    install -D -m 644 ${S}/boot.scr ${D}/boot/boot.scr
 }
 
 do_deploy () {
-    install -D -m 644 ${D}/boot.scr \
+    install -D -m 644 ${D}/boot/boot.scr \
         ${DEPLOYDIR}/boot.scr-${MACHINE}-${PV}-${PR}
 
     cd ${DEPLOYDIR}
@@ -33,3 +34,5 @@ do_deploy () {
 addtask deploy after do_install before do_build
 
 PROVIDES += "u-boot-default-script"
+
+FILES:${PN} = "/boot"
