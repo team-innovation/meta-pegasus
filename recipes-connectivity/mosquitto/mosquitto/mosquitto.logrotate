@@ -1,0 +1,8 @@
+/media/extra/log/mosquitto.log {
+        missingok
+        size 1048576
+        copytruncate
+        rotate 5
+        compress
+        nodateext
+}
