@@ -29,6 +29,7 @@ RDEPENDS:${PN} = " \
         qtdeclarative-qmlplugins \
         qtmultimedia \
         qtmultimedia-qmlplugins \
+        u-boot-script-vivint \
 	u-boot-imx \
         udev-rules-vivint \
         avahi-utils \
