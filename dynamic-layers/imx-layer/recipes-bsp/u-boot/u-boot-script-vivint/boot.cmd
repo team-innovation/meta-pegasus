@@ -5,13 +5,11 @@
 # t1 Test from check_update
 setenv t1 'if test ${test_state} = test_update; then
 	echo "Test Update..." ;
-	echo "Watchdog setup for 11 mins..." ;
 	
 	setenv bootcount 1 ;
 	setenv test_state ;	
 else	
 	echo "Normal Boot..." ;
-	echo "Watchdog setup for 6 mins..." ;
 	
 	setenv bootcount 0 ;
 fi'
@@ -48,7 +46,7 @@ fi;'
 setenv check_cleanup 'setenv check_update ; setenv t1 ; setenv t2; setenv check_cleanup; saveenv'
 
 # Run test scripts and clean up
-setenv bootdelay '-2'
+#setenv bootdelay '-2'
 run check_update
 run check_cleanup
 
@@ -67,6 +65,9 @@ run setup_boot
 
 # Setup bootargs
 run mmcargs
+
+setenv image Image
+setenv fdt_file imx8mn-evk.dtb
 
 # Load kernel and device-tree from mmc card and boot
 ext4load mmc ${mmcdev}:${mmclinuxpart} ${loadaddr} /boot/${image}
