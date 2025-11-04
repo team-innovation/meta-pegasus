@@ -11,3 +11,5 @@ S = "${WORKDIR}/aioconsole-${PV}"
 RDEPENDS:${PN} = "${PYTHON_PN}-asyncio"
 
 inherit python_setuptools_build_meta pypi
+
+BBCLASSEXTEND = "native nativesdk"

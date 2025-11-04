@@ -10,3 +10,5 @@ SRC_URI = "git://github.com/rytilahti/python-ubus.git;branch=master;protocol=htt
 S = "${WORKDIR}/git"
 
 inherit setuptools3
+
+BBCLASSEXTEND = "native nativesdk"

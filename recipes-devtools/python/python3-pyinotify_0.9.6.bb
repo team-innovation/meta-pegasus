@@ -10,3 +10,5 @@ SRC_URI += "file://noasyncore.patch"
 SRC_URI[sha256sum] = "9c998a5d7606ca835065cdabc013ae6c66eb9ea76a00a1e3bc6e0cfe2b4f71f4"
 
 inherit setuptools3 pypi
+
+BBCLASSEXTEND = "native nativesdk"
