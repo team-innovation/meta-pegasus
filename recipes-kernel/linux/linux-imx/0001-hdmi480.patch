@@ -1,0 +1,60 @@
+diff --git a/drivers/clk/imx/clk-imx8mm.c b/drivers/clk/imx/clk-imx8mm.c
+index 437c8e6a251c..4a95143f9410 100644
+--- a/drivers/clk/imx/clk-imx8mm.c
++++ b/drivers/clk/imx/clk-imx8mm.c
+@@ -495,7 +495,7 @@ static int imx8mm_clocks_probe(struct platform_device *pdev)
+ 	hws[IMX8MM_CLK_PCIE1_PHY] = imx8m_clk_hw_composite("pcie1_phy", imx8mm_pcie1_phy_sels, base + 0xa380);
+ 	hws[IMX8MM_CLK_PCIE1_AUX] = imx8m_clk_hw_composite("pcie1_aux", imx8mm_pcie1_aux_sels, base + 0xa400);
+ 	hws[IMX8MM_CLK_DC_PIXEL] = imx8m_clk_hw_composite("dc_pixel", imx8mm_dc_pixel_sels, base + 0xa480);
+-	hws[IMX8MM_CLK_LCDIF_PIXEL] = imx8m_clk_hw_composite_flags("lcdif_pixel", imx8mm_lcdif_pixel_sels, base + 0xa500, 0);
++	hws[IMX8MM_CLK_LCDIF_PIXEL] = imx8m_clk_hw_composite_flags("lcdif_pixel", imx8mm_lcdif_pixel_sels, base + 0xa500, CLK_SET_RATE_PARENT);
+ 	hws[IMX8MM_CLK_SAI1] = imx8m_clk_hw_composite("sai1", imx8mm_sai1_sels, base + 0xa580);
+ 	hws[IMX8MM_CLK_SAI2] = imx8m_clk_hw_composite("sai2", imx8mm_sai2_sels, base + 0xa600);
+ 	hws[IMX8MM_CLK_SAI3] = imx8m_clk_hw_composite("sai3", imx8mm_sai3_sels, base + 0xa680);
+diff --git a/drivers/clk/imx/clk-imx8mn.c b/drivers/clk/imx/clk-imx8mn.c
+index e00b3c6852a8..0d011a0e6b60 100644
+--- a/drivers/clk/imx/clk-imx8mn.c
++++ b/drivers/clk/imx/clk-imx8mn.c
+@@ -502,7 +502,7 @@ static int imx8mn_clocks_probe(struct platform_device *pdev)
+ 	hws[IMX8MN_CLK_DRAM_ALT] = imx8m_clk_hw_fw_managed_composite("dram_alt", imx8mn_dram_alt_sels, base + 0xa000);
+ 	hws[IMX8MN_CLK_DRAM_APB] = imx8m_clk_hw_fw_managed_composite_critical("dram_apb", imx8mn_dram_apb_sels, base + 0xa080);
+ 
+-	hws[IMX8MN_CLK_DISP_PIXEL] = imx8m_clk_hw_composite_flags("disp_pixel", imx8mn_disp_pixel_sels, base + 0xa500, 0);
++	hws[IMX8MN_CLK_DISP_PIXEL] = imx8m_clk_hw_composite_flags("disp_pixel", imx8mn_disp_pixel_sels, base + 0xa500, CLK_SET_RATE_PARENT);
+ 	hws[IMX8MN_CLK_SAI2] = imx8m_clk_hw_composite("sai2", imx8mn_sai2_sels, base + 0xa600);
+ 	hws[IMX8MN_CLK_SAI3] = imx8m_clk_hw_composite("sai3", imx8mn_sai3_sels, base + 0xa680);
+ 	hws[IMX8MN_CLK_SAI5] = imx8m_clk_hw_composite("sai5", imx8mn_sai5_sels, base + 0xa780);
+diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
+index 65f0fa052058..a47add024cba 100644
+--- a/drivers/clk/imx/clk-pll14xx.c
++++ b/drivers/clk/imx/clk-pll14xx.c
+@@ -76,6 +76,7 @@ static const struct imx_pll14xx_rate_table imx_pll1443x_tbl[] = {
+ 	PLL_1443X_RATE(49152000U, 393, 3, 6, 0x374c),
+ 	PLL_1443X_RATE(45158400U, 241, 2, 6, 0xd845),
+ 	PLL_1443X_RATE(40960000U, 109, 1, 6, 0x3a07),
++	PLL_1443X_RATE(35000000U, 280, 3, 6, 0),
+ };
+ 
+ struct imx_pll14xx_clk imx_1443x_pll = {
+diff --git a/drivers/gpu/drm/bridge/sec-dsim.c b/drivers/gpu/drm/bridge/sec-dsim.c
+index 635844f9ed5f..64801c4acebd 100644
+--- a/drivers/gpu/drm/bridge/sec-dsim.c
++++ b/drivers/gpu/drm/bridge/sec-dsim.c
+@@ -1647,6 +1647,17 @@ static int sec_mipi_dsim_bridge_atomic_check(struct drm_bridge *bridge,
+ 		adjusted_mode->htotal      += 2;
+ 	}
+ 
++	if (!strcmp(adjusted_mode->name, "480x480") &&
++	    drm_mode_vrefresh(adjusted_mode) == 60 &&
++	    dsim->lanes == 4		    &&
++	    dsim->mode_flags & MIPI_DSI_MODE_VIDEO_SYNC_PULSE) {
++		adjusted_mode->hsync_end   += 6;
++		adjusted_mode->htotal      += 6;
++		dev_err(dsim->dev, "---------------> 480x480@%d fixup hsync_start %d hsync_end %d htotal %d\n",
++			drm_mode_vrefresh(adjusted_mode), adjusted_mode->hsync_start, adjusted_mode->hsync_end,
++			adjusted_mode->htotal);
++	}
++
+ 	return 0;
+ }
+ 
