@@ -27,7 +27,11 @@ SUBSYSTEM=="input", KERNEL=="event[0-9]*", ENV{ID_INPUT_TOUCHSCREEN}=="1", SYMLI
 
 # zwave tty for Magellan/Nene ? Yellowstone (on WS it ttymxc2)
 #SUBSYSTEM=="tty", KERNEL=="ttymxc3", SYMLINK+="ttyZwave0"
+
+# These are the USB bridge controller dongle (for controller/standalone mode) and the xg23 SiLabs radio board (FISH mode)
+# These can both be removed in POC phase of Pegasus
 SUBSYSTEM=="tty", ATTRS{idVendor}=="0658", ATTRS{idProduct}=="0200", OPTIONS+="link_priority=1", SYMLINK+="ttyZwave0"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1366", ATTRS{idProduct}=="1024", OPTIONS+="link_priority=1", SYMLINK+="ttyZwave0"
 
 # Hotplug usb gadget
 KERNEL=="ttyGS0", SUBSYSTEMS=="tty", ACTION=="add", RUN+="/bin/systemctl start serial-getty@ttyGS0.service"
