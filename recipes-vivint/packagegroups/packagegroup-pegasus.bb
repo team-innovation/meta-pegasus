@@ -9,6 +9,7 @@ RDEPENDS:${PN} = " \
 	ca-certificates \
 	i2c-tools \
 	imx-boot \
+	init-ifupdown \
 	kernel-image \
 	kernel-devicetree \
 	libgpiod \
