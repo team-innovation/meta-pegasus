@@ -5,6 +5,7 @@ DESCRIPTION = "Image for Vivint next gen hub"
 LICENSE = "MIT"
 
 inherit core-image
+inherit uuu-zip-image
 
 IMAGE_FEATURES += " \
     package-management \
@@ -24,5 +25,6 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     packagegroup-fsl-gstreamer1.0 \
     packagegroup-fsl-gstreamer1.0-full \
     packagegroup-pegasus \
+	packagegroup-wnc \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland xterm', '', d)} \
 "
