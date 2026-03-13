@@ -26,7 +26,7 @@ RDEPENDS:${PN} = " \
 	protobuf-c \
 	pulseaudio-server \
 	pulseaudio-misc \
-	python3-pygobject \
+	lib32-python3-pygobject \
 	qtdeclarative \
 	qtdeclarative-qmlplugins \
 	qtmultimedia \
