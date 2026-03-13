@@ -27,6 +27,7 @@ RDEPENDS:${PN} = " \
 	pulseaudio-server \
 	pulseaudio-misc \
 	lib32-python3-pygobject \
+	lib32-gstreamer1.0-python \
 	qtdeclarative \
 	qtdeclarative-qmlplugins \
 	qtmultimedia \
