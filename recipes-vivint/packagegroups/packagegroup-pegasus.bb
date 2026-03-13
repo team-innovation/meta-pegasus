@@ -14,29 +14,30 @@ RDEPENDS:${PN} = " \
 	kernel-devicetree \
 	libgpiod \
 	libubootenv-bin \
-        lrzsz \
-        lsb-release \
+	lrzsz \
+	lsb-release \
 	mmc-utils \
-        mosquitto \
-        mosquitto-clients \
-        openssh \
+	mosquitto \
+	mosquitto-clients \
+	openssh \
 	paho-mqtt-cpp \
 	paho-mqtt-c \
 	protobuf \
 	protobuf-c \
 	pulseaudio-server \
 	pulseaudio-misc \
-        qtdeclarative \
-        qtdeclarative-qmlplugins \
-        qtmultimedia \
-        qtmultimedia-qmlplugins \
-        u-boot-script-vivint \
+	python3-pygobject \
+	qtdeclarative \
+	qtdeclarative-qmlplugins \
+	qtmultimedia \
+	qtmultimedia-qmlplugins \
+	u-boot-script-vivint \
 	u-boot-imx \
-        udev-rules-vivint \
-        avahi-utils \
+	udev-rules-vivint \
+	avahi-utils \
 	bridge-utils \
 	strace \
 	zeroconf \
-        weston \
-        weston-examples \
+	weston \
+	weston-examples \
 "
