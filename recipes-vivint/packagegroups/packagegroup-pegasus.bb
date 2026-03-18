@@ -28,6 +28,9 @@ RDEPENDS:${PN} = " \
 	pulseaudio-misc \
 	lib32-python3-pygobject \
 	lib32-gstreamer1.0-python \
+	lib32-gstreamer1.0-plugins-base \
+	lib32-gstreamer1.0-plugins-good \
+	lib32-gstreamer1.0-plugins-bad \
 	qtdeclarative \
 	qtdeclarative-qmlplugins \
 	qtmultimedia \
