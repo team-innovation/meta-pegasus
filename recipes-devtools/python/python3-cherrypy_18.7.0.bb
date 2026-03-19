@@ -5,6 +5,8 @@ SECTION = "devel/python"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE.md;md5=a5ad8f932e1fd3841133f20d3ffedda1"
 
+SRC_URI[sha256sum] = "729452f798ca756390046ef318043cae864a46814deaf3e6bd34dc959af198de"
+
 DEPENDS = "${PYTHON_PN}-setuptools-scm-native"
 
 RDEPENDS:${PN} += " \
@@ -41,13 +43,8 @@ RDEPENDS:${PN} += " \
     ${PYTHON_PN}-zc-lockfile \
 "
 
-# pypi class generates old URL format that PyPI no longer supports for 18.10.0
-SRC_URI = "https://files.pythonhosted.org/packages/93/e8/2f7ef142d1962d08a8885c4c9942212abecad6a80ccdd1620fd1f5c993fd/cherrypy-18.10.0.tar.gz;downloadfilename=cherrypy-18.10.0.tar.gz"
-SRC_URI[sha256sum] = "6c70e78ee11300e8b21c0767c542ae6b102a49cac5cfd4e3e313d7bb907c5891"
+PYPI_PACKAGE = "CherryPy"
 
-# Tarball unpacks to cherrypy-18.10.0/, not python3-cherrypy-18.10.0/
-S = "${WORKDIR}/cherrypy-${PV}"
-
-inherit python_setuptools_build_meta
+inherit python_setuptools_build_meta pypi
 
 BBCLASSEXTEND = "native nativesdk"
