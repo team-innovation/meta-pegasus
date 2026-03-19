@@ -12,6 +12,6 @@ SRCREV = "29c8281dee7fe8dae8c66c7c40ce7c058ec2ab0f"
 
 S = "${WORKDIR}/git"
 
-inherit setuptools3
+inherit setuptools3 
 
 BBCLASSEXTEND = "native nativesdk"
