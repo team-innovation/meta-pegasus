@@ -25,8 +25,8 @@ ACTION=="add", DEVPATH=="/devices/*", ENV{MODALIAS}=="?*", RUN+="/sbin/modprobe 
 # has an EV_ABS value (-a) which is used for touchscreen type devices.
 SUBSYSTEM=="input", KERNEL=="event[0-9]*", ENV{ID_INPUT_TOUCHSCREEN}=="1", SYMLINK+="input/touchscreen0"
 
-# zwave tty for Magellan/Nene ? Yellowstone (on WS it ttymxc2)
-#SUBSYSTEM=="tty", KERNEL=="ttymxc3", SYMLINK+="ttyZwave0"
+# zwave tty for Magellan/Nene/Yellowstone/Moab/Pegasus (on WS it ttymxc2)
+SUBSYSTEM=="tty", KERNEL=="ttymxc3", SYMLINK+="ttyZwave0"
 
 # These are the USB bridge controller dongle (for controller/standalone mode) and the xg23 SiLabs radio board (FISH mode)
 # These can both be removed in POC phase of Pegasus
