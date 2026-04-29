@@ -1,9 +1,24 @@
-#!/bin/sh
+#!/bin/busybox sh
 #
 # Called from udev
 #
 # Attempt to mount any added block devices and umount any removed devices
 
+# On aarch64 systems, systemd-udevd applies a seccomp allowlist for aarch64
+# only; 32-bit compat processes (e.g. /bin/sh -> 32-bit bash) are killed
+# immediately on their first syscall (brk). Use /bin/busybox sh (64-bit) as
+# the interpreter above.
+#
+# Additionally, the seccomp filter blocks mount(2). Re-execute as a transient
+# systemd service (started by PID 1, outside the sandbox) when systemd-run is
+# available. Falls back to direct execution on non-systemd systems.
+if [ -z "$_MOUNT_SCOPE" ] && [ -x /usr/bin/systemd-run ]; then
+	/usr/bin/systemd-run --no-block \
+		--setenv=_MOUNT_SCOPE=1 \
+		--setenv=ACTION="$ACTION" \
+		--setenv=DEVNAME="$DEVNAME" \
+		-- /bin/busybox sh /etc/udev/scripts/mount.sh && exit 0
+fi
 
 MOUNT="/bin/mount"
 PMOUNT="/usr/bin/pmount"

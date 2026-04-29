@@ -13,6 +13,9 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
+RDEPENDS:${PN} = "busybox"
+INSANE_SKIP:${PN} += "file-rdeps"
+
 do_install() {
     install -d ${D}${sysconfdir}/udev/rules.d
     install -m 0644 ${WORKDIR}/69-disable-usb-hid.rules ${D}${sysconfdir}/udev/rules.d/
