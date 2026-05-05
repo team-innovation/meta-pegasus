@@ -8,6 +8,7 @@ SRC_URI += "file://logrotate \
 
 BUILD_PLATFORM = "other"
 BUILD_PLATFORM:imx8mm-yellowstone = "yellowstone"
+BUILD_PLATFORM:imx8mn-pegasus = "pegasus"
 
 do_install:append(){
     install -d ${D}${sysconfdir}/logrotate.d
