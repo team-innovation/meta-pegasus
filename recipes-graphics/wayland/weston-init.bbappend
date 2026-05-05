@@ -1,6 +1,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-PR="r6"
+PR="r7"
 
 SRC_URI += "file://logrotate \
             file://weston.ini \
