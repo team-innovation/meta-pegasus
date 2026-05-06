@@ -31,6 +31,8 @@ do_deploy () {
     cd ${DEPLOYDIR}
     rm -f boot.scr-${MACHINE}
     ln -sf boot.scr-${MACHINE}-${PV}-${PR} boot.scr-${MACHINE}
+    rm -f boot.scr
+    ln -sf boot.scr-${MACHINE}-${PV}-${PR} boot.scr
 }
 
 addtask deploy after do_install before do_build
