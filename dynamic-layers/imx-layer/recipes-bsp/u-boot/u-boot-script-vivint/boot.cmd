@@ -66,9 +66,6 @@ run setup_boot
 # Setup bootargs
 run mmcargs
 
-setenv image Image
-setenv fdt_file imx8mn-evk.dtb
-
 # Load kernel and device-tree from mmc card and boot
 ext4load mmc ${mmcdev}:${mmclinuxpart} ${loadaddr} /boot/${image}
 ext4load mmc ${mmcdev}:${mmclinuxpart} ${fdt_addr} /boot/${fdt_file}
