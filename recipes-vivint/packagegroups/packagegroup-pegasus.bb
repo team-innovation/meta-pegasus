@@ -8,7 +8,6 @@ inherit packagegroup
 RDEPENDS:${PN} = " \
 	ca-certificates \
 	i2c-tools \
-	imx-boot \
 	kernel-image \
 	kernel-devicetree \
 	libgpiod \
@@ -29,13 +28,18 @@ RDEPENDS:${PN} = " \
         qtdeclarative-qmlplugins \
         qtmultimedia \
         qtmultimedia-qmlplugins \
-        u-boot-script-vivint \
-	u-boot-imx \
-        udev-rules-vivint \
         avahi-utils \
 	bridge-utils \
 	strace \
 	zeroconf \
         weston \
         weston-examples \
+        udev-rules-vivint \
+"
+
+# NXP i.MX SPECIFIC PACKAGES
+RDEPENDS:${PN}:append:imx8mn-pegasus = " \
+        imx-boot \
+        u-boot-imx \
+        u-boot-script-vivint \
 "
